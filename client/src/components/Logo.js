@@ -1,7 +1,7 @@
 
 //Logo.js
 import { Typography } from "@mui/material";
-import logo from '../static/logo.png'
+import logo from '../assets/static/logo.png'
 import { useRedirect } from 'react-admin';
 import IconButton from '@mui/material/IconButton';
 

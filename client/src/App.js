@@ -6,7 +6,9 @@ import { MyLayout } from './layouts/Layout';
 import { CssBaseline } from '@mui/material';
 
 import { MainDashboard } from './pages/MainDashboard';
-import {Signup} from './pages/Signup';
+import {Signin} from './pages/Signin';
+import {Signup} from './pages/Signup'
+import { Profile } from './pages/Profile';
 
 
 const DATAPROVIDER = restProvider('http://localhost:3000');
@@ -17,7 +19,9 @@ const  App = ()  => {
         <Admin layout={MyLayout} dataProvider={DATAPROVIDER} >
             <CssBaseline />
        <Resource name='DashBoard' list={MainDashboard} />
+       <Resource name='Signin' list={Signin} />
        <Resource name='Signup' list={Signup} />
+       <Resource name='Profile' list={Profile} />
         </Admin>
       );
 }

@@ -5,7 +5,7 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box'
 
-import farm from '../static/farm.jpg'
+import farm from '../assets/static/farm.jpg'
 
 
 const Img1 = styled('img')({
