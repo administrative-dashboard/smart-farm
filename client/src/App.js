@@ -9,7 +9,7 @@ import { MainDashboard } from './pages/MainDashboard';
 import {Signin} from './pages/Signin';
 import {Signup} from './pages/Signup'
 import { Profile } from './pages/Profile';
-
+import { AdminDesktop } from './pages/Desktop'
 
 const DATAPROVIDER = restProvider('http://localhost:3000');
 
@@ -22,6 +22,7 @@ const  App = ()  => {
        <Resource name='Signin' list={Signin} />
        <Resource name='Signup' list={Signup} />
        <Resource name='Profile' list={Profile} />
+       <Resource name = 'page' list={AdminDesktop} />
         </Admin>
       );
 }
