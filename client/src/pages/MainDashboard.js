@@ -1,18 +1,14 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box'
+import { styled, Grid, Box, Typography, Paper } from '@mui/material';
 
-import farm from '../assets/static/farm.jpg'
+import dashBoardImg1 from '../assets/static/dashboardImg1.jpg'
+import dashBoardImg2 from '../assets/static/dashboardImg2.jpg'
 
 
 const Img1 = styled('img')({
     margin: 'auto',
     display: 'block',
-    width: '500px',
-    height: '500px',
+    width: '60%',
     borderRadius: '50%'
 });
 
@@ -20,9 +16,9 @@ const Img2 = styled('img')({
     margin: 'auto',
     display: 'block',
     width: '80%',
-    opacity: '10%',
+    borderRadius: '5%'
 
-   
+
 });
 export const MainDashboard = () => {
     return (
@@ -60,11 +56,12 @@ export const MainDashboard = () => {
                                 m: 4,
                                 p: 4
                             }}>
-                            Real estate investment trusts (REITs) aren’t just for office buildings and apartment complexes. Indeed, REITs can also invest in farmland, and they’re a popular way for investors to enjoy the benefits of real estate investing – notably, income – without the headaches of management.
+                            Invest confidently in the agriculture industry. Explore our platform, find exciting farm investment opportunities, and
+                            enjoy the benefits of a thriving sector. Start growing your wealth through agricultural investments today.
                         </Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} container>
-                        <Img1 alt="complex" src={farm} />
+                        <Img1 alt="complex" src={dashBoardImg1} />
 
                     </Grid>
                 </Grid>
@@ -90,8 +87,8 @@ export const MainDashboard = () => {
                             About Us
                         </Typography>
                     </Grid>
-                    <Grid item xs={12} sm={6} sx = {{p: 5}}>
-                        <Img2 alt="complex" src={farm} />
+                    <Grid item xs={12} sm={6} sx={{ p: 5 }}>
+                        <Img2 alt="complex" src={dashBoardImg2} />
                     </Grid>
                     <Grid item xs={12} sm={6} container>
                         <Typography

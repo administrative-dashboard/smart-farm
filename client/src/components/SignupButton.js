@@ -1,18 +1,30 @@
 import React from 'react';
 import { Button, useRedirect } from 'react-admin';
-// import { Link } from 'react-router-dom';
+import { useMediaQuery, useTheme } from '@mui/material';
 
-
-export const SignupButton = () => {
+export const SigninButton = () => {
+    const theme = useTheme();
+    const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
     const redirect = useRedirect();
     const handleClick = () => {
         redirect('/signup');
     }
+
     return (
-        // <Link to="/signup" style={{ textDecoration: 'none', color: 'white' }}>
-        <Button variant="contained" sx={{ backgroundColor: '#1F4700', mr: 5 }} onClick={handleClick}>
+        <Button
+            variant={isMediumScreen ? "contained" : "text"}
+            sx={{
+                backgroundColor: '#1F4700',
+                color: 'white',
+                mr: 5,
+                px: isMediumScreen ? 4 : 2,
+                '&:hover': {
+                    backgroundColor: 'lightgreen', 
+                },
+            }}
+            onClick={handleClick}
+        >
             Signup
         </Button>
-        // </Link>
     );
 };
