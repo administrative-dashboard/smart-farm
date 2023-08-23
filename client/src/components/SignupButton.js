@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, useRedirect } from 'react-admin';
 import { useMediaQuery, useTheme } from '@mui/material';
 
-export const SigninButton = () => {
+export const SignupButton = () => {
     const theme = useTheme();
     const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
     const redirect = useRedirect();
