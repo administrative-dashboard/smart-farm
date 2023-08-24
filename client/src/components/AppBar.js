@@ -5,7 +5,7 @@ import { MenuItem, ListItemIcon } from '@mui/material';
 import ContactPageIcon from '@mui/icons-material/ContactPage';
 import Face6Icon from '@mui/icons-material/Face6';
 
-import { Logo } from './Logo';
+import { Logo } from './LogoButton';
 import { SigninButton } from './SigninButton';
 import { LogoutButton } from './LogoutButton';
 import { ProfileButton } from './ProfileButton';
