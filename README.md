@@ -1,6 +1,3 @@
-# smart-farm
-Agricultural monitoring system
-
 # Smart Farm
 
 ## Overview
@@ -84,7 +81,7 @@ smart-farm/
 │   ├── main.ts
 │
 ├── README.md
-└── ...
+└── 
 ```
 
 
