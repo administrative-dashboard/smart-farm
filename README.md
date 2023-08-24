@@ -94,6 +94,6 @@ smart-farm/
 ## Contributing
 
 ## License
->>>>>>> 75721f969e455f35531692f1da509eb20e551e0b
+
 
 
