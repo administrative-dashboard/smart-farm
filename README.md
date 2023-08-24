@@ -8,7 +8,7 @@ Agricultural monitoring system
 Smart Farm is an agricultural monitoring system that uses sensors to collect data on environmental conditions such as temperature, humidity, and soil moisture. This data is then sent to a central server, where it can be accessed by farmers to make informed decisions about their crops.
 
 ## Folder Structure
-
+```bash
 smart-farm/
 │
 ├── client/
@@ -85,6 +85,8 @@ smart-farm/
 │
 ├── README.md
 └── ...
+```
+
 
 ## Installation
 
