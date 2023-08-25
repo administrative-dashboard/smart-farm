@@ -9,6 +9,7 @@ import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import QuizIcon from '@mui/icons-material/Quiz';
+import FaceRetouchingNaturalIcon from '@mui/icons-material/FaceRetouchingNatural';
 
 import { MainDashboard } from './pages/MainDashboard';
 import { Signin } from './pages/Signin';
@@ -32,7 +33,7 @@ const App = () => {
             <Resource name='signup' list={Signup} icon={AppRegistrationIcon} />
             <Resource name='profile' list={Profile} icon={PermIdentityIcon} />
             <Resource name='page' list={AdminDesktop} icon={QuizIcon} />
-            <Resource name="ownerPage" list={OwnerDesktop} />
+            <Resource name="ownerPage" list={OwnerDesktop} icon={FaceRetouchingNaturalIcon} />
             <Resource name="owner/greenhouses" list={OwnerGreenhouse} />
             <Resource name="owner/devices" list={OwnerDeviceAdd} />
         </Admin>

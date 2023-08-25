@@ -13,9 +13,9 @@ import { Link } from 'react-router-dom';
 export const CustomImageList = ({ data, detail }) => {
     const isLgScreen = useMediaQuery((theme) => theme.breakpoints.down('lg'))
     return (
-        <ImageList cols={isLgScreen ? 2 : 3} sx={{ backgroundColor: 'rgba(245, 246, 241, 0.8)', borderRadius: '15%', p: 3 }} >
+        <ImageList cols={isLgScreen ? 2 : 3} sx={{ backgroundColor: 'rgba(245, 246, 241, 0.8)', borderRadius: '15%', p: 2, ml: '15%' }} >
             {data.map((item) => (
-                <ImageListItem key={item.img} sx={{ m: 2, width: '70%' }}>
+                <ImageListItem key={item.img} sx={{ m: 2, width: '85%' }}>
                     <img
                         src={item.img}
                         alt={item.title}

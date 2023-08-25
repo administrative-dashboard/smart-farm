@@ -13,20 +13,22 @@ import { CustomImageList } from '../components/ImageList';
 
 export const OwnerDesktop = () => {
     const isMdScreen = useMediaQuery((theme) => theme.breakpoints.down('md'));
+    const isLgScreen = useMediaQuery((theme) => theme.breakpoints.down('lg'));
 
     return (
         <Box sx={{
             display: 'flex', justifyContent: "space-around",
             alignItems: "center"
         }}>
-            {!isMdScreen && <MyBar />}
-            <Container sx={{ flex: 1, minWidth: 0, height: '50vh' }}>
+            {!isLgScreen && <MyBar />}
+            <Container sx={{  m: 'auto'}}>
                 <Typography
                     variant="h3"
                     sx={{
                         color: '#004417',
                         fontFamily: 'Roboto',
-                        mt: 5
+                        mt: 5,
+                        ml: '20%'
                     }} >
                     My properties
                 </Typography>
