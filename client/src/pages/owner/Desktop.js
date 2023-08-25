@@ -1,4 +1,4 @@
-//OwnerDesctop.js
+//client/owner/Desktop.js
 import * as React from 'react';
 import {
     Container,
@@ -7,9 +7,9 @@ import {
     Typography
 } from '@mui/material';
 
-import { MyBar } from '../components/Drawer';
-import { ownerItemData } from '../assets/static/mockData/owner.mockData';
-import { CustomImageList } from '../components/ImageList';
+import { MyBar } from '../../components/Drawer';
+import { ownerItemData } from '../../assets/static/mockData/owner.mockData';
+import { CustomImageList } from '../../components/ImageList';
 
 export const OwnerDesktop = () => {
     const isMdScreen = useMediaQuery((theme) => theme.breakpoints.down('md'));
@@ -21,7 +21,7 @@ export const OwnerDesktop = () => {
             alignItems: "center"
         }}>
             {!isLgScreen && <MyBar />}
-            <Container sx={{  m: 'auto'}}>
+            <Container sx={{ m: 'auto' }}>
                 <Typography
                     variant="h3"
                     sx={{
@@ -32,7 +32,7 @@ export const OwnerDesktop = () => {
                     }} >
                     My properties
                 </Typography>
-                <CustomImageList data={ownerItemData} detail='owner' />
+                <CustomImageList data={ownerItemData} />
             </Container>
         </Box>
     );

@@ -10,10 +10,11 @@ import {
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import { Link } from 'react-router-dom';
 
-export const CustomImageList = ({ data, detail }) => {
+export const CustomImageList = ({ data }) => {
     const isLgScreen = useMediaQuery((theme) => theme.breakpoints.down('lg'))
+    const cols = isLgScreen ? (data.length >= 5 ? 2 : 1) : (data.length >= 5 ? 3 : 2);
     return (
-        <ImageList cols={isLgScreen ? 2 : 3} sx={{ backgroundColor: 'rgba(245, 246, 241, 0.8)', borderRadius: '15%', p: 2, ml: '15%' }} >
+        <ImageList cols={cols} sx={{ p: 2, ml: '15%' }} >
             {data.map((item) => (
                 <ImageListItem key={item.img} sx={{ m: 2, width: '85%' }}>
                     <img
@@ -22,7 +23,7 @@ export const CustomImageList = ({ data, detail }) => {
                         loading="lazy"
                         sx={{ m: 2 }}
                     />
-                    <Link key={item.title} to={`/${detail}/${item.title.toLowerCase()}`}>
+                    <Link key={item.title} to={`/${item.title.toLowerCase()}`}>
                         <ImageListItemBar
                             title={item.title}
                             actionIcon={

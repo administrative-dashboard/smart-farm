@@ -1,0 +1,71 @@
+{
+  "greenhouses": [
+    {
+      "id": "1",
+      "name": "Greenhouse 1",
+      "size": "100",
+      "description": "Description 1",
+      "location": "Location 1"
+    },
+    {
+      "id": "2",
+      "name": "Greenhouse 2",
+      "size": "150",
+      "description": "Description 2",
+      "location": "Location 2"
+    },
+    {
+      "id": "3",
+      "name": "Greenhouse 3",
+      "size": "200",
+      "description": "Description 3",
+      "location": "Location 3"
+    }
+  ],
+  "fields": [
+    {
+      "id": "1",
+      "name": "",
+      "size": "",
+      "description": "",
+      "location": ""
+    }
+  ],
+  "portable_devices": [
+    {
+      "id": "1",
+      "name": "Device 1",
+      "type": "Type 1",
+      "description": "Description 1"
+    },
+    {
+      "id": "2",
+      "name": "Device 2",
+      "type": "Type 2",
+      "description": "Description 2"
+    },
+    {
+      "id": "3",
+      "name": "Device 3",
+      "type": "Type 3",
+      "description": "Description 3"
+    },
+    {
+      "name": "ff",
+      "type": "fghj",
+      "id": "Tj_XNyl"
+    }
+  ],
+  "fixed_devices": [
+    {
+      "id": "1",
+      "name": "Device 1",
+      "type": "Type 1",
+      "description": "Description 1"
+    },
+    {
+      "description": "fgh",
+      "id": "3mRbBIo"
+    }
+  ]
+}

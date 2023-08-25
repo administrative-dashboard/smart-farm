@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 
 import {ThemeProvider , useMediaQuery, Box, Grid,Typography} from '@mui/material';
 
-import { GoogleButton } from '../components/GoogleButton';
-import { theme } from '../themes/theme';
-import signBack from '../assets/static/signBack.png'
+import { GoogleButton } from '../../components/GoogleButton';
+import { theme } from '../../themes/theme';
+import signBack from '../../assets/static/signBack.png'
 
 export const Signin = () => {
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));

@@ -26,7 +26,7 @@ export const ownerItemData = [
     },
     {
         img: info,
-        title: 'INFO',
+        title: 'SCHEDULE',
 
     },
     {
