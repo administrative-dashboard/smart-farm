@@ -12,14 +12,14 @@ import { deviceItemData } from '../../assets/static/mockData/device.mockData';
 import { CustomImageList } from '../../components/ImageList';
 import { HomeRedirectButton } from '../../components/HomeRedirectButton';
 
+
 export const DeviceDesktop = () => {
-    const isMdScreen = useMediaQuery((theme) => theme.breakpoints.down('md'));
     const isLgScreen = useMediaQuery((theme) => theme.breakpoints.down('lg'));
 
     return (
         <Box sx={{
-            display: 'flex', justifyContent: "space-around",
-            alignItems: "center"
+            display: 'flex', flexDirection: 'column',
+            alignItems: "center", height: '90vh'
         }}>
             {!isLgScreen && <MyBar />}
             <Container sx={{ m: 'auto' }}>
@@ -35,7 +35,7 @@ export const DeviceDesktop = () => {
                 </Typography>
                 <CustomImageList data={deviceItemData} />
             </Container>
-            <HomeRedirectButton pageName="OwnerPage" title = "home"/>
+            <HomeRedirectButton pageName="OwnerPage" title="home" />
         </Box>
     );
 }

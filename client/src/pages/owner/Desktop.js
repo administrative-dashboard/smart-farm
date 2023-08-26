@@ -12,7 +12,6 @@ import { ownerItemData } from '../../assets/static/mockData/owner.mockData';
 import { CustomImageList } from '../../components/ImageList';
 
 export const OwnerDesktop = () => {
-    const isMdScreen = useMediaQuery((theme) => theme.breakpoints.down('md'));
     const isLgScreen = useMediaQuery((theme) => theme.breakpoints.down('lg'));
 
     return (

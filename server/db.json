@@ -24,11 +24,11 @@
   ],
   "fields": [
     {
-      "id": "1",
-      "name": "",
-      "size": "",
-      "description": "",
-      "location": ""
+      "name": "dfgth",
+      "size": 5,
+      "description": "fg,kl",
+      "location": "fgm,",
+      "id": 1
     }
   ],
   "portable_devices": [
@@ -49,23 +49,65 @@
       "name": "Device 3",
       "type": "Type 3",
       "description": "Description 3"
-    },
-    {
-      "name": "ff",
-      "type": "fghj",
-      "id": "Tj_XNyl"
     }
   ],
   "fixed_devices": [
     {
       "id": "1",
-      "name": "Device 1",
+      "name": "Device 2",
       "type": "Type 1",
-      "description": "Description 1"
+      "description": "Description 1",
+      "quantity": 5
     },
     {
-      "description": "fgh",
-      "id": "3mRbBIo"
+      "id": "2",
+      "name": "Device 2",
+      "type": "Type 2",
+      "description": "Description 2",
+      "quantity": 10
+    },
+    {
+      "id": "3",
+      "name": "Device 3",
+      "type": "Type 3",
+      "description": "Description 3",
+      "quantity": 15
+    }
+  ],
+  "owners_fixedDevices": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "fixed_device_id": 1,
+      "quantity": 3,
+      "measurement_id": 1,
+      "date": "2023-08-26T12:00:00Z"
+    },
+    {
+      "id": 2,
+      "user_id": 2,
+      "fixed_device_id": 2,
+      "quantity": 2,
+      "measurement_id": 2,
+      "date": "2023-08-25T15:30:00Z"
+    }
+  ],
+  "owners_portableDevices": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "portable_device_id": 1,
+      "quantity": 5,
+      "measurement_id": 1,
+      "date": "2023-08-24T10:15:00Z"
+    },
+    {
+      "id": 2,
+      "user_id": 2,
+      "portable_device_id": 2,
+      "quantity": 3,
+      "measurement_id": 2,
+      "date": "2023-08-23T09:45:00Z"
     }
   ]
 }

@@ -2,7 +2,10 @@ import React from 'react';
 // import { GoogleLogin } from 'react-google-login';
 // import {authProvider} from "../utils/googleProvider"
 import { Button } from 'react-admin';
-import { useMediaQuery, useTheme } from '@mui/material';
+import {
+    useMediaQuery,
+    useTheme
+} from '@mui/material';
 
 import googleLogo from '../assets/static/googleLogo.svg';
 

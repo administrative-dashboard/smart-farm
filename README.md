@@ -168,6 +168,6 @@ Smart Farm is an agricultural monitoring system that uses sensors to collect dat
 
 
 
-<!-- start server 
+start server 
 cd server/
-npm run server -->
+npm run server

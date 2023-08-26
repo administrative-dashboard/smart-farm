@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { styled, Grid, Box, Typography, Paper } from '@mui/material';
+import { 
+    styled, 
+    Grid, 
+    Box, 
+    Typography,
+    Paper 
+} from '@mui/material';
 
 import dashBoardImg1 from '../assets/static/dashboardImg1.jpg'
 import dashBoardImg2 from '../assets/static/dashboardImg2.jpg'

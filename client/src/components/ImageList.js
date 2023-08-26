@@ -12,11 +12,11 @@ import { Link } from 'react-router-dom';
 
 export const CustomImageList = ({ data }) => {
     const isLgScreen = useMediaQuery((theme) => theme.breakpoints.down('lg'))
-    const cols = isLgScreen ? (data.length >= 5 ? 2 : 1) : (data.length >= 5 ? 3 : 2);
+    const cols = isLgScreen ? 2 : 3;
     return (
         <ImageList cols={cols} sx={{ p: 2, ml: '15%' }} >
             {data.map((item) => (
-                <ImageListItem key={item.img} sx={{ m: 2, width: '85%' }}>
+                <ImageListItem key={item.img} sx={{ m: 2, width: '95%' }}>
                     <img
                         src={item.img}
                         alt={item.title}

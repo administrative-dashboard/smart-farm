@@ -1,9 +1,12 @@
 import React from 'react';
-import { Button, useRedirect } from 'react-admin';
+import {
+    Button,
+    useRedirect
+} from 'react-admin';
 import { Typography } from '@mui/material';
 
 
-export const HomeRedirectButton = ({pageName, title}) => {
+export const HomeRedirectButton = ({ pageName, title }) => {
     const redirect = useRedirect();
 
     const handleHomeButtonClick = () => {
@@ -19,7 +22,6 @@ export const HomeRedirectButton = ({pageName, title}) => {
                     border: '1px solid #36D446',
                     px: 4,
                     py: 1,
-                    // display: 'flex',
                     alignItems: 'center',
                     m: 'auto',
                     '&:hover': {
