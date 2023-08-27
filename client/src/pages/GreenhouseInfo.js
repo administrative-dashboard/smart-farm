@@ -55,7 +55,7 @@ export const GreenhouseInfo = () => {
   (row.Name && row.Name.toLowerCase().includes(searchTerm.toLowerCase())) ||
   (row.Location && row.Location.toLowerCase().includes(searchTerm.toLowerCase())) ||
   (row.Owner && row.Owner.toString().includes(searchTerm)) ||
-  (row.size && row.size.toLowerCase().includes(searchTerm.toLowerCase()))
+  (typeof row.size === 'string' && row.size.toLowerCase().includes(searchTerm.toLowerCase()))
 );
 
   return (
