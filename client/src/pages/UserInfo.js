@@ -25,22 +25,22 @@ const userFilter = [
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 90 },
-  { field: 'userName', headerName: 'User Name', width: 200},
-  { field: 'role', headerName: 'Role', width: 200},
-  { field: 'phoneNumber', headerName: 'Phone Number', type: 'number', width: 200},
-  { field: 'email', headerName: 'Email', type: 'email', width: 200},
+  { field: 'userName', headerName: 'User Name', width: 200, justifyContent: 'center'},
+  { field: 'role', headerName: 'Role', width: 200, justifyContent: 'center'},
+  { field: 'phoneNumber', headerName: 'Phone Number', type: 'number', width: 200, justifyContent: 'center'},
+  { field: 'email', headerName: 'Email', type: 'email', width: 200, justifyContent: 'center'},
 ];
 
 const rows = [
-    { id: 1, userName: 'Snow', role: 'Jon', PhoneNumber: 35, email: '' },
-    { id: 2, userName: 'Lannister', role: 'Cersei', phoneNumber: 42, email: 'lannister72@gmail.com'},
-    { id: 3, userName: 'Jaime', role: 'Jaime', phoneNumber: 45, email: 'Jami'},
-    { id: 4, userName: 'Stark', role: 'Arya', phoneNumber: 16, email: ''},
-    { id: 5, userName: 'Targaryen', role: 'Daenerys', phoneNumber: null, email: ''},
-    { id: 6, userName: 'Melisandre', role: 'farmer', phoneNumber: 150, email: ''},
-    { id: 7, userName: 'Clifford', role: 'Ferrara', phoneNumber: 44, email: ''},
-    { id: 8, userNmae: 'Frances', role: 'Rossini', phoneNumber: 36, email: ''},
-    { id: 9, userName: 'Roxie', role: 'Harvey', phoneNumber: 65, email: ''},
+    { id: 1, userName: 'Snow', role: 'Jon', PhoneNumber: 3555535, email: '' },
+    { id: 2, userName: 'Lannister', role: 'Cersei', phoneNumber: 555542, email: 'lannister72@gmail.com'},
+    { id: 3, userName: 'Jaime', role: 'Jaime', phoneNumber: 4555484845, email: 'Jami'},
+    { id: 4, userName: 'Stark', role: 'Arya', phoneNumber: 11510005156, email: ''},
+    { id: 5, userName: 'Targaryen', role: 'Daenerys', phoneNumber: 1515151, email: ''},
+    { id: 6, userName: 'Melisandre', role: 'farmer', phoneNumber: 111212150, email: ''},
+    { id: 7, userName: 'Clifford', role: 'Ferrara', phoneNumber: 10220521, email: ''},
+    { id: 8, userNmae: 'Frances', role: 'Rossini', phoneNumber: 3221216, email: ''},
+    { id: 9, userName: 'Roxie', role: 'Harvey', phoneNumber: 6156102055, email: ''},
 ];
 
 export const UserInfo = () => {

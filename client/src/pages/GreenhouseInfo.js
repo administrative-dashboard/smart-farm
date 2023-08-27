@@ -23,11 +23,11 @@ const Filter = [
 ];
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 90 },
-  { field: 'Name', headerName: ' Name', width: 200},
-  { field: 'Location', headerName: 'Location', width: 200},
-  { field: 'Owner', headerName: 'Owner', width: 200},
-  { field: 'size', headerName: 'size', type: 'number', width: 200},
+  { field: 'id', headerName: 'ID', width: 90, justifyContent: 'center' },
+  { field: 'Name', headerName: ' Name', width: 200, justifyContent: 'center'},
+  { field: 'Location', headerName: 'Location', width: 200, justifyContent: 'center'},
+  { field: 'Owner', headerName: 'Owner', width: 200, justifyContent: 'center'},
+  { field: 'size', headerName: 'size', type: 'number', width: 200, justifyContent: 'center'},
 ];
 
 const rows = [
