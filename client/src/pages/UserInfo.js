@@ -13,6 +13,7 @@ import {
 // Update the following imports based on your actual directory structure
 import { HomeRedirectButton } from '../components/HomeRedirectButton';
 import { ResetFilters } from '../components/ResetFilters';
+import ExportButton from '../components/ExportButton';
 import SearchButton from '../components/SearchButton';
 const userFilter = [
     <TextInput label="Search" source="q" alwaysOn />,
@@ -59,7 +60,10 @@ export const UserInfo = () => {
   return (
     <>
             <ResetFilters />
-            <SearchButton searchTerm={searchTerm} handleSearch={handleSearch} />
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+                <SearchButton searchTerm={searchTerm} handleSearch={handleSearch} />
+                <ExportButton data={filteredRows} columns={columns} />
+            </div>
             <Table columns={columns} rows={filteredRows} />
         </>
   );

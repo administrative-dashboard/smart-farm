@@ -11,6 +11,7 @@ import {
     TextInput
 } from 'react-admin';
 import { HomeRedirectButton } from '../components/HomeRedirectButton';
+import ExportButton from '../components/ExportButton';
 import { ResetFilters } from '../components/ResetFilters';
 import SearchButton from '../components/SearchButton';
 const Filter = [
@@ -61,7 +62,10 @@ export const GreenhouseInfo = () => {
   return (
     <>
             <ResetFilters />
-            <SearchButton searchTerm={searchTerm} handleSearch={handleSearch} />
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+                <SearchButton searchTerm={searchTerm} handleSearch={handleSearch} />
+                <ExportButton data={filteredRows} columns={columns} />
+            </div>
             <Table columns={columns} rows={filteredRows} />
         </>
   );
