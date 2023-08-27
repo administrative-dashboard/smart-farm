@@ -24,10 +24,10 @@ const Filter = [
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 90 },
-  { field: 'Name', headerName: ' Name', width: 200, editable: true },
-  { field: 'Location', headerName: 'Location', width: 200, editable: true },
-  { field: 'Owner', headerName: 'Owner', width: 200, editable: true },
-  { field: 'size', headerName: 'size', type: 'number', width: 200, editable: true },
+  { field: 'Name', headerName: ' Name', width: 200},
+  { field: 'Location', headerName: 'Location', width: 200},
+  { field: 'Owner', headerName: 'Owner', width: 200},
+  { field: 'size', headerName: 'size', type: 'number', width: 200},
 ];
 
 const rows = [
