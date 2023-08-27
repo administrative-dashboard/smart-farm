@@ -25,10 +25,9 @@ const userFilter = [
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 90 },
-  { field: 'userName', headerName: 'User Name', width: 200, justifyContent: 'left'},
-  { field: 'role', headerName: 'Role', width: 200, justifyContent: 'left'},
-  { field: 'phoneNumber', headerName: 'Phone Number', type: 'number', width: 200, justifyContent: 'left'},
-  { field: 'email', headerName: 'Email', type: 'email', width: 200, justifyContent: 'left'},
+  { field: 'name', headerName: 'Name', width: 200, justifyContent: 'left'},
+  { field: 'community', headerName: 'owner', width: 200, justifyContent: 'left'},
+  { field: 'quantity', headerName: 'Quantity', type: 'number', width: 200, justifyContent: 'left'},
 ];
 
 const rows = [
@@ -43,7 +42,7 @@ const rows = [
     { id: 9, userName: 'Roxie', role: 'Harvey', phoneNumber: 6156102055, email: ''},
 ];
 
-export const UserInfo = () => {
+export const PortableDeviceInfo = () => {
     const [searchTerm, setSearchTerm] = React.useState('');
 
   const handleSearch = (event) => {
