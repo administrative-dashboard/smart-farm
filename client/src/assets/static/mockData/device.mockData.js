@@ -5,14 +5,17 @@ import sensor from '../sensor.png'
 export const deviceItemData = [
     {
         img: fixed_device,
-        title: 'FIXED_DEVICES',
+        title: 'FIXED DEVICES',
+        link: 'fixedDevices'
     },
     {
         img: portable_device,
-        title: 'PORTABLE_DEVICES',
+        title: 'PORTABLE DEVICES',
+        link: 'portableDevices'
     },
     {
         img: sensor,
-        title: 'sensors',
+        title: 'SENSORS',
+        link: 'sensors'
     },
 ];
