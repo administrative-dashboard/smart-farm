@@ -7,7 +7,7 @@ const SearchButton = ({ searchTerm, handleSearch }) => {
                 type="text"
                 value={searchTerm}
                 onChange={handleSearch}
-                placeholder="Search by name, role, phone number, or email"
+                placeholder="Search by name or ..."
                 style={{ padding: '0.5rem' }}
             />
         </div>
