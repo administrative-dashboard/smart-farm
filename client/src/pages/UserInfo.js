@@ -25,10 +25,10 @@ const userFilter = [
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 90 },
-  { field: 'userName', headerName: 'User Name', width: 200, editable: true },
-  { field: 'role', headerName: 'Role', width: 200, editable: true },
-  { field: 'phoneNumber', headerName: 'Phone Number', type: 'number', width: 200, editable: true },
-  { field: 'email', headerName: 'Email', type: 'email', width: 200, editable: true },
+  { field: 'userName', headerName: 'User Name', width: 200},
+  { field: 'role', headerName: 'Role', width: 200},
+  { field: 'phoneNumber', headerName: 'Phone Number', type: 'number', width: 200},
+  { field: 'email', headerName: 'Email', type: 'email', width: 200},
 ];
 
 const rows = [
