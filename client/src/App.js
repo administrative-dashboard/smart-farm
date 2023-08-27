@@ -37,6 +37,7 @@ import { FieldList } from './pages/owner/FieldList';
 import { FieldEdit } from './pages/owner/FieldEdit';
 import { Schedule } from './pages/owner/Schedule';
 import { UserInfo } from './pages/UserInfo';
+import { GreenhouseInfo } from './pages/GreenhouseInfo';
 
 //const dataProvider = restProvider('http://localhost:3000');
 const dataProvider = jsonServerProvider('http://localhost:5000');
@@ -67,6 +68,7 @@ const App = () => {
             <Resource name="fixed_devices" list={FixedDeviceList} create={FixedDeviceCreate} edit={FixedDeviceEdit} />
             <Resource name="schedule" list={Schedule}  />
             <Resource name='UserInfo' list={UserInfo} />
+            <Resource name='GreenhouseInfo' list={GreenhouseInfo} />
         </Admin>
     );
 }
