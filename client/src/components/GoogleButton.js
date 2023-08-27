@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 // import { GoogleLogin } from 'react-google-login';
 // import {authProvider} from "../utils/googleProvider"
-import { Button } from 'react-admin';
+import { Button, useLogin } from 'react-admin';
 import {
     useMediaQuery,
     useTheme
@@ -14,14 +14,18 @@ import googleLogo from '../assets/static/googleLogo.svg';
 export const GoogleButton = () => {
     const theme = useTheme();
     const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
-
-    // const handleLoginWithGoogle = () => {
-    //     authProvider.login();
-    // };
+    const [loading, setLoading] = useState(false);
+    const login = useLogin();
+  const handleLogin = () => {
+    setLoading(true);
+    login({});
+  }
 
     return (
 
         <Button
+            onClick={handleLogin}
+            disabled={loading}
             variant="outlined"
             sx={{
                 color: '#38A505',

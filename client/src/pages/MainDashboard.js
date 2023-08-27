@@ -4,7 +4,8 @@ import {
     Grid, 
     Box, 
     Typography,
-    Paper 
+    Paper, 
+    useMediaQuery
 } from '@mui/material';
 
 import dashBoardImg1 from '../assets/static/dashboardImg1.jpg'
@@ -44,6 +45,7 @@ const commonStyles = {
 };
 
 export const MainDashboard = () => {
+    const isLgScreen = useMediaQuery((theme) => theme.breakpoints.down('lg'));
     return (
         <>
             <Paper
@@ -66,7 +68,7 @@ export const MainDashboard = () => {
                             }}
                         >
                             <Typography
-                                variant="h3"
+                                variant={isLgScreen ? "h5" : "h3"}
                                 sx={{
                                     color: '#004417',
                                     fontFamily: 'Roboto'
@@ -100,7 +102,7 @@ export const MainDashboard = () => {
                 <Grid container spacing={3} sx={{ p: 4 }}>
                     <Grid item xs={12} sm={12}>
                         <Typography
-                            variant="h3"
+                            variant={isLgScreen ? "h5" : "h3"}
                             sx={{
                                 color: '#004417',
                                 fontFamily: 'Roboto',
@@ -136,7 +138,7 @@ export const MainDashboard = () => {
                 <Grid container sx={{ p: 4 }}>
                     <Grid item xs={12} sm={12}>
                         <Typography
-                            variant="h3"
+                            variant={isLgScreen ? "h5" : "h3"}
                             sx={{
                                 color: '#004417',
                                 fontFamily: 'Roboto',
@@ -154,7 +156,7 @@ export const MainDashboard = () => {
                         }}
                     >
                         <ConnectWithoutContactIcon sx={{ fontSize: 50, color: '#38A505' }} />
-                        <Typography variant='h5' sx={{ fontWeight: 'bold' }}>
+                        <Typography variant={isLgScreen ? "h6" : "h5"} sx={{ fontWeight: 'bold' }}>
                             SIMPLICITY
                         </Typography>
 
@@ -173,7 +175,7 @@ export const MainDashboard = () => {
                         }}
                     >
                         <SpeedIcon sx={{ fontSize: 50, color: '#38A505' }} />
-                        <Typography variant='h5' sx={{ fontWeight: 'bold' }}>
+                        <Typography variant={isLgScreen ? "h6" : "h5"} sx={{ fontWeight: 'bold' }}>
                             SPEED
                         </Typography>
 
@@ -192,7 +194,7 @@ export const MainDashboard = () => {
                         }}
                     >
                         <QueryStatsIcon sx={{ fontSize: 50, color: '#38A505' }} />
-                        <Typography variant='h5' sx={{ fontWeight: 'bold' }}>
+                        <Typography variant={isLgScreen ? "h6" : "h5"} sx={{ fontWeight: 'bold' }}>
                             TRANSPARENCY
                         </Typography>
 
@@ -215,7 +217,7 @@ export const MainDashboard = () => {
                         }}
                     >
                         <LanIcon sx={{ fontSize: 50, color: '#38A505' }} />
-                        <Typography variant='h5' sx={{ fontWeight: 'bold' }}>
+                        <Typography variant={isLgScreen ? "h6" : "h5"} sx={{ fontWeight: 'bold' }}>
                             DIVERSITY
                         </Typography>
 
@@ -237,7 +239,7 @@ export const MainDashboard = () => {
                         }}
                     >
                         <ReduceCapacityIcon sx={{ fontSize: 50, color: '#38A505' }} />
-                        <Typography variant='h5' sx={{ fontWeight: 'bold' }}>
+                        <Typography variant={isLgScreen ? "h6" : "h5"} sx={{ fontWeight: 'bold' }}>
                             SUPPORT
                         </Typography>
 
@@ -263,7 +265,7 @@ export const MainDashboard = () => {
                 <Grid container spacing={3} sx={{ p: 4 }}>
                     <Grid item xs={12} sm={12}>
                         <Typography
-                            variant="h3"
+                            variant={isLgScreen ? "h5" : "h3"}
                             sx={{
                                 color: '#004417',
                                 fontFamily: 'Roboto',

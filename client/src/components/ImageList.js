@@ -23,7 +23,7 @@ export const CustomImageList = ({ data }) => {
                         loading="lazy"
                         sx={{ m: 2 }}
                     />
-                    <Link key={item.title} to={`/${item.title.toLowerCase()}`}>
+                    <Link key={item.value} to={`/${item.value.toLowerCase()}`}>
                         <ImageListItemBar
                             title={item.title}
                             actionIcon={

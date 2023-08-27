@@ -4,7 +4,6 @@ import { Admin, Resource } from 'react-admin';
 import restProvider from 'ra-data-simple-rest';
 import jsonServerProvider from 'ra-data-json-server';
 import { MyLayout } from './layouts/Layout';
-import { CssBaseline } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
@@ -35,7 +34,7 @@ import { GreenhouseEdit } from './pages/owner/GreenhouseEdit';
 import { FieldCreate } from './pages/owner/FieldCreate';
 import { FieldList } from './pages/owner/FieldList';
 import { FieldEdit } from './pages/owner/FieldEdit';
-import { Schedule } from './pages/owner/Schedule';
+import { DeviceRequest } from './pages/owner/DeviceRequest';
 import { UserInfo } from './pages/UserInfo';
 import { GreenhouseInfo } from './pages/GreenhouseInfo';
 
@@ -66,7 +65,7 @@ const App = () => {
             <Resource name="devices" list={DeviceDesktop} />
             <Resource name="portable_devices" list={PortableDeviceList} create={PortableDeviceCreate} edit={PortableDeviceEdit} />
             <Resource name="fixed_devices" list={FixedDeviceList} create={FixedDeviceCreate} edit={FixedDeviceEdit} />
-            <Resource name="schedule" list={Schedule}  />
+            <Resource name="device_requests_history" create={DeviceRequest} list={DeviceRequest}/>
             <Resource name='UserInfo' list={UserInfo} />
             <Resource name='GreenhouseInfo' list={GreenhouseInfo} />
         </Admin>
