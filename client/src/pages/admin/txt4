@@ -1,0 +1,6 @@
+<Resource name='adminPage' list={AdminDesktop}/>
+            <Resource name='chooseCommunity' list={ChooseCommunity}/>
+            <Resource name='chooseDevice' list={ChooseDevice}/>
+            <Resource name='all_fixedDevices' list={FixedDeviceListAdm} show={FixedDeviceShow}/>
+            <Resource name='all_portableDevices' list={PortableDeviceListAdm} show={PortableDeviceShow}/>
+            <Resource name='all_sensors' list={SensorsListAdm} show={SensorsShow}/>

@@ -8,7 +8,6 @@ import HomeIcon from '@mui/icons-material/Home';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
-import QuizIcon from '@mui/icons-material/Quiz';
 import FaceRetouchingNaturalIcon from '@mui/icons-material/FaceRetouchingNatural';
 
 import polyglotI18nProvider from 'ra-i18n-polyglot';
@@ -19,7 +18,20 @@ import { MainDashboard } from './pages/MainDashboard';
 import { Signin } from './pages/auth/Signin';
 import { Signup } from './pages/auth/Signup'
 import { Profile } from './pages/auth/Profile';
-import { AdminDesktop } from './pages/Desktop'
+import { AdminDesktop } from './pages/admin/Desktop'
+import { ChooseDevice } from './pages/admin/ChooseDevice';
+import { ChooseCommunity } from './pages/admin/ChooseCommunity';
+import { FixedDeviceShow } from './pages/admin/FixedDeviceShow';
+import { UserInfo} from './pages/admin/UserInfo';
+import { GreenhouseInfo } from './pages/admin/GreenhouseInfo';
+import { ProductInfo } from './pages/admin/ProductInfo';
+import { FixedDeviceListAdm } from './pages/admin/FixedDeviceListAdm';
+import { PortableDeviceListAdm } from './pages/admin/PortableDeviceListAdm';
+import { PortableDeviceShow } from './pages/admin/PortableDeviceShow';
+import { SensorsShow } from './pages/admin/SensorsShow';
+import { SensorsListAdm } from './pages/admin/SensorsListAdm';
+//import { UsersInfo } from './pages/admin/UsersInfo';
+//import { GreenHouseInfo } from './pages/admin/GreenhouseInfo';
 import { OwnerDesktop } from './pages/owner/Desktop';
 import { PortableDeviceList } from './pages/owner/PortableDeviceList';
 import { GreenhouseList } from './pages/owner/GreenhouseList';
@@ -34,9 +46,9 @@ import { GreenhouseEdit } from './pages/owner/GreenhouseEdit';
 import { FieldCreate } from './pages/owner/FieldCreate';
 import { FieldList } from './pages/owner/FieldList';
 import { FieldEdit } from './pages/owner/FieldEdit';
-import { DeviceRequest } from './pages/owner/DeviceRequest';
-import { UserInfo } from './pages/UserInfo';
-import { GreenhouseInfo } from './pages/GreenhouseInfo';
+import {DeviceRequest} from './pages/owner/DeviceRequest'
+
+
 
 //const dataProvider = restProvider('http://localhost:3000');
 const dataProvider = jsonServerProvider('http://localhost:5000');
@@ -58,7 +70,15 @@ const App = () => {
             <Resource name='signin' list={Signin} icon={VpnKeyIcon} />
             <Resource name='signup' list={Signup} icon={AppRegistrationIcon} />
             <Resource name='profile' list={Profile} icon={PermIdentityIcon} />
-            <Resource name='page' list={AdminDesktop} icon={QuizIcon} />
+            <Resource name='adminPage' list={AdminDesktop}/>
+            <Resource name='chooseCommunity' list={ChooseCommunity}/>
+            <Resource name='chooseDevice' list={ChooseDevice}/>
+            <Resource name='all_fixedDevices' list={FixedDeviceListAdm} show={FixedDeviceShow}/>
+            <Resource name='all_portableDevices' list={PortableDeviceListAdm} show={PortableDeviceShow}/>
+            <Resource name='all_sensors' list={SensorsListAdm} show={SensorsShow}/>
+            <Resource name='UserInfo' list={UserInfo} />
+            <Resource name='GreenhouseInfo' list={GreenhouseInfo} />
+            <Resource name='ProductsInfo' list={ProductInfo} />
             <Resource name="ownerPage" list={OwnerDesktop} icon={FaceRetouchingNaturalIcon} />
             <Resource name="greenhouses" list={GreenhouseList} create={GreenhouseCreate} edit={GreenhouseEdit} />
             <Resource name="fields" list={FieldList}  create={FieldCreate} edit={FieldEdit}/>
