@@ -1,13 +1,9 @@
-import { Column, Model, Table, HasMany } from 'sequelize-typescript';
+import { Column, Model, Table, DataType, HasMany } from 'sequelize-typescript';
 import { UserCommunity } from './users_communities.model';
-interface CommunityCreationAttrs {
-  name: string;
-  location: string;
-}
 
 @Table({ tableName: 'communities' })
-export class Community extends Model<Community, CommunityCreationAttrs> {
-  @Column({ primaryKey: true, autoIncrement: true })
+export class Community extends Model<Community> {
+  @Column({ primaryKey: true, autoIncrement: true, allowNull: false })
   id: number;
 
   @Column({ unique: true, allowNull: false })

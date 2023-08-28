@@ -1,31 +1,36 @@
 // users.model.ts
-import { Table, Column, Model, HasOne, HasMany, DataType } from 'sequelize-typescript';
-import { UserCommunity } from './users_communities.model';
+import {
+  Column,
+  Model,
+  Table,
+  HasOne,
+  BelongsToMany,
+} from 'sequelize-typescript';
 
-interface UserCreationAttrs {
-  name: string;
-  email: string;
-  phone_number: string;
-  profile_image: string;
-}
+import { UserCommunity } from './users_communities.model';
+import { UserRole } from './users_roles';
+import { Role } from './roles.model';
 
 @Table({ tableName: 'users' })
-export class User extends Model<User, UserCreationAttrs> {
+export class User extends Model<User> {
   @Column({ primaryKey: true, autoIncrement: true })
   id: number;
 
-  @Column(DataType.STRING)
+  @Column({ allowNull: false })
   name: string;
 
   @Column({ unique: true, allowNull: false })
   email: string;
 
-  @Column(DataType.STRING)
+  @Column({ allowNull: false })
   phone_number: string;
 
-  @Column(DataType.STRING)
+  @Column({ allowNull: false })
   profile_image: string;
 
   @HasOne(() => UserCommunity)
-  user_community: UserCommunity;
+  users_communities: UserCommunity;
+
+  @BelongsToMany(() => Role, () => UserRole)
+  roles: Role[];
 }

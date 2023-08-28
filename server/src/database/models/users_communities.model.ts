@@ -1,15 +1,10 @@
-import { Table, Column, Model, ForeignKey } from 'sequelize-typescript';
+import { Column, Model, Table, ForeignKey } from 'sequelize-typescript';
 import { User } from './users.model';
 import { Community } from './communities.model';
 
-interface UserCommunityCreationAttrs {
-  user_id: number;
-  community_id: number;
-}
-
 @Table({ tableName: 'users_communities' })
-export class UserCommunity extends Model<UserCommunity, UserCommunityCreationAttrs> {
-  @Column({ primaryKey: true, autoIncrement: true })
+export class UserCommunity extends Model<UserCommunity> {
+  @Column({ primaryKey: true, autoIncrement: true, allowNull: false })
   id: number;
 
   @ForeignKey(() => User)

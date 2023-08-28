@@ -7,6 +7,10 @@ import { UsersModule } from './users/users.module';
 import { User } from './database/models/users.model';
 import { Community } from './database/models/communities.model';
 import { UserCommunity } from './database/models/users_communities.model';
+import { Permission } from './database/models/permissions.model';
+import { Role } from './database/models/roles.model';
+import { RolePermission } from './database/models/roles_perms.model';
+import { UserRole } from './database/models/users_roles';
 
 @Module({
   imports: [
@@ -18,7 +22,15 @@ import { UserCommunity } from './database/models/users_communities.model';
       username: process.env.PG_USERNAME,
       password: process.env.PG_PASSWORD,
       database: process.env.PG_DATABASE,
-      models: [User, Community, UserCommunity],
+      models: [
+        User,
+        Community,
+        UserCommunity,
+        Permission,
+        Role,
+        RolePermission,
+        UserRole,
+      ],
     }),
     UsersModule,
   ],
