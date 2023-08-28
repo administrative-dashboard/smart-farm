@@ -126,6 +126,21 @@
       "device_id": "2",
       "date": "2023-08-29",
       "id": 3
+    },
+    {
+      "device_id": "3",
+      "date": "2023-08-16",
+      "id": 4
+    },
+    {
+      "device_id": "2",
+      "date": "2023-08-23",
+      "id": 5
+    },
+    {
+      "device_id": "3",
+      "date": "2023-08-16",
+      "id": 6
     }
   ],
   "schedules_devices": [
