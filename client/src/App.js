@@ -47,8 +47,8 @@ import { FieldCreate } from './pages/owner/FieldCreate';
 import { FieldList } from './pages/owner/FieldList';
 import { FieldEdit } from './pages/owner/FieldEdit';
 import {DeviceRequest} from './pages/owner/DeviceRequest'
-
-
+import { GreenhouseShow } from './pages/admin/GreenhouseShow';
+import { GreenhouseListAdm } from './pages/admin/GreenhouseList';
 
 //const dataProvider = restProvider('http://localhost:3000');
 const dataProvider = jsonServerProvider('http://localhost:5000');
@@ -77,7 +77,7 @@ const App = () => {
             <Resource name='all_portableDevices' list={PortableDeviceListAdm} show={PortableDeviceShow}/>
             <Resource name='all_sensors' list={SensorsListAdm} show={SensorsShow}/>
             <Resource name='UserInfo' list={UserInfo} />
-            <Resource name='GreenhouseInfo' list={GreenhouseInfo} />
+            <Resource name='Greenhouse' list={GreenhouseListAdm} show={GreenhouseShow} />
             <Resource name='ProductsInfo' list={ProductInfo} />
             <Resource name="ownerPage" list={OwnerDesktop} icon={FaceRetouchingNaturalIcon} />
             <Resource name="greenhouses" list={GreenhouseList} create={GreenhouseCreate} edit={GreenhouseEdit} />
@@ -88,6 +88,7 @@ const App = () => {
             <Resource name="device_requests_history" create={DeviceRequest} list={DeviceRequest}/>
             <Resource name='UserInfo' list={UserInfo} />
             <Resource name='GreenhouseInfo' list={GreenhouseInfo} />
+
         </Admin>
     );
 }

@@ -22,6 +22,32 @@
       "location": "Location 3"
     }
   ],
+  "Greenhouse": [
+    {
+      "id": "1",
+      "name": "Greenhouse 1",
+      "owner": "Ani",
+      "size": "100",
+      "description": "Description 1",
+      "location": "Location 1"
+    },
+    {
+      "id": "2",
+      "name": "Greenhouse 2",
+      "owner": "Ani",
+      "size": "150",
+      "description": "Description 2",
+      "location": "Location 2"
+    },
+    {
+      "id": "3",
+      "name": "Greenhouse 3",
+      "owner": "Ani",
+      "size": "200",
+      "description": "Description 3",
+      "location": "Location 3"
+    }
+  ],
   "fields": [
     {
       "name": "dfgth",
