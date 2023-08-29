@@ -26,5 +26,4 @@ export class OwnerFixedDevice extends Model<OwnerFixedDevice> {
   @ForeignKey(() => MeasurementUnit)
   @Column
   measurement_id: number;
-
 }

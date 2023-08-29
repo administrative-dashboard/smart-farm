@@ -11,6 +11,16 @@ import { Permission } from './database/models/permissions.model';
 import { Role } from './database/models/roles.model';
 import { RolePermission } from './database/models/roles_perms.model';
 import { UserRole } from './database/models/users_roles';
+import { DeviceRequestHistory } from './database/models/device_requests_history.model';
+import { Field } from './database/models/fields.model';
+import { FixedDevice } from './database/models/fixed_devices.model';
+import { Greenhouse } from './database/models/greenhouses.model';
+import { MeasurementUnit } from './database/models/measurement_units';
+import { OwnerField } from './database/models/owners_fields.model';
+import { OwnerFixedDevice } from './database/models/owners_fixed_devices.model';
+import { OwnerGreenhouse } from './database/models/owners_greenhouses.model';
+import { OwnerPortableDevice } from './database/models/owners_portable_devices.model ';
+import { PortableDevice } from './database/models/portable_devices.model';
 
 @Module({
   imports: [
@@ -30,6 +40,16 @@ import { UserRole } from './database/models/users_roles';
         Role,
         RolePermission,
         UserRole,
+        DeviceRequestHistory,
+        Field,
+        FixedDevice,
+        Greenhouse,
+        MeasurementUnit,
+        OwnerField,
+        OwnerFixedDevice,
+        OwnerGreenhouse,
+        OwnerPortableDevice,
+        PortableDevice,
       ],
     }),
     UsersModule,

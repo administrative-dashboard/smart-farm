@@ -1,15 +1,10 @@
 // users.model.ts
-import {
-  Column,
-  Model,
-  Table,
-  HasOne
-} from 'sequelize-typescript';
+import { Column, Model, Table, HasOne } from 'sequelize-typescript';
 import { OwnerGreenhouse } from './owners_greenhouses.model';
 
 @Table({ tableName: 'greenhouses' })
 export class Greenhouse extends Model<Greenhouse> {
-  @Column({ primaryKey: true, autoIncrement: true, allowNull: false  })
+  @Column({ primaryKey: true, autoIncrement: true, allowNull: false })
   id: number;
 
   @Column({ allowNull: false })
@@ -26,5 +21,4 @@ export class Greenhouse extends Model<Greenhouse> {
 
   @HasOne(() => OwnerGreenhouse)
   owners_greenhouses: OwnerGreenhouse;
-
 }

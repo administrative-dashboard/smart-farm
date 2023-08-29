@@ -1,12 +1,5 @@
 // users.model.ts
-import {
-  Column,
-  Model,
-  Table,
-  HasOne,
-  BelongsToMany,
-  HasMany,
-} from 'sequelize-typescript';
+import { Column, Model, Table, HasOne, BelongsToMany, HasMany } from 'sequelize-typescript';
 
 import { UserCommunity } from './users_communities.model';
 import { UserRole } from './users_roles';
@@ -15,6 +8,7 @@ import { OwnerField } from './owners_fields.model';
 import { OwnerGreenhouse } from './owners_greenhouses.model';
 import { OwnerFixedDevice } from './owners_fixed_devices.model';
 import { OwnerPortableDevice } from './owners_portable_devices.model ';
+import { DeviceRequestHistory } from './device_requests_history.model';
 
 @Table({ tableName: 'users' })
 export class User extends Model<User> {
@@ -51,4 +45,6 @@ export class User extends Model<User> {
   @HasMany(() => OwnerPortableDevice)
   owners_portable_devices: OwnerPortableDevice;
 
+  @HasMany(() => DeviceRequestHistory)
+  device_requests_history: DeviceRequestHistory;
 }

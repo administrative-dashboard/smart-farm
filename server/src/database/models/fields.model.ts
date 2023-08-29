@@ -1,16 +1,10 @@
 // users.model.ts
-import {
-  Column,
-  Model,
-  Table,
-  HasOne,
-  BelongsToMany,
-} from 'sequelize-typescript';
+import { Column, Model, Table, HasOne } from 'sequelize-typescript';
 import { OwnerField } from './owners_fields.model';
 
 @Table({ tableName: 'fields' })
 export class Field extends Model<Field> {
-  @Column({ primaryKey: true, autoIncrement: true, allowNull: false  })
+  @Column({ primaryKey: true, autoIncrement: true, allowNull: false })
   id: number;
 
   @Column({ allowNull: false })
@@ -27,5 +21,4 @@ export class Field extends Model<Field> {
 
   @HasOne(() => OwnerField)
   owners_fields: OwnerField;
-
 }

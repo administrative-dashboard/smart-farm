@@ -1,10 +1,5 @@
 // users.model.ts
-import {
-  Column,
-  Model,
-  Table,
-  HasMany,
-} from 'sequelize-typescript';
+import { Column, Model, Table, HasMany } from 'sequelize-typescript';
 
 import { OwnerFixedDevice } from './owners_fixed_devices.model';
 import { OwnerPortableDevice } from './owners_portable_devices.model ';

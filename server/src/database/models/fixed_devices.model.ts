@@ -1,10 +1,5 @@
 // users.model.ts
-import {
-  Column,
-  Model,
-  Table,
-  HasOne 
-} from 'sequelize-typescript';
+import { Column, Model, Table, HasOne } from 'sequelize-typescript';
 import { OwnerFixedDevice } from './owners_fixed_devices.model';
 
 
@@ -24,5 +19,4 @@ export class FixedDevice extends Model<FixedDevice> {
 
   @HasOne(() => OwnerFixedDevice)
   owners_fixed_devices: OwnerFixedDevice;
-
 }

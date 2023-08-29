@@ -1,7 +1,8 @@
+
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const tableName = 'schedules_devices';
+    const tableName = 'device_requests_history';
     const columns = {
       id: {
         type: Sequelize.INTEGER,
@@ -9,26 +10,26 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true,
       },
-      portable_device_id: {
-        type: Sequelize.INTEGER,
-      },
       user_id: {
         type: Sequelize.INTEGER,
       },
-      start_date: {
-        type: Sequelize.DATE,
+      device_id: {
+        type: Sequelize.INTEGER,
       },
-      end_date: {
+      date: {
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
+
       status: {
         type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
     };
 
     await queryInterface.createTable(tableName, columns);
   },
   down: async (queryInterface) => {
-    await queryInterface.dropTable('schedules_devices');
+    await queryInterface.dropTable('device_requests_history');
   }
 };

@@ -1,12 +1,6 @@
 // users.model.ts
-import {
-  Column,
-  Model,
-  Table,
-  HasOne 
-} from 'sequelize-typescript';
+import { Column, Model, Table, HasOne } from 'sequelize-typescript';
 import { OwnerPortableDevice } from './owners_portable_devices.model ';
-
 
 @Table({ tableName: 'portable_devices' })
 export class PortableDevice extends Model<PortableDevice> {
@@ -24,5 +18,4 @@ export class PortableDevice extends Model<PortableDevice> {
 
   @HasOne(() => OwnerPortableDevice)
   owners_portable_devices: OwnerPortableDevice;
-
 }

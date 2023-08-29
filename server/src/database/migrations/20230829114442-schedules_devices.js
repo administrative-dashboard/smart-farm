@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const tableName = 'device_usage_statistics';
+    const tableName = 'schedules_devices';
     const columns = {
       id: {
         type: Sequelize.INTEGER,
@@ -9,10 +9,10 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true,
       },
-      device_id: {
+      portable_device_id: {
         type: Sequelize.INTEGER,
       },
-      quantity: {
+      user_id: {
         type: Sequelize.INTEGER,
       },
       start_date: {
@@ -26,6 +26,6 @@ module.exports = {
     await queryInterface.createTable(tableName, columns);
   },
   down: async (queryInterface) => {
-    await queryInterface.dropTable('device_usage_statistics');
+    await queryInterface.dropTable('schedules_devices');
   }
 };
