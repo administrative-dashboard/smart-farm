@@ -51,6 +51,8 @@ import { DeviceRequest } from './pages/owner/DeviceRequest'
 import { GreenhouseShow } from './pages/admin/GreenhouseShow';
 import { GreenhouseListAdm } from './pages/admin/GreenhouseList';
 import { UserInfo } from './pages/admin/UserInfo'
+import { ProductListAdm } from './pages/admin/ProductList';
+import { ProductShow } from './pages/admin/ProductListAdm';
 //const dataProvider = restProvider('http://localhost:3000');
 const dataProvider = jsonServerProvider('http://localhost:5000');
 
@@ -89,6 +91,7 @@ const App = () => {
             <Resource name="device_requests_history" create={DeviceRequest} list={DeviceRequest}/>
             <Resource name='UserInfo' list={UserInfo} />
             <Resource name='GreenhouseInfo' list={GreenhouseInfo} />
+            <Resource name='Product' list={ProductListAdm} show={ProductShow}/>
 
         </Admin>
     );
