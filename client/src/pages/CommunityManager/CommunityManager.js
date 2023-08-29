@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
-import note from "../assets/static/sticky-note.png";
+import note from "../../assets/static/sticky-note.png";
 
 export const CommunityManager = () => {
   const [state, setState] = useState({

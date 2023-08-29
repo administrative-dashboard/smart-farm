@@ -9,7 +9,7 @@ import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import FaceRetouchingNaturalIcon from '@mui/icons-material/FaceRetouchingNatural';
-
+import ArticleIcon from '@mui/icons-material/Article';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import armenianMessages from 'ra-language-armenian';
@@ -49,6 +49,15 @@ import { GreenhouseListAdm } from './pages/admin/GreenhouseList';
 import { ProductListAdm } from './pages/admin/ProductList';
 import { ProductShow } from './pages/admin/ProductListAdm';
 import { DeviceStatisticPage } from './pages/admin/AdminDeviceStatistic';
+import {Contact} from './pages/auth/Contact';
+import {NewData} from './pages/auth/Profile';
+import {CommunityManager} from './pages/CommunityManager/CommunityManager';
+import {UserList} from './pages/CommunityManager/UserList';
+import {UserCreate} from './pages/CommunityManager/UserCreate';
+import {UserEdit} from './pages/CommunityManager/UserEdit';
+
+
+
 //const dataProvider = restProvider('http://localhost:3000');
 const dataProvider = jsonServerProvider('http://localhost:5000');
 
@@ -65,7 +74,7 @@ const App = () => {
             dataProvider={dataProvider}
             i18nProvider={i18nProvider}
         >
-            <Resource name='dashBoard' list={MainDashboard} icon={HomeIcon} />
+            <Resource name='dashboard' list={MainDashboard} icon={HomeIcon} />
             <Resource name='signin' list={Signin} icon={VpnKeyIcon} />
             <Resource name='signup' list={Signup} icon={AppRegistrationIcon} />
             <Resource name='profile' list={Profile} icon={PermIdentityIcon} />
@@ -77,7 +86,6 @@ const App = () => {
             <Resource name='all_sensors' list={SensorsListAdm} show={SensorsShow}/>
             <Resource name='User' list={UserListAdm}  show={UserShowAdm}/>
             <Resource name='Greenhouse' list={GreenhouseListAdm} show={GreenhouseShow} />
-
             <Resource name="ownerPage" list={OwnerDesktop} icon={FaceRetouchingNaturalIcon} />
             <Resource name="greenhouses" list={GreenhouseList} create={GreenhouseCreate} edit={GreenhouseEdit} />
             <Resource name="fields" list={FieldList}  create={FieldCreate} edit={FieldEdit}/>
@@ -85,9 +93,11 @@ const App = () => {
             <Resource name="portable_devices" list={PortableDeviceList} create={PortableDeviceCreate} edit={PortableDeviceEdit} />
             <Resource name="fixed_devices" list={FixedDeviceList} create={FixedDeviceCreate} edit={FixedDeviceEdit} />
             <Resource name="device_requests_history" create={DeviceRequest} list={DeviceRequest}/>
-
             <Resource name='Product' list={ProductListAdm} show={ProductShow}/>
             <Resource name='Statistic' list={DeviceStatisticPage}/>
+            <Resource name='contact' list={Contact} />
+       <Resource name='community_manager' list={CommunityManager} />
+       <Resource name="users" list={UserList} create={UserCreate} edit={UserEdit}  icon={ArticleIcon} />
 
         </Admin>
     );

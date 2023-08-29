@@ -114,13 +114,20 @@
       "id": "2",
       "name": "Device 2",
       "type": "Type 2",
-      "description": "Description 2"
+      "description": "Description 2",
+      "quantity": 4
     },
     {
       "id": "3",
       "name": "Device 3",
       "type": "Type 3",
       "description": "Description 3"
+    },
+    {
+      "date": "2023-08-29T16:58:40.630Z",
+      "name": "gfhj",
+      "quantity": null,
+      "id": "gl-DBwP"
     }
   ],
   "fixed_devices": [
@@ -360,6 +367,82 @@
       "Type": "light",
       "Model": "x50",
       "Status": "active"
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "name": "Aaghas 2",
+      "community": "Spitak",
+      "phone": "2555252 1",
+      "email": "d.#gmail.com"
+    },
+    {
+      "id": "1",
+      "name": "Aaghas 3",
+      "community": "Spitak",
+      "phone": "2555252 1",
+      "email": "d.#gmail.com"
+    },
+    {
+      "id": "1",
+      "name": "Aaghas 1",
+      "community": "Spitak",
+      "phone": "2555252 1",
+      "email": "d.#gmail.com"
+    },
+    {
+      "id": "1",
+      "name": "Aaghas 4",
+      "community": "Spitak",
+      "phone": "2555252 1",
+      "email": "d.#gmail.com"
+    },
+    {
+      "id": "1",
+      "name": "Aaghas 5",
+      "community": "Spitak",
+      "phone": "2555252 1",
+      "email": "d.#gmail.com"
+    },
+    {
+      "id": "Syf71po",
+      "Name": "Aaa",
+      "Phone number": "095232390"
+    },
+    {
+      "device_id": "1",
+      "id": "VYDgsNp"
+    },
+    {
+      "device_id": "1",
+      "id": "M0-q2xn"
+    },
+    {
+      "device_id": "1",
+      "id": "5QZQu0B"
+    },
+    {
+      "device_id": "2",
+      "id": "fbKjejo"
+    },
+    {
+      "id": "sCJRUkJ",
+      "Name": "ghjkfrg"
+    },
+    {
+      "id": "T57PX7W",
+      "name": "hgjk"
+    }
+  ],
+  "roles": [
+    {
+      "id": "1",
+      "value": "ADMIN"
+    },
+    {
+      "id": "2",
+      "value": "OWNER"
     }
   ]
 }

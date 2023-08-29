@@ -7,19 +7,18 @@ import {
     EditButton,
     DeleteButton,
 } from 'react-admin';
-import {PostFilters} from './SearchInput'
-const PostList = (props) => {
+import {PostFilters} from '../../components/SearchInput'
+
+export const UserList = (props) => {
     return <List {...props}  filters = {PostFilters}>
         <Datagrid>
             <TextField source='Id' />
-            <TextField source='Name' reference="users"/>
-            <EmailField source='Email' />
-            <TextField source='Phone number'/>
+            <TextField source='name'/>
+            <EmailField source='email' />
+            <TextField source='phone'/>
             <TextField source='Role'/>
             <EditButton basePath='/posts' />
             <DeleteButton basePath='/posts' />
         </Datagrid>
     </List>;
 };
-
-export default PostList;

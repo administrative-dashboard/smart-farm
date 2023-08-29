@@ -1,6 +1,6 @@
 import React from 'react';
-import signBack from '../assets/static/signBack.png';
-import { SignupButton } from '../components/SignupButton';
+import signBack from '../../assets/static/signBack.png';
+import { SignupButton } from '../../components/SignupButton';
 import { Box, Paper, TextField, Typography, MenuItem, } from '@mui/material';
 
 const community = [

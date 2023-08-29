@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 // import { GoogleLogin } from 'react-google-login';
 // import {authProvider} from "../utils/googleProvider"
-import { Button, useLogin } from 'react-admin';
+import { Button, useLogin, useRedirect } from 'react-admin';
 import {
     useMediaQuery,
     useTheme
@@ -12,6 +12,7 @@ import googleLogo from '../assets/static/googleLogo.svg';
 // const GOOGLE_CLIENT_ID = '654868766388-l165egll3330ikvpf734diu2lf54uehc.apps.googleusercontent.com';
 
 export const GoogleButton = () => {
+    const redirect = useRedirect();
     const theme = useTheme();
     const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
     const [loading, setLoading] = useState(false);
@@ -19,6 +20,7 @@ export const GoogleButton = () => {
   const handleLogin = () => {
     setLoading(true);
     login({});
+    redirect('/contact');
   }
 
     return (
