@@ -1,7 +1,6 @@
 // users.model.ts
-import { Column, Model, Table, HasOne } from 'sequelize-typescript';
-import { OwnerFixedDevice } from './owners_fixed_devices.model';
-
+import { Column, Model, Table, ForeignKey } from 'sequelize-typescript';
+import { User } from './users.model';
 
 @Table({ tableName: 'fixed_devices' })
 export class FixedDevice extends Model<FixedDevice> {
@@ -14,9 +13,16 @@ export class FixedDevice extends Model<FixedDevice> {
   @Column({ allowNull: false })
   type: string;
 
-  @Column({})
-  description: string;
+  @Column({ allowNull: false })
+  quantity: number;
 
-  @HasOne(() => OwnerFixedDevice)
-  owners_fixed_devices: OwnerFixedDevice;
+  @Column({})
+  created_at: Date;
+
+  @Column({})
+  updated_at: Date;
+
+  @ForeignKey(() => User)
+  @Column
+  user_id: number;
 }

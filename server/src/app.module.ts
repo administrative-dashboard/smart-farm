@@ -5,7 +5,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { User } from './database/models/users.model';
-import { Community } from './database/models/communities.model';
 import { UserCommunity } from './database/models/users_communities.model';
 import { Permission } from './database/models/permissions.model';
 import { Role } from './database/models/roles.model';
@@ -17,10 +16,10 @@ import { FixedDevice } from './database/models/fixed_devices.model';
 import { Greenhouse } from './database/models/greenhouses.model';
 import { MeasurementUnit } from './database/models/measurement_units';
 import { OwnerField } from './database/models/owners_fields.model';
-import { OwnerFixedDevice } from './database/models/owners_fixed_devices.model';
 import { OwnerGreenhouse } from './database/models/owners_greenhouses.model';
-import { OwnerPortableDevice } from './database/models/owners_portable_devices.model ';
-import { PortableDevice } from './database/models/portable_devices.model';
+import { PortableDevice } from './database/models/portable_devices.model ';
+import { Community } from './database/models/communities.model';
+import { ScheduleDevice } from './database/models/schedules_devices.model';
 
 @Module({
   imports: [
@@ -46,10 +45,10 @@ import { PortableDevice } from './database/models/portable_devices.model';
         Greenhouse,
         MeasurementUnit,
         OwnerField,
-        OwnerFixedDevice,
         OwnerGreenhouse,
-        OwnerPortableDevice,
         PortableDevice,
+        DeviceRequestHistory,
+        ScheduleDevice,
       ],
     }),
     UsersModule,

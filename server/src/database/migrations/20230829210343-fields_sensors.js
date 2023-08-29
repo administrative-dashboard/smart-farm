@@ -21,9 +21,6 @@ module.exports = {
         type: Sequelize.FLOAT,
         allowNull: false,
       },
-      measurement_id: {
-        type: Sequelize.INTEGER,
-      },
       date: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),

@@ -16,14 +16,23 @@ module.exports = {
       device_id: {
         type: Sequelize.INTEGER,
       },
-      date: {
+      created_date: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        //defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
-
+      updated_date: {
+        type: Sequelize.DATE,
+        //defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+      },
+      used_from: {
+        type: Sequelize.DATE,
+      },
+      used_to: {
+        type: Sequelize.DATE,
+      },
       status: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
+        type: Sequelize.ENUM(['new', 'accepted', 'rejected']),
+        defaultValue: 'new',
       },
     };
 

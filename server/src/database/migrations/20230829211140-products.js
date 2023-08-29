@@ -11,6 +11,9 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true,
       },
+      type_id: {
+        type: Sequelize.INTEGER
+      },
       name: {
         type: Sequelize.STRING,
         allowNull: false,
