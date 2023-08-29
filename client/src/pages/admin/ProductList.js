@@ -9,9 +9,7 @@ import {
     NumberField,
     ShowButton,
 } from 'react-admin';
-import { Box, Button } from '@mui/material';
 import { ResetFilters } from '../../components/ResetFilters';
-import styled from 'styled-components';
 /*const StyledItem = styled.div`
   margin-bottom: 10px;
   padding: 10px;

@@ -37,4 +37,4 @@ import { UserRole } from './database/models/users_roles';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

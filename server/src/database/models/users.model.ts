@@ -5,15 +5,20 @@ import {
   Table,
   HasOne,
   BelongsToMany,
+  HasMany,
 } from 'sequelize-typescript';
 
 import { UserCommunity } from './users_communities.model';
 import { UserRole } from './users_roles';
 import { Role } from './roles.model';
+import { OwnerField } from './owners_fields.model';
+import { OwnerGreenhouse } from './owners_greenhouses.model';
+import { OwnerFixedDevice } from './owners_fixed_devices.model';
+import { OwnerPortableDevice } from './owners_portable_devices.model ';
 
 @Table({ tableName: 'users' })
 export class User extends Model<User> {
-  @Column({ primaryKey: true, autoIncrement: true })
+  @Column({ primaryKey: true, autoIncrement: true, allowNull: false })
   id: number;
 
   @Column({ allowNull: false })
@@ -33,4 +38,17 @@ export class User extends Model<User> {
 
   @BelongsToMany(() => Role, () => UserRole)
   roles: Role[];
+
+  @HasMany(() => OwnerField)
+  owners_fields: OwnerField;
+
+  @HasMany(() => OwnerGreenhouse)
+  owners_greenhouses: OwnerGreenhouse;
+
+  @HasMany(() => OwnerFixedDevice)
+  owners_fixed_devices: OwnerFixedDevice;
+
+  @HasMany(() => OwnerPortableDevice)
+  owners_portable_devices: OwnerPortableDevice;
+
 }
