@@ -22,6 +22,16 @@
       "location": "Location 3"
     }
   ],
+  "User": [
+    {
+      "id": "1",
+      "name": "Aaghas 1",
+      "community": "Spitak",
+      "phone": "2555252 1",
+      "email": "d.#gmail.com"
+    }
+    
+  ],
   "Greenhouse": [
     {
       "id": "1",

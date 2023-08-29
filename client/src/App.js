@@ -22,7 +22,8 @@ import { AdminDesktop } from './pages/admin/Desktop'
 import { ChooseDevice } from './pages/admin/ChooseDevice';
 import { ChooseCommunity } from './pages/admin/ChooseCommunity';
 import { FixedDeviceShow } from './pages/admin/FixedDeviceShow';
-import { UserInfo} from './pages/admin/UserInfo';
+import { UserShowAdm } from './pages/admin/UserShow';
+import { UserListAdm } from './pages/admin/UserList';
 import { GreenhouseInfo } from './pages/admin/GreenhouseInfo';
 import { ProductInfo } from './pages/admin/ProductInfo';
 import { FixedDeviceListAdm } from './pages/admin/FixedDeviceListAdm';
@@ -46,10 +47,10 @@ import { GreenhouseEdit } from './pages/owner/GreenhouseEdit';
 import { FieldCreate } from './pages/owner/FieldCreate';
 import { FieldList } from './pages/owner/FieldList';
 import { FieldEdit } from './pages/owner/FieldEdit';
-import {DeviceRequest} from './pages/owner/DeviceRequest'
+import { DeviceRequest } from './pages/owner/DeviceRequest'
 import { GreenhouseShow } from './pages/admin/GreenhouseShow';
 import { GreenhouseListAdm } from './pages/admin/GreenhouseList';
-
+import { UserInfo } from './pages/admin/UserInfo'
 //const dataProvider = restProvider('http://localhost:3000');
 const dataProvider = jsonServerProvider('http://localhost:5000');
 
@@ -76,7 +77,7 @@ const App = () => {
             <Resource name='all_fixedDevices' list={FixedDeviceListAdm} show={FixedDeviceShow}/>
             <Resource name='all_portableDevices' list={PortableDeviceListAdm} show={PortableDeviceShow}/>
             <Resource name='all_sensors' list={SensorsListAdm} show={SensorsShow}/>
-            <Resource name='UserInfo' list={UserInfo} />
+            <Resource name='User' list={UserListAdm}  show={UserShowAdm}/>
             <Resource name='Greenhouse' list={GreenhouseListAdm} show={GreenhouseShow} />
             <Resource name='ProductsInfo' list={ProductInfo} />
             <Resource name="ownerPage" list={OwnerDesktop} icon={FaceRetouchingNaturalIcon} />
