@@ -26,7 +26,7 @@ export const Diagram = () => {
       xAxis={[{ scaleType: "point", data: xLabels }]}
       sx={{
         ".MuiLineElement-root, .MuiMarkElement-root": {
-          display: "none",
+          display: "show",
         },
       }}
     />
