@@ -53,6 +53,7 @@ import { GreenhouseListAdm } from './pages/admin/GreenhouseList';
 import { UserInfo } from './pages/admin/UserInfo'
 import { ProductListAdm } from './pages/admin/ProductList';
 import { ProductShow } from './pages/admin/ProductListAdm';
+import { DeviceStatisticPage } from './pages/admin/AdminDeviceStatistic';
 //const dataProvider = restProvider('http://localhost:3000');
 const dataProvider = jsonServerProvider('http://localhost:5000');
 
@@ -92,6 +93,7 @@ const App = () => {
             <Resource name='UserInfo' list={UserInfo} />
             <Resource name='GreenhouseInfo' list={GreenhouseInfo} />
             <Resource name='Product' list={ProductListAdm} show={ProductShow}/>
+            <Resource name='Statistic' list={DeviceStatisticPage}/>
 
         </Admin>
     );
