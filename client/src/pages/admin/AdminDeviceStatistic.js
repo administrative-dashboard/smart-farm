@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
-import { Container } from "@mui/material";
+import React from 'react';
+import { Container, useMediaQuery } from "@mui/material";
 import { MyBar } from "../../components/Drawer";
 import { SelectsGroup } from '../../components/SelectsGroup';
 
 
 export const DeviceStatisticPage = () => {
-    
+    const isLgScreen = useMediaQuery((theme) => theme.breakpoints.down('lg'));
+
     return (
         <div style={{ display: 'flex' }}>
-            <MyBar />
+
+            {!isLgScreen && <MyBar />}
             <Container>
                 
                 < SelectsGroup/>

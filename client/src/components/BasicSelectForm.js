@@ -18,10 +18,10 @@ export const BasicSelect = ({ onChange }) => {  // Accept onChange prop
     width: '35%',
     height: '100%'
   };
-   const FarmStyle={
+  const FarmStyle = {
     marginLeft: '32%',
-  } 
- 
+  }
+
   return (
     <div >
       <FormControl fullWidth style={FarmStyle} >

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-    Container, 
+    Container,
     useMediaQuery,
-    Box, 
+    Box,
     Typography,
     FormControl,
     InputLabel,
@@ -20,9 +20,9 @@ export const ChooseCommunity = () => {
     const [community, setCommunity] = useState('');
     const [nextButtonEnabled, setNextButtonEnabled] = useState(false);
     const communityMockOptions = [
-        {id: 1, name: "Vanadzor"},
-        {id: 2, name: "Spitak"},
-        {id: 3, name: "Stepanavan"}
+        { id: 1, name: "Vanadzor" },
+        { id: 2, name: "Spitak" },
+        { id: 3, name: "Stepanavan" }
     ];
 
     const handleChange = (e) => {
@@ -45,9 +45,9 @@ export const ChooseCommunity = () => {
             ...containerStyle,
         }}>
             {!isLgScreen && <MyBar />}
-            <Container sx={{ 
-                m: 'auto', 
-                display: 'flex', 
+            <Container sx={{
+                m: 'auto',
+                display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 backgroundColor: 'rgba(255, 255, 255,0.7 )',
@@ -62,22 +62,22 @@ export const ChooseCommunity = () => {
                     Choose the community
                 </Typography>
                 <FormControl sx={{ mb: 5, width: '30%' }}>
-                    <InputLabel htmlFor="community-select" sx={{color: "1f4700"}}>Community</InputLabel>
+                    <InputLabel htmlFor="community-select" sx={{ color: "1f4700" }}>Community</InputLabel>
                     <Select
                         id='community-select'
                         value={community}
-                        onChange={handleChange} 
+                        onChange={handleChange}
                     >
                         {communityMockOptions.map((option) => (
                             <MenuItem key={option.id} value={option.name}>{option.name}</MenuItem>
-                        ))}              
+                        ))}
                     </Select>
                 </FormControl>
                 <Link to="/ChooseDevice">
                     <Button
                         variant="contained"
                         sx={{
-                            background: "#1f4700", 
+                            background: "#1f4700",
                             mb: 5,
                             fontFamily: 'Roboto',
                             '&:hover': {
