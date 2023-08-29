@@ -22,6 +22,15 @@
       "location": "Location 3"
     }
   ],
+  "Product": [
+    {
+      "id": "1",
+      "name": "Greenhouse 3",
+      "size": "200",
+      "description": "Description 3",
+      "location": "Location 3"
+    }
+  ],
   "User": [
     {
       "id": "1",
@@ -58,7 +67,6 @@
       "phone": "2555252 1",
       "email": "d.#gmail.com"
     }
-    
   ],
   "Greenhouse": [
     {
