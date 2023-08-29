@@ -24,15 +24,11 @@ import { ChooseCommunity } from './pages/admin/ChooseCommunity';
 import { FixedDeviceShow } from './pages/admin/FixedDeviceShow';
 import { UserShowAdm } from './pages/admin/UserShow';
 import { UserListAdm } from './pages/admin/UserList';
-import { GreenhouseInfo } from './pages/admin/GreenhouseInfo';
-import { ProductInfo } from './pages/admin/ProductInfo';
 import { FixedDeviceListAdm } from './pages/admin/FixedDeviceListAdm';
 import { PortableDeviceListAdm } from './pages/admin/PortableDeviceListAdm';
 import { PortableDeviceShow } from './pages/admin/PortableDeviceShow';
 import { SensorsShow } from './pages/admin/SensorsShow';
 import { SensorsListAdm } from './pages/admin/SensorsListAdm';
-//import { UsersInfo } from './pages/admin/UsersInfo';
-//import { GreenHouseInfo } from './pages/admin/GreenhouseInfo';
 import { OwnerDesktop } from './pages/owner/Desktop';
 import { PortableDeviceList } from './pages/owner/PortableDeviceList';
 import { GreenhouseList } from './pages/owner/GreenhouseList';
@@ -50,7 +46,6 @@ import { FieldEdit } from './pages/owner/FieldEdit';
 import { DeviceRequest } from './pages/owner/DeviceRequest'
 import { GreenhouseShow } from './pages/admin/GreenhouseShow';
 import { GreenhouseListAdm } from './pages/admin/GreenhouseList';
-import { UserInfo } from './pages/admin/UserInfo'
 import { ProductListAdm } from './pages/admin/ProductList';
 import { ProductShow } from './pages/admin/ProductListAdm';
 import { DeviceStatisticPage } from './pages/admin/AdminDeviceStatistic';
@@ -82,7 +77,7 @@ const App = () => {
             <Resource name='all_sensors' list={SensorsListAdm} show={SensorsShow}/>
             <Resource name='User' list={UserListAdm}  show={UserShowAdm}/>
             <Resource name='Greenhouse' list={GreenhouseListAdm} show={GreenhouseShow} />
-            <Resource name='ProductsInfo' list={ProductInfo} />
+
             <Resource name="ownerPage" list={OwnerDesktop} icon={FaceRetouchingNaturalIcon} />
             <Resource name="greenhouses" list={GreenhouseList} create={GreenhouseCreate} edit={GreenhouseEdit} />
             <Resource name="fields" list={FieldList}  create={FieldCreate} edit={FieldEdit}/>
@@ -90,8 +85,7 @@ const App = () => {
             <Resource name="portable_devices" list={PortableDeviceList} create={PortableDeviceCreate} edit={PortableDeviceEdit} />
             <Resource name="fixed_devices" list={FixedDeviceList} create={FixedDeviceCreate} edit={FixedDeviceEdit} />
             <Resource name="device_requests_history" create={DeviceRequest} list={DeviceRequest}/>
-            <Resource name='UserInfo' list={UserInfo} />
-            <Resource name='GreenhouseInfo' list={GreenhouseInfo} />
+
             <Resource name='Product' list={ProductListAdm} show={ProductShow}/>
             <Resource name='Statistic' list={DeviceStatisticPage}/>
 

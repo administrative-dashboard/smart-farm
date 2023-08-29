@@ -1,7 +1,6 @@
 // Fixed.js
 import * as React from 'react';
 import { Show, SimpleShowLayout, TextField } from 'react-admin';
-
 export const FixedDeviceShow = (props) => (
   <Show {...props}>
     <SimpleShowLayout>
@@ -12,5 +11,3 @@ export const FixedDeviceShow = (props) => (
     </SimpleShowLayout>
   </Show>
 );
-
-
