@@ -36,17 +36,12 @@ export const ProductListAdm = (props) => {
                 ]}
             >
                 <Datagrid>
-          
-            <TextField source="name" label="Greenhouse" />
-          
-            <TextField source="size" label="Size" />
-          
-            <TextField source="description" label="Description" />
-          
-            <TextField source="location" label="Location" />
-          
-            <ShowButton basePath="/Product" label="Show" />
-        </Datagrid>
+                    <TextField source="name" label="Greenhouse" />
+                    <TextField source="size" label="Size" />
+                    <TextField source="description" label="Description" />
+                    <TextField source="location" label="Location" />
+                    <ShowButton basePath="/Product" label="Show" />
+                </Datagrid>
             </List>
         </>
     );
