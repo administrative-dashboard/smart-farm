@@ -1,8 +1,16 @@
 import React from 'react';
+import {
+  ThemeProvider,
+  useMediaQuery,
+  Box,
+  Grid,
+  Typography,
+  TextField,
+  MenuItem,
+} from '@mui/material';
+import { SaveButton } from '../../components/SaveButton';
+import { theme } from '../../themes/theme';
 import signBack from '../../assets/static/signBack.png';
-import { SignupButton } from '../../components/SignupButton';
-import { Box, Paper, TextField, Typography, MenuItem, } from '@mui/material';
-
 const community = [
   {
     value: 'Community1',
@@ -13,83 +21,80 @@ const community = [
     label: 'Community2',
   },
 ];
-
 export const Contact = () => {
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   return (
-    <Paper
-      sx={{
-        backgroundImage: `url(${signBack})`,
-        backgroundSize: 'contain',
-        backgroundRepeat: 'no-repeat',
-        height: '100%',
-        width: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundPosition: 'center',
-      }}
-    >
-      <Box
+    <ThemeProvider theme={theme}>
+      <Grid
+        container
+        justifyContent="center"
+        alignItems="center"
+        xs={12}
+        zeroMinWidth
         sx={{
-          display: 'flex',
-          width: 602,
-          height: 672,
-          padding: '31px 0px 599px 53px',
-          flexDirection: 'column',
-          alignItems: 'center',
-          flexShrink: 0,
-          borderRadius: '40px',
-          opacity: 0.75,
-          background: '#FFF',
+          backgroundImage: `url(${signBack})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          minHeight: '100vh',
+          padding: '0',
         }}
       >
-        <Typography variant='h6' sx={{ mb: 8, textAlign: 'center' }}>
-          <Typography component='span' variant='h6' sx={{ color: '#38A505', mb: 4 }}>
-            Smart Farm
-          </Typography>
-          <Typography variant='h6' sx={{
-            width: 332,
-            height: 25,
-            color: '#000',
-            textAlign: 'center',
-            fontFamily: 'Poppins',
-            fontSize: 32,
-            padding: '30px'
-          }}>
-            Enter your contacts
-          </Typography>
-        </Typography>
-
-        <TextField
-          id="filled-select-community"
-          select
-          label="Select Community"
-          variant="filled"
-          color="primary"
+        <Box
           sx={{
-            width: '90%',
-            mb: 5,
-            padding: '8px 8px',
+            p: 4,
+            background: 'rgba(255, 255, 255, 0.75)',
+            borderRadius: '40px',
+            height: 'auto',
+            maxHeight: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
-          {community.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
-        
-        <TextField
-          label="Phone number"
-          variant="filled"
-          color="primary"
-          sx={{ width: '90%', mb: 20 }} 
-        />
-          <div>
-            <SignupButton/>
-          </div>
-      </Box>
-    </Paper>
+          {!isSmallScreen && (
+            <>
+              <Typography
+                component="span"
+                variant="h5"
+                sx={{ color: '#38A505', display: 'inline', mb: 4 }}
+              >
+                Smart Farm
+              </Typography>
+              <Typography variant="h4" sx={{ display: 'inline', mb: 10 }}>
+                Enter your contacts
+              </Typography>
+            </>
+          )}
+          <TextField
+            id="filled-select-community"
+            select
+            label="Select Community"
+            variant="filled"
+            color="primary"
+            sx={{
+              width: '100%',
+              mb: 3,
+            }}
+          >
+            {community.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            label="Phone number"
+            variant="filled"
+            color="primary"
+            sx={{ width: '100%', mb: 3 }}
+          />
+          <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+            <SaveButton />
+          </Box>
+        </Box>
+      </Grid>
+    </ThemeProvider>
   );
 };
 

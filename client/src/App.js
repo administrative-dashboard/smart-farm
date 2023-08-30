@@ -20,7 +20,7 @@ import { checkAccess } from "./abac";
 import { MainDashboard } from "./pages/MainDashboard";
 import { Signin } from "./pages/auth/Signin";
 import { Signup } from "./pages/auth/Signup";
-import { Profile } from "./pages/auth/Profile";
+import {Profile} from "./pages/auth/Profile"
 import { AdminDesktop } from "./pages/admin/Desktop";
 import { ChooseDevice } from "./pages/admin/ChooseDevice";
 import { ChooseCommunity } from "./pages/admin/ChooseCommunity";
