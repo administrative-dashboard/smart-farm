@@ -135,7 +135,6 @@ The server_example folder contains an example server setup for filling the table
 cd client/
 npm install
 npm run start
-
 ```
 
 ### Server installation
@@ -145,8 +144,6 @@ cd server/
 npm install
 npx sequelize db:migrate 
 npm run start:dev
-# or npm run build && node dist/main.js (production)
-
 ```
 
 ### Example server installation
@@ -155,8 +152,6 @@ npm run start:dev
 cd server_example/
 npm install
 npm run server
-# or npm run build && node dist/main.js (production)
-
 ```
 
 
