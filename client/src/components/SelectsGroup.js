@@ -8,6 +8,7 @@ import { Diagram } from "./Diagram"; // Import your components
 import { BarDiagram } from "./BarDiagram";
 import { CircleDiagram } from "./CircleDiagram";
 import { BasicTable } from "./BasicTable";
+import { BasicTableShow } from "./BasicTableShow";
 import { ComboBoxDevice } from "./ComboBoxDevice";
 import { useState } from "react";
 import { DateRange } from "./DateRange";
