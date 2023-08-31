@@ -9,6 +9,7 @@ import { BarDiagram } from "./BarDiagram";
 import { CircleDiagram } from "./CircleDiagram";
 import { BasicTable } from "./BasicTable";
 import { ComboBoxDevice } from "./ComboBoxDevice";
+import { CommunityPicker } from "./CommunityPicker";
 import { useState } from "react";
 import { DateRange } from "./DateRange";
 
@@ -16,12 +17,17 @@ export const SelectsGroup = () => {
   const [form, setForm] = React.useState("");
   const [selectedComponent, setSelectedComponent] = React.useState(null); // State for selected component
   const [selectedDevice, setSelectedDevice] = useState(null);
+  const [selectedCommunity, setSelectedCommunity] = useState(null);
   const [value, setValue] = React.useState([
     dayjs("2022-04-17"),
     dayjs("2022-04-21"),
   ]);
   const handleDeviceChange = (event, newValue) => {
     setSelectedDevice(newValue);
+  };
+
+  const handleCommunityChange = (event, newValue) => {
+    setSelectedCommunity(newValue);
   };
 
   const containerStyle = {
@@ -67,7 +73,11 @@ export const SelectsGroup = () => {
   };
 
   const isButtonEnabled =
-    value[0] && value[1] && form !== "" && selectedDevice !== null;
+    value[0] &&
+    value[1] &&
+    form !== "" &&
+    selectedDevice !== null &&
+    selectedCommunity !== null;
 
   // Function to render the selected component
   const renderSelectedComponent = () => {
@@ -97,6 +107,10 @@ export const SelectsGroup = () => {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <div style={centeredBoxStyle}>
           <DateRange value={value} setValue={setValue} />
+          <CommunityPicker
+            selectedCommunity={selectedCommunity}
+            handleCommunityChange={handleCommunityChange}
+          />
           <ComboBoxDevice
             selectedDevice={selectedDevice}
             handleDeviceChange={handleDeviceChange}
