@@ -20,7 +20,7 @@ import { checkAccess } from "./abac";
 import { MainDashboard } from "./pages/MainDashboard";
 import { Signin } from "./pages/auth/Signin";
 import { Signup } from "./pages/auth/Signup";
-import {Profile} from "./pages/auth/Profile"
+import { Profile } from "./pages/auth/Profile";
 import { AdminDesktop } from "./pages/admin/Desktop";
 import { ChooseDevice } from "./pages/admin/ChooseDevice";
 import { ChooseCommunity } from "./pages/admin/ChooseCommunity";
@@ -51,7 +51,7 @@ import { GreenhouseShow } from "./pages/admin/GreenhouseShow";
 import { GreenhouseListAdm } from "./pages/admin/GreenhouseList";
 import { ProductListAdm } from "./pages/admin/ProductList";
 import { ProductShow } from "./pages/admin/ProductListAdm";
-import { DeviceStatisticPage } from "./pages/admin/AdminDeviceStatistic";
+import { DeviceStatisticPage } from "./pages/admin/DeviceStatistic";
 import { Contact } from "./pages/auth/Contact";
 import { NewData } from "./pages/auth/Profile";
 import { CommunityManager } from "./pages/CommunityManager/CommunityManager";
