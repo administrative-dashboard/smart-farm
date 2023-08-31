@@ -10,7 +10,7 @@ import {
 import { MyBar } from '../../components/Drawer';
 import { ownerItemData } from '../../assets/static/mockData/owner.mockData';
 import { CustomImageList } from '../../components/ImageList';
-
+import { owner_drawer } from '../../assets/static/mockData/owner_drawer';
 export const OwnerDesktop = () => {
     const isLgScreen = useMediaQuery((theme) => theme.breakpoints.down('lg'));
 
@@ -19,7 +19,7 @@ export const OwnerDesktop = () => {
             display: 'flex', justifyContent: "space-around",
             alignItems: "center"
         }}>
-            {!isLgScreen && <MyBar />}
+            {!isLgScreen && <MyBar drawerData={owner_drawer}/>}
             <Container sx={{ m: 'auto' }}>
                 <Typography
                     variant="h3"

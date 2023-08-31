@@ -8,7 +8,7 @@ import {
 import { MyBar } from '../../components/Drawer';
 import { HomeRedirectButton } from '../../components/HomeRedirectButton';
 import { CustomDeviceRequestCreate } from '../../services/owner/DeviceRequestService';
-
+import { owner_drawer } from '../../assets/static/mockData/owner_drawer';
 
 export const DeviceRequest = () => {
     const isLgScreen = useMediaQuery((theme) => theme.breakpoints.down('lg'));
@@ -18,7 +18,7 @@ export const DeviceRequest = () => {
             display: 'flex', flexDirection: 'column',
             alignItems: "center", mx: 'auto'
         }}>
-            {!isLgScreen && <MyBar />}
+            {!isLgScreen && <MyBar drawerData={owner_drawer}/>}
             <Container sx={{ my: '20%' }}>
                 <Typography
                     variant={isLgScreen ? "h6" : 'h3'}

@@ -8,7 +8,7 @@ import field from "../../assets/static/plantation.png";
 import product from "../../assets/static/healthy-food.png";
 import device from "../../assets/static/hammer.png";
 import Statistics from "../../assets/static/analytics.png";
-
+import { drawer_new_data } from "../../assets/static/mockData/new_data";
 const imageCardData = [
   {
     img: users,
@@ -46,7 +46,7 @@ export const AdminDesktop = () => {
   return (
     <Grid container>
       <Grid item xs={12} md={2}>
-        <MyBar />
+        <MyBar drawerData={drawer_new_data}/>
       </Grid>
       <Grid item xs={12} md={10}>
         <Container>

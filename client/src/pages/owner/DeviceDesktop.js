@@ -11,7 +11,7 @@ import { MyBar } from '../../components/Drawer';
 import { deviceItemData } from '../../assets/static/mockData/device.mockData';
 import { CustomImageList } from '../../components/ImageList';
 import { HomeRedirectButton } from '../../components/HomeRedirectButton';
-
+import { owner_drawer } from '../../assets/static/mockData/owner_drawer';
 
 export const DeviceDesktop = () => {
     const isLgScreen = useMediaQuery((theme) => theme.breakpoints.down('lg'));
@@ -21,7 +21,7 @@ export const DeviceDesktop = () => {
             display: 'flex', flexDirection: 'column',
             alignItems: "center", height: '90vh'
         }}>
-            {!isLgScreen && <MyBar />}
+            {!isLgScreen && <MyBar drawerData={owner_drawer}/>}
             <Container sx={{ m: 'auto' }}>
                 <Typography
                     variant="h3"

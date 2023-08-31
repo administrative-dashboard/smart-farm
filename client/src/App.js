@@ -30,8 +30,8 @@ import { UserListAdm } from "./pages/admin/UserList";
 import { FixedDeviceListAdm } from "./pages/admin/FixedDeviceListAdm";
 import { PortableDeviceListAdm } from "./pages/admin/PortableDeviceListAdm";
 import { PortableDeviceShow } from "./pages/admin/PortableDeviceShow";
-import { SensorsShow } from "./pages/admin/SensorsShow";
-import { SensorsListAdm } from "./pages/admin/SensorsListAdm";
+//import { SensorsShow } from "./pages/admin/SensorsShow";
+//import { SensorsListAdm } from "./pages/admin/SensorsListAdm";
 import { OwnerDesktop } from "./pages/owner/Desktop";
 import { PortableDeviceList } from "./pages/owner/PortableDeviceList";
 import { GreenhouseList } from "./pages/owner/GreenhouseList";
@@ -92,7 +92,6 @@ const App = () => {
         list={PortableDeviceListAdm}
         show={PortableDeviceShow}
       />
-      <Resource name="all_sensors" list={SensorsListAdm} show={SensorsShow} />
       <Resource name="User" list={UserListAdm} show={UserShowAdm} />
       <Resource
         name="Greenhouse"
