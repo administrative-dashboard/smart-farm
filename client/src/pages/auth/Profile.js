@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Container,
   TextField,
@@ -7,21 +7,21 @@ import {
   Grid,
   useMediaQuery,
   Button,
-} from '@mui/material';
-import { CustomCancelButton } from '../../components/CancelButton';
-import { MyBar } from '../../components/Drawer';
-import { drawer_new_data } from '../../assets/static/mockData/new_data';
-import { useTheme } from '@mui/material/styles';
-import { Link } from 'react-router-dom';
+} from "@mui/material";
+import { CustomCancelButton } from "../../components/CancelButton";
+import { MyBar } from "../../components/Drawer";
+import { drawer_new_data } from "../../assets/static/mockData/new_data";
+import { useTheme } from "@mui/material/styles";
+import { Link } from "react-router-dom";
 export const Profile = () => {
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const initialFormData = {
-    name: '',
-    community: '',
-    phone: '',
-    email: '',
-    role: '',
+    name: "",
+    community: "",
+    phone: "",
+    email: "",
+    role: "",
   };
   const [formData, setFormData] = useState(initialFormData);
   const handleReset = () => {
@@ -47,16 +47,20 @@ export const Profile = () => {
               fullWidth
               margin="normal"
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
             />
-              <TextField
+            <TextField
               variant="filled"
               label="Profile image"
               color="primary"
               fullWidth
               margin="normal"
               value={formData.image}
-              onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, image: e.target.value })
+              }
             />
             <TextField
               variant="filled"
@@ -65,7 +69,9 @@ export const Profile = () => {
               fullWidth
               margin="normal"
               value={formData.community}
-              onChange={(e) => setFormData({ ...formData, community: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, community: e.target.value })
+              }
             />
             <TextField
               variant="filled"
@@ -74,7 +80,9 @@ export const Profile = () => {
               fullWidth
               margin="normal"
               value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, phone: e.target.value })
+              }
             />
             <TextField
               variant="filled"
@@ -83,17 +91,26 @@ export const Profile = () => {
               fullWidth
               margin="normal"
               value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
             />
 
             <Box display="flex" justifyContent="flex-end" mt={3}>
-              <CustomCancelButton onClick={handleReset} sx={{backgroundColor: ' #1F4700'}} />
+              <CustomCancelButton
+                onClick={handleReset}
+                sx={{ backgroundColor: " #1F4700" }}
+              />
               <Button
                 component={Link}
                 to="/users"
                 variant="contained"
                 color="primary"
-                sx={{ marginLeft: '10px', backgroundColor: '#1F4700', color: 'white' }}
+                sx={{
+                  marginLeft: "10px",
+                  backgroundColor: "#1F4700",
+                  color: "white",
+                }}
               >
                 Request
               </Button>
@@ -104,7 +121,6 @@ export const Profile = () => {
     </Container>
   );
 };
-
 
 /*import React, { useState } from 'react';
 import {

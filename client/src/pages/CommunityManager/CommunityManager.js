@@ -6,17 +6,17 @@ import schedule from "../../assets/static/sticky-note.png";
 import { drawer_data } from "../../assets/static/mockData/community_owner";
 const imageCardData = [
   {
-    img: schedule ,
+    img: schedule,
     title: "Schedule",
     link: "#Schedule",
-  }
+  },
 ];
-export const CommunityManager= () => {
+export const CommunityManager = () => {
   return (
     <Grid container>
-        <Grid item xs={12} md={2}>
-            <MyBar drawerData={drawer_data} />
-        </Grid>
+      <Grid item xs={12} md={2}>
+        <MyBar drawerData={drawer_data} />
+      </Grid>
       <Grid item xs={12} md={10}>
         <Container>
           <Typography
@@ -27,7 +27,7 @@ export const CommunityManager= () => {
               fontFamily: "Roboto",
               fontSize: "3rem",
               mt: "40px",
-              ml: "20%"
+              ml: "20%",
             }}
           >
             Info

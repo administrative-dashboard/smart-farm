@@ -1,14 +1,7 @@
-
-import React from 'react';
-import {
-  List,
-  Datagrid,
-  TextField,
-  TextInput,
-  ShowButton,
-} from 'react-admin';
-import { Box } from '@mui/material';
-import { ResetFilters } from '../../components/ResetFilters';
+import React from "react";
+import { List, Datagrid, TextField, TextInput, ShowButton } from "react-admin";
+import { Box } from "@mui/material";
+import { ResetFilters } from "../../components/ResetFilters";
 
 export const PortableDeviceListAdm = (props) => {
   return (

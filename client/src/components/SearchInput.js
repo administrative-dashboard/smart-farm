@@ -1,5 +1,3 @@
-import { SearchInput } from 'react-admin';
+import { SearchInput } from "react-admin";
 
-export const PostFilters = [
-  <SearchInput source="q" alwaysOn />
-];
+export const PostFilters = [<SearchInput source="q" alwaysOn />];

@@ -1,13 +1,11 @@
-import { Button, Toolbar, useRedirect } from 'react-admin';
+import { Button, Toolbar, useRedirect } from "react-admin";
 
 export const CustomCancelButton = () => {
-    const redirect = useRedirect();
+  const redirect = useRedirect();
 
-    const handleClick = () => {
-        redirect('/posts');
-    };
+  const handleClick = () => {
+    redirect("/posts");
+  };
 
-    return (
-        <Button label="Cancel" onClick={handleClick} />
-    );
+  return <Button label="Cancel" onClick={handleClick} />;
 };

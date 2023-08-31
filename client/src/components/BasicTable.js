@@ -12,7 +12,7 @@ import { Box, Button } from "@mui/material";
 import { ResetFilters } from "./ResetFilters";
 
 export const BasicTable = (props) => {
-  return ( 
+  return (
     <>
       <ResetFilters />
       <List

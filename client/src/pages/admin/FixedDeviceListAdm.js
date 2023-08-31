@@ -1,5 +1,5 @@
 //FixedDeviceListAdm.js
-import React from 'react';
+import React from "react";
 import {
   List,
   Datagrid,
@@ -8,9 +8,9 @@ import {
   DateField,
   NumberField,
   ShowButton,
-} from 'react-admin';
-import { Box, Button } from '@mui/material';
-import { ResetFilters } from '../../components/ResetFilters';
+} from "react-admin";
+import { Box, Button } from "@mui/material";
+import { ResetFilters } from "../../components/ResetFilters";
 
 export const FixedDeviceListAdm = (props) => {
   return (
@@ -37,4 +37,3 @@ export const FixedDeviceListAdm = (props) => {
     </>
   );
 };
-

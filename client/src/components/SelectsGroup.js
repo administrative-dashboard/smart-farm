@@ -8,7 +8,6 @@ import { Diagram } from "./Diagram"; // Import your components
 import { BarDiagram } from "./BarDiagram";
 import { CircleDiagram } from "./CircleDiagram";
 import { BasicTable } from "./BasicTable";
-import { BasicTableShow } from "./BasicTableShow";
 import { ComboBoxDevice } from "./ComboBoxDevice";
 import { useState } from "react";
 import { DateRange } from "./DateRange";
@@ -35,15 +34,15 @@ export const SelectsGroup = () => {
   };
 
   const centeredBoxStyle = {
-    maxWidth: "600px",
-    width: "100%",
+    minHeight: "80%",
+    minWidth: "90%",
     padding: "16px",
     position: "relative",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#F0F0F0",
+    backgroundColor: "rgba(255,255,255,0.7)",
     borderTop: "2px solid green",
     borderLeft: "2px solid green",
     borderRight: "2px solid green",
@@ -51,7 +50,6 @@ export const SelectsGroup = () => {
     boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.5)",
     borderRadius: "10px",
   };
-
 
   React.useEffect(() => {
     if (value[0]) {

@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Grid, Typography } from "@mui/material";
 import { MyBar } from "../../components/Drawer";
-import ImageCardList from "../../components/ImageCardList"; 
+import ImageCardList from "../../components/ImageCardList";
 import users from "../../assets/static/users-svgrepo-com.svg";
 import greenhouse from "../../assets/static/greenhouse(1).png";
 import field from "../../assets/static/plantation.png";
@@ -33,12 +33,12 @@ const imageCardData = [
   {
     img: device,
     title: "Devices",
-    link: "#/ChooseCommunity"
+    link: "#/ChooseCommunity",
   },
   {
     img: Statistics,
     title: "Statistics",
-    link: "#admin/statisticsInfo"
+    link: "#admin/statisticsInfo",
   },
 ];
 
@@ -46,7 +46,7 @@ export const AdminDesktop = () => {
   return (
     <Grid container>
       <Grid item xs={12} md={2}>
-        <MyBar drawerData={drawer_new_data}/>
+        <MyBar drawerData={drawer_new_data} />
       </Grid>
       <Grid item xs={12} md={10}>
         <Container>
@@ -58,7 +58,7 @@ export const AdminDesktop = () => {
               fontFamily: "Roboto",
               fontSize: "3rem",
               mt: "40px",
-              ml: "20%"
+              ml: "20%",
             }}
           >
             Info
@@ -73,5 +73,3 @@ export const AdminDesktop = () => {
     </Grid>
   );
 };
-
-
