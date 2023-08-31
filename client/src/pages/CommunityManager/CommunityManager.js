@@ -4,6 +4,7 @@ import { MyBar } from "../../components/Drawer";
 import ImageCardList from "../../components/ImageCardList";
 import schedule from "../../assets/static/sticky-note.png";
 import { drawer_data } from "../../assets/static/mockData/community_owner";
+
 const imageCardData = [
   {
     img: schedule,
