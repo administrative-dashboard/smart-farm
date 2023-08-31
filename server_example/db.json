@@ -48,15 +48,6 @@
       "location": "Location 3"
     }
   ],
-  "fields": [
-    {
-      "name": "dfgth",
-      "size": 5,
-      "description": "fg,kl",
-      "location": "fgm,",
-      "id": 1
-    }
-  ],
   "Product": [
     {
       "id": "1",

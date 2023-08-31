@@ -81,7 +81,7 @@ export const SelectsGroup = () => {
       case "CircleDiagram":
         return <CircleDiagram />;
       case "BasicTable":
-        return <BasicTable />;
+        return <BasicTable list={BasicTable} show={BasicTableShow}/>;
       default:
         return null;
     }

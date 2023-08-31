@@ -4,11 +4,9 @@ import {
   Datagrid,
   TextField,
   TextInput,
-  DateField,
-  NumberField,
   ShowButton,
 } from "react-admin";
-import { Box, Button } from "@mui/material";
+
 import { ResetFilters } from "./ResetFilters";
 
 export const BasicTable = (props) => {
