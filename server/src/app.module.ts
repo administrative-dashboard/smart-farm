@@ -20,6 +20,7 @@ import { OwnerGreenhouse } from './database/models/owners_greenhouses.model';
 import { PortableDevice } from './database/models/portable_devices.model ';
 import { Community } from './database/models/communities.model';
 import { ScheduleDevice } from './database/models/schedules_devices.model';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { ScheduleDevice } from './database/models/schedules_devices.model';
         ScheduleDevice,
       ],
     }),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
