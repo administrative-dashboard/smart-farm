@@ -9,6 +9,7 @@ import { BarDiagram } from "./BarDiagram";
 import { CircleDiagram } from "./CircleDiagram";
 import { BasicTable } from "./BasicTable";
 import { ComboBoxDevice } from "./ComboBoxDevice";
+import { CommunityPicker } from "./CommunityPicker";
 import { useState } from "react";
 import { DateRange } from "./DateRange";
 
@@ -16,12 +17,17 @@ export const SelectsGroup = () => {
   const [form, setForm] = React.useState("");
   const [selectedComponent, setSelectedComponent] = React.useState(null); // State for selected component
   const [selectedDevice, setSelectedDevice] = useState(null);
+  const [selectedCommunity, setSelectedCommunity] = useState(null);
   const [value, setValue] = React.useState([
     dayjs("2022-04-17"),
     dayjs("2022-04-21"),
   ]);
   const handleDeviceChange = (event, newValue) => {
     setSelectedDevice(newValue);
+  };
+
+  const handleCommunityChange = (event, newValue) => {
+    setSelectedCommunity(newValue);
   };
 
   const containerStyle = {
@@ -34,15 +40,15 @@ export const SelectsGroup = () => {
   };
 
   const centeredBoxStyle = {
-    maxWidth: "600px",
-    width: "100%",
+    minHeight: "80%",
+    minWidth: "90%",
     padding: "16px",
     position: "relative",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#F0F0F0",
+    backgroundColor: "rgba(255,255,255,0.7)",
     borderTop: "2px solid green",
     borderLeft: "2px solid green",
     borderRight: "2px solid green",
@@ -50,7 +56,6 @@ export const SelectsGroup = () => {
     boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.5)",
     borderRadius: "10px",
   };
-
 
   React.useEffect(() => {
     if (value[0]) {
@@ -68,7 +73,11 @@ export const SelectsGroup = () => {
   };
 
   const isButtonEnabled =
-    value[0] && value[1] && form !== "" && selectedDevice !== null;
+    value[0] &&
+    value[1] &&
+    form !== "" &&
+    selectedDevice !== null &&
+    selectedCommunity !== null;
 
   // Function to render the selected component
   const renderSelectedComponent = () => {
@@ -98,6 +107,10 @@ export const SelectsGroup = () => {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <div style={centeredBoxStyle}>
           <DateRange value={value} setValue={setValue} />
+          <CommunityPicker
+            selectedCommunity={selectedCommunity}
+            handleCommunityChange={handleCommunityChange}
+          />
           <ComboBoxDevice
             selectedDevice={selectedDevice}
             handleDeviceChange={handleDeviceChange}

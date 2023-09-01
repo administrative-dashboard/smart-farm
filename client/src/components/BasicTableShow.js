@@ -2,7 +2,7 @@
 import * as React from "react";
 import { Show, SimpleShowLayout, TextField } from "react-admin";
 
-export const GreenhouseShow = (props) => (
+export const BasicTableShow = (props) => (
   <Show {...props}>
     <SimpleShowLayout>
       <TextField source="name" label="Greenhouse" />

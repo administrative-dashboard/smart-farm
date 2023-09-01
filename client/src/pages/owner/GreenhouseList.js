@@ -1,43 +1,42 @@
 //client//pages/owner/GreenhouseList.js
-import React from 'react';
+import React from "react";
 import {
-    NumberInput,
-    List,
-    Datagrid,
-    TextField,
-    NumberField,
-    EditButton,
-    DeleteButton,
-    TextInput
-} from 'react-admin';
+  NumberInput,
+  List,
+  Datagrid,
+  TextField,
+  NumberField,
+  EditButton,
+  DeleteButton,
+  TextInput,
+} from "react-admin";
 
-import { HomeRedirectButton } from '../../components/HomeRedirectButton';
-import { ResetFilters } from '../../components/ResetFilters';
+import { HomeRedirectButton } from "../../components/HomeRedirectButton";
+import { ResetFilters } from "../../components/ResetFilters";
 
 const greenhouseFilter = [
-    <TextInput label="Search" source="q" alwaysOn />,
-    <TextInput label="name" source="name" />,
-    <NumberInput label="size" source="type" />,
-    <TextInput label="description" source="description" />,
-    <TextInput label="location" source="location" />,
+  <TextInput label="Search" source="q" alwaysOn />,
+  <TextInput label="name" source="name" />,
+  <NumberInput label="size" source="type" />,
+  <TextInput label="description" source="description" />,
+  <TextInput label="location" source="location" />,
 ];
 
-
 export const GreenhouseList = (props) => {
-    return (
-        <>
-            < ResetFilters />
-            <List {...props} filters={greenhouseFilter} sx={{ color: '#38A505', }}>
-                <Datagrid>
-                    <TextField source="name" />
-                    <NumberField source="size" />
-                    <TextField source="description" />
-                    <TextField source="location" />
-                    <EditButton basePath='/greenhouses' />
-                    <DeleteButton basePath='/greenhouses' />
-                </Datagrid>
-            </List>
-            <HomeRedirectButton pageName="ownerPage" title="Home" />
-        </>
-    )
+  return (
+    <>
+      <ResetFilters />
+      <List {...props} filters={greenhouseFilter} sx={{ color: "#38A505" }}>
+        <Datagrid>
+          <TextField source="name" />
+          <NumberField source="size" />
+          <TextField source="description" />
+          <TextField source="location" />
+          <EditButton basePath="/greenhouses" />
+          <DeleteButton basePath="/greenhouses" />
+        </Datagrid>
+      </List>
+      <HomeRedirectButton pageName="ownerPage" title="Home" />
+    </>
+  );
 };

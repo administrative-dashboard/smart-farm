@@ -1,6 +1,5 @@
-
-import * as React from 'react';
-import { Show, SimpleShowLayout, TextField } from 'react-admin';
+import * as React from "react";
+import { Show, SimpleShowLayout, TextField } from "react-admin";
 
 export const SensorsShow = (props) => (
   <Show {...props}>
@@ -12,5 +11,3 @@ export const SensorsShow = (props) => (
     </SimpleShowLayout>
   </Show>
 );
-
-

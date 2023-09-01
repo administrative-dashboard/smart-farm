@@ -1,17 +1,17 @@
-import React, { useEffect } from 'react';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
+import React, { useEffect } from "react";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
 
 export const ComboBoxDevice = ({ selectedDevice, handleDeviceChange }) => {
-/*   const [selectedDevice, setSelectedDevice] = useState('');
- */
+  /*   const [selectedDevice, setSelectedDevice] = useState('');
+   */
   /* const handleDeviceChange = (event, newValue) => {
     setSelectedDevice(newValue);
   }; */
   const topDevices = [
-    { label: 'Բահ', year: 1994 },
-    { label: 'Փոցխ', year: 1972 },
-    { label: 'Գերանդի', year: 1974 },
+    { label: "Բահ", year: 1994 },
+    { label: "Փոցխ", year: 1972 },
+    { label: "Գերանդի", year: 1974 },
   ];
   useEffect(() => {
     console.log(selectedDevice); // Log the updated selectedDevice in useEffect
@@ -28,6 +28,4 @@ export const ComboBoxDevice = ({ selectedDevice, handleDeviceChange }) => {
       onChange={handleDeviceChange}
     />
   );
-}
-
-
+};
