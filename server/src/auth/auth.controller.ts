@@ -1,7 +1,8 @@
 // auth/auth.controller.ts
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
+import { Response } from 'express';
 
 @Controller('google')
 export class AuthController {
@@ -17,7 +18,14 @@ export class AuthController {
 
   @Get('redirect')
   @UseGuards(AuthGuard('google'))
-  async googleAuthRedirect(@Req() req) {
-    return this.authService.googleLogin(req);
+  async googleAuthRedirect(@Req() req, @Res() res: Response) {
+    const result = await this.authService.googleLogin(req);
+
+    if (typeof result !== 'string' && result.jwt !== null) {
+      // Set the JWT in a cookie named 'jwt'
+      res.cookie('jwt', result.jwt, { httpOnly: true });
+    }
+
+    res.json(result);
   }
 }
