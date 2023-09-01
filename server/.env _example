@@ -6,3 +6,5 @@ PG_DATABASE =
 PG_PASSWORD = 
 PG_PORT = 
 PRIVATE_KEY=
+
+https://wanago.io/2021/07/26/api-nestjs-google-authentication/

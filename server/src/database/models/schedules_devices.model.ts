@@ -1,6 +1,5 @@
 //roles.model.ts
 import { Column, Model, Table, ForeignKey } from 'sequelize-typescript';
-import { User } from './users.model';
 import { DeviceRequestHistory } from './device_requests_history.model';
 
 @Table({ tableName: 'schedules_devices' })

@@ -34,9 +34,9 @@ export class DeviceRequestHistory extends Model<DeviceRequestHistory> {
   @Column
   user_id: number;
 
-  // @ForeignKey(() => PortableDevice)
-  // @Column
-  // device_id: number;
+  @ForeignKey(() => PortableDevice)
+  @Column
+  device_id: number;
 
   // @HasOne(() => ScheduleDevice)
   // schedules_devices: ScheduleDevice;

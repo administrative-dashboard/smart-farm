@@ -1,5 +1,5 @@
 // users.model.ts
-import { Column, Model, Table, ForeignKey, HasOne } from 'sequelize-typescript';
+import { Column, Model, Table, ForeignKey, HasMany } from 'sequelize-typescript';
 import { User } from './users.model';
 import { DeviceRequestHistory } from './device_requests_history.model';
 
@@ -30,6 +30,7 @@ export class PortableDevice extends Model<PortableDevice> {
   @Column
   user_id: number;
 
-//   @HasOne(() => DeviceRequestHistory)
-//   device_requests_history: DeviceRequestHistory;
+  @HasMany(() => DeviceRequestHistory)
+  device_requests_history: DeviceRequestHistory;
+
 }

@@ -1,9 +1,9 @@
+//app.module.ts
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
 import { User } from './database/models/users.model';
 import { UserCommunity } from './database/models/users_communities.model';
 import { Permission } from './database/models/permissions.model';
@@ -51,7 +51,6 @@ import { ScheduleDevice } from './database/models/schedules_devices.model';
         ScheduleDevice,
       ],
     }),
-    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
