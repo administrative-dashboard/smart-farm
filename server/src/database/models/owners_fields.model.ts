@@ -2,7 +2,7 @@ import { Column, Model, Table, ForeignKey } from 'sequelize-typescript';
 import { User } from './users.model';
 import { Field } from './fields.model';
 
-@Table({ tableName: 'owners_fields' })
+@Table({ tableName: 'owners_fields', timestamps: false })
 export class OwnerField extends Model<OwnerField> {
   @Column({ primaryKey: true, autoIncrement: true, allowNull: false })
   id: number;

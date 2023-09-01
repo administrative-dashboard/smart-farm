@@ -2,7 +2,7 @@
 import { Column, Model, Table, ForeignKey } from 'sequelize-typescript';
 import { DeviceRequestHistory } from './device_requests_history.model';
 
-@Table({ tableName: 'schedules_devices' })
+@Table({ tableName: 'schedules_devices', timestamps: false })
 export class ScheduleDevice extends Model<ScheduleDevice> {
   @Column({ primaryKey: true, autoIncrement: true, allowNull: false })
   id: number;

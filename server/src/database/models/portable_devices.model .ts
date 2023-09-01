@@ -3,7 +3,7 @@ import { Column, Model, Table, ForeignKey, HasMany } from 'sequelize-typescript'
 import { User } from './users.model';
 import { DeviceRequestHistory } from './device_requests_history.model';
 
-@Table({ tableName: 'portable_devices' })
+@Table({ tableName: 'portable_devices', timestamps: false })
 export class PortableDevice extends Model<PortableDevice> {
   @Column({ primaryKey: true, autoIncrement: true, allowNull: false })
   id: number;

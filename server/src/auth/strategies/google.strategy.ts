@@ -1,8 +1,10 @@
+//google.strategy.ts
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, VerifyCallback } from 'passport-google-oauth20';
 import { config } from 'dotenv';
 import { User } from 'src/database/models/users.model';
+import { Role } from 'src/database/models/roles.model';
 
 config();
 
@@ -31,9 +33,16 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         phone_number: '',
         profile_image: photos[0].value,
       },
+      include: [Role],
     });
 
-
+    if (created) {
+      // Assign the default role 'EMPLOYEE' to the newly created user
+      const defaultRole = await Role.findOne({ where: { value: 'EMPLOYEE' } });
+      if (defaultRole) {
+        await user.$add('roles', defaultRole);
+      }
+    }
     done(null, user);
   }
 }

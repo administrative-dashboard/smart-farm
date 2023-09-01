@@ -6,7 +6,7 @@ import { Response } from 'express';
 
 @Controller('google')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   @Get()
   @UseGuards(AuthGuard('google'))
@@ -25,5 +25,11 @@ export class AuthController {
     }
 
     res.json(result);
+  }
+
+  @Get('logout')
+  async logout(@Req() req, @Res() res: Response) {
+    res.clearCookie('jwt');
+    res.redirect('/logout-success');
   }
 }

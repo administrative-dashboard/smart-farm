@@ -6,7 +6,6 @@ import { JwtService } from '@nestjs/jwt';
 export class AuthService {
   constructor(private readonly jwtService: JwtService) {}
 
-
   googleLogin(req) {
     if (!req.user) {
       return 'No user from Google';
@@ -14,7 +13,8 @@ export class AuthService {
 
     const payload = {
       email: req.user.email,
-      sub: req.user.id,
+      id: req.user.id,
+      role: req.user.roles[0]?.value || 'EMPLOYEE',
     };
 
     const jwt = this.jwtService.sign(payload);

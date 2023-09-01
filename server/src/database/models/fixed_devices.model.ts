@@ -2,7 +2,7 @@
 import { Column, Model, Table, ForeignKey } from 'sequelize-typescript';
 import { User } from './users.model';
 
-@Table({ tableName: 'fixed_devices' })
+@Table({ tableName: 'fixed_devices', timestamps: false })
 export class FixedDevice extends Model<FixedDevice> {
   @Column({ primaryKey: true, autoIncrement: true, allowNull: false  })
   id: number;

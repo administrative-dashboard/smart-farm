@@ -2,7 +2,7 @@
 import { Column, Model, Table, HasOne } from 'sequelize-typescript';
 import { OwnerGreenhouse } from './owners_greenhouses.model';
 
-@Table({ tableName: 'greenhouses' })
+@Table({ tableName: 'greenhouses', timestamps: false })
 export class Greenhouse extends Model<Greenhouse> {
   @Column({ primaryKey: true, autoIncrement: true, allowNull: false })
   id: number;
