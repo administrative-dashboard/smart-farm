@@ -12,8 +12,6 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   async googleAuth(@Req() req) {
     return;
-    // Handle the Google authentication
-    // You can also redirect to Google login by returning a redirect response
   }
 
   @Get('redirect')
