@@ -10,7 +10,7 @@ import { DeviceRequestHistory } from './device_requests_history.model';
 import { FixedDevice } from './fixed_devices.model';
 import { PortableDevice } from './portable_devices.model ';
 
-@Table({ tableName: 'users' })
+@Table({ tableName: 'users', timestamps: false })
 export class User extends Model<User> {
   @Column({ primaryKey: true, autoIncrement: true, allowNull: false })
   id: number;
