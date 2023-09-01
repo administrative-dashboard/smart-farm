@@ -1,6 +1,8 @@
 
 //database/config/config.js
-require('dotenv').config();
+require('dotenv').config({ path: '../../.env' });
+console.log(`DB_PASSWORD: ${process.env.PG_PASSWORD}`);
+
 module.exports = {
   development: {
     dialect: 'postgres',
