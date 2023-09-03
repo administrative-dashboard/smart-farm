@@ -13,7 +13,7 @@ import { CommunityPicker } from "./CommunityPicker";
 import { useState } from "react";
 import { DateRange } from "./DateRange";
 
-export const SelectsGroup = () => {
+export const SelectsGroup = ({ showCommunityPicker }) => {
   const [form, setForm] = React.useState("");
   const [selectedComponent, setSelectedComponent] = React.useState(null); // State for selected component
   const [selectedDevice, setSelectedDevice] = useState(null);
@@ -79,7 +79,7 @@ export const SelectsGroup = () => {
     selectedDevice !== null &&
     selectedCommunity !== null;
 
-  // Function to render the selected component
+    
   const renderSelectedComponent = () => {
     switch (selectedComponent) {
       case "Diagram":
@@ -107,10 +107,12 @@ export const SelectsGroup = () => {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <div style={centeredBoxStyle}>
           <DateRange value={value} setValue={setValue} />
-          <CommunityPicker
-            selectedCommunity={selectedCommunity}
-            handleCommunityChange={handleCommunityChange}
-          />
+          {showCommunityPicker && (
+            <CommunityPicker
+              selectedCommunity={selectedCommunity}
+              handleCommunityChange={handleCommunityChange}
+            />
+          )}
           <ComboBoxDevice
             selectedDevice={selectedDevice}
             handleDeviceChange={handleDeviceChange}
