@@ -22,7 +22,7 @@ export const CommunityPicker = ({ selectedCommunity, handleCommunityChange }) =>
       disablePortal
       id="combo-box-demo"
       options={topCommunitys}
-      sx={{ width: 400 }}
+      sx={{ width: 500 }}
       renderInput={(params) => <TextField {...params} label="Community" />}
       value={selectedCommunity}
       onChange={handleCommunityChange}

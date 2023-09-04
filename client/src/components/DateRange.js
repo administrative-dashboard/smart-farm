@@ -12,6 +12,7 @@ export const DateRange = ({ value, setValue }) => {
         <DateRangePicker
           value={value}
           onChange={(newValue) => setValue(newValue)}
+          sx={{ width: 600 }}
         />
       </LocalizationProvider>
     </div>

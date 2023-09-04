@@ -12,12 +12,14 @@ import { ComboBoxDevice } from "./ComboBoxDevice";
 import { CommunityPicker } from "./CommunityPicker";
 import { useState } from "react";
 import { DateRange } from "./DateRange";
+import { SelectGreenhouseOrField } from "./SelectGreenhouseOrField";
 
 export const SelectsGroup = ({ showCommunityPicker }) => {
   const [form, setForm] = React.useState("");
   const [selectedComponent, setSelectedComponent] = React.useState(null); // State for selected component
   const [selectedDevice, setSelectedDevice] = useState(null);
   const [selectedCommunity, setSelectedCommunity] = useState(null);
+
   const [value, setValue] = React.useState([
     dayjs("2022-04-17"),
     dayjs("2022-04-21"),
@@ -79,7 +81,6 @@ export const SelectsGroup = ({ showCommunityPicker }) => {
     selectedDevice !== null &&
     selectedCommunity !== null;
 
-    
   const renderSelectedComponent = () => {
     switch (selectedComponent) {
       case "Diagram":
@@ -113,6 +114,7 @@ export const SelectsGroup = ({ showCommunityPicker }) => {
               handleCommunityChange={handleCommunityChange}
             />
           )}
+          <SelectGreenhouseOrField />
           <ComboBoxDevice
             selectedDevice={selectedDevice}
             handleDeviceChange={handleDeviceChange}
