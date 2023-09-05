@@ -1,12 +1,12 @@
+//googleButton.js
 import React, { useState } from "react";
-// import { GoogleLogin } from 'react-google-login';
-// import {authProvider} from "../utils/googleProvider"
-import { Button, useLogin, useRedirect } from "react-admin";
+import { Button, useAuthProvider, useLogin, useRedirect } from "react-admin";
 import { useMediaQuery, useTheme } from "@mui/material";
-
+import { saveTokenToCookies } from "../providers/authUtils"
+import axios from "axios";
 import googleLogo from "../assets/static/googleLogo.svg";
+import authPovider from "../providers/authPovider";
 
-// const GOOGLE_CLIENT_ID = '654868766388-l165egll3330ikvpf734diu2lf54uehc.apps.googleusercontent.com';
 
 export const GoogleButton = () => {
   const redirect = useRedirect();
@@ -16,9 +16,9 @@ export const GoogleButton = () => {
   const login = useLogin();
   const handleLogin = () => {
     setLoading(true);
-    login({});
-    redirect("/contact");
+   authPovider.login({});
   };
+
 
   return (
     <Button

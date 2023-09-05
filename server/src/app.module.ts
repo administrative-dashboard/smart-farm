@@ -21,6 +21,9 @@ import { PortableDevice } from './database/models/portable_devices.model ';
 import { Community } from './database/models/communities.model';
 import { ScheduleDevice } from './database/models/schedules_devices.model';
 import { AuthModule } from './auth/auth.module';
+import { DeviceUsageStatisticsCommunities } from './database/models/device_usage_statistics_communities.model';
+import { DeviceUsageStatisticsFields } from './database/models/device_usage_statistics_fields.model';
+import { DeviceUsageStatisticsGreenhouses } from './database/models/device_usage_statistics_greenhouses.model';
 
 @Module({
   imports: [
@@ -50,6 +53,10 @@ import { AuthModule } from './auth/auth.module';
         PortableDevice,
         DeviceRequestHistory,
         ScheduleDevice,
+        DeviceUsageStatisticsCommunities,
+        DeviceUsageStatisticsFields,
+        DeviceUsageStatisticsGreenhouses,
+
       ],
     }),
     AuthModule,

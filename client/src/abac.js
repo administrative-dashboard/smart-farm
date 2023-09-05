@@ -51,7 +51,7 @@ import { GreenhouseShow } from "./pages/admin/GreenhouseShow";
 import { GreenhouseListAdm } from "./pages/admin/GreenhouseList";
 import { ProductListAdm } from "./pages/admin/ProductList";
 import { ProductShow } from "./pages/admin/ProductListAdm";
-import { DeviceStatisticPage } from "./pages/admin/AdminDeviceStatistic";
+// import { DeviceStatisticPage } from "./pages/admin/AdminDeviceStatistic";
 import { Contact } from "./pages/auth/Contact";
 import { NewData } from "./pages/auth/Profile";
 import { CommunityManager } from "./pages/CommunityManager/CommunityManager";

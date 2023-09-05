@@ -1,10 +1,11 @@
-//google.strategy.ts
+//googleStrategy.ts
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, VerifyCallback } from 'passport-google-oauth20';
 import { config } from 'dotenv';
 import { User } from 'src/database/models/users.model';
 import { Role } from 'src/database/models/roles.model';
+import * as jwt from 'jsonwebtoken';
 
 config();
 
@@ -37,12 +38,21 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     });
 
     if (created) {
-      // Assign the default role 'EMPLOYEE' to the newly created user
       const defaultRole = await Role.findOne({ where: { value: 'EMPLOYEE' } });
       if (defaultRole) {
         await user.$add('roles', defaultRole);
       }
     }
-    done(null, user);
+
+    // Generate JWT token
+    const jwtPayload = {
+      email: user.email,
+      id: user.id,
+      role: user.roles[0]?.value || 'EMPLOYEE',
+    };
+    const jwtToken = jwt.sign(jwtPayload, process.env.JWT_SECRET);
+    // res.header('Set-Cookie', `jwt=${jwtToken}; HttpOnly; Path=/`);
+
+    return { user, jwtToken };
   }
 }

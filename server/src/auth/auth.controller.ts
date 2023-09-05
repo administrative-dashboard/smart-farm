@@ -1,12 +1,11 @@
-// auth/auth.controller.ts
+//authController.ts
 import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { AuthService } from './auth.service';
 import { Response } from 'express';
 
 @Controller('google')
 export class AuthController {
-  constructor(private readonly authService: AuthService) { }
+  constructor() { }
 
   @Get()
   @UseGuards(AuthGuard('google'))
@@ -17,19 +16,19 @@ export class AuthController {
   @Get('redirect')
   @UseGuards(AuthGuard('google'))
   async googleAuthRedirect(@Req() req, @Res() res: Response) {
-    const result = await this.authService.googleLogin(req);
+    const { user, jwtToken } = req.user;
 
-    if (typeof result !== 'string' && result.jwt !== null) {
-      // Set the JWT in a cookie named 'jwt'
-      res.cookie('jwt', result.jwt, { httpOnly: true });
+    if (jwtToken) {
+      res.cookie('jwt', jwtToken, { httpOnly: true });
     }
 
-    res.json(result);
+    res.redirect('http://localhost:3000/contact');
   }
 
   @Get('logout')
   async logout(@Req() req, @Res() res: Response) {
     res.clearCookie('jwt');
-    res.redirect('/logout-success');
+
+    res.redirect('http://localhost:3000/');
   }
 }

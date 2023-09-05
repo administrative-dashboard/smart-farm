@@ -13,6 +13,7 @@ import { CommunityPicker } from "./CommunityPicker";
 import { useState } from "react";
 import { DateRange } from "./DateRange";
 import { SelectGreenhouseOrField } from "./SelectGreenhouseOrField";
+import { BasicTableShow } from "./BasicTableShow";
 
 export const SelectsGroup = ({ showCommunityPicker }) => {
   const [form, setForm] = React.useState("");
