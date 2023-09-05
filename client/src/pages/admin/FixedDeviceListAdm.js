@@ -1,16 +1,7 @@
 //FixedDeviceListAdm.js
-import React from 'react';
-import {
-  List,
-  Datagrid,
-  TextField,
-  TextInput,
-  DateField,
-  NumberField,
-  ShowButton,
-} from 'react-admin';
-import { Box, Button } from '@mui/material';
-import { ResetFilters } from '../../components/ResetFilters';
+import React from "react";
+import { List, Datagrid, TextField, TextInput, ShowButton } from "react-admin";
+import { ResetFilters } from "../../components/ResetFilters";
 
 export const FixedDeviceListAdm = (props) => {
   return (

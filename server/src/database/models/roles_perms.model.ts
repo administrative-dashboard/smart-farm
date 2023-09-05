@@ -3,7 +3,7 @@ import { Column, Model, Table, ForeignKey } from 'sequelize-typescript';
 import { Permission } from './permissions.model';
 import { Role } from './roles.model';
 
-@Table({ tableName: 'roles_perms' })
+@Table({ tableName: 'roles_perms', timestamps: false })
 export class RolePermission extends Model<RolePermission> {
   @Column({ primaryKey: true, autoIncrement: true, allowNull: false })
   id: number;

@@ -4,7 +4,7 @@ import { UserRole } from './users_roles';
 import { RolePermission } from './roles_perms.model';
 import { User } from './users.model';
 
-@Table({ tableName: 'roles' })
+@Table({ tableName: 'roles', timestamps: false })
 export class Role extends Model<Role> {
   @Column({ primaryKey: true, autoIncrement: true, allowNull: false })
   id: number;

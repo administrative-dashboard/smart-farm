@@ -1,4 +1,5 @@
 import React from "react";
+<<<<<<< HEAD
 import {
   List,
   Datagrid,
@@ -7,10 +8,13 @@ import {
   ShowButton,
 } from "react-admin";
 
+=======
+import { List, Datagrid, TextField, TextInput, ShowButton } from "react-admin";
+>>>>>>> origin/main
 import { ResetFilters } from "./ResetFilters";
 
 export const BasicTable = (props) => {
-  return ( 
+  return (
     <>
       <ResetFilters />
       <List

@@ -10,7 +10,7 @@ enum RequestStatus {
   Rejected = 'rejected',
 }
 
-@Table({ tableName: 'device_requests_history' })
+@Table({ tableName: 'device_requests_history', timestamps: false  })
 export class DeviceRequestHistory extends Model<DeviceRequestHistory> {
   @Column({ primaryKey: true, autoIncrement: true, allowNull: false })
   id: number;
@@ -34,9 +34,9 @@ export class DeviceRequestHistory extends Model<DeviceRequestHistory> {
   @Column
   user_id: number;
 
-  // @ForeignKey(() => PortableDevice)
-  // @Column
-  // device_id: number;
+  @ForeignKey(() => PortableDevice)
+  @Column
+  device_id: number;
 
   // @HasOne(() => ScheduleDevice)
   // schedules_devices: ScheduleDevice;

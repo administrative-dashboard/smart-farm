@@ -31,8 +31,8 @@ import { UserListAdm } from "./pages/admin/UserList";
 import { FixedDeviceListAdm } from "./pages/admin/FixedDeviceListAdm";
 import { PortableDeviceListAdm } from "./pages/admin/PortableDeviceListAdm";
 import { PortableDeviceShow } from "./pages/admin/PortableDeviceShow";
-import { SensorsShow } from "./pages/admin/SensorsShow";
-import { SensorsListAdm } from "./pages/admin/SensorsListAdm";
+//import { SensorsShow } from "./pages/admin/SensorsShow";
+//import { SensorsListAdm } from "./pages/admin/SensorsListAdm";
 import { OwnerDesktop } from "./pages/owner/Desktop";
 import { PortableDeviceList } from "./pages/owner/PortableDeviceList";
 import { GreenhouseList } from "./pages/owner/GreenhouseList";
@@ -52,7 +52,7 @@ import { GreenhouseShow } from "./pages/admin/GreenhouseShow";
 import { GreenhouseListAdm } from "./pages/admin/GreenhouseList";
 import { ProductListAdm } from "./pages/admin/ProductList";
 import { ProductShow } from "./pages/admin/ProductListAdm";
-import { DeviceStatisticPage } from "./pages/admin/AdminDeviceStatistic";
+import { DeviceStatisticPage } from "./pages/admin/DeviceStatistic";
 import { Contact } from "./pages/auth/Contact";
 import { NewData } from "./pages/auth/Profile";
 import { CommunityManager } from "./pages/CommunityManager/CommunityManager";
@@ -173,7 +173,6 @@ const App = () => {
         list={PortableDeviceListAdm}
         show={PortableDeviceShow}
       />
-      <Resource name="all_sensors" list={SensorsListAdm} show={SensorsShow} />
       <Resource name="User" list={UserListAdm} show={UserShowAdm} />
       <Resource
         name="Greenhouse"

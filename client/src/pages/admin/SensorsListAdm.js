@@ -1,14 +1,6 @@
-
-import React from 'react';
-import {
-  List,
-  Datagrid,
-  TextField,
-  TextInput,
-
-  ShowButton,
-} from 'react-admin';
-import { ResetFilters } from '../../components/ResetFilters';
+import React from "react";
+import { List, Datagrid, TextField, TextInput, ShowButton } from "react-admin";
+import { ResetFilters } from "../../components/ResetFilters";
 
 export const SensorsListAdm = (props) => {
   return (

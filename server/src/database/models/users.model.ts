@@ -1,5 +1,5 @@
 // users.model.ts
-import { Column, Model, Table, HasOne, BelongsToMany, HasMany } from 'sequelize-typescript';
+import { Column, Model, Table, HasOne, BelongsToMany, HasMany, BeforeCreate } from 'sequelize-typescript';
 
 import { UserCommunity } from './users_communities.model';
 import { UserRole } from './users_roles';
@@ -10,8 +10,16 @@ import { DeviceRequestHistory } from './device_requests_history.model';
 import { FixedDevice } from './fixed_devices.model';
 import { PortableDevice } from './portable_devices.model ';
 
-@Table({ tableName: 'users' })
+@Table({ tableName: 'users', timestamps: false })
 export class User extends Model<User> {
+    @BeforeCreate
+    static async setDefaultRole(instance: User) {
+      const defaultRole = await Role.findOne({ where: { value: 'EMPLOYEE' } });
+      if (defaultRole) {
+        instance.roles = [defaultRole];
+      }
+    }
+
   @Column({ primaryKey: true, autoIncrement: true, allowNull: false })
   id: number;
 

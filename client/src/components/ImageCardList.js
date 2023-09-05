@@ -9,11 +9,16 @@ const ImageCardList = ({ data }) => (
       justifyContent: "center",
       gap: "30px",
       marginTop: "20px",
-      marginLeft: "200px"
+      marginLeft: "200px",
     }}
   >
     {data.map((item, index) => (
-      <Card key={index} component="a" href={item.link} style={{ maxWidth: "280px" }}>
+      <Card
+        key={index}
+        component="a"
+        href={item.link}
+        style={{ maxWidth: "280px" }}
+      >
         <img
           src={item.img}
           alt={item.title}
