@@ -1,6 +1,7 @@
 // users.model.ts
-import { Column, Model, Table, HasOne } from 'sequelize-typescript';
+import { Column, Model, Table, HasOne, HasMany } from 'sequelize-typescript';
 import { OwnerGreenhouse } from './owners_greenhouses.model';
+import { DeviceUsageStatisticsGreenhouses } from './device_usage_statistics_greenhouses.model';
 
 @Table({ tableName: 'greenhouses', timestamps: false })
 export class Greenhouse extends Model<Greenhouse> {
@@ -21,4 +22,7 @@ export class Greenhouse extends Model<Greenhouse> {
 
   @HasOne(() => OwnerGreenhouse)
   owners_greenhouses: OwnerGreenhouse;
+
+  @HasMany(() => DeviceUsageStatisticsGreenhouses)
+  device_usage_statistics_greenhouses: DeviceUsageStatisticsGreenhouses
 }

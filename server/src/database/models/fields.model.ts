@@ -1,6 +1,7 @@
 // users.model.ts
-import { Column, Model, Table, HasOne } from 'sequelize-typescript';
+import { Column, Model, Table, HasOne, HasMany } from 'sequelize-typescript';
 import { OwnerField } from './owners_fields.model';
+import { DeviceUsageStatisticsFields } from './device_usage_statistics_fields.model';
 
 @Table({ tableName: 'fields', timestamps: false })
 export class Field extends Model<Field> {
@@ -21,4 +22,7 @@ export class Field extends Model<Field> {
 
   @HasOne(() => OwnerField)
   owners_fields: OwnerField;
+
+  @HasMany(() => DeviceUsageStatisticsFields)
+  device_usage_statistics_fields: DeviceUsageStatisticsFields
 }
