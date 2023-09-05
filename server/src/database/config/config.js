@@ -1,7 +1,8 @@
 
 //database/config/config.js
-require('dotenv').config({ path: '../../.env' });
-console.log(`DB_PASSWORD: ${process.env.PG_PASSWORD}`);
+//require('dotenv').config({ path: '../../.env' });
+//console.log(`DB_PASSWORD: ${process.env.PG_PASSWORD}`);
+require('dotenv').config();
 
 module.exports = {
   development: {
