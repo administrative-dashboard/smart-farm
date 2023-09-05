@@ -1,4 +1,11 @@
 {
+  "user": [
+    {
+      "id" : 1,
+      "name" : "Pogos",
+      "role" : "ADMIN"
+    }
+  ],
   "greenhouses": [
     {
       "id": "1",
