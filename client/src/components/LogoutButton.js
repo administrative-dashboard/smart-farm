@@ -6,7 +6,7 @@ import authPovider from "../providers/authPovider";
 export const LogoutButton = () => {
   const redirect = useRedirect();
   const handleClick = () => {
-    // authPovider.logout({});
+    authPovider.logout({});
   };
   return (
     <Button onClick={handleClick}>

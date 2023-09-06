@@ -17,27 +17,25 @@ import { LogoutButton } from "./LogoutButton";
 import { ProfileButton } from "./ProfileButton";
 
 export const MyAppBar = () => {
-  const [isAuthenticated, setIsAuthenticated] = React.useState(true);
+//   const [isAuthenticated, setIsAuthenticated] = React.useState(true);
 
-  const handleLogout = () => {
-    setIsAuthenticated((prevIsAuthenticated) => !prevIsAuthenticated);
-  };
-
+//   const handleLogout = () => {
+//     setIsAuthenticated((prevIsAuthenticated) => !prevIsAuthenticated);
+//   };
+// useAuthenticated();
   return (
     <AppBar
       color="inherit"
       sx={{ p: 0 }}
       userMenu={
-        isAuthenticated ? (
+        // isAuthenticated ? (
           <UserMenu>
-            {/* <MenuItem onClick={handleLogout}> */}
             <MenuItem>
               <ListItemIcon>
                 <ContactPageIcon fontSize="small" />
               </ListItemIcon>
               <ProfileButton />
             </MenuItem>
-            {/* <MenuItem onClick={handleLogout}> */}
             <MenuItem>
               <ListItemIcon>
                 <Face6Icon fontSize="small" />
@@ -45,9 +43,9 @@ export const MyAppBar = () => {
               <LogoutButton />
             </MenuItem>
           </UserMenu>
-        ) : (
-          false
-        )
+        // ) : (
+        //   false
+        // )
       }
     >
       <Logo />
@@ -58,7 +56,7 @@ export const MyAppBar = () => {
           { locale: "am", name: "Հայերեն" },
         ]}
       />
-      {isAuthenticated ? null : <SigninButton />}
+      {/* {isAuthenticated ? null : <SigninButton />} */}
     </AppBar>
   );
 };

@@ -66,6 +66,10 @@ import authPovider from "./providers/authPovider";
 import simpleRestProvider from 'ra-data-simple-rest';
 //const dataProvider = jsonServerProvider("http://localhost:5000");
 const dataProvider = simpleRestProvider("http://localhost:5000");
+
+// const dataProvider = jsonServerProvider(process.env.API_URL);
+// const dataProvider = simpleRestProvider(process.env.API_URL);
+
 // import AbacApp from "./abac";
 const i18nProvider = polyglotI18nProvider(
   (locale) => (locale === "am" ? armenianMessages : englishMessages),

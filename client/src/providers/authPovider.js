@@ -3,14 +3,20 @@ import { fetchUtils } from 'react-admin';
 import Cookies from 'js-cookie';
 import { parseJwtTokenFromHeaders, saveTokenToCookies, getJwtTokenFromCookies } from './authUtils';
 
-const apiUrl = 'http://localhost:5000';
+const API_URL='http://localhost:5000';
+
 const httpClient = fetchUtils.fetchJson;
 
+// const httpClient = (url, options = {}) => {
+//     const token = localStorage.getItem('token');
+//     const user = { token: `Bearer ${token}`, authenticated: !!token };
+//     return fetchUtils.fetchJson(url, {...options, user});
+// }
 export default {
-  login: () => {
-    // saveTokenToCookies(token);
-    window.location.href = `${apiUrl}/google/redirect`;
-  },
+    login: () => {
+        // saveTokenToCookies(token);
+        window.location.href = `${API_URL}/google/redirect`;
+},
 
 checkAuth: () => {
   const jwtToken = getJwtTokenFromCookies();
@@ -31,6 +37,6 @@ checkAuth: () => {
 
   logout: () => {
     Cookies.remove('jwt');
-    window.location.href = `${apiUrl}/google/logout`;
+    window.location.href = `${API_URL}/google/logout`;
   },
 };

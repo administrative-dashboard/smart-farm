@@ -22,13 +22,13 @@ export class AuthController {
       res.cookie('jwt', jwtToken, { httpOnly: true });
     }
 
-    res.redirect('http://localhost:3000/contact');
+    // res.redirect(`${process.env.CLIENT_URL}/contact`);
   }
 
   @Get('logout')
   async logout(@Req() req, @Res() res: Response) {
     res.clearCookie('jwt');
 
-    res.redirect('http://localhost:3000/');
+    res.redirect(`${process.env.CLIENT_URL}`);
   }
 }
