@@ -64,8 +64,8 @@ import { BasicTableShow } from "./components/BasicTableShow";
 import { BasicTable } from "./components/BasicTable";
 import authPovider from "./providers/authPovider";
 import simpleRestProvider from 'ra-data-simple-rest';
- const dataProvider = jsonServerProvider("http://localhost:5000");
-// const dataProvider = simpleRestProvider("http://localhost:5000");
+//const dataProvider = jsonServerProvider("http://localhost:5000");
+const dataProvider = simpleRestProvider("http://localhost:5000");
 // import AbacApp from "./abac";
 const i18nProvider = polyglotI18nProvider(
   (locale) => (locale === "am" ? armenianMessages : englishMessages),
@@ -77,7 +77,7 @@ const App = () => {
     <BrowserRouter>
       <Admin
         layout={MyLayout}
-        dataProvider={dataProvider}
+        dataProvider={dataProvider} 
         i18nProvider={i18nProvider}
         // authProvider={authPovider}
       //  loginPage={Signup}

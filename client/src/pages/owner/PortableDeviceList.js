@@ -1,5 +1,7 @@
 //client//pages/owner/DeviceList.js
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Axios from "axios";
+
 import {
   List,
   Datagrid,
@@ -26,10 +28,25 @@ const deviceFilter = [
 ];
 
 export const PortableDeviceList = (props) => {
+ 
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    // Отправляем запрос на сервер для получения данных
+    Axios.get("http://localhost:5000/fixed_devices") // Замените "ВАШ_СЕРВЕР_URL_ЗДЕСЬ" на URL вашего сервера
+      .then((response) => {
+        setData(response.data); // Обновляем состояние данными с сервера
+        
+        
+      })
+      .catch((error) => {
+        console.error("Ошибка при загрузке данных: ", error);
+      })
+      
+  }, []);
   return (
     <>
       <ResetFilters />
-      <List {...props} filters={deviceFilter} sx={{ color: "#38A505" }}>
+      <List {...props} data={data} filters={deviceFilter} sx={{ color: "#38A505" }}>
         <Datagrid>
           {/* <NumberField source="id" disable/> */}
           <TextField source="name" />
@@ -37,8 +54,8 @@ export const PortableDeviceList = (props) => {
           <TextField source="description" />
           <NumberField source="quantity" />
           <DateField source="date" />
-          <EditButton basePath="/portable_devices" />
-          <DeleteButton basePath="/portable_devices" />
+          <EditButton  />
+          <DeleteButton  />
         </Datagrid>
       </List>
       <Box
