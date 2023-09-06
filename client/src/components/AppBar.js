@@ -30,13 +30,15 @@ export const MyAppBar = () => {
       userMenu={
         isAuthenticated ? (
           <UserMenu>
-            <MenuItem onClick={handleLogout}>
+            {/* <MenuItem onClick={handleLogout}> */}
+            <MenuItem>
               <ListItemIcon>
                 <ContactPageIcon fontSize="small" />
               </ListItemIcon>
               <ProfileButton />
             </MenuItem>
-            <MenuItem onClick={handleLogout}>
+            {/* <MenuItem onClick={handleLogout}> */}
+            <MenuItem>
               <ListItemIcon>
                 <Face6Icon fontSize="small" />
               </ListItemIcon>
