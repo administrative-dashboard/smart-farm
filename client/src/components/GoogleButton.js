@@ -5,7 +5,7 @@ import { useMediaQuery, useTheme } from "@mui/material";
 import { saveTokenToCookies } from "../providers/authUtils"
 import axios from "axios";
 import googleLogo from "../assets/static/googleLogo.svg";
-import authPovider from "../providers/authPovider";
+import { authProvider } from "../providers/authPovider";
 
 
 export const GoogleButton = () => {
@@ -16,7 +16,7 @@ export const GoogleButton = () => {
   const login = useLogin();
   const handleLogin = () => {
     setLoading(true);
-   authPovider.login({});
+   authProvider.login({});
   };
 
 

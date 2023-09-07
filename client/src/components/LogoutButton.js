@@ -1,12 +1,12 @@
 import React from "react";
 import { Button, useRedirect } from "react-admin";
 import { Typography } from "@mui/material";
-import authPovider from "../providers/authPovider";
+import { authProvider } from "../providers/authPovider";
 
 export const LogoutButton = () => {
   const redirect = useRedirect();
   const handleClick = () => {
-    authPovider.logout({});
+    authProvider.logout({});
   };
   return (
     <Button onClick={handleClick}>

@@ -22,7 +22,7 @@ export const MyAppBar = () => {
 //   const handleLogout = () => {
 //     setIsAuthenticated((prevIsAuthenticated) => !prevIsAuthenticated);
 //   };
-// useAuthenticated();
+useAuthenticated();
   return (
     <AppBar
       color="inherit"

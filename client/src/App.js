@@ -62,7 +62,7 @@ import { UserCreate } from "./pages/CommunityManager/UserCreate";
 import { UserEdit } from "./pages/CommunityManager/UserEdit";
 import { BasicTableShow } from "./components/BasicTableShow";
 import { BasicTable } from "./components/BasicTable";
-import authPovider from "./providers/authPovider";
+import { authProvider } from "./providers/authPovider"
 import simpleRestProvider from 'ra-data-simple-rest';
 //const dataProvider = jsonServerProvider("http://localhost:5000");
 const dataProvider = simpleRestProvider("http://localhost:5000");
@@ -83,7 +83,7 @@ const App = () => {
         layout={MyLayout}
         dataProvider={dataProvider} 
         i18nProvider={i18nProvider}
-        // authProvider={authPovider}
+        // authProvider={authProvider}
       //  loginPage={Signup}
       >
         <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />
