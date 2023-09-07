@@ -11,7 +11,23 @@ export class OwnersPortableDevicesService {
     private readonly portableDeviceModel: typeof PortableDevice,
   ) {}
 
-  async getAllDevices(): Promise<PortableDevice[]> {
+  async getDevicesByUserId(userId: number): Promise<PortableDevice[]> {
+    try {
+      // Use findAll with a where condition to filter by user_id
+      const devices = await this.portableDeviceModel.findAll({
+        where: {
+          user_id: userId,
+        },
+      });
+
+      return devices;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
+  /* async getAllDevices(): Promise<PortableDevice[]> {
     return this.portableDeviceModel.findAll();
   }
 
@@ -21,7 +37,7 @@ export class OwnersPortableDevicesService {
 
   async getDeviceById(id: number): Promise<PortableDevice | null> {
     return this.portableDeviceModel.findByPk(id);
-  }
+  } */
 
   // Другие методы для работы с данными портативных устройств
 }

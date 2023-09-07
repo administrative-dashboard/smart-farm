@@ -1,53 +1,32 @@
 //owners-portable-devices.conroller.ts
 import { Controller, Get, Res } from '@nestjs/common';
 import { Response } from 'express';
+import { OwnersPortableDevicesService } from './owners-portable-devices.service'; // Adjust the path
 
 @Controller('portable_devices')
 export class PortableDevicesController {
+  constructor(private readonly ownersPortableDevicesService: OwnersPortableDevicesService) {}
+
   @Get()
-  getFixedDevices(@Res() res: Response) {
-    const portableDevices = [
-      {
-        "id": "1",
-        "name": "Device 2",
-        "type": "Type 1",
-        "description": "Description 1",
-        "quantity": 5,
-        "created_at" : "07.09.2023",
-        "can be shared?" : "yes",
-        "shared quantity" : 3
-      },
-      {
-        "id": "2",
-        "name": "Device 2",
-        "type": "Type 2",
-        "description": "Description 2",
-        "quantity": 10
-      },
-      {
-        "id": "3",
-        "name": "Device 3",
-        "type": "Type 3",
-        "description": "Description 3",
-        "quantity": 15
-      },
-      {
-        "date": "2023-09-06T19:00:18.739Z",
-        "name": "asdas",
-        "type": "das",
-        "description": "das",
-        "quantity": 1,
-        "id": "pz9u3FN"
-      }
-    ];
+  async getPortableDevices(@Res() res: Response) {
+    try {
+      // Replace 'userIdFromToken' with the actual user ID from the JWT token
+      const userIdFromToken = 123;
 
-    // Calculate the total number of items (if available)
-    const totalItems = portableDevices.length;
+      // Fetch the portable devices data for the user
+      const portableDevices = await this.ownersPortableDevicesService.getDevicesByUserId(userIdFromToken);
 
-    // Set the Content-Range header
-    res.header('Content-Range', `items 0-${totalItems - 1}/${totalItems}`);
+      // Calculate the total number of items (if available)
+      const totalItems = portableDevices.length;
 
-    // Send the JSON response
-    return res.json(portableDevices);
+      // Set the Content-Range header
+      res.header('Content-Range', `items 0-${totalItems - 1}/${totalItems}`);
+
+      // Send the JSON response with the retrieved data
+      return res.json(portableDevices);
+    } catch (error) {
+      // Handle any errors, e.g., return an error response
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
   }
 }
