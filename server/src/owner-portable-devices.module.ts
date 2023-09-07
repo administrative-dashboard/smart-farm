@@ -1,11 +1,10 @@
-// auth/auth.module.ts
 import { Module } from '@nestjs/common';
-import { PortableDevicesController } from './owners-portable-devices.controller';
+import { SequelizeModule } from '@nestjs/sequelize';
 import { OwnersPortableDevicesService } from './owners-portable-devices.service';
+import { OwnerPortableDevice } from './database/models/owners_portable_devices.model '; // Adjust the path
 
 @Module({
-  imports: [],
-  controllers: [PortableDevicesController],
+  imports: [SequelizeModule.forFeature([OwnerPortableDevice])], 
   providers: [OwnersPortableDevicesService],
 })
-export class OwnerPortableDeviceModule { }
+export class OwnerPortableDeviceModule {}

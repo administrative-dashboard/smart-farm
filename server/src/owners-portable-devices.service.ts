@@ -1,17 +1,17 @@
 //owners-portable-devices.service
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { PortableDevice } from './database/models/portable_devices.model '; // Подставьте путь к модели вашего портативного устройства
+import { OwnerPortableDevice } from './database/models/owners_portable_devices.model ';  // Подставьте путь к модели вашего портативного устройства
 import { Model } from 'sequelize-typescript';
 
 @Injectable()
 export class OwnersPortableDevicesService {
   constructor(
-    @InjectModel(PortableDevice)
-    private readonly portableDeviceModel: typeof PortableDevice,
+    @InjectModel(OwnerPortableDevice)
+    private readonly portableDeviceModel: typeof OwnerPortableDevice,
   ) {}
 
-  async getDevicesByUserId(userId: number): Promise<PortableDevice[]> {
+  async getDevicesByUserId(userId: number): Promise<OwnerPortableDevice[]> {
     try {
       // Use findAll with a where condition to filter by user_id
       const devices = await this.portableDeviceModel.findAll({
