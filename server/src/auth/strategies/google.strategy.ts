@@ -47,8 +47,9 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     // Generate JWT token
     const jwtPayload = {
       email: user.email,
-      id: user.id,
+      user_id: user.id,
       role: user.roles[0]?.value || 'EMPLOYEE',
+      accessToken
     };
     const jwtToken = jwt.sign(jwtPayload, process.env.JWT_SECRET);
     // res.header('Set-Cookie', `jwt=${jwtToken}; HttpOnly; Path=/`);

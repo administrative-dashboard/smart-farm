@@ -3,6 +3,7 @@ import { Column, Model, Table, DataType, ForeignKey, HasOne } from 'sequelize-ty
 import { User } from './users.model';
 import { PortableDevice } from './portable_devices.model ';
 import { ScheduleDevice } from './schedules_devices.model';
+import { OwnerPortableDevice } from './owners_portable_devices.model ';
 
 enum RequestStatus {
   New = 'new',
@@ -34,7 +35,6 @@ export class DeviceRequestHistory extends Model<DeviceRequestHistory> {
   @Column
   user_id: number;
 
-  @ForeignKey(() => PortableDevice)
   @Column
   device_id: number;
 

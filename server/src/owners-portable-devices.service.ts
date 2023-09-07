@@ -1,3 +1,4 @@
+//owners-portable-devices.service
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { PortableDevice } from './database/models/portable_devices.model '; // Подставьте путь к модели вашего портативного устройства

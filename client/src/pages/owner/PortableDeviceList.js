@@ -30,7 +30,7 @@ const deviceFilter = [
 export const PortableDeviceList = (props) => {
  
   const [data, setData] = useState([]);
-  useEffect(() => {
+  /* useEffect(() => {
     // Отправляем запрос на сервер для получения данных
     Axios.get("http://localhost:5000/portable_devices") // Замените "ВАШ_СЕРВЕР_URL_ЗДЕСЬ" на URL вашего сервера
       .then((response) => {
@@ -42,7 +42,8 @@ export const PortableDeviceList = (props) => {
         console.error("Ошибка при загрузке данных: ", error);
       })
       
-  }, []);
+  }, []); */
+
   return (
     <>
       <ResetFilters />

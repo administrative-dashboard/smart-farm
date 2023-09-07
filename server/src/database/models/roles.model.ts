@@ -3,6 +3,7 @@ import { Column, Model, Table, BelongsToMany } from 'sequelize-typescript';
 import { UserRole } from './users_roles';
 import { RolePermission } from './roles_perms.model';
 import { User } from './users.model';
+import { Permission } from './permissions.model';
 
 @Table({ tableName: 'roles', timestamps: false })
 export class Role extends Model<Role> {
@@ -18,6 +19,6 @@ export class Role extends Model<Role> {
   @BelongsToMany(() => User, () => UserRole)
   users: User[];
 
-  @BelongsToMany(() => Role, () => RolePermission)
-  roles: Role[];
+  @BelongsToMany(() => Permission, () => RolePermission)
+  permissions: Permission[];
 }
