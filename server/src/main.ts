@@ -22,6 +22,7 @@ async function start() {
     origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
+    exposedHeaders: ['Content-Range'],
   });
 
   await app.listen(PORT, () => {

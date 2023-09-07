@@ -32,7 +32,7 @@ export const PortableDeviceList = (props) => {
   const [data, setData] = useState([]);
   useEffect(() => {
     // Отправляем запрос на сервер для получения данных
-    Axios.get("http://localhost:5000/fixed_devices") // Замените "ВАШ_СЕРВЕР_URL_ЗДЕСЬ" на URL вашего сервера
+    Axios.get("http://localhost:5000/portable_devices") // Замените "ВАШ_СЕРВЕР_URL_ЗДЕСЬ" на URL вашего сервера
       .then((response) => {
         setData(response.data); // Обновляем состояние данными с сервера
         

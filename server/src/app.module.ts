@@ -24,7 +24,7 @@ import { AuthModule } from './auth/auth.module';
 import { DeviceUsageStatisticsCommunities } from './database/models/device_usage_statistics_communities.model';
 import { DeviceUsageStatisticsFields } from './database/models/device_usage_statistics_fields.model';
 import { DeviceUsageStatisticsGreenhouses } from './database/models/device_usage_statistics_greenhouses.model';
-
+import { PortableDevicesController } from './owners-portable-devices.controller';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -61,7 +61,13 @@ import { DeviceUsageStatisticsGreenhouses } from './database/models/device_usage
     }),
     AuthModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController,PortableDevicesController],
   providers: [AppService],
 })
+/* @Module({
+  imports: [],
+  controllers: [FixedDevicesController], // Include the controller here
+  providers: [],
+}) */
+
 export class AppModule {}
