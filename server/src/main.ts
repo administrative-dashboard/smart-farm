@@ -5,8 +5,8 @@ import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { config } from 'dotenv';
+import { Sequelize } from 'sequelize'; // Import Sequelize
 config();
-
 async function start() {
   const PORT = process.env.PORT || 5001;
   const app = await NestFactory.create(AppModule);
@@ -24,10 +24,26 @@ async function start() {
     credentials: true,
     exposedHeaders: ['Content-Range'],
   });
-
-  await app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-  });
+  try {
+    // Create a Sequelize instance to check database connectivity
+    const sequelize = new Sequelize({
+      dialect: 'postgres',
+      host: process.env.PG_HOST,
+      port: Number(process.env.PG_PORT),
+      username: process.env.PG_USERNAME,
+      password: process.env.PG_PASSWORD,
+      database: process.env.PG_DATABASE,
+    });
+    // Test the database connection
+    await sequelize.authenticate();
+    console.log('Database connection has been established successfully.');
+    // Start the Nest.js application
+    await app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error('Unable to connect to the database:', error.message);
+    process.exit(1); // Exit the application with an error code
+  }
 }
-
 start();

@@ -19,12 +19,13 @@ export class OwnersPortableDevicesService {
           user_id: userId,
         },
         attributes: [
+          [Sequelize.literal('ROW_NUMBER() OVER (ORDER BY "portable_devices"."id")'), 'id'],
+          [Sequelize.col('portable_devices.name'), 'device_name'],
+          [Sequelize.col('portable_devices.type'), 'device_type'],
           'quantity',
           'created_at',
           'is_shared',
           'shared_quantity',
-          [Sequelize.col('portable_devices.name'), 'DeviceName'],
-          [Sequelize.col('portable_devices.type'), 'DeviceType'],
         ],
         include: [{
           model: PortableDevice,
