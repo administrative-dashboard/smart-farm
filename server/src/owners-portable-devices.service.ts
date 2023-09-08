@@ -9,12 +9,12 @@ import { Sequelize } from 'sequelize';
 export class OwnersPortableDevicesService {
   constructor(
     @InjectModel(OwnerPortableDevice)
-    private readonly portableDeviceModel: typeof OwnerPortableDevice,
+    private readonly OwnerPortableDeviceModel: typeof OwnerPortableDevice,
   ) {}
 
   async getDevicesByUserId(userId: number): Promise<any[]> {
     try {
-      const devices = await this.portableDeviceModel.findAll({
+      const devices = await this.OwnerPortableDeviceModel.findAll({
         where: {
           user_id: userId,
         },
@@ -27,14 +27,11 @@ export class OwnersPortableDevicesService {
           [Sequelize.col('portable_devices.type'), 'DeviceType'],
         ],
         include: [{
-          model: PortableDevice, 
-          // required : true,
-          // attributes: ['name', 'type'],
-          //as: 'portable_devices', 
-
+          model: PortableDevice,
+          attributes: [], 
         }],
+        
       });
-  
       return devices;
     } catch (error) {
       throw error;
