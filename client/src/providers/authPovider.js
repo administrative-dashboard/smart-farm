@@ -1,26 +1,47 @@
-import { fetchUtils } from 'react-admin';
-import Cookies from 'js-cookie';
+// Import necessary libraries and modules
+import { useState, useEffect } from 'react';
+import Cookies from 'universal-cookie';
+import axios from 'axios';
 
 const API_URL = 'http://localhost:5000';
 
-const httpClient = fetchUtils.fetchJson;
+const httpClient = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  withCredentials: true,
+});
+
+
+const cookies = new Cookies();
+
 
 export const authProvider = {
+
+  user: null,
+
+  // Use the useEffect hook to retrieve the JWT token when the component mounts
+  initializeUser: () => {
+    // Retrieve the JWT token when the component mounts
+    const jwtToken = cookies.get('jwt');
+    console.log(jwtToken)
+    authProvider.user = jwtToken;
+  },
+
   async login() {
     window.location.href = `${API_URL}/google/redirect`;
+    console.log(authProvider.user+"sdfcgvbh")
   },
 
   async checkAuth() {
-    // Check if the user is authenticated by verifying the presence of the JWT token in cookies
-    const jwtToken = Cookies.get('jwt');
+    const jwtToken = authProvider.user; 
     if (!jwtToken) {
       return Promise.reject({ message: 'Not authenticated' });
     }
 
-    // Fetch user information from the server
     try {
-      const response = await httpClient(`${API_URL}/user-info`, {
-        method: 'GET',
+      const response = await httpClient.get('/user/info', {
         headers: {
           Authorization: `Bearer ${jwtToken}`,
         },
@@ -43,7 +64,11 @@ export const authProvider = {
   },
 
   async logout() {
-    Cookies.remove('jwt');
+    // Cookies.remove('jwt');
     window.location.href = `${API_URL}/google/logout`;
+    // authProvider.user = null;
   },
 };
+
+// Call initializeUser to populate the user state when the component mounts
+authProvider.initializeUser();

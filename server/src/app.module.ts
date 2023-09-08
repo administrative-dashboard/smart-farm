@@ -29,6 +29,7 @@ import { DeviceUsageStatisticsGreenhouses } from './database/models/device_usage
 import { PortableDevicesController } from './owners-portable-devices.controller';
 import { OwnersPortableDevicesService } from './owners-portable-devices.service';
 import { OwnerPortableDeviceModule } from './owner-portable-devices.module';
+import { UserModule } from './user/user.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -66,6 +67,7 @@ import { OwnerPortableDeviceModule } from './owner-portable-devices.module';
     }),
     AuthModule,
     OwnerPortableDeviceModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

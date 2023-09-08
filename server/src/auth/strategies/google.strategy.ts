@@ -52,7 +52,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       accessToken
     };
     const jwtToken = jwt.sign(jwtPayload, process.env.JWT_SECRET);
-    // res.header('Set-Cookie', `jwt=${jwtToken}; HttpOnly; Path=/`);
+    // 
 
     return { user, jwtToken };
   }
