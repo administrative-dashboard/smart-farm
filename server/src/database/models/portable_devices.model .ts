@@ -18,14 +18,14 @@ export class PortableDevice extends Model<PortableDevice> {
   @Column({ allowNull: false })
   type: string;
 
-  // @HasMany(() => OwnerPortableDevice)
-  // users: User[];
-  @HasMany(() => DeviceUsageStatisticsCommunities)
-  device_usage_statistics_communities: DeviceUsageStatisticsCommunities;
+  //  @HasMany(() => OwnerPortableDevice)
+  //  users: User[];
+  // @HasMany(() => DeviceUsageStatisticsCommunities)
+  // device_usage_statistics_communities: DeviceUsageStatisticsCommunities;
 
-  @HasMany(() => DeviceUsageStatisticsFields)
-  device_usage_statistics_fields: DeviceUsageStatisticsFields;
+  // @HasMany(() => DeviceUsageStatisticsFields)
+  // device_usage_statistics_fields: DeviceUsageStatisticsFields;
 
-  @HasMany(() => DeviceUsageStatisticsGreenhouses)
-  device_usage_statistics_greenhouses: DeviceUsageStatisticsGreenhouses;
+  // @HasMany(() => DeviceUsageStatisticsGreenhouses)
+  // device_usage_statistics_greenhouses: DeviceUsageStatisticsGreenhouses;
 }

@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { OwnerPortableDevice } from './database/models/owners_portable_devices.model ';  // Подставьте путь к модели вашего портативного устройства
 import { Model } from 'sequelize-typescript';
 import { PortableDevice } from './database/models/portable_devices.model ';  // Подставьте путь к модели ваших портативных устройств
+import { Sequelize } from 'sequelize';
 
 @Injectable()
 export class OwnersPortableDevicesService {
@@ -22,12 +23,15 @@ export class OwnersPortableDevicesService {
           'created_at',
           'is_shared',
           'shared_quantity',
+          [Sequelize.col('portable_devices.name'), 'DeviceName'],
+          [Sequelize.col('portable_devices.type'), 'DeviceType'],
         ],
         include: [{
           model: PortableDevice, 
-          required : true,
-          attributes: ['name', 'type'],
-          as: 'portableDevice', 
+          // required : true,
+          // attributes: ['name', 'type'],
+          //as: 'portable_devices', 
+
         }],
       });
   
@@ -36,5 +40,4 @@ export class OwnersPortableDevicesService {
       throw error;
     }
   }
-  
 }

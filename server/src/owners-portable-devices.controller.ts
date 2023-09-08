@@ -1,5 +1,5 @@
 //owners-portable-devices.conroller.ts
-import { Controller, Get, Res } from '@nestjs/common';
+import { Controller, Get, Req, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { OwnersPortableDevicesService } from './owners-portable-devices.service'; // Adjust the path
 
@@ -25,6 +25,7 @@ export class PortableDevicesController {
       // Send the JSON response with the retrieved data
       return res.json(portableDevices);
     } catch (error) {
+      console.log(error);
       // Handle any errors, e.g., return an error response
       res.status(500).json(error);
     }
