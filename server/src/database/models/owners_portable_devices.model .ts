@@ -1,4 +1,4 @@
-// users.model.ts
+// owners_portable_devices.model.ts
 import { Column, Model, Table, ForeignKey, HasMany } from 'sequelize-typescript';
 import { User } from './users.model';
 import { DeviceRequestHistory } from './device_requests_history.model';
@@ -35,6 +35,4 @@ export class OwnerPortableDevice extends Model<OwnerPortableDevice> {
   @Column
   portable_device_id: number;
 
-
-  
 }
