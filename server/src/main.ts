@@ -19,7 +19,8 @@ async function start() {
     })
   );
   app.enableCors({
-    origin: '*',
+    // origin: '*',
+    origin: `${process.env.CLIENT_URL}`,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
     exposedHeaders: ['Content-Range'],
