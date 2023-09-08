@@ -11,7 +11,7 @@ export class PortableDevicesController {
   async getPortableDevices(@Res() res: Response) {
     try {
       // Replace 'userIdFromToken' with the actual user ID from the JWT token
-      const userIdFromToken = 123;
+      const userIdFromToken = 1;
 
       // Fetch the portable devices data for the user
       const portableDevices = await this.ownersPortableDevicesService.getDevicesByUserId(userIdFromToken);
@@ -26,7 +26,7 @@ export class PortableDevicesController {
       return res.json(portableDevices);
     } catch (error) {
       // Handle any errors, e.g., return an error response
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json(error);
     }
   }
 }

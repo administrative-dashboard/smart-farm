@@ -27,6 +27,6 @@ export class PortableDevice extends Model<PortableDevice> {
   @HasMany(() => DeviceUsageStatisticsGreenhouses)
   device_usage_statistics_greenhouses: DeviceUsageStatisticsGreenhouses;
 
-  @BelongsToMany(() => User, () => OwnerPortableDevice)
-  users: User[];
+  @HasMany(() => OwnerPortableDevice)
+  owners_portable_devices: OwnerPortableDevice[];
 }
