@@ -34,8 +34,7 @@ export class OwnerPortableDevice extends Model<OwnerPortableDevice> {
   @ForeignKey(() => PortableDevice)
   @Column
   portable_device_id: number;
-  // @BelongsToMany(() => PortableDevice, () => OwnerPortableDevice)
-  // portable_devices: PortableDevice[];
+  
   @BelongsTo(() => PortableDevice)
   declare portable_devices: PortableDevice;
   
