@@ -2,11 +2,10 @@ import React from "react";
 import { Button, useRedirect } from "react-admin";
 import { Typography } from "@mui/material";
 import { authProvider } from "../providers/authPovider";
-
 export const LogoutButton = () => {
   const redirect = useRedirect();
   const handleClick = () => {
-    authProvider.logout({});
+    authProvider.logout(); // Remove the empty object argument
   };
   return (
     <Button onClick={handleClick}>

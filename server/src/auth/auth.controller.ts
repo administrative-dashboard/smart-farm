@@ -1,8 +1,10 @@
+//authController.ts
 import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
 import { UserService } from 'src/user/user.service';
+
 
 @Controller('google')
 export class AuthController {
@@ -29,9 +31,15 @@ export class AuthController {
       expires: new Date(expirationTimeInSeconds * 1000) 
     });
 
-  //  res.json(user);
+
 
     res.redirect(`${process.env.CLIENT_URL}/contact`);
+  }
+  @Get('logout')
+  async logout(@Req() req, @Res() res: Response) {
+    res.clearCookie('token');
+
+    res.redirect(`${process.env.CLIENT_URL}`);
   }
 
   @Get('info')
