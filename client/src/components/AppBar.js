@@ -17,6 +17,7 @@ import { ProfileButton } from "./ProfileButton";
 import axios from "axios";
 import { authProvider } from "../providers/authPovider";
 import { API_URL } from "../consts";
+import Cookies from "universal-cookie";
 
 
 
@@ -25,6 +26,7 @@ export const MyAppBar = () => {
   const isAuthenticated = useAuthenticated()
 
   console.log("------" + localStorage.getItem('jwt'))
+// console.log("------" + Cookies.get('jwt'))
 
 
   React.useEffect(() => {
