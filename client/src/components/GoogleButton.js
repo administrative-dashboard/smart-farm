@@ -1,20 +1,20 @@
 import React, { useState } from "react";
-import { Button, useAuthProvider, useLogin, useRedirect } from "react-admin";
+import { Button } from "react-admin";
 import { useMediaQuery, useTheme } from "@mui/material";
 import googleLogo from "../assets/static/googleLogo.svg";
 import { authProvider } from "../providers/authPovider";
 
 export const GoogleButton = () => {
-  const redirect = useRedirect();
+//   const redirect = useRedirect();
   const theme = useTheme();
   const isMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
   const [loading, setLoading] = useState(false);
-  const login = useLogin();
-
+//   const login = useLogin();
+  
   const handleLogin = () => {
     setLoading(true);
     authProvider.login(); 
-    authProvider.checkAuth()
+    // authProvider.checkAuth()
   };
 
   return (

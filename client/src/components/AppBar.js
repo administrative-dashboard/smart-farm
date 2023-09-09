@@ -1,4 +1,3 @@
-//AppBar.js
 import * as React from "react";
 import {
   AppBar,
@@ -15,26 +14,50 @@ import { Logo } from "./LogoButton";
 import { SigninButton } from "./SigninButton";
 import { LogoutButton } from "./LogoutButton";
 import { ProfileButton } from "./ProfileButton";
+import axios from "axios";
+import { authProvider } from "../providers/authPovider";
+import { API_URL } from "../consts";
+
+
 
 export const MyAppBar = () => {
-//   const [isAuthenticated, setIsAuthenticated] = React.useState(true);
+  const [user, setUser] = React.useState(null);
+  const isAuthenticated = useAuthenticated()
 
-//   const handleLogout = () => {
-//     setIsAuthenticated((prevIsAuthenticated) => !prevIsAuthenticated);
-//   };
-useAuthenticated();
+  console.log("------" + localStorage.getItem('jwt'))
+
+
+  React.useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/info`);
+        setUser(response.data); // Assuming your backend provides user information at this endpoint
+      } catch (error) {
+        // Handle error fetching user info
+        console.error("Error fetching user info:", error);
+      }
+    };
+
+    if (isAuthenticated) {
+      fetchUserInfo(); 
+    }
+  }, [isAuthenticated]);
+
+  // Remove this extra brace
+  // };
+
   return (
     <AppBar
       color="inherit"
       sx={{ p: 0 }}
       userMenu={
-        // isAuthenticated ? (
+        isAuthenticated ? (
           <UserMenu>
             <MenuItem>
               <ListItemIcon>
                 <ContactPageIcon fontSize="small" />
               </ListItemIcon>
-              <ProfileButton />
+              <ProfileButton user={user} /> {/* Pass user data to ProfileButton */}
             </MenuItem>
             <MenuItem>
               <ListItemIcon>
@@ -43,9 +66,9 @@ useAuthenticated();
               <LogoutButton />
             </MenuItem>
           </UserMenu>
-        // ) : (
-        //   false
-        // )
+        ) : (
+          false
+        )
       }
     >
       <Logo />
@@ -56,7 +79,7 @@ useAuthenticated();
           { locale: "am", name: "Հայերեն" },
         ]}
       />
-      {/* {isAuthenticated ? null : <SigninButton />} */}
+      {isAuthenticated ? null : <SigninButton />}
     </AppBar>
   );
 };

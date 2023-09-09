@@ -64,8 +64,10 @@ import { BasicTableShow } from "./components/BasicTableShow";
 import { BasicTable } from "./components/BasicTable";
 import { authProvider } from "./providers/authPovider"
 import simpleRestProvider from 'ra-data-simple-rest';
-//const dataProvider = jsonServerProvider("http://localhost:5000");
-const dataProvider = simpleRestProvider("http://localhost:5000");
+import GoogleLoginComponent from "./components/Gooogle";
+import { API_URL } from "./consts";
+//const dataProvider = jsonServerProvider(API_URL);
+const dataProvider = simpleRestProvider(API_URL);
 
 // const dataProvider = jsonServerProvider(process.env.API_URL);
 // const dataProvider = simpleRestProvider(process.env.API_URL);
@@ -84,12 +86,12 @@ const App = () => {
         dataProvider={dataProvider} 
         i18nProvider={i18nProvider}
         // authProvider={authProvider}
-      //  loginPage={Signup}
+        // loginPage={Signup}
       >
         <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />
         <Resource name="signin" list={Signin} icon={VpnKeyIcon} />
-        <Resource name="signup" list={Signup} />
         <Route exact path="/signup" element={Signup} />
+        <Resource name="signup" list={Signup} />
         <Resource name="profile" list={Profile} icon={PermIdentityIcon} />
         <Resource name="adminPage" list={AdminDesktop} />
         <Resource name="chooseCommunity" list={ChooseCommunity} />

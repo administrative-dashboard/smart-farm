@@ -1,13 +1,24 @@
 // user.service.ts
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/database/models/users.model';
 @Injectable()
 export class UserService {
   // Ваша логика для получения информации о пользователе
-  async getUserInfo(user_id: string) {
-    // Здесь можно выполнить запрос к базе данных или другую логику для получения информации о пользователе
-    // Пример:
-    const user = await User.findOne({ where: { id: user_id } });
-    return user;
+
+  constructor(private readonly jwtService: JwtService) {}
+
+  async getUserInfo(jwtToken: string) {
+    try {
+      const payload = this.jwtService.verify(jwtToken);
+      // Assuming you have a UserService to retrieve user information
+      const user = User.findOne({ where: { id: payload.user_id } });
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+      return user;
+    } catch (error) {
+      throw new NotFoundException('Invalid token');
+    }
   }
 }
