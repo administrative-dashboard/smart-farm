@@ -37,6 +37,7 @@ export class PortableDevicesController {
   @Post('create')
   async createPortableDevice(@Body() deviceData: any) {
     try {
+      console.log(deviceData);
       const userIdFromToken = 1;
       // Call the service to create the portable device
       return await this.ownersPortableDevicesService.createDevice(userIdFromToken, deviceData);

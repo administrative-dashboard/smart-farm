@@ -45,16 +45,20 @@ export class OwnersPortableDevicesService {
         name: deviceData.name,
         type: deviceData.type,
       });
-
+  
+      // Determine the value of is_shared based on shared_quantity
+      const isShared = deviceData.shared_quantity > 0;
+  
       // Create an association between the owner and the newly created portable device
       const ownerPortableDevice = await this.OwnerPortableDeviceModel.create({
         user_id: userId, // Assuming you have the user_id in deviceData
         portable_device_id: newPortableDevice.id,
-        is_shared: deviceData.is_shared,
+        quantity: deviceData.quantity,
+        is_shared: isShared, // Set is_shared based on the condition
         shared_quantity: deviceData.shared_quantity,
         created_at: deviceData.created_at,
       });
-
+  
       return ownerPortableDevice;
     } catch (error) {
       console.log(">>>>>>>>>>>>>>", error);

@@ -27,7 +27,9 @@ export const PortableDeviceCreate = (props) => {
         shared_quantity: values.shared_quantity,
         created_at: values.created_at.toISOString(),
       };
-        await dataprovider.create("portable_devices/create", { data: deviceData });
+      console.log("aaaaaaaaaaaaaaaa");
+
+      
 
       // Notify the user of a successful creation
       notify("Device created successfully", "info");
