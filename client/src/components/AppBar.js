@@ -9,7 +9,6 @@ import {
 import { MenuItem, ListItemIcon } from "@mui/material";
 import ContactPageIcon from "@mui/icons-material/ContactPage";
 import Face6Icon from "@mui/icons-material/Face6";
-
 import { Logo } from "./LogoButton";
 import { SigninButton } from "./SigninButton";
 import { LogoutButton } from "./LogoutButton";
@@ -18,21 +17,23 @@ import axios from "axios";
 import { authProvider } from "../providers/authPovider";
 import { API_URL } from "../consts";
 import Cookies from "universal-cookie";
+import { getJwtTokenFromCookies, parseJwtTokenFromHeaders } from "../providers/authUtils";
 
-
+const cookies = new Cookies();
 
 export const MyAppBar = () => {
   const [user, setUser] = React.useState(null);
-  const isAuthenticated = useAuthenticated()
+  const isAuthenticated = useAuthenticated();
 
-  console.log("------" + localStorage.getItem('jwt'))
-// console.log("------" + Cookies.get('jwt'))
-
+  console.log("------" + getJwtTokenFromCookies());
+  // console.log("******" + parseJwtTokenFromHeaders());
 
   React.useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get(`${API_URL}/info`);
+        const response = await axios.get(`${API_URL}/info`, {
+          withCredentials: true, // Send cookies with the request
+        });
         setUser(response.data); // Assuming your backend provides user information at this endpoint
       } catch (error) {
         // Handle error fetching user info
@@ -44,9 +45,6 @@ export const MyAppBar = () => {
       fetchUserInfo(); 
     }
   }, [isAuthenticated]);
-
-  // Remove this extra brace
-  // };
 
   return (
     <AppBar

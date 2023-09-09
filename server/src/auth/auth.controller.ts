@@ -9,7 +9,7 @@ export class AuthController {
   constructor(
     private readonly jwtService: JwtService,
     private readonly userService: UserService,
-  ) {}
+  ) { }
 
   @Get('redirect')
   @UseGuards(AuthGuard('google'))
@@ -17,16 +17,19 @@ export class AuthController {
     const user = req.user;
 
     const jwtPayload = {
+      user_id: user.user_id,
       email: user.email,
       role: user.role,
       accessToken: user.accessToken,
-      user_id: user.user_id, // Access user_id from the payload
     };
-
-    // Sign the JWT token
+    const expirationTimeInSeconds = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7;
     const jwtToken = this.jwtService.sign(jwtPayload);
 
-    res.cookie('jwt', jwtToken);
+    res.cookie('token', jwtToken, { 
+      expires: new Date(expirationTimeInSeconds * 1000) 
+    });
+
+  //  res.json(user);
 
     res.redirect(`${process.env.CLIENT_URL}/contact`);
   }

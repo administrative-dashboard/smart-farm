@@ -1,11 +1,10 @@
 // googleStrategy.ts
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy, VerifyCallback } from 'passport-google-oauth20';
+import { Strategy } from 'passport-google-oauth20';
 import { config } from 'dotenv';
 import { User } from 'src/database/models/users.model';
 import { Role } from 'src/database/models/roles.model';
-import * as jwt from 'jsonwebtoken';
 
 config();
 
@@ -35,15 +34,14 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       },
       include: [Role],
     });
-  
+
     if (created) {
       const defaultRole = await Role.findOne({ where: { value: 'EMPLOYEE' } });
       if (defaultRole) {
         await user.$add('roles', defaultRole);
       }
     }
-  
-    // Include user_id in the payload
+
     const payload = {
       provider: 'google',
       email: emails[0].value,
@@ -51,7 +49,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       role: user.roles[0]?.value || 'EMPLOYEE',
       accessToken,
     };
-  
+
     return payload;
   }
-}  
+}
