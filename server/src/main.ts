@@ -3,7 +3,6 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
-import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { config } from 'dotenv';
 import { Sequelize } from 'sequelize'; // Import Sequelize
 config();
@@ -19,7 +18,7 @@ async function start() {
     })
   );
   app.enableCors({
-    origin: '*',
+    origin: 'http://localhost:3000', // Replace with the origin of your React Admin app
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
     exposedHeaders: ['Content-Range'],

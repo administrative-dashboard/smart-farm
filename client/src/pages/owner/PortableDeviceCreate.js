@@ -1,4 +1,3 @@
-//client//pages/owner/DeviceList.js
 import React from "react";
 import {
   Create,
@@ -7,46 +6,53 @@ import {
   NumberInput,
   DateInput,
   useNotify,
-  useRedirect,
+  useRedirect, // Import the hooks here
+  useDataProvider,
 } from "react-admin";
-import axios from "axios"; // Import Axios
 
 import { HomeRedirectButton } from "../../components/HomeRedirectButton";
 
 export const PortableDeviceCreate = (props) => {
+  const dataprovider = useDataProvider();
   const currentDate = new Date();
-  const notify = useNotify();
-  const redirect = useRedirect();
-
-  const onSuccess = (data) => {
-    notify(`Device created successfully`);
-    redirect("/portable_devices"); // Redirect to the portable devices list after successful creation
-  };
+  const notify = useNotify(); 
+  const redirect = useRedirect(); 
 
   const handleSave = async (values) => {
     try {
-      // Make a POST request to your NestJS API to create the device
-      await axios.post("http://your-nestjs-api-url/portable_devices", values);
-      onSuccess(); // Trigger onSuccess callback on success
+      const deviceData = {
+        name: values.name,
+        type: values.type,
+        quantity: values.quantity,
+        shared_quantity: values.shared_quantity,
+        created_at: values.created_at.toISOString(),
+      };
+        await dataprovider.create("portable_devices/create", { data: deviceData });
+
+      // Notify the user of a successful creation
+      notify("Device created successfully", "info");
+
+      // Redirect to the devices list page after creation
+      redirect("/portable_devices");
     } catch (error) {
+      console.log(">>>>>>>", error);
       console.error("Error creating device:", error);
-      // Handle error notification or display an error message to the user
     }
   };
 
   return (
     <>
-      <Create
+      <Create resource="portable_devices/create"
         title="Create a portable device"
         {...props}
-        save={handleSave} // Use the custom handleSave function
+        save={handleSave} 
       >
         <SimpleForm>
           <TextInput source="name" />
           <TextInput source="type" />
-          <TextInput source="description" />
           <NumberInput source="quantity" />
-          <DateInput source="date" defaultValue={currentDate} disabled />
+          <NumberInput source="shared_quantity" />
+          <DateInput source="created_at" defaultValue={currentDate} disabled />
         </SimpleForm>
       </Create>
       <HomeRedirectButton pageName="devices" title="Devices" />

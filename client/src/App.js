@@ -64,6 +64,7 @@ import { BasicTableShow } from "./components/BasicTableShow";
 import { BasicTable } from "./components/BasicTable";
 import authPovider from "./providers/authPovider";
 import simpleRestProvider from 'ra-data-simple-rest';
+import { fetchUtils } from "react-admin";
 //const dataProvider = jsonServerProvider("http://localhost:5000");
 const dataProvider = simpleRestProvider("http://localhost:5000");
 

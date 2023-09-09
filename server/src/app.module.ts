@@ -1,5 +1,6 @@
 //app.module.ts
-import { Module } from '@nestjs/common';
+import { Module, Logger } from '@nestjs/common';
+import { RouterModule } from '@nestjs/core';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
@@ -26,9 +27,11 @@ import { AuthModule } from './auth/auth.module';
 import { DeviceUsageStatisticsCommunities } from './database/models/device_usage_statistics_communities.model';
 import { DeviceUsageStatisticsFields } from './database/models/device_usage_statistics_fields.model';
 import { DeviceUsageStatisticsGreenhouses } from './database/models/device_usage_statistics_greenhouses.model';
-import { PortableDevicesController } from './owners-portable-devices.controller';
-import { OwnersPortableDevicesService } from './owners-portable-devices.service';
-import { OwnerPortableDeviceModule } from './owner-portable-devices.module';
+import { PortableDevicesController } from './portable-devices/portable-devices.controller';
+import { OwnersPortableDevicesService } from './owner-portable-devices/owners-portable-devices.service';
+import { OwnerPortableDeviceModule } from './owner-portable-devices/owner-portable-devices.module';
+import { PortableDevicesModule } from './portable-devices/portable-devices.module';
+import { Router } from 'express';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -66,9 +69,10 @@ import { OwnerPortableDeviceModule } from './owner-portable-devices.module';
     }),
     AuthModule,
     OwnerPortableDeviceModule,
+    PortableDevicesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, Logger],
 })
 /* @Module({
   imports: [],

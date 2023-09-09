@@ -1,7 +1,4 @@
-//client//pages/owner/DeviceList.js
 import React, { useEffect, useState } from "react";
-import Axios from "axios";
-
 import {
   List,
   Datagrid,
@@ -15,34 +12,23 @@ import {
   DateInput,
 } from "react-admin";
 import { Box } from "@mui/material";
+import { useDataProvider } from 'react-admin';
 
 import { HomeRedirectButton } from "../../components/HomeRedirectButton";
 import { ResetFilters } from "../../components/ResetFilters";
-import { useDataProvider } from 'react-admin';
+
 const deviceFilter = [
   <TextInput label="Search" source="q" alwaysOn />,
-  <TextInput label="name" source="name" />,
-  <TextInput label="type" source="type" />,
-  <DateInput label="date" source="date" />,
-  <NumberInput label="quantity" source="quantity" />,
+  <TextInput label="Name" source="device_name" />,
+  <TextInput label="Type" source="device_type" />,
+  <NumberInput label="Quantity" source="quantity" />,
+  <NumberInput label="Shared Quantity" source="shared_quantity" />,
+  <DateInput label="Date" source="created_at" />,
 ];
 
 export const PortableDeviceList = (props) => {
-  const dataProvider = useDataProvider(); 
+  const dataProvider = useDataProvider();
   const [data, setData] = useState([]);
-  /* useEffect(() => {
-    // Отправляем запрос на сервер для получения данных
-    Axios.get("http://localhost:5000/portable_devices") // Замените "ВАШ_СЕРВЕР_URL_ЗДЕСЬ" на URL вашего сервера
-      .then((response) => {
-        setData(response.data); // Обновляем состояние данными с сервера
-        
-        
-      })
-      .catch((error) => {
-        console.error("Ошибка при загрузке данных: ", error);
-      })
-      
-  }, []); */
 
   useEffect(() => {
     // Fetch data using the getList method
@@ -59,19 +45,19 @@ export const PortableDeviceList = (props) => {
         console.error('Error fetching data: ', error);
       });
   }, [dataProvider]);
+
   return (
     <>
       <ResetFilters />
       <List {...props} data={data} filters={deviceFilter} sx={{ color: "#38A505" }}>
         <Datagrid>
-          {/* <NumberField source="id" disable/> */}
-          <TextField source="name" />
-          <TextField source="type" />
-          <TextField source="description" />
-          <NumberField source="quantity" />
-          <DateField source="date" />
-          <EditButton  />
-          <DeleteButton  />
+          <TextField source="device_name" label="Name" />
+          <TextField source="device_type" label="Type" />
+          <NumberField source="quantity" label="Quantity" />
+          <NumberField source="shared_quantity" label="Shared Quantity" />
+          <DateField source="created_at" label="Date" />
+          <EditButton />
+          <DeleteButton />
         </Datagrid>
       </List>
       <Box
