@@ -14,14 +14,17 @@ import { HomeRedirectButton } from "../../components/HomeRedirectButton";
 export const PortableDeviceEdit = (props) => {
   return (
     <>
-      <Edit title="Edit a portable device" {...props}>
+      <Edit 
+        title="Edit a portable device" {...props}
+        resource="portable_devices"
+      >
         <SimpleForm>
           {/* <NumberInput source="id" disable /> */}
-          <TextInput source="name" />
-          <TextInput source="type" />
-          <TextInput source="description" />
-          <NumberInput source="quantity" />
-          <DateInput source="date" />
+          <TextInput source="device_name" label="Name" />
+          <TextInput source="device_type" label="Type" />
+          <NumberInput source="quantity" label="Quantity" />
+          <NumberInput source="shared_quantity" label="Shared Quantity" />
+          <DateInput source="created_at" label="Date" />
         </SimpleForm>
       </Edit>
       <Box

@@ -1,4 +1,4 @@
-import { Controller, Get, Req, Res, Post, Body, Logger } from '@nestjs/common'; // Import Logger
+import { Controller, Get, Put,Req,Delete, Res, Post, Body, Logger,Param } from '@nestjs/common'; // Import Logger
 import { Response, response } from 'express';
 import { OwnersPortableDevicesService } from './owners-portable-devices.service';
 import { HttpCode } from '@nestjs/common';
@@ -19,7 +19,7 @@ export class PortableDevicesController {
         await this.ownersPortableDevicesService.getDevicesByUserId(
           userIdFromToken
         );
-
+     
       // Calculate the total number of items (if available)
       const totalItems = portableDevices.length;
 
@@ -33,6 +33,54 @@ export class PortableDevicesController {
       res.status(500).json(error);
     }
   }
+ 
+  @Get(':id')
+  async getPortableDeviceById(@Param('id') id: string) {
+    try {
+      /* const userIdFromToken = 1; */
+
+      // Call the service to get the portable device by ID
+      const portableDevice = await this.ownersPortableDevicesService.getPortableDeviceById(
+        id
+        
+      );
+
+      if (!portableDevice) {
+        return { message: 'Portable device not found' };
+      }
+
+      return portableDevice;
+    } catch (error) {
+      console.log(error);
+      return { error: 'An error occurred' };
+    }
+  } 
+  
+  @Put(':id')
+  async updatePortableDeviceById(
+    @Param('id') id: string,
+    @Body() deviceData: any,
+  ) {
+    try {
+    
+
+      // Call the service to update the portable device by ID
+      const updatedPortableDevice = await this.ownersPortableDevicesService.updatePortableDeviceById(
+        id,
+        deviceData,
+      );
+
+      if (!updatedPortableDevice) {
+        return { message: 'Portable device not found' };
+      }
+
+      return updatedPortableDevice;
+    } catch (error) {
+      console.log(error);
+      return { error: 'An error occurred' };
+    }
+  }
+
 
   @Post('create')
   async createPortableDevice(@Body() deviceData: any) {
@@ -45,4 +93,25 @@ export class PortableDevicesController {
       console.log(error);
     }
   }
+ 
+
+  @Delete(':id')
+  async deletePortableDeviceById(@Param('id') id: string) {
+    try {
+      // Call the service method to delete the portable device by ID
+      const deleted = await this.ownersPortableDevicesService.deletePortableDeviceById(id);
+
+      if (!deleted) {
+        return { message: 'Portable device not found' };
+      }
+
+      return { message: 'Portable device deleted successfully' };
+    } catch (error) {
+      // Handle any errors, e.g., return an error response
+      console.log(error);
+      return { error: 'An error occurred' };
+    }
+  }
 }
+
+
