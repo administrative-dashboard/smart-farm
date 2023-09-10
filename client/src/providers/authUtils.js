@@ -12,29 +12,34 @@
     return null;
   }
   
-  const jwtToken = getJwtTokenFromCookies();
+  // const jwtToken = getJwtTokenFromCookies();
   
-  if (jwtToken) {
-    localStorage.setItem('jwtToken', jwtToken);
-  }
+  // if (jwtToken) {
+  //   localStorage.setItem('jwtToken', jwtToken);
+  // }
   
-  function parseJwtTokenFromHeaders(headers) {
-    const header = headers.get('Authorization');
-    if (header) {
-      const tokenMatch = header.match(/^Bearer (.+)$/);
-      if (tokenMatch) {
-        return tokenMatch[1];
+  function getUserInfoFromCookies() {
+    const jwtToken = getJwtTokenFromCookies();
+  
+    if (jwtToken) {
+      try {
+        // Decode the JWT token
+        const base64Url = jwtToken.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const decodedData = JSON.parse(atob(base64));
+  
+        // Extract user information
+        const { user_id, role, email } = decodedData;
+  
+        return { user_id, role, email };
+      } catch (error) {
+        console.error('Error decoding JWT token:', error);
       }
     }
+  
     return null;
   }
   
-  // function saveTokenToCookies(token) {
-  //   const expirationDate = new Date();
-  //   expirationDate.setDate(expirationDate.getDate() + 7);
-  
-  //   document.cookie = `jwt=${token}; expires=${expirationDate.toUTCString()}; path=/`;
-  // }
-  export { parseJwtTokenFromHeaders,  getJwtTokenFromCookies };
+  export { getUserInfoFromCookies,  getJwtTokenFromCookies };
   
   
