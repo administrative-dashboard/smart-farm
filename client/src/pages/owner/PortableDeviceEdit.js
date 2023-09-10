@@ -14,7 +14,7 @@ import { HomeRedirectButton } from "../../components/HomeRedirectButton";
 export const PortableDeviceEdit = (props) => {
   return (
     <>
-      <Edit title="Edit a portable device" {...props}>
+      <Edit title="Edit a portable device" {...props} resource="portable_devices">
         <SimpleForm>
           {/* <NumberInput source="id" disable /> */}
           <TextInput source="name" />

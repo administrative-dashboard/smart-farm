@@ -56,7 +56,7 @@ export const PortableDeviceList = (props) => {
           <NumberField source="quantity" label="Quantity" />
           <NumberField source="shared_quantity" label="Shared Quantity" />
           <DateField source="created_at" label="Date" />
-          <EditButton />
+          <EditButton resource="portable_devices"/>
           <DeleteButton resource="portable_devices"/>
         </Datagrid>
       </List>

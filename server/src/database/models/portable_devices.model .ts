@@ -20,6 +20,7 @@ export class PortableDevice extends Model<PortableDevice> {
 
   @HasMany(() => OwnerPortableDevice)
   users: User[];
+  
   // @HasMany(() => DeviceUsageStatisticsCommunities)
   // device_usage_statistics_communities: DeviceUsageStatisticsCommunities;
 

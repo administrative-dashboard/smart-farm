@@ -35,7 +35,11 @@ export class OwnerPortableDevice extends Model<OwnerPortableDevice> {
   @Column
   portable_device_id: number;
   
-  @BelongsTo(() => PortableDevice)
+  @BelongsTo(() => PortableDevice, {
+    onDelete: 'CASCADE',
+    targetKey: 'id',
+    foreignKey: 'portable_device_id'
+  })
   declare portable_devices: PortableDevice;
   
 

@@ -39,6 +39,8 @@ export class OwnersPortableDevicesService {
       throw error;
     }
   }
+
+
   async createDevice(
     userId: number,
     deviceData: any
@@ -67,18 +69,45 @@ export class OwnersPortableDevicesService {
     }
   }
   async deleteDevice(id: number): Promise<boolean> {
-    try{
-      const deletedDevice = await this.OwnerPortableDeviceModel.findByPk(id);
-    if(deletedDevice) {
-      await deletedDevice.destroy();
-      return true;
-    } 
-    else {
-      return false;
-    }
+    try {
+      const ownerPortableDevice = await this.OwnerPortableDeviceModel.findByPk(id);
+      if (ownerPortableDevice) {
+        const portableDeviceId = ownerPortableDevice.portable_device_id;
+        console.log(portableDeviceId);
+        await ownerPortableDevice.destroy();
+        if (portableDeviceId) {
+          const portableDevice = await PortableDevice.findByPk(portableDeviceId);
+          console.log(portableDevice);
+          if (portableDevice) {
+            await portableDevice.destroy();
+          }
+        }
+        return true;
+      } else {
+        return false;
+      }
     } catch (error) {
       console.error(error);
-      throw(error);
+      throw error;
+    }
+  }
+  
+
+  async updatePortableDevice(id: number, newData: any): Promise<boolean> {
+    try {
+      const editedDevice = await this.OwnerPortableDeviceModel.findByPk(id);
+  
+      if (editedDevice) {
+        // Update the device with the new data
+        await editedDevice.update(newData);
+        return true;
+      } else {
+        // The device with the given ID doesn't exist
+        return false;
+      }
+    } catch (error) {
+      console.error(error);
+      throw error; // Re-throw the error to handle it elsewhere if needed
     }
   }
 }
