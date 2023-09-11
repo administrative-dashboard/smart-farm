@@ -1,5 +1,13 @@
 // users.model.ts
-import { Column, Model, Table, HasOne, BelongsToMany, HasMany, BeforeCreate } from 'sequelize-typescript';
+import {
+  Column,
+  Model,
+  Table,
+  HasOne,
+  BelongsToMany,
+  HasMany,
+  BeforeCreate,
+} from 'sequelize-typescript';
 
 import { UserCommunity } from './users_communities.model';
 import { UserRole } from './users_roles';
@@ -14,13 +22,13 @@ import { OwnerPortableDevice } from './owners_portable_devices.model ';
 
 @Table({ tableName: 'users', timestamps: false })
 export class User extends Model<User> {
-    @BeforeCreate
-    static async setDefaultRole(instance: User) {
-      const defaultRole = await Role.findOne({ where: { value: 'EMPLOYEE' } });
-      if (defaultRole) {
-        instance.roles = [defaultRole];
-      }
+  @BeforeCreate
+  static async setDefaultRole(instance: User) {
+    const defaultRole = await Role.findOne({ where: { value: 'EMPLOYEE' } });
+    if (defaultRole) {
+      instance.roles = [defaultRole];
     }
+  }
 
   @Column({ primaryKey: true, autoIncrement: true, allowNull: false })
   id: number;
@@ -56,5 +64,5 @@ export class User extends Model<User> {
   fixed_devices: FixedDevice[];
 
   @HasMany(() => OwnerPortableDevice)
-  portable_devices: PortableDevice[];
+  owners_portable_devices: OwnerPortableDevice[];
 }

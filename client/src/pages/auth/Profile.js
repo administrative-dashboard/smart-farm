@@ -13,6 +13,7 @@ import { MyBar } from "../../components/Drawer";
 import { drawer_new_data } from "../../assets/static/mockData/new_data";
 import { useTheme } from "@mui/material/styles";
 import { Link } from "react-router-dom";
+
 export const Profile = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -24,9 +25,47 @@ export const Profile = () => {
     role: "",
   };
   const [formData, setFormData] = useState(initialFormData);
+  const [isArmenianPhoneNumber, setIsArmenianPhoneNumber] = useState(true);
+  const [isZeroAfterPrefix, setIsZeroAfterPrefix] = useState(false);
+  const [isMoreThan8Digits, setIsMoreThan8Digits] = useState(false);
+
   const handleReset = () => {
     setFormData(initialFormData);
+    setIsArmenianPhoneNumber(true);
+    setIsZeroAfterPrefix(false);
+    setIsMoreThan8Digits(false);
   };
+
+  const validatePhoneNumber = (phoneNumber) => {
+    const armenianPrefix = "+374";
+    return (
+      phoneNumber.startsWith(armenianPrefix) && !phoneNumber.startsWith("+3740")
+    );
+  };
+
+  const handlePhoneChange = (e) => {
+    const phoneNumber = e.target.value;
+    setFormData({ ...formData, phone: phoneNumber });
+
+    const isArmenian = validatePhoneNumber(phoneNumber);
+    setIsArmenianPhoneNumber(isArmenian);
+
+    if (phoneNumber.startsWith("+3740")) {
+      setIsZeroAfterPrefix(true);
+    } else {
+      setIsZeroAfterPrefix(false);
+    }
+
+    if (isArmenian) {
+      const digitsAfterPrefix = phoneNumber.substring(4);
+      if (digitsAfterPrefix.length > 8) {
+        setIsMoreThan8Digits(true);
+      } else {
+        setIsMoreThan8Digits(false);
+      }
+    }
+  };
+
   return (
     <Container>
       <Grid container spacing={2}>
@@ -80,10 +119,23 @@ export const Profile = () => {
               fullWidth
               margin="normal"
               value={formData.phone}
-              onChange={(e) =>
-                setFormData({ ...formData, phone: e.target.value })
-              }
+              onChange={handlePhoneChange}
+              placeholder="+374XXXXXX"
             />
+            {!isArmenianPhoneNumber ? (
+              <Typography variant="body2" color="error">
+                Phone number must start with "+374" and should not have "0"
+                after the prefix.
+              </Typography>
+            ) : isZeroAfterPrefix ? (
+              <Typography variant="body2" color="error">
+                "0" after "+374" is not allowed.
+              </Typography>
+            ) : isMoreThan8Digits ? (
+              <Typography variant="body2" color="error">
+                More than 8 digits are not allowed after "+374."
+              </Typography>
+            ) : null}
             <TextField
               variant="filled"
               label="Email"
@@ -105,12 +157,23 @@ export const Profile = () => {
                 component={Link}
                 to="/users"
                 variant="contained"
-                color="primary"
+                color={
+                  !isArmenianPhoneNumber ||
+                  isZeroAfterPrefix ||
+                  isMoreThan8Digits
+                    ? "error"
+                    : "primary"
+                }
                 sx={{
                   marginLeft: "10px",
                   backgroundColor: "#1F4700",
                   color: "white",
                 }}
+                disabled={
+                  !isArmenianPhoneNumber ||
+                  isZeroAfterPrefix ||
+                  isMoreThan8Digits
+                }
               >
                 Request
               </Button>
@@ -121,140 +184,3 @@ export const Profile = () => {
     </Container>
   );
 };
-
-/*import React, { useState } from 'react';
-import {
-  Box,
-  Button,
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  TextField,
-  Typography,
-  Grid,
-} from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import { SaveButton } from '../../components/SaveButton';
-import { CustomCancelButton } from '../../components/CancelButton';
-
-
-export const Profile = () => {
-  const [state, setState] = useState({
-    left: false,
-  });
-
-  const toggleDrawer = (open) => (event) => {
-    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-      return;
-    }
-    setState({ ...state, left: open });
-  };
-
-  const list = (
-    <Box
-      sx={{
-        width: 300,
-        color: 'white',
-      }}
-      role="presentation"
-      onClick={toggleDrawer(false)}
-      onKeyDown={toggleDrawer(false)}
-    >
-      <List>
-        <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemText primary="Profile Image" />
-          </ListItemButton>
-        </ListItem>
-
-        <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemText primary="My Profile" />
-          </ListItemButton>
-        </ListItem>
-
-        <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemText primary="About Us" />
-          </ListItemButton>
-        </ListItem>
-
-        <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemText primary="Info" />
-          </ListItemButton>
-        </ListItem>
-      </List>
-    </Box>
-  );
-
-  return (
-    <div>
-      <Button onClick={toggleDrawer(true)}>
-        <MenuIcon sx={{ color: '#1F4700' }} />
-      </Button>
-      <Drawer
-        PaperProps={{ sx: { backgroundColor: '#1F4700' } }}
-        anchor="left"
-        open={state.left}
-        onClose={toggleDrawer(false)}
-      >
-        {list}
-      </Drawer>
-
-      <Grid container spacing={10} alignItems="center">
-        <Grid item xs={6}>
-          <Grid container spacing={2}>
-            <Grid item xs={4}>
-              <Typography variant="subtitle1">Name</Typography>
-            </Grid>
-            <Grid item xs={8}>
-              <TextField variant="filled" color="primary" fullWidth />
-            </Grid>
-
-            <Grid item xs={4}>
-              <Typography variant="subtitle1">Community</Typography>
-            </Grid>
-            <Grid item xs={8}>
-              <TextField variant="filled" color="primary" fullWidth />
-            </Grid>
-
-            <Grid item xs={4}>
-              <Typography variant="subtitle1">Phone</Typography>
-            </Grid>
-            <Grid item xs={8}>
-              <TextField variant="filled" color="primary" fullWidth />
-            </Grid>
-
-            <Grid item xs={4}>
-              <Typography variant="subtitle1">Email</Typography>
-            </Grid>
-            <Grid item xs={8}>
-              <TextField variant="filled" color="primary" fullWidth />
-            </Grid>
-
-            <Grid item xs={4}>
-              <Typography variant="subtitle1">Role</Typography>
-            </Grid>
-            <Grid item xs={8}>
-              <TextField
-                variant="filled"
-                color="primary"
-                fullWidth
-                sx={{ background: '#78D819' }}
-              />
-            </Grid>
-          </Grid>
-        </Grid>
-
-        <Grid item xs={6}>
-          <SaveButton />
-          <CustomCancelButton/>
-          <CustomCancelButton/>
-        </Grid>
-      </Grid>
-    </div>
-  );
-};*/
