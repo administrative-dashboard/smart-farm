@@ -1,5 +1,5 @@
 // users_roles.model.ts
-import { Column, Model, Table, ForeignKey } from 'sequelize-typescript';
+import { Column, Model, Table, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import { User } from './users.model';
 import { Role } from './roles.model';
 
@@ -16,9 +16,9 @@ export class UserRole extends Model<UserRole> {
   @Column
   user_id: number;
 
-  // @BelongsTo(() => Role)
-  // declare roles: Role;
+  @BelongsTo(() => Role)
+  declare roles: Role;
 
-  // @BelongsTo(() => User)
-  // declare users: User;
+  @BelongsTo(() => User)
+  declare users: User;
 }

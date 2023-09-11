@@ -30,6 +30,7 @@ import { PortableDevicesController } from './owners-portable-devices.controller'
 import { OwnersPortableDevicesService } from './owners-portable-devices.service';
 import { OwnerPortableDeviceModule } from './owner-portable-devices.module';
 import { UserModule } from './user/user.module';
+import { CommunitiesModule } from './communities/communities.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -68,6 +69,7 @@ import { UserModule } from './user/user.module';
     AuthModule,
     OwnerPortableDeviceModule,
     UserModule,
+    CommunitiesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

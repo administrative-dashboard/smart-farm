@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   ThemeProvider,
   useMediaQuery,
@@ -11,17 +11,42 @@ import {
 import { SaveButton } from "../../components/SaveButton";
 import { theme } from "../../themes/theme";
 import signBack from "../../assets/static/signBack.png";
-const community = [
-  {
-    value: "Community1",
-    label: "Community1",
-  },
-  {
-    value: "Community2",
-    label: "Community2",
-  },
-];
+import axios from "axios";
+import { getUserInfoFromCookies } from "../../providers/authUtils";
+import { API_URL } from "../../consts";
+
 export const Contact = () => {
+  const user_id = getUserInfoFromCookies().user_id;
+  console.log(user_id)
+  const [selectedCommunity, setSelectedCommunity] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [communities, setCommunities] = useState([]);
+  useEffect(() => {
+    axios.get(`${API_URL}/communities/info`).then((response) => {
+      setCommunities(response.data)
+    });
+  }, []);
+
+  const handleSubmit = async (e) => {
+
+    e.preventDefault();
+
+    console.log("Before PUT request");
+    if (user_id) {
+    try {
+      const response = await axios.put(
+        `${API_URL}/user/updatephone/${user_id}`,
+        {
+          phone_number: phoneNumber,
+        }
+      );
+      console.log('User updated:', response.data);
+    }catch (error) {
+      console.error("Error updating user:", error);
+    }
+    console.log("After PUT request");
+
+  }}
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <ThemeProvider theme={theme}>
@@ -66,35 +91,41 @@ export const Contact = () => {
               </Typography>
             </>
           )}
-          <TextField
-            id="filled-select-community"
-            select
-            label="Select Community"
-            variant="filled"
-            color="primary"
-            sx={{
-              width: "100%",
-              mb: 3,
-            }}
-          >
-            {community.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            label="Phone number"
-            variant="filled"
-            color="primary"
-            placeholder="+374 XXXXXXXX"
-            sx={{ width: "100%", mb: 3 }}
-          />
-          <Box
-            sx={{ width: "100%", display: "flex", justifyContent: "center" }}
-          >
-            <SaveButton />
-          </Box>
+          <form   >
+            <TextField
+              id="filled-select-community"
+              select
+              label="Select Community"
+              variant="filled"
+              color="primary"
+              sx={{
+                width: "100%",
+                mb: 3,
+              }}
+              value={selectedCommunity}
+              onChange={(e) => setSelectedCommunity(e.target.value)}
+            >
+              {communities.map((community) => (
+                <MenuItem key={community.id} value={community.id}>
+                  {community.name}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              label="Phone number"
+              variant="filled"
+              color="primary"
+              placeholder="+374 XXXXXXXX"
+              sx={{ width: "100%", mb: 3 }}
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+            />
+            <Box
+              sx={{ width: "100%", display: "flex", justifyContent: "center" }}
+            >
+              <SaveButton onSubmit={handleSubmit}/>
+            </Box>
+          </form>
         </Box>
       </Grid>
     </ThemeProvider>
