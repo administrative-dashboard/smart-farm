@@ -60,7 +60,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       provider: 'google',
       email: emails[0].value,
       user_id: user.id, 
-      role: userRoles,
+      role: userRoles ,
       accessToken,
     };
 

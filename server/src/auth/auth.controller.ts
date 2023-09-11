@@ -24,7 +24,7 @@ export class AuthController {
       user_id: user.user_id,
       email: user.email,
       role: user.role,
-      // accessToken: user.accessToken,
+      accessToken: user.accessToken,
     };
 
     // Set the JWT expiration to 30 days

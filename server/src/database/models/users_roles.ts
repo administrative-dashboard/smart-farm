@@ -15,4 +15,10 @@ export class UserRole extends Model<UserRole> {
   @ForeignKey(() => User)
   @Column
   user_id: number;
+
+  // @BelongsTo(() => Role)
+  // declare roles: Role;
+
+  // @BelongsTo(() => User)
+  // declare users: User;
 }
