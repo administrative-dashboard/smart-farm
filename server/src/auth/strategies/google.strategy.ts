@@ -1,11 +1,10 @@
-//googleStrategy.ts
+// googleStrategy.ts
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy, VerifyCallback } from 'passport-google-oauth20';
+import { Strategy } from 'passport-google-oauth20';
 import { config } from 'dotenv';
 import { User } from 'src/database/models/users.model';
 import { Role } from 'src/database/models/roles.model';
-import * as jwt from 'jsonwebtoken';
 
 config();
 
@@ -23,8 +22,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   async validate(
     accessToken: string,
     refreshToken: string,
-    profile: any,
-    done: VerifyCallback,
+    profile: any
   ): Promise<any> {
     const { name, emails, photos } = profile;
     const [user, created] = await User.findOrCreate({
@@ -37,23 +35,35 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       include: [Role],
     });
 
-    if (created) {
+    if (created ) {
       const defaultRole = await Role.findOne({ where: { value: 'EMPLOYEE' } });
       if (defaultRole) {
         await user.$add('roles', defaultRole);
       }
     }
 
-    // Generate JWT token
-    const jwtPayload = {
-      email: user.email,
-      user_id: user.id,
-      role: user.roles[0]?.value || 'EMPLOYEE',
-      accessToken
-    };
-    const jwtToken = jwt.sign(jwtPayload, process.env.JWT_SECRET);
-    // res.header('Set-Cookie', `jwt=${jwtToken}; HttpOnly; Path=/`);
+    // if (!created) {
+    //   // User already exists, check if they have the new role, and add it if not
+    //   const newRoleValue = 'ADMIN'; // Replace with the desired new role value
+    //   const hasNewRole = user.roles.some((role) => role.value === newRoleValue);
 
-    return { user, jwtToken };
+    //   if (!hasNewRole) {
+    //     const newRole = await Role.findOne({ where: { value: newRoleValue } });
+    //     if (newRole) {
+    //       await user.$add('roles', newRole);
+    //     }
+    //   }
+    // }
+
+    const userRoles = user.roles.map((role) => role.value);
+    const payload = {
+      provider: 'google',
+      email: emails[0].value,
+      user_id: user.id, 
+      role: userRoles ,
+      accessToken,
+    };
+
+    return payload;
   }
 }

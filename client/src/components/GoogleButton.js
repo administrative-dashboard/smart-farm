@@ -1,24 +1,21 @@
-//googleButton.js
 import React, { useState } from "react";
-import { Button, useAuthProvider, useLogin, useRedirect } from "react-admin";
+import { Button } from "react-admin";
 import { useMediaQuery, useTheme } from "@mui/material";
-import { saveTokenToCookies } from "../providers/authUtils"
-import axios from "axios";
 import googleLogo from "../assets/static/googleLogo.svg";
-import authPovider from "../providers/authPovider";
-
+import { authProvider } from "../providers/authPovider";
 
 export const GoogleButton = () => {
-  const redirect = useRedirect();
+//   const redirect = useRedirect();
   const theme = useTheme();
   const isMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
   const [loading, setLoading] = useState(false);
-  const login = useLogin();
+//   const login = useLogin();
+  
   const handleLogin = () => {
     setLoading(true);
-   authPovider.login({});
+    authProvider.login(); 
+    // authProvider.checkAuth()
   };
-
 
   return (
     <Button

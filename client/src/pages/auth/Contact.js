@@ -87,6 +87,7 @@ export const Contact = () => {
             label="Phone number"
             variant="filled"
             color="primary"
+            placeholder="+374 XXXXXXXX"
             sx={{ width: "100%", mb: 3 }}
           />
           <Box

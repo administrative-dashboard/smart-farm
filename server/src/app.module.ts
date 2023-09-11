@@ -32,6 +32,7 @@ import { OwnersPortableDevicesService } from './owner-portable-devices/owners-po
 import { OwnerPortableDeviceModule } from './owner-portable-devices/owner-portable-devices.module';
 import { PortableDevicesModule } from './portable-devices/portable-devices.module';
 import { Router } from 'express';
+import { UserModule } from './user/user.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -70,6 +71,7 @@ import { Router } from 'express';
     AuthModule,
     OwnerPortableDeviceModule,
     PortableDevicesModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService, Logger],

@@ -42,6 +42,8 @@ export class User extends Model<User> {
 
   @BelongsToMany(() => Role, () => UserRole)
   roles: Role[];
+  // @HasMany(() => UserRole)
+  // roles: Role[];
 
   @HasMany(() => OwnerField)
   owners_fields: OwnerField;
@@ -55,6 +57,6 @@ export class User extends Model<User> {
   @BelongsToMany(() => FixedDevice, () => OwnerFixedDevice)
   fixed_devices: FixedDevice[];
 
-  @BelongsToMany(() => PortableDevice, () => OwnerPortableDevice)
-  portable_devices: PortableDevice[];
+  @HasMany(() => OwnerPortableDevice)
+  owners_portable_devices: OwnerPortableDevice[];
 }
