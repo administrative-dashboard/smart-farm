@@ -55,6 +55,6 @@ export class User extends Model<User> {
   @BelongsToMany(() => FixedDevice, () => OwnerFixedDevice)
   fixed_devices: FixedDevice[];
 
-  @BelongsToMany(() => PortableDevice, () => OwnerPortableDevice)
+  @HasMany(() => OwnerPortableDevice)
   portable_devices: PortableDevice[];
 }
