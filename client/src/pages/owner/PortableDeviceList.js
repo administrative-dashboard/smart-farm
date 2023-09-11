@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import {
   List,
   Datagrid,
@@ -16,6 +17,7 @@ import { useDataProvider } from 'react-admin';
 
 import { HomeRedirectButton } from "../../components/HomeRedirectButton";
 import { ResetFilters } from "../../components/ResetFilters";
+import { getUserInfoFromCookies } from "../../providers/authUtils";
 
 const deviceFilter = [
   <TextInput label="Search" source="q" alwaysOn />,
@@ -29,7 +31,8 @@ const deviceFilter = [
 export const PortableDeviceList = (props) => {
   const dataProvider = useDataProvider();
   const [data, setData] = useState([]);
-
+  const dataFromJwt=getUserInfoFromCookies();
+  const user_id=dataFromJwt.user_id;
   useEffect(() => {
     // Fetch data using the getList method
     dataProvider
