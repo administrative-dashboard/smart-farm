@@ -3,13 +3,14 @@ import { Controller, Get, Request, UseGuards, NotFoundException, Param, Post, Bo
 import { AuthGuard } from '@nestjs/passport';
 import { UserService } from './user.service';
 import { UserCommunityService } from './user-community.service';
+import { UserCommunity } from 'src/database/models/users_communities.model';
 
 @Controller('user')
 export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly userCommunityService: UserCommunityService,
-    ) {}
+  ) { }
 
   @Get('info/:userId')
   async getUserInfo(@Param('userId') userId: number) {
@@ -36,6 +37,22 @@ export class UserController {
     } catch (error) {
       console.error("Error updating phone number for user:", error);
       throw new NotFoundException('Error updating phone number for user');
+    }
+  }
+
+  @Post('community/:userId')
+  async addCommunity(
+    @Param('userId') userId: number,
+    @Body() userData: any,
+  ) {
+    try {
+      const newUserCommunity = new UserCommunity();
+      newUserCommunity.user_id = userId;
+      newUserCommunity.community_id = userData.community_id;
+      await newUserCommunity.save();
+      return newUserCommunity;
+    } catch (error) {
+      console.error('Error adding community for user:', error);
     }
   }
 }

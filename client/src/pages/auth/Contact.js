@@ -8,45 +8,58 @@ import {
   TextField,
   MenuItem,
 } from "@mui/material";
-import { SaveButton } from "../../components/SaveButton";
 import { theme } from "../../themes/theme";
 import signBack from "../../assets/static/signBack.png";
 import axios from "axios";
 import { getUserInfoFromCookies } from "../../providers/authUtils";
 import { API_URL } from "../../consts";
+import {
+  Button,
+  Form,
+  TextInput,
+  useNotify,
+  useRedirect
+} from "react-admin";
 
 export const Contact = () => {
-  const user_id = getUserInfoFromCookies().user_id;
-  console.log(user_id)
+  const notify = useNotify();
+  const redirect = useRedirect();
+  const userInfo = getUserInfoFromCookies();
+  const user_id = userInfo.user_id;
+  console.log("aa", user_id);
   const [selectedCommunity, setSelectedCommunity] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
   const [communities, setCommunities] = useState([]);
+
   useEffect(() => {
     axios.get(`${API_URL}/communities/info`).then((response) => {
       setCommunities(response.data)
     });
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleEdit = (data) => {
+    data.community_id = selectedCommunity;
+    data.user_id = user_id;
+    console.log("Form data:", data);
+    axios
+      .put(`${API_URL}/user/updatephone/${user_id}`, data)
+      .then(() => {
+        notify('Edited successfully', { type: 'success' });
+        redirect('list', 'dashboard');
+      })
+      .catch((error) => {
+        notify(`Error: ${error.message}`, 'error');
+      });
 
-    e.preventDefault();
+    axios
+      .post(`${API_URL}/user/community/${user_id}`, { community_id: selectedCommunity })
+      .then(() => {
+      })
+      .catch((error) => {
+      });
+  };
 
-    console.log("Before PUT request");
-    try {
-      const response = await axios.put(
-        `${API_URL}/user/updatephone/${user_id}`,
-        {
-          phone_number: phoneNumber,
-        }
-      );
-      console.log('User updated:', response.data);
-    }catch (error) {
-      console.error("Error updating user:", error);
-    }
-    console.log("After PUT request");
-
-  }
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <ThemeProvider theme={theme}>
       <Grid
@@ -90,7 +103,7 @@ export const Contact = () => {
               </Typography>
             </>
           )}
-          <form   >
+          <Form redirect="dashboard" onSubmit={handleEdit}>
             <TextField
               id="filled-select-community"
               select
@@ -110,21 +123,20 @@ export const Contact = () => {
                 </MenuItem>
               ))}
             </TextField>
-            <TextField
+            <TextInput
               label="Phone number"
               variant="filled"
               color="primary"
               placeholder="+374 XXXXXXXX"
               sx={{ width: "100%", mb: 3 }}
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
+              source="phone_number"
             />
             <Box
               sx={{ width: "100%", display: "flex", justifyContent: "center" }}
             >
-              <SaveButton onSubmit={handleSubmit}/>
+              <Button type="submit" sx={{ color: 'black', fontSize: '1rem' }}>Save</Button>
             </Box>
-          </form>
+          </Form>
         </Box>
       </Grid>
     </ThemeProvider>

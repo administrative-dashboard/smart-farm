@@ -3,7 +3,6 @@ import * as React from "react";
 import {
   AppBar,
   TitlePortal,
-  useAuthenticated,
   UserMenu,
   LocalesMenuButton,
 } from "react-admin";
@@ -15,9 +14,11 @@ import { SigninButton } from "./SigninButton";
 import { LogoutButton } from "./LogoutButton";
 import { ProfileButton } from "./ProfileButton";
 import axios from "axios";
-import { authProvider } from "../providers/authPovider";
 import { API_URL } from "../consts";
-import { getJwtTokenFromCookies, getUserInfoFromCookies } from "../providers/authUtils";
+import { 
+  getJwtTokenFromCookies, 
+  getUserInfoFromCookies 
+} from "../providers/authUtils";
 
 const MyCustomIcon = ({ profileImage }) => (
   <Avatar

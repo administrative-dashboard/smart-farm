@@ -96,6 +96,7 @@ const App = () => {
         <Resource name="adminPage" list={AdminDesktop} />
         <Resource name="chooseCommunity" list={ChooseCommunity} />
         <Resource name="chooseDevice" list={ChooseDevice} />
+        <Resource name="contact" list={Contact} />
         <Resource
           name="all_fixedDevices"
           list={FixedDeviceListAdm}

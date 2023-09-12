@@ -54,6 +54,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       user_id: user.id,
       role: roleValues,
       accessToken,
+      created,
     };
 
     return payload;
