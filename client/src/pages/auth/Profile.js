@@ -13,19 +13,55 @@ import { MyBar } from "../../components/Drawer";
 import { drawer_new_data } from "../../assets/static/mockData/new_data";
 import { useTheme } from "@mui/material/styles";
 import { Link } from "react-router-dom";
+import { getUserInfoFromCookies } from "../../providers/authUtils";
+import axios from "axios";
+import { API_URL } from "../../consts";
+import { Form, ImageInput, TextInput } from "react-admin";
 export const Profile = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const initialFormData = {
-    name: "",
-    community: "",
-    phone: "",
-    email: "",
-    role: "",
-  };
-  const [formData, setFormData] = useState(initialFormData);
+  const [user, setUser] = React.useState(null);
+
+  const userInfo = getUserInfoFromCookies();
+  console.log(userInfo)
+  const [formData, setFormData] = useState({});
+
+  React.useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const user_id = userInfo.user_id;
+        const response = await axios.get(`${API_URL}/user/info/${user_id}`);
+        setUser(response.data);
+        setFormData({
+          name: response.data.name,
+          phone: response.data.phone_number,
+          email: response.data.email,
+          image: response.data.profile_image,
+        });
+
+        const response2 = await axios.get(`${API_URL}/user/community/${user_id}`);
+        console.log(response2.data);
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          community: response2.data,
+        }));
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
+
+
   const handleReset = () => {
-    setFormData(initialFormData);
+    setFormData({
+      name: user?.name || "",
+      community: user?.community || "",
+      phone: user?.phone_number || "",
+      email: user?.email || "",
+      image: user?.profile_image || "",
+    });
   };
   return (
     <Container>
@@ -38,64 +74,84 @@ export const Profile = () => {
         <Grid item xs={12} md={isSmallScreen ? 12 : 9}>
           <Box p={2}>
             <Typography variant="h4" gutterBottom>
-              New Data
+              My Profile
             </Typography>
-            <TextField
-              variant="filled"
-              label="Name"
-              color="primary"
-              fullWidth
-              margin="normal"
-              value={formData.name}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
-            />
-            <TextField
-              variant="filled"
-              label="Profile image"
-              color="primary"
-              fullWidth
-              margin="normal"
-              value={formData.image}
-              onChange={(e) =>
-                setFormData({ ...formData, image: e.target.value })
-              }
-            />
-            <TextField
-              variant="filled"
-              label="Community"
-              color="primary"
-              fullWidth
-              margin="normal"
-              value={formData.community}
-              onChange={(e) =>
-                setFormData({ ...formData, community: e.target.value })
-              }
-            />
-            <TextField
-              variant="filled"
-              label="Phone"
-              color="primary"
-              fullWidth
-              margin="normal"
-              value={formData.phone}
-              onChange={(e) =>
-                setFormData({ ...formData, phone: e.target.value })
-              }
-            />
-            <TextField
-              variant="filled"
-              label="Email"
-              color="primary"
-              fullWidth
-              margin="normal"
-              value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-            />
-
+            {/* <Form redirect="dashboard" onSubmit={handleEdit}></Form> */}
+            <Form redirect="dashboard" >
+              <TextInput
+                variant="filled"
+                label="Name"
+                color="primary"
+                fullWidth
+                margin="normal"
+                source="name"
+                defaultValue={formData.name}
+                type="text"
+              // onChange={(e) =>
+              //   setFormData({ ...formData, name: e.target.value })
+              // }
+              />
+              <ImageInput
+                variant="filled"
+                label="Profile image"
+                color="primary"
+                fullWidth
+                margin="normal"
+                source="image"
+                defaultValue={formData.image}
+              // onChange={(e) =>
+              //   setFormData({ ...formData, image: e.target.value })
+              // }
+              />
+              {formData.image && (
+                <img
+                  src={formData.image} // Assuming that formData.image contains the image URL
+                  alt="Profile"
+                  style={{ width: "15%" }}
+                />
+              )}
+              <TextInput
+                variant="filled"
+                label="Community"
+                color="primary"
+                fullWidth
+                margin="normal"
+                source="community" // Make sure this matches the key in formData
+                defaultValue={formData.community} // Use value to set the value
+                disabled={true}
+                type="text"
+              // onChange={(e) =>
+              //   setFormData({ ...formData, community: e.target.value })
+              // }
+              />
+              <TextInput
+                variant="filled"
+                label="Phone"
+                color="primary"
+                fullWidth
+                margin="normal"
+                source="phone"
+                defaultValue={formData.phone}
+                type="text"
+              // onChange={(e) =>
+              //   setFormData({ ...formData, phone: e.target.value })
+              // }
+              />
+              <TextInput
+                variant="filled"
+                label="Email"
+                color="primary"
+                fullWidth
+                margin="normal"
+                source="email"
+                type="email"
+                defaultValue={formData.email}
+                disabled={true}
+              // onChange={(e) =>
+              //   setFormData({ ...formData, email: e.target.value })
+              // }
+              />
+            </Form>
             <Box display="flex" justifyContent="flex-end" mt={3}>
               <CustomCancelButton
                 onClick={handleReset}
@@ -122,139 +178,3 @@ export const Profile = () => {
   );
 };
 
-/*import React, { useState } from 'react';
-import {
-  Box,
-  Button,
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  TextField,
-  Typography,
-  Grid,
-} from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import { SaveButton } from '../../components/SaveButton';
-import { CustomCancelButton } from '../../components/CancelButton';
-
-
-export const Profile = () => {
-  const [state, setState] = useState({
-    left: false,
-  });
-
-  const toggleDrawer = (open) => (event) => {
-    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-      return;
-    }
-    setState({ ...state, left: open });
-  };
-
-  const list = (
-    <Box
-      sx={{
-        width: 300,
-        color: 'white',
-      }}
-      role="presentation"
-      onClick={toggleDrawer(false)}
-      onKeyDown={toggleDrawer(false)}
-    >
-      <List>
-        <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemText primary="Profile Image" />
-          </ListItemButton>
-        </ListItem>
-
-        <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemText primary="My Profile" />
-          </ListItemButton>
-        </ListItem>
-
-        <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemText primary="About Us" />
-          </ListItemButton>
-        </ListItem>
-
-        <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemText primary="Info" />
-          </ListItemButton>
-        </ListItem>
-      </List>
-    </Box>
-  );
-
-  return (
-    <div>
-      <Button onClick={toggleDrawer(true)}>
-        <MenuIcon sx={{ color: '#1F4700' }} />
-      </Button>
-      <Drawer
-        PaperProps={{ sx: { backgroundColor: '#1F4700' } }}
-        anchor="left"
-        open={state.left}
-        onClose={toggleDrawer(false)}
-      >
-        {list}
-      </Drawer>
-
-      <Grid container spacing={10} alignItems="center">
-        <Grid item xs={6}>
-          <Grid container spacing={2}>
-            <Grid item xs={4}>
-              <Typography variant="subtitle1">Name</Typography>
-            </Grid>
-            <Grid item xs={8}>
-              <TextField variant="filled" color="primary" fullWidth />
-            </Grid>
-
-            <Grid item xs={4}>
-              <Typography variant="subtitle1">Community</Typography>
-            </Grid>
-            <Grid item xs={8}>
-              <TextField variant="filled" color="primary" fullWidth />
-            </Grid>
-
-            <Grid item xs={4}>
-              <Typography variant="subtitle1">Phone</Typography>
-            </Grid>
-            <Grid item xs={8}>
-              <TextField variant="filled" color="primary" fullWidth />
-            </Grid>
-
-            <Grid item xs={4}>
-              <Typography variant="subtitle1">Email</Typography>
-            </Grid>
-            <Grid item xs={8}>
-              <TextField variant="filled" color="primary" fullWidth />
-            </Grid>
-
-            <Grid item xs={4}>
-              <Typography variant="subtitle1">Role</Typography>
-            </Grid>
-            <Grid item xs={8}>
-              <TextField
-                variant="filled"
-                color="primary"
-                fullWidth
-                sx={{ background: '#78D819' }}
-              />
-            </Grid>
-          </Grid>
-        </Grid>
-
-        <Grid item xs={6}>
-          <SaveButton />
-          <CustomCancelButton/>
-          <CustomCancelButton/>
-        </Grid>
-      </Grid>
-    </div>
-  );
-};*/

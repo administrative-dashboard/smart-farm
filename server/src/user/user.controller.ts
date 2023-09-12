@@ -55,6 +55,17 @@ export class UserController {
       console.error('Error adding community for user:', error);
     }
   }
+
+  @Get('community/:userId')
+  async getCommunityName(@Param('userId') userId: number): Promise<string | null> {
+    try {
+      const communityName = await this.userCommunityService.getCommunityNameByUserId(userId);
+      return communityName;
+    } catch (error) {
+      console.error('Error fetching community name:', error);
+      return null;
+    }
+  }
 }
 
 // @Controller('user')
