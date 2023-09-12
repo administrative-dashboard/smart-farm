@@ -32,7 +32,6 @@ export const Contact = () => {
     e.preventDefault();
 
     console.log("Before PUT request");
-    if (user_id) {
     try {
       const response = await axios.put(
         `${API_URL}/user/updatephone/${user_id}`,
@@ -46,7 +45,7 @@ export const Contact = () => {
     }
     console.log("After PUT request");
 
-  }}
+  }
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <ThemeProvider theme={theme}>
