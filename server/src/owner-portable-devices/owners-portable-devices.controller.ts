@@ -2,6 +2,7 @@ import { Controller, Get, Put,Req,Delete, Res, Post, Body, Logger,Param } from '
 import { Response, response } from 'express';
 import { OwnersPortableDevicesService } from './owners-portable-devices.service';
 import { HttpCode } from '@nestjs/common';
+import { Headers } from '@nestjs/common';
 @Controller('portable_devices')
 export class PortableDevicesController {
   constructor(
@@ -9,29 +10,38 @@ export class PortableDevicesController {
   ) {}
 
   @Get()
-  async getPortableDevices(@Res() res: Response) {
+  async getPortableDevices(@Req() req: Request, @Res() res: Response, @Headers() header) {
+  
     try {
-      // Replace 'userIdFromToken' with the actual user ID from the JWT token
-      const userIdFromToken = 1;
+      const userDataHeader= req.headers['user-data'];
+      console.log(userDataHeader);
+      try {
+        let userData = JSON.parse(userDataHeader);
+      } catch (parseError) {
+        // Handle the case where JSON parsing fails
+        console.log(parseError);
+      }
+    
+      
+      // Use userData to customize your query or logic
+      // For example, you can access userData.user_id
+      // Fetch the portable devices data for the user using userData
+      const portableDevices = await this.ownersPortableDevicesService.getDevicesByUserId(5);
 
-      // Fetch the portable devices data for the user
-      const portableDevices =
-        await this.ownersPortableDevicesService.getDevicesByUserId(
-          userIdFromToken
-        );
-     
       // Calculate the total number of items (if available)
       const totalItems = portableDevices.length;
-
+      
       // Set the Content-Range header
       res.header('Content-Range', `items 0-${totalItems - 1}/${totalItems}`);
-
+        
       // Send the JSON response with the retrieved data
       return res.json(portableDevices);
     } catch (error) {
+      
       // Handle any errors, e.g., return an error response
       res.status(500).json(error);
     }
+
   }
  
   @Get(':id')

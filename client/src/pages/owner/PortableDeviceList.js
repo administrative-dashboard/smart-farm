@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import Axios from "axios";
 import {
   List,
   Datagrid,
@@ -13,7 +13,7 @@ import {
   DateInput,
 } from "react-admin";
 import { Box } from "@mui/material";
-import { useDataProvider } from 'react-admin';
+import { useDataProvider } from "react-admin";
 
 import { HomeRedirectButton } from "../../components/HomeRedirectButton";
 import { ResetFilters } from "../../components/ResetFilters";
@@ -31,9 +31,8 @@ const deviceFilter = [
 export const PortableDeviceList = (props) => {
   const dataProvider = useDataProvider();
   const [data, setData] = useState([]);
-  const dataFromJwt=getUserInfoFromCookies();
-  const user_id=dataFromJwt.user_id;
-  useEffect(() => {
+
+  /* useEffect(() => {
     // Fetch data using the getList method
     dataProvider
       .getList('portable_devices', {
@@ -48,11 +47,46 @@ export const PortableDeviceList = (props) => {
         console.error('Error fetching data: ', error);
       });
   }, [dataProvider]);
+ */
+  useEffect(() => {
+    const dataFromJwt = getUserInfoFromCookies();
+    
+    // Define your Axios request config
+    const axiosConfig = {
+      method: "get",
+      url: "http://localhost:5000/portable_devices",
+      params: {
+        page: 1,
+        perPage: 10,
+        sort: "id",
+        order: "ASC",
+      },
+      headers: {
+        "user-data": JSON.stringify(dataFromJwt), // Send user-specific data in a custom header
+      },
+    };
 
+    // Make the Axios request
+    
+      Axios(axiosConfig)
+        .then((response) => {
+          setData(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching data: ", error);
+        });
+    console.log(dataFromJwt);    
+    
+  }, []);
   return (
     <>
       <ResetFilters />
-      <List {...props} data={data} filters={deviceFilter} sx={{ color: "#38A505" }}>
+      <List
+        {...props}
+        data={data}
+        filters={deviceFilter}
+        sx={{ color: "#38A505" }}
+      >
         <Datagrid>
           <TextField source="device_name" label="Name" />
           <TextField source="device_type" label="Type" />
