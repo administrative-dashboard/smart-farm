@@ -1,3 +1,4 @@
+//app.module.ts
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
@@ -25,10 +26,11 @@ import { AuthModule } from './auth/auth.module';
 import { DeviceUsageStatisticsCommunities } from './database/models/device_usage_statistics_communities.model';
 import { DeviceUsageStatisticsFields } from './database/models/device_usage_statistics_fields.model';
 import { DeviceUsageStatisticsGreenhouses } from './database/models/device_usage_statistics_greenhouses.model';
-import { PhoneValidationService } from './services/phone-validation.service';
-import { PhoneValidationController } from './controllers/phone-validation.controller';
+import { PortableDevicesController } from './owners-portable-devices.controller';
+import { OwnersPortableDevicesService } from './owners-portable-devices.service';
 import { OwnerPortableDeviceModule } from './owner-portable-devices.module';
-
+import { UserModule } from './user/user.module';
+import { CommunitiesModule } from './communities/communities.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -61,13 +63,21 @@ import { OwnerPortableDeviceModule } from './owner-portable-devices.module';
         DeviceUsageStatisticsFields,
         DeviceUsageStatisticsGreenhouses,
         OwnerFixedDevice,
-        OwnerPortableDevice,
+        OwnerPortableDevice
       ],
     }),
     AuthModule,
     OwnerPortableDeviceModule,
+    UserModule,
+    CommunitiesModule,
   ],
-  controllers: [AppController, PhoneValidationController], // Include PhoneValidationController
-  providers: [AppService, PhoneValidationService], // Include PhoneValidationService
+  controllers: [AppController],
+  providers: [AppService],
 })
+/* @Module({
+  imports: [],
+  controllers: [FixedDevicesController], // Include the controller here
+  providers: [],
+}) */
+
 export class AppModule {}

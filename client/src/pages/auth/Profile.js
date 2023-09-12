@@ -1,3 +1,4 @@
+// Profile.js
 import React, { useState } from "react";
 import {
   Container,
@@ -13,6 +14,7 @@ import { MyBar } from "../../components/Drawer";
 import { drawer_new_data } from "../../assets/static/mockData/new_data";
 import { useTheme } from "@mui/material/styles";
 import { Link } from "react-router-dom";
+import { validatePhoneNumber } from "../../validations/PhoneNumber";
 
 export const Profile = () => {
   const theme = useTheme();
@@ -27,43 +29,24 @@ export const Profile = () => {
   const [formData, setFormData] = useState(initialFormData);
   const [isArmenianPhoneNumber, setIsArmenianPhoneNumber] = useState(true);
   const [isZeroAfterPrefix, setIsZeroAfterPrefix] = useState(false);
-  const [isMoreThan8Digits, setIsMoreThan8Digits] = useState(false);
+  const [size, setSize] = useState(false);
 
   const handleReset = () => {
     setFormData(initialFormData);
     setIsArmenianPhoneNumber(true);
     setIsZeroAfterPrefix(false);
-    setIsMoreThan8Digits(false);
-  };
-
-  const validatePhoneNumber = (phoneNumber) => {
-    const armenianPrefix = "+374";
-    return (
-      phoneNumber.startsWith(armenianPrefix) && !phoneNumber.startsWith("+3740")
-    );
+    setSize(false);
   };
 
   const handlePhoneChange = (e) => {
     const phoneNumber = e.target.value;
     setFormData({ ...formData, phone: phoneNumber });
 
-    const isArmenian = validatePhoneNumber(phoneNumber);
+    const { isArmenian, isZeroAfterPrefix, size } = validatePhoneNumber(phoneNumber);
+
     setIsArmenianPhoneNumber(isArmenian);
-
-    if (phoneNumber.startsWith("+3740")) {
-      setIsZeroAfterPrefix(true);
-    } else {
-      setIsZeroAfterPrefix(false);
-    }
-
-    if (isArmenian) {
-      const digitsAfterPrefix = phoneNumber.substring(4);
-      if (digitsAfterPrefix.length > 8) {
-        setIsMoreThan8Digits(true);
-      } else {
-        setIsMoreThan8Digits(false);
-      }
-    }
+    setIsZeroAfterPrefix(isZeroAfterPrefix);
+    setSize(size);
   };
 
   return (
@@ -86,9 +69,7 @@ export const Profile = () => {
               fullWidth
               margin="normal"
               value={formData.name}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             />
             <TextField
               variant="filled"
@@ -97,9 +78,7 @@ export const Profile = () => {
               fullWidth
               margin="normal"
               value={formData.image}
-              onChange={(e) =>
-                setFormData({ ...formData, image: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, image: e.target.value })}
             />
             <TextField
               variant="filled"
@@ -108,9 +87,7 @@ export const Profile = () => {
               fullWidth
               margin="normal"
               value={formData.community}
-              onChange={(e) =>
-                setFormData({ ...formData, community: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, community: e.target.value })}
             />
             <TextField
               variant="filled"
@@ -120,20 +97,19 @@ export const Profile = () => {
               margin="normal"
               value={formData.phone}
               onChange={handlePhoneChange}
-              placeholder="+374XXXXXX"
+              placeholder="+374XXXXXXXX"
             />
             {!isArmenianPhoneNumber ? (
               <Typography variant="body2" color="error">
-                Phone number must start with "+374" and should not have "0"
-                after the prefix.
+                Phone number must start with "+374" and should have exactly 8 digits following the prefix.
               </Typography>
             ) : isZeroAfterPrefix ? (
               <Typography variant="body2" color="error">
                 "0" after "+374" is not allowed.
               </Typography>
-            ) : isMoreThan8Digits ? (
+            ) : size ? (
               <Typography variant="body2" color="error">
-                More than 8 digits are not allowed after "+374."
+                Exactly 8 digits are required after "+374."
               </Typography>
             ) : null}
             <TextField
@@ -143,37 +119,22 @@ export const Profile = () => {
               fullWidth
               margin="normal"
               value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             />
 
             <Box display="flex" justifyContent="flex-end" mt={3}>
-              <CustomCancelButton
-                onClick={handleReset}
-                sx={{ backgroundColor: " #1F4700" }}
-              />
+              <CustomCancelButton onClick={handleReset} sx={{ backgroundColor: " #1F4700" }} />
               <Button
                 component={Link}
                 to="/users"
                 variant="contained"
-                color={
-                  !isArmenianPhoneNumber ||
-                  isZeroAfterPrefix ||
-                  isMoreThan8Digits
-                    ? "error"
-                    : "primary"
-                }
+                color="primary"
                 sx={{
                   marginLeft: "10px",
-                  backgroundColor: "#1F4700",
+                  backgroundColor: isArmenianPhoneNumber && !isZeroAfterPrefix && !size ? "#2BB31C" : "#C0C0C0",
                   color: "white",
                 }}
-                disabled={
-                  !isArmenianPhoneNumber ||
-                  isZeroAfterPrefix ||
-                  isMoreThan8Digits
-                }
+                disabled={!formData.phone || !isArmenianPhoneNumber || isZeroAfterPrefix || size}
               >
                 Request
               </Button>
