@@ -29,24 +29,29 @@ export const Profile = () => {
   const [formData, setFormData] = useState(initialFormData);
   const [isArmenianPhoneNumber, setIsArmenianPhoneNumber] = useState(true);
   const [isZeroAfterPrefix, setIsZeroAfterPrefix] = useState(false);
-  const [size, setSize] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleReset = () => {
     setFormData(initialFormData);
     setIsArmenianPhoneNumber(true);
     setIsZeroAfterPrefix(false);
-    setSize(false);
+    setError(null);
   };
 
   const handlePhoneChange = (e) => {
     const phoneNumber = e.target.value;
     setFormData({ ...formData, phone: phoneNumber });
 
-    const { isArmenian, isZeroAfterPrefix, size } = validatePhoneNumber(phoneNumber);
+    const { isArmenian, isZeroAfterPrefix, isPhoneNumberValid, error } = validatePhoneNumber(phoneNumber);
 
     setIsArmenianPhoneNumber(isArmenian);
     setIsZeroAfterPrefix(isZeroAfterPrefix);
-    setSize(size);
+    setError(error);
+
+    // Clear the error message after a brief delay (optional)
+    if (error) {
+      setTimeout(() => setError(null), 3000); // Clear error after 3 seconds (adjust as needed)
+    }
   };
 
   return (
@@ -99,15 +104,15 @@ export const Profile = () => {
               onChange={handlePhoneChange}
               placeholder="+374XXXXXXXX"
             />
-            {!isArmenianPhoneNumber ? (
+            {!isArmenianPhoneNumber || error ? (
               <Typography variant="body2" color="error">
-                Phone number must start with "+374" and should have exactly 8 digits following the prefix.
+                {error || "Phone number must start with '+374' and should have exactly 8 digits following the prefix."}
               </Typography>
             ) : isZeroAfterPrefix ? (
               <Typography variant="body2" color="error">
                 "0" after "+374" is not allowed.
               </Typography>
-            ) : size ? (
+            ) : formData.phone.length !== 12 ? (
               <Typography variant="body2" color="error">
                 Exactly 8 digits are required after "+374."
               </Typography>
@@ -131,10 +136,10 @@ export const Profile = () => {
                 color="primary"
                 sx={{
                   marginLeft: "10px",
-                  backgroundColor: isArmenianPhoneNumber && !isZeroAfterPrefix && !size ? "#2BB31C" : "#C0C0C0",
+                  backgroundColor: isArmenianPhoneNumber && !isZeroAfterPrefix && !error ? "#2BB31C" : "#C0C0C0",
                   color: "white",
                 }}
-                disabled={!formData.phone || !isArmenianPhoneNumber || isZeroAfterPrefix || size}
+                disabled={!formData.phone || !isArmenianPhoneNumber || isZeroAfterPrefix || error || formData.phone.length !== 12}
               >
                 Request
               </Button>

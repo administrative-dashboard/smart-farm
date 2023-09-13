@@ -15,7 +15,7 @@ import { DateRange } from "./DateRange";
 import { SelectGreenhouseOrField } from "./SelectGreenhouseOrField";
 import { BasicTableShow } from "./BasicTableShow";
 
-export const SelectsGroup = ({ showCommunityPicker }) => {
+export const SelectsGroup = ({ showCommunityPicker, inAdmin }) => {
   const [form, setForm] = React.useState("");
   const [selectedComponent, setSelectedComponent] = React.useState(null); // State for selected component
   const [selectedDevice, setSelectedDevice] = useState(null);

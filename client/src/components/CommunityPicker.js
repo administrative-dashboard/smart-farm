@@ -3,11 +3,7 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 
 export const CommunityPicker = ({ selectedCommunity, handleCommunityChange }) => {
-  /*   const [selectedCommunity, setSelectedCommunity] = useState('');
-   */
-  /* const handleCommunityChange = (event, newValue) => {
-    setSelectedCommunity(newValue);
-  }; */
+
   const topCommunitys = [
     { label: "Վանաձոր" },
     { label: "Տավուշ" },

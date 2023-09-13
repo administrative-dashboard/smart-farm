@@ -9,8 +9,6 @@ export class PhoneValidationMiddleware implements NestMiddleware {
 
     const armenianPrefix = '+374';
 
-    // Check if the phone number starts with the Armenian prefix, is exactly 12 characters long,
-    // and does not contain a '0' after the prefix
     const isValid =
       phoneNumber.startsWith(armenianPrefix) &&
       phoneNumber.length === 12 &&

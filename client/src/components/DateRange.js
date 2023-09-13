@@ -3,16 +3,16 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
 
-export const DateRange = ({ value, setValue }) => {
-  /* const [value, setValue] = React.useState([dayjs('2022-04-17'), dayjs('2022-04-21')]); */
-
+export const DateRange = ({ value, setValue, inAdmin }) => {
+  const datePickerSize = inAdmin ? 600 : 500;  
+  console.log("inAdmin:", inAdmin); 
   return (
     <div>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DateRangePicker
           value={value}
           onChange={(newValue) => setValue(newValue)}
-          sx={{ width: 600 }}
+          sx={{ width: datePickerSize }}
         />
       </LocalizationProvider>
     </div>
