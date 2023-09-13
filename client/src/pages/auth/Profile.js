@@ -13,7 +13,7 @@ import { MyBar } from "../../components/Drawer";
 import { drawer_new_data } from "../../assets/static/mockData/new_data";
 import { useTheme } from "@mui/material/styles";
 import { Link } from "react-router-dom";
-import { getUserInfoFromCookies } from "../../providers/authUtils";
+import { getJwtTokenFromCookies, getUserInfoFromCookies } from "../../providers/authUtils";
 import axios from "axios";
 import { API_URL } from "../../consts";
 import { Form, ImageInput, TextInput } from "react-admin";
@@ -29,8 +29,15 @@ export const Profile = () => {
   React.useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const user_id = userInfo.user_id;
-        const response = await axios.get(`${API_URL}/user/info/${user_id}`);
+        // const user_id = userInfo.user_id;
+        const response = await axios.get(
+          `${API_URL}/user/info`,
+          {
+            headers: {
+              Authorization: `Bearer ${getJwtTokenFromCookies()}`
+            }
+          }
+        );
         setUser(response.data);
         setFormData({
           name: response.data.name,
@@ -39,7 +46,14 @@ export const Profile = () => {
           image: response.data.profile_image,
         });
 
-        const response2 = await axios.get(`${API_URL}/user/community/${user_id}`);
+        const response2 = await axios.get(
+          `${API_URL}/user/community`,
+          {
+            headers: {
+              Authorization: `Bearer ${getJwtTokenFromCookies()}`
+            }
+          }
+          );
         console.log(response2.data);
         setFormData((prevFormData) => ({
           ...prevFormData,

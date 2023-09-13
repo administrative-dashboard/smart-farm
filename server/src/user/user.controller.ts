@@ -4,6 +4,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { UserService } from './user.service';
 import { UserCommunityService } from './user-community.service';
 import { UserCommunity } from 'src/database/models/users_communities.model';
+import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
 
 @Controller('user')
 export class UserController {
@@ -12,40 +13,42 @@ export class UserController {
     private readonly userCommunityService: UserCommunityService,
   ) { }
 
-  @Get('info/:userId')
-  async getUserInfo(@Param('userId') userId: number) {
+  @Get('info')
+  @UseGuards(JwtAuthGuard)
+  async getUserInfo(@Request() req) {
+    const userId = req.user.user_id;
     const userInfo = await this.userService.getUserInfoById(userId);
     return userInfo;
   }
 
-  @Put('updatephone/:userId')
-  async updateUserPhoneNumber(
-    @Param('userId') userId: number,
-    @Body() userData: any,
-  ) {
+  @Put('updatephone')
+  @UseGuards(JwtAuthGuard)
+  async updateUserPhoneNumber(@Request() req, @Body() userData: any) {
     try {
+      const userId = req.user.user_id;
       const existingUser = await this.userService.getUserInfoById(userId);
 
       if (!existingUser) {
         throw new NotFoundException('User not found');
       }
 
-      existingUser.phone_number = userData.phone_number;
-      await existingUser.save();
+      // You may want to add validation for phone_number here if needed
 
-      return existingUser;
+      existingUser.phone_number = userData.phone_number;
+      const updatedUser = await existingUser.save();
+
+      return updatedUser;
     } catch (error) {
-      console.error("Error updating phone number for user:", error);
+      console.error('Error updating phone number for user:', error);
       throw new NotFoundException('Error updating phone number for user');
     }
   }
 
-  @Post('community/:userId')
-  async addCommunity(
-    @Param('userId') userId: number,
-    @Body() userData: any,
-  ) {
+  @Post('community')
+  @UseGuards(JwtAuthGuard)
+  async addCommunity(@Request() req, @Body() userData: any) {
     try {
+      const userId = req.user.user_id;
       const newUserCommunity = new UserCommunity();
       newUserCommunity.user_id = userId;
       newUserCommunity.community_id = userData.community_id;
@@ -56,9 +59,11 @@ export class UserController {
     }
   }
 
-  @Get('community/:userId')
-  async getCommunityName(@Param('userId') userId: number): Promise<string | null> {
+  @Get('community')
+  @UseGuards(JwtAuthGuard)
+  async getCommunityName(@Request() req) {
     try {
+      const userId = req.user.user_id;
       const communityName = await this.userCommunityService.getCommunityNameByUserId(userId);
       return communityName;
     } catch (error) {

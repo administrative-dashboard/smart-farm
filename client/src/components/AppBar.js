@@ -30,24 +30,25 @@ const MyCustomIcon = ({ profileImage }) => (
   />
 );
 
-
 export const MyAppBar = () => {
   const [user, setUser] = React.useState(null);
   const [profileImage, setProfileImage] = React.useState(null);
-
   const isAuthenticated = getJwtTokenFromCookies() ? true : false;
-  const userInfo = getUserInfoFromCookies();
-
+  const userInfo=getUserInfoFromCookies();
   React.useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const user_id = userInfo.user_id;
-        if (userInfo) {
-          const response = await axios.get(`${API_URL}/user/info/${user_id}`);
+          const response = await axios.get(
+            `${API_URL}/user/info`,
+            {
+              headers: {
+                Authorization: `Bearer ${getJwtTokenFromCookies()}`
+              }
+            }
+          );
           setUser(response.data);
           setProfileImage(response.data.profile_image);
           console.log()
-        }
       } catch (error) {
         console.error("Error fetching user info:", error);
       }
@@ -56,7 +57,7 @@ export const MyAppBar = () => {
     if (isAuthenticated) {
       fetchUserInfo();
     }
-  }, [isAuthenticated]);
+  }, []);
 
   return (
     <AppBar
@@ -100,3 +101,4 @@ export const MyAppBar = () => {
     </AppBar>
   );
 };
+

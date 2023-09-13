@@ -11,7 +11,7 @@ import {
 import { theme } from "../../themes/theme";
 import signBack from "../../assets/static/signBack.png";
 import axios from "axios";
-import { getUserInfoFromCookies } from "../../providers/authUtils";
+import { getJwtTokenFromCookies } from "../../providers/authUtils";
 import { API_URL } from "../../consts";
 import {
   Button,
@@ -24,40 +24,51 @@ import {
 export const Contact = () => {
   const notify = useNotify();
   const redirect = useRedirect();
-  const userInfo = getUserInfoFromCookies();
-  const user_id = userInfo.user_id;
-  console.log("aa", user_id);
   const [selectedCommunity, setSelectedCommunity] = useState("");
   const [communities, setCommunities] = useState([]);
-
+  const [phone_number, setPhoneNumber] = useState("");
   useEffect(() => {
     axios.get(`${API_URL}/communities/info`).then((response) => {
       setCommunities(response.data)
     });
   }, []);
 
-  const handleEdit = (data) => {
-    data.community_id = selectedCommunity;
-    data.user_id = user_id;
-    console.log("Form data:", data);
+  const handleEdit = () => {
     axios
-      .put(`${API_URL}/user/updatephone/${user_id}`, data)
-      .then(() => {
-        notify('Edited successfully', { type: 'success' });
-        redirect('list', 'dashboard');
-      })
-      .catch((error) => {
-        notify(`Error: ${error.message}`, 'error');
-      });
+    .put(
+      `${API_URL}/user/updatephone`,
+      { phone_number },
+      {
+        headers: {
+          Authorization: `Bearer ${getJwtTokenFromCookies()}`,
+        },
+      }
+    )
+    .then(() => {
+      notify('Edited successfully', { type: 'success' });
+      redirect('list', 'dashboard');
+    })
+    .catch((error) => {
+      notify(`Error: ${error.message}`, 'error');
+    });
 
-    axios
-      .post(`${API_URL}/user/community/${user_id}`, { community_id: selectedCommunity })
-      .then(() => {
-      })
-      .catch((error) => {
-      });
+  axios
+  .post(
+    `${API_URL}/user/community`,
+    { community_id: selectedCommunity },
+    {
+      headers: {
+        Authorization: `Bearer ${getJwtTokenFromCookies()}`,
+      },
+    }
+  )
+  .then(() => {
+    notify('Edited successfully', { type: 'success' });
+  })
+  .catch((error) => {
+    notify(`Error: ${error.message}`, 'error');
+  })
   };
-
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
@@ -130,6 +141,7 @@ export const Contact = () => {
               placeholder="+374 XXXXXXXX"
               sx={{ width: "100%", mb: 3 }}
               source="phone_number"
+              onChange={(e) => setPhoneNumber(e.target.value)}
             />
             <Box
               sx={{ width: "100%", display: "flex", justifyContent: "center" }}
