@@ -67,8 +67,9 @@ import simpleRestProvider from 'ra-data-simple-rest';
 import { fetchUtils } from "react-admin";
 import GoogleLoginComponent from "./components/Gooogle";
 import { API_URL } from "./consts";
+import customDataProvider from "./providers/dataProvider";
 //const dataProvider = jsonServerProvider(API_URL);
-const dataProvider = simpleRestProvider(API_URL);
+/* const dataProvider = simpleRestProvider(API_URL); */
 
 // const dataProvider = jsonServerProvider(process.env.API_URL);
 // const dataProvider = simpleRestProvider(process.env.API_URL);
@@ -84,7 +85,7 @@ const App = () => {
     <BrowserRouter>
       <Admin
         layout={MyLayout}
-        dataProvider={dataProvider} 
+        dataProvider={customDataProvider} 
         i18nProvider={i18nProvider}
         // authProvider={authProvider}
         // loginPage={Signup}

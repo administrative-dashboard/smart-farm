@@ -18,7 +18,7 @@ import { useDataProvider } from "react-admin";
 import { HomeRedirectButton } from "../../components/HomeRedirectButton";
 import { ResetFilters } from "../../components/ResetFilters";
 import { getUserInfoFromCookies } from "../../providers/authUtils";
-
+import { getJwtTokenFromCookies } from "../../providers/authUtils";
 const deviceFilter = [
   <TextInput label="Search" source="q" alwaysOn />,
   <TextInput label="Name" source="device_name" />,
@@ -28,11 +28,43 @@ const deviceFilter = [
   <DateInput label="Date" source="created_at" />,
 ];
 
+/* const dataFromJwt = getUserInfoFromCookies(); */
+/* console.log(dataFromJwt); */
+
+
 export const PortableDeviceList = (props) => {
   const dataProvider = useDataProvider();
   const [data, setData] = useState([]);
 
+  
   /* useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const axiosConfig = {
+          method: "get",
+          url: "http://localhost:5000/portable_devices",
+          headers: {
+            Authorization: `Bearer ${getJwtTokenFromCookies()}`,
+          },
+        };
+
+        // Сделать Axios-запрос
+        const response = await Axios(axiosConfig);
+        setData(response.data);
+        console.log("Запрос успешно выполнен");
+        console.log(response.data);
+        // Do something with the response data if needed
+
+      } catch (error) {
+        console.error("Ошибка при получении данных: ", error);
+      }
+    };
+
+    // Call the fetchData function when the component mounts
+    fetchData();
+  }, []); */
+  
+  useEffect(() => {
     // Fetch data using the getList method
     dataProvider
       .getList('portable_devices', {
@@ -47,37 +79,7 @@ export const PortableDeviceList = (props) => {
         console.error('Error fetching data: ', error);
       });
   }, [dataProvider]);
- */
-  useEffect(() => {
-    const dataFromJwt = getUserInfoFromCookies();
-    
-    // Define your Axios request config
-    const axiosConfig = {
-      method: "get",
-      url: "http://localhost:5000/portable_devices",
-      params: {
-        page: 1,
-        perPage: 10,
-        sort: "id",
-        order: "ASC",
-      },
-      headers: {
-        "user-data": JSON.stringify(dataFromJwt), // Send user-specific data in a custom header
-      },
-    };
 
-    // Make the Axios request
-    
-      Axios(axiosConfig)
-        .then((response) => {
-          setData(response.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching data: ", error);
-        });
-    console.log(dataFromJwt);    
-    
-  }, []);
   return (
     <>
       <ResetFilters />
