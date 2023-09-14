@@ -28,7 +28,7 @@ export const Contact = () => {
   const [communities, setCommunities] = useState([]);
   const [phone_number, setPhoneNumber] = useState("");
   useEffect(() => {
-    axios.get(`${API_URL}/communities/info`).then((response) => {
+    axios.get(`${API_URL}/community/info`).then((response) => {
       setCommunities(response.data)
     });
   }, []);

@@ -21,6 +21,36 @@ export class UserController {
     return userInfo;
   }
 
+  @Put('info')
+  @UseGuards(JwtAuthGuard)
+  async updateUserInfo(@Request() req, @Body() userData: any) {
+    try {
+      const userId = req.user.user_id;
+      const existingUser = await this.userService.getUserInfoById(userId);
+      if (!existingUser) {
+        throw new NotFoundException('User not found');
+      }
+  
+      // Update only the fields provided in the request body
+      if (userData.name) {
+        existingUser.name = userData.name;
+      }
+  
+      if (userData.phone_number) {
+        existingUser.phone_number = userData.phone_number;
+      }
+  
+      if (userData.profile_image) {
+        existingUser.profile_image = userData.profile_image;
+      }
+  
+      const updatedUser = await existingUser.save();
+      return updatedUser;
+    } catch (error) {
+      console.error('Error updating user info:', error);
+    }
+  }
+
   @Put('updatephone')
   @UseGuards(JwtAuthGuard)
   async updateUserPhoneNumber(@Request() req, @Body() userData: any) {
@@ -31,9 +61,6 @@ export class UserController {
       if (!existingUser) {
         throw new NotFoundException('User not found');
       }
-
-      // You may want to add validation for phone_number here if needed
-
       existingUser.phone_number = userData.phone_number;
       const updatedUser = await existingUser.save();
 
@@ -72,19 +99,3 @@ export class UserController {
     }
   }
 }
-
-// @Controller('user')
-// export class UserController {
-//   constructor(private readonly userService: UserService) {}
-
-//   @Get('info')
-//   // @UseGuards(AuthGuard('jwt')) 
-//   async getUserInfo(@Request() req) {
-//     const userId = req.user.id; 
-//     const userInfo = await this.userService.getUserInfo(1); 
-//     if (!userInfo) {
-//       throw new NotFoundException('User profile not found');
-//     }
-//     return userInfo;
-//   }
-// }
