@@ -11,82 +11,59 @@ import {
   TextInput,
   NumberInput,
   DateInput,
+  Filter,
+  SearchInput, // Import Filter
 } from "react-admin";
 import { Box } from "@mui/material";
 import { useDataProvider } from "react-admin";
-
 import { HomeRedirectButton } from "../../components/HomeRedirectButton";
 import { ResetFilters } from "../../components/ResetFilters";
 import { getUserInfoFromCookies } from "../../providers/authUtils";
 import { getJwtTokenFromCookies } from "../../providers/authUtils";
-const deviceFilter = [
-  <TextInput label="Search" source="q" alwaysOn />,
-  <TextInput label="Name" source="device_name" />,
-  <TextInput label="Type" source="device_type" />,
-  <NumberInput label="Quantity" source="quantity" />,
-  <NumberInput label="Shared Quantity" source="shared_quantity" />,
-  <DateInput label="Date" source="created_at" />,
-];
 
-/* const dataFromJwt = getUserInfoFromCookies(); */
-/* console.log(dataFromJwt); */
-
+// Define a custom filter component
+const DeviceFilter = (props) => (
+  <Filter {...props}>
+    <SearchInput source="q" alwaysOn />
+    <TextInput label="Name" source="device_name" />
+    <TextInput label="Type" source="device_type" />
+    <NumberInput label="Quantity" source="quantity" />
+    <NumberInput label="Shared Quantity" source="shared_quantity" />
+    <DateInput label="Date" source="created_at" />
+  </Filter>
+);
 
 export const PortableDeviceList = (props) => {
   const dataProvider = useDataProvider();
   const [data, setData] = useState([]);
-
-  
-  /* useEffect(() => {
+  const [searchTerm, setSearchTerm] = useState("");
+  useEffect(() => {
+    // Функция для загрузки данных с учетом поискового запроса
     const fetchData = async () => {
       try {
-        const axiosConfig = {
-          method: "get",
-          url: "http://localhost:5000/portable_devices",
-          headers: {
-            Authorization: `Bearer ${getJwtTokenFromCookies()}`,
-          },
-        };
-
-        // Сделать Axios-запрос
-        const response = await Axios(axiosConfig);
+        const response = await dataProvider.getList("portable_devices", {
+          pagination: { page: 1, perPage: 10 },
+          sort: { field: "id", order: "ASC" },
+          filter: { q: searchTerm }, // Используем текущее значение поиска
+        });
         setData(response.data);
-        console.log("Запрос успешно выполнен");
-        console.log(response.data);
-        // Do something with the response data if needed
-
       } catch (error) {
-        console.error("Ошибка при получении данных: ", error);
+        console.error("Error fetching data: ", error);
       }
     };
 
-    // Call the fetchData function when the component mounts
-    fetchData();
-  }, []); */
-  
-  useEffect(() => {
-    // Fetch data using the getList method
-    dataProvider
-      .getList('portable_devices', {
-        pagination: { page: 1, perPage: 10 }, // Adjust perPage and page as needed
-        sort: { field: 'id', order: 'ASC' }, // Adjust sorting as needed
-        filter: {}, // Add filters as needed
-      })
-      .then(({ data }) => {
-        setData(data);
-      })
-      .catch((error) => {
-        console.error('Error fetching data: ', error);
-      });
-  }, [dataProvider]);
-
+    fetchData(); // Вызываем функцию при загрузке компонента
+  }, [dataProvider, searchTerm]);
+  const handleSearchInputChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
   return (
     <>
       <ResetFilters />
       <List
         {...props}
         data={data}
-        filters={deviceFilter}
+        filters={<DeviceFilter />} // Use the custom DeviceFilter
         sx={{ color: "#38A505" }}
       >
         <Datagrid>

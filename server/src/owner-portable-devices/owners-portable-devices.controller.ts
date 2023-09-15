@@ -1,59 +1,72 @@
-import { Controller, Get, Put,Request,Delete, Res, Post, Body, Logger,Param,Query,UseGuards } from '@nestjs/common'; // Import Logger
+import {
+  Controller,
+  Get,
+  Put,
+  Request,
+  Delete,
+  Res,
+  Post,
+  Body,
+  Logger,
+  Param,
+  Query,
+  UseGuards,
+  NotFoundException
+} from '@nestjs/common'; // Import Logger
 import { Response, query, response } from 'express';
 import { OwnersPortableDevicesService } from './owners-portable-devices.service';
 import { HttpCode } from '@nestjs/common';
 import { Headers } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
 @Controller('portable_devices')
+@UseGuards(JwtAuthGuard)
 export class PortableDevicesController {
   constructor(
     private readonly ownersPortableDevicesService: OwnersPortableDevicesService
   ) {}
 
   @Get()
-  @UseGuards(JwtAuthGuard)
-  async getPortableDevices(@Request() req) {
-    
+  async getPortableDevices(@Query('q') searchTerm: string, @Request() req) {
     try {
-      console.log("ЗАПРОС ПОЛУЧЕН");
-      
+      console.log('ЗАПРОС ПОЛУЧЕН');
+
       const userId = req.user.user_id;
       console.log(userId);
-        // Handle the case where JSON parsing fails
-        
-    
-      
-      // Use userData to customize your query or logic
-      // For example, you can access userData.user_id
-      // Fetch the portable devices data for the user using userData
-      const portableDevices = await this.ownersPortableDevicesService.getDevicesByUserId(userId);
 
-      // Calculate the total number of items (if available)
+      // Fetch all portable devices for the user
+      let portableDevices = await this.ownersPortableDevicesService.getDevicesByUserId(userId);
+
+      // If a search term is provided, filter the devices
+      
+      if (searchTerm) {
+        console.log(searchTerm+'bbb');
+        portableDevices = portableDevices.filter(device => {
+          // Modify the condition to filter based on your data structure
+          return (
+            device.device_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            device.device_type.toLowerCase().includes(searchTerm.toLowerCase())
+          );
+        });
+      }
+
       const totalItems = portableDevices.length;
-      
-      // Set the Content-Range header
-      
-        
-      // Send the JSON response with the retrieved data
+
+      // Return the filtered devices
       return portableDevices;
     } catch (error) {
-      
-      // Handle any errors, e.g., return an error response
-      return error;
+      // Use NestJS NotFoundException for better error handling
+      throw new NotFoundException('Portable devices not found', 'custom-error-code');
     }
-
   }
- 
+
+  
+
+
   @Get(':id')
   async getPortableDeviceById(@Param('id') id: string) {
     try {
-      /* const userIdFromToken = 1; */
-
-      // Call the service to get the portable device by ID
-      const portableDevice = await this.ownersPortableDevicesService.getPortableDeviceById(
-        id
-        
-      );
+      const portableDevice =
+        await this.ownersPortableDevicesService.getPortableDeviceById(id);
 
       if (!portableDevice) {
         return { message: 'Portable device not found' };
@@ -64,21 +77,19 @@ export class PortableDevicesController {
       console.log(error);
       return { error: 'An error occurred' };
     }
-  } 
-  
+  }
+
   @Put(':id')
   async updatePortableDeviceById(
     @Param('id') id: string,
-    @Body() deviceData: any,
+    @Body() deviceData: any
   ) {
     try {
-    
-
-      // Call the service to update the portable device by ID
-      const updatedPortableDevice = await this.ownersPortableDevicesService.updatePortableDeviceById(
-        id,
-        deviceData,
-      );
+      const updatedPortableDevice =
+        await this.ownersPortableDevicesService.updatePortableDeviceById(
+          id,
+          deviceData
+        );
 
       if (!updatedPortableDevice) {
         return { message: 'Portable device not found' };
@@ -91,27 +102,26 @@ export class PortableDevicesController {
     }
   }
 
-
   @Post('create')
   @UseGuards(JwtAuthGuard)
-  async createPortableDevice(@Body() deviceData: any,@Request() req) {
+  async createPortableDevice(@Body() deviceData: any, @Request() req) {
     try {
       console.log(deviceData);
       const userId = req.user.user_id;
-
-      // Call the service to create the portable device
-      return await this.ownersPortableDevicesService.createDevice(userId, deviceData);
+      return await this.ownersPortableDevicesService.createDevice(
+        userId,
+        deviceData
+      );
     } catch (error) {
       console.log(error);
     }
   }
- 
 
   @Delete(':id')
   async deletePortableDeviceById(@Param('id') id: string) {
     try {
-      // Call the service method to delete the portable device by ID
-      const deleted = await this.ownersPortableDevicesService.deletePortableDeviceById(id);
+      const deleted =
+        await this.ownersPortableDevicesService.deletePortableDeviceById(id);
 
       if (!deleted) {
         return { message: 'Portable device not found' };
@@ -119,11 +129,8 @@ export class PortableDevicesController {
 
       return { message: 'Portable device deleted successfully' };
     } catch (error) {
-      // Handle any errors, e.g., return an error response
       console.log(error);
       return { error: 'An error occurred' };
     }
   }
 }
-
-
