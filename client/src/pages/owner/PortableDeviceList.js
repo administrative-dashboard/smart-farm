@@ -18,10 +18,6 @@ import { Box } from "@mui/material";
 import { useDataProvider } from "react-admin";
 import { HomeRedirectButton } from "../../components/HomeRedirectButton";
 import { ResetFilters } from "../../components/ResetFilters";
-import { getUserInfoFromCookies } from "../../providers/authUtils";
-import { getJwtTokenFromCookies } from "../../providers/authUtils";
-
-// Define a custom filter component
 
 import customDataProvider from "../../providers/dataProvider";
 export const PortableDeviceList = (props) => {
@@ -29,51 +25,88 @@ export const PortableDeviceList = (props) => {
   const dataProvider = customDataProvider;
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [searchName, setSearchName] = useState("");
+  const [searchType, setSearchType] = useState("");
+  const [searchQuantity, setSearchQuantity] = useState("");
+  const [searchSharedQuantity, setSearchSharedQuantity] = useState("");
+  const [searchDate,setSearchDate]= useState("");
   const fetchData = async () => {
     try {
-      // Имитируем задержку в 5 секунд
-
       const response = await dataProvider.getList("portable_devices", {
         pagination: { page: 1, perPage: 10 },
         sort: { field: "id", order: "ASC" },
-        filter: { q: searchTerm }, // Используем текущее значение поиска
+        filter: {
+           q: searchTerm,
+           device_name: searchName,
+           device_type: searchType,
+           quantity: searchQuantity, 
+           shared_quantity: searchSharedQuantity,
+           created_at: searchDate, 
+        }, // Используем текущее значение поиска
       });
 
-      console.log("ЗАПРОС ОТПРАВЛЕН ВОТ ЭЛЕМЕНТ ДЛЯ ПОИСКА ", searchTerm);
+      console.log("ЗАПРОС ОТПРАВЛЕН  ");
       setData(response.data);
     } catch (error) {
       console.error("Error fetching data: ", error);
     }
   };
-
+  
   const DeviceFilter = (props) => (
     <Filter {...props}>
       <SearchInput source="q" alwaysOn onChange={handleSearchInputChange} />
-      <TextInput label="Name" source="device_name" />
-      <TextInput label="Type" source="device_type" />
-      <NumberInput label="Quantity" source="quantity" />
-      <NumberInput label="Shared Quantity" source="shared_quantity" />
-      <DateInput label="Date" source="created_at" />
+      <TextInput label="Name" source="device_name" onChange={handleSearchNameChange} />
+      <TextInput label="Type" source="device_type" onChange={handleSearchTypeChange}/>
+      <NumberInput label="Quantity" source="quantity" onChange={handleSearchQuantityChange}/>
+      <NumberInput label="Shared Quantity" source="shared_quantity" onChange={handleSearchSharedQuantityChange}/>
+      <DateInput label="Date" source="created_at" onChange={handleSearchDateChange}/>
     </Filter>
   );
   useEffect(() => {
     // Функция для загрузки данных с учетом поискового запроса
     fetchData(); // Вызываем функцию при загрузке компонента
-  }, []);
-  const applySearch = () => {
-    // Выполняем запрос на сервер при нажатии на кнопку "Apply Filter"
-    fetchData();
-  };
+  }, [searchTerm,searchName,searchType,searchQuantity,searchSharedQuantity,searchDate]);
+
   const handleSearchInputChange = async (e) => {
     if (e.target.value) {
       await new Promise((resolve) => setTimeout(resolve, 3000));
       setSearchTerm(e.target.value);
     }
   };
+  const handleSearchNameChange = async (e) => {
+    if (e.target.value) {
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      setSearchName(e.target.value);
+      console.log(searchName);
+    }
+  };
+  const handleSearchTypeChange = async (e) => {
+    if (e.target.value) {
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      setSearchType(e.target.value);
+    }
+  };
+  const handleSearchQuantityChange = async (e) => {
+    if (e.target.value) {
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      setSearchQuantity(e.target.value);
+    }
+  };
+  const handleSearchSharedQuantityChange = async (e) => {
+    if (e.target.value) {
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      setSearchSharedQuantity(e.target.value);
+    }
+  };
+  const handleSearchDateChange = async (e) => {
+    if (e.target.value) {
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      setSearchDate(e.target.value);
+    }
+  };
   return (
     <>
       <ResetFilters />
-      <button onClick={applySearch}>Apply Search</button>
       <List
         {...props}
         data={data}

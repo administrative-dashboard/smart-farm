@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { OwnerPortableDevice } from '../database/models/owners_portable_devices.model ';  // Подставьте путь к модели вашего портативного устройства
+import { OwnerPortableDevice } from '../database/models/owners_portable_devices.model '; // Подставьте путь к модели вашего портативного устройства
 import { Model } from 'sequelize-typescript';
-import { PortableDevice } from '../database/models/portable_devices.model ';  // Подставьте путь к модели ваших портативных устройств
-import { Sequelize ,Op} from 'sequelize';
+import { PortableDevice } from '../database/models/portable_devices.model '; // Подставьте путь к модели ваших портативных устройств
+import { Sequelize, Op } from 'sequelize';
 import { now } from 'sequelize/types/utils';
 
 @Injectable()
 export class OwnersPortableDevicesService {
   constructor(
     @InjectModel(OwnerPortableDevice)
-    private readonly OwnerPortableDeviceModel: typeof OwnerPortableDevice,
+    private readonly OwnerPortableDeviceModel: typeof OwnerPortableDevice
   ) {}
 
   async getDevicesByUserId(userId: number): Promise<any[]> {
@@ -28,11 +28,12 @@ export class OwnersPortableDevicesService {
           'is_shared',
           'shared_quantity',
         ],
-        include: [{
-          model: PortableDevice,
-          attributes: [], 
-        }],
-        
+        include: [
+          {
+            model: PortableDevice,
+            attributes: [],
+          },
+        ],
       });
       return devices;
     } catch (error) {
@@ -40,13 +41,22 @@ export class OwnersPortableDevicesService {
     }
   }
 
-  async searchDevices(query: any, userId: number): Promise<any[]> {
+  async searchDevices(
+    userId: number,
+    query: any,
+    deviceName?: any,
+    deviceType?: any,
+    quantity?: any,
+    sharedQuantity?: any,
+    created_at?: any,
+    
+  ): Promise<any[]> {
     try {
       if (query === null || query === undefined) {
         // Обработка случая, когда query не предоставлен
         return [];
       }
-  
+      console.log();
       const whereClause: any = {
         [Op.and]: [
           {
@@ -54,21 +64,21 @@ export class OwnersPortableDevicesService {
           },
         ],
       };
-  
+
       if (!isNaN(query)) {
-        whereClause[Op.or]=[
+        whereClause[Op.or] = [
           Sequelize.literal(`"quantity" = :numQuery`),
-          Sequelize.literal(`"shared_quantity" = :numQuery`)
-       ];
-      }       // Если query - число, добавляем условия для quantity и shared_quantity
-         else  {
+          Sequelize.literal(`"shared_quantity" = :numQuery`),
+        ];
+      } // Если query - число, добавляем условия для quantity и shared_quantity
+      else {
         // Если query - строка, добавляем условия для name и type
         whereClause[Op.or] = [
           Sequelize.literal(`"portable_devices"."name" ILIKE :textQuery`),
           Sequelize.literal(`"portable_devices"."type" ILIKE :textQuery`),
         ];
       }
-  
+
       const devices = await this.OwnerPortableDeviceModel.findAll({
         where: whereClause,
         attributes: [
@@ -92,27 +102,30 @@ export class OwnersPortableDevicesService {
           numQuery: query, // Для числовых полей
         },
       });
-  
+
       return devices;
     } catch (error) {
-      console.log(error);
-      throw error; // Обработка ошибки или возврат значения по умолчанию
+      throw error;
     }
   }
   
-  
+  // Rest of your methods...
 
-  async createDevice(userId: number, deviceData: any): Promise<OwnerPortableDevice> {
+
+  async createDevice(
+    userId: number,
+    deviceData: any
+  ): Promise<OwnerPortableDevice> {
     try {
       // Create a new portable device record
       const newPortableDevice = await PortableDevice.create({
         name: deviceData.name,
         type: deviceData.type,
       });
-  
+
       // Determine the value of is_shared based on shared_quantity
       const isShared = deviceData.shared_quantity > 0;
-  
+
       // Create an association between the owner and the newly created portable device
       const ownerPortableDevice = await this.OwnerPortableDeviceModel.create({
         user_id: userId, // Assuming you have the user_id in deviceData
@@ -122,10 +135,10 @@ export class OwnersPortableDevicesService {
         shared_quantity: deviceData.shared_quantity,
         created_at: deviceData.created_at,
       });
-  
+
       return ownerPortableDevice;
     } catch (error) {
-      console.log(">>>>>>>>>>>>>>", error);
+      console.log('>>>>>>>>>>>>>>', error);
       throw error;
     }
   }
@@ -147,11 +160,12 @@ export class OwnersPortableDevicesService {
           'is_shared',
           'shared_quantity',
         ],
-        include: [{
-          model: PortableDevice,
-          attributes: [], 
-        }],
-        
+        include: [
+          {
+            model: PortableDevice,
+            attributes: [],
+          },
+        ],
       });
 
       return portableDevice || null;
@@ -163,21 +177,22 @@ export class OwnersPortableDevicesService {
   async updatePortableDeviceById(id: string, deviceData: any): Promise<any> {
     try {
       const ParsedId = parseInt(id, 10);
-      
+
       // First, check if the portable device with the given ID exists
-      const existingPortableDevice = await this.OwnerPortableDeviceModel.findOne({
-        where: {
-          id: ParsedId,
-        },
-      });
-  
+      const existingPortableDevice =
+        await this.OwnerPortableDeviceModel.findOne({
+          where: {
+            id: ParsedId,
+          },
+        });
+
       if (!existingPortableDevice) {
         return null; // Portable device not found
       }
-  
+
       // Determine the value of is_shared based on shared_quantity
       const isShared = deviceData.shared_quantity > 0;
-  
+
       // Update the portable device record with the specified data
       await existingPortableDevice.update({
         quantity: deviceData.quantity,
@@ -185,10 +200,12 @@ export class OwnersPortableDevicesService {
         shared_quantity: deviceData.shared_quantity,
         updated_at: new Date(), // Update the updated_at timestamp
       });
-  
+
       // Find the associated PortableDevice record
-      const associatedPortableDevice = await PortableDevice.findByPk(existingPortableDevice.portable_device_id);
-  
+      const associatedPortableDevice = await PortableDevice.findByPk(
+        existingPortableDevice.portable_device_id
+      );
+
       if (associatedPortableDevice) {
         // Update the PortableDevice record
         await associatedPortableDevice.update({
@@ -196,7 +213,7 @@ export class OwnersPortableDevicesService {
           name: deviceData.device_name,
         });
       }
-      
+
       // Return the updated OwnerPortableDevice
       return existingPortableDevice;
     } catch (error) {
@@ -206,34 +223,35 @@ export class OwnersPortableDevicesService {
   async deletePortableDeviceById(id: string): Promise<boolean> {
     try {
       const ParsedId = parseInt(id, 10);
-  
+
       // Find the OwnerPortableDevice record with the given ID
-      const existingPortableDevice = await this.OwnerPortableDeviceModel.findOne({
-        where: {
-          id: ParsedId,
-        },
-      });
-  
+      const existingPortableDevice =
+        await this.OwnerPortableDeviceModel.findOne({
+          where: {
+            id: ParsedId,
+          },
+        });
+
       if (!existingPortableDevice) {
         return false; // Portable device not found
       }
-  
+
       // Find the associated PortableDevice record
-      const associatedPortableDevice = await PortableDevice.findByPk(existingPortableDevice.portable_device_id);
-  
+      const associatedPortableDevice = await PortableDevice.findByPk(
+        existingPortableDevice.portable_device_id
+      );
+
       if (associatedPortableDevice) {
         // Delete the associated PortableDevice record
         await associatedPortableDevice.destroy();
       }
-  
+
       // Delete the OwnerPortableDevice record
       await existingPortableDevice.destroy();
-  
+
       return true; // Deletion successful
     } catch (error) {
       throw error;
     }
   }
-  
-  
 }

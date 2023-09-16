@@ -11,7 +11,7 @@ import {
   Param,
   Query,
   UseGuards,
-  NotFoundException
+  NotFoundException,
 } from '@nestjs/common'; // Import Logger
 import { Response, query, response } from 'express';
 import { OwnersPortableDevicesService } from './owners-portable-devices.service';
@@ -26,34 +26,51 @@ export class PortableDevicesController {
   ) {}
 
   @Get()
-  async getPortableDevices(@Query('q') searchTerm: string, @Request() req) {
+  async getPortableDevices(
+    @Query('q') searchTerm: any,
+    @Query('device_name') deviceName: any,
+    @Query('device_type') deviceType: any,
+    @Query('quantity') quantity: any,
+    @Query('shared_quantity') sharedQuantity: any,
+    @Query('created_at') date: any,
+    @Request() req
+  ) {
     try {
-      console.log('ЗАПРОС ПОЛУЧЕН');
-      console.log('SEARCH TERM==',searchTerm);
+      console.log('ЗАПРОС ПОЛУЧЕН!!!!!!!!!');
+      console.log('searchTerm==', searchTerm);
+      console.log('device_name==', deviceName);
+      console.log('device_type==', deviceType);
+      console.log('quantity==', quantity);
+      console.log('shared_quantity==', sharedQuantity);
       const userId = req.user.user_id;
       console.log(userId);
-      if (searchTerm) {
-        console.log("Search Term:", searchTerm);
-        const filteredDevices = await this.ownersPortableDevicesService.searchDevices(searchTerm,userId);
-        console.log("After Filtering:",filteredDevices);
+      if (searchTerm || deviceName || deviceType || quantity || sharedQuantity || date) {
+        const filteredDevices =
+          await this.ownersPortableDevicesService.searchDevices(
+            userId,
+            searchTerm,
+            deviceName,
+            deviceType,
+            quantity,
+            sharedQuantity,
+           
+          );
+        /* console.log('After Filtering:', filteredDevices); */
         return filteredDevices;
-      }
-      else{
-      let portableDevices = await this.ownersPortableDevicesService.getDevicesByUserId(userId);
-      console.log(portableDevices);
-     
-      const totalItems = portableDevices.length;
-
-      return portableDevices;
+      } else {
+        let portableDevices =
+        await this.ownersPortableDevicesService.getDevicesByUserId(userId);
+        /* console.log(portableDevices); */
+        const totalItems = portableDevices.length;
+        return portableDevices;
       }
     } catch (error) {
-      
-      throw new NotFoundException('Portable devices not found', 'custom-error-code');
+      throw new NotFoundException(
+        'Portable devices not found',
+        'custom-error-code'
+      );
     }
   }
-
-  
-
 
   @Get(':id')
   async getPortableDeviceById(@Param('id') id: string) {
