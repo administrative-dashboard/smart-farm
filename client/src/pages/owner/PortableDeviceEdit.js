@@ -24,7 +24,7 @@ export const PortableDeviceEdit = (props) => {
           <TextInput source="device_type" label="Type" />
           <NumberInput source="quantity" label="Quantity" />
           <NumberInput source="shared_quantity" label="Shared Quantity" />
-          <DateInput source="created_at" label="Date" />
+          <DateInput source="created_at" label="Date" disabled/>
         </SimpleForm>
       </Edit>
       <Box

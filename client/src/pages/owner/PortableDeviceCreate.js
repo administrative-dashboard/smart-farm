@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Create,
   SimpleForm,
@@ -6,18 +6,35 @@ import {
   NumberInput,
   DateInput,
   useNotify,
-  useRedirect, // Import the hooks here
-  useDataProvider,
+  useRedirect,
+  required,
 } from "react-admin";
-
 import { HomeRedirectButton } from "../../components/HomeRedirectButton";
-
 export const PortableDeviceCreate = (props) => {
-  const dataprovider = useDataProvider();
   const currentDate = new Date();
-  const notify = useNotify(); 
-  const redirect = useRedirect(); 
-
+  const notify = useNotify();
+  const redirect = useRedirect();
+  const [quantity, setQuantity] = useState("");
+  const validatePositiveNumber = (value) => {
+    if (isNaN(value) || value <= 0) {
+      return "Value must be a positive number";
+    }
+    return undefined;
+  };
+  const validationSharedQuantity = (value, allValues) => {
+    if (value > allValues.quantity) {
+      return "Shared quantity must be less than quantity";
+    }
+    return undefined;
+  };
+  const validateDeviceName = [required()];
+  const validateDeviceType = [required()];
+  const validateQuantity = [required(), validatePositiveNumber];
+  const validateSharedQuantity = [
+    required(),
+    validatePositiveNumber,
+    validationSharedQuantity,
+  ];
   const handleSave = async (values) => {
     try {
       const deviceData = {
@@ -27,33 +44,29 @@ export const PortableDeviceCreate = (props) => {
         shared_quantity: values.shared_quantity,
         created_at: values.created_at.toISOString(),
       };
-      console.log("aaaaaaaaaaaaaaaa");
-
-      
-
-      // Notify the user of a successful creation
       notify("Device created successfully", "info");
-
-      // Redirect to the devices list page after creation
       redirect("/portable_devices");
     } catch (error) {
-      console.log(">>>>>>>", error);
       console.error("Error creating device:", error);
     }
   };
-
   return (
     <>
-      <Create resource="portable_devices/create"
+      <Create
+        resource="portable_devices/create"
         title="Create a portable device"
         {...props}
-        save={handleSave} 
+        save={handleSave}
       >
         <SimpleForm>
-          <TextInput source="name" />
-          <TextInput source="type" />
-          <NumberInput source="quantity" />
-          <NumberInput source="shared_quantity" />
+          <TextInput source="name" validate={validateDeviceName} />
+          <TextInput source="type" validate={validateDeviceType} />
+          <NumberInput source="quantity" validate={validateQuantity} />
+          <NumberInput
+            source="shared_quantity"
+            validate={validateSharedQuantity}
+            minValue={quantity}
+          />
           <DateInput source="created_at" defaultValue={currentDate} disabled />
         </SimpleForm>
       </Create>

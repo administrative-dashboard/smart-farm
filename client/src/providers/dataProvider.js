@@ -1,6 +1,6 @@
-import simpleRestProvider from 'ra-data-simple-rest';
-import { getJwtTokenFromCookies } from './authUtils'; // Import your function to get the JWT token from cookies
-const apiUrl = 'http://localhost:5000'; // Replace with your API URL
+import simpleRestProvider from "ra-data-simple-rest";
+import { getJwtTokenFromCookies } from "./authUtils"; // Import your function to get the JWT token from cookies
+const apiUrl = "http://localhost:5000"; // Replace with your API URL
 const dataProvider = simpleRestProvider(apiUrl);
 const customDataProvider = {
   ...dataProvider,
@@ -9,11 +9,19 @@ const customDataProvider = {
     const headers = new Headers({
       Authorization: `Bearer ${token}`, // Add the JWT token to the headers
     });
+    const { filter, pagination, sort } = params;
+    const query = {}; // Initialize an empty query object    // Check if there's a 'q' parameter in the filter and include it in the query
+    if (filter && filter.q) {
+      query.q = filter.q;
+    }
     try {
-      const response = await fetch(`${apiUrl}/${resource}`, {
-        method: 'GET',
-        headers,
-      });
+      const response = await fetch(
+        `${apiUrl}/${resource}?${new URLSearchParams(query)}`,
+        {
+          method: "GET",
+          headers,
+        }
+      );
       if (!response.ok) {
         throw new Error(response.statusText);
       }
@@ -31,11 +39,11 @@ const customDataProvider = {
     const token = getJwtTokenFromCookies(); // Get the JWT token from cookies
     const headers = new Headers({
       Authorization: `Bearer ${token}`, // Add the JWT token to the headers
-      'Content-Type': 'application/json', // Adjust content type as needed
+      "Content-Type": "application/json", // Adjust content type as needed
     });
     try {
       const response = await fetch(`${apiUrl}/${resource}`, {
-        method: 'POST',
+        method: "POST",
         headers,
         body: JSON.stringify(params.data), // Convert data to JSON
       });
@@ -54,11 +62,11 @@ const customDataProvider = {
     const token = getJwtTokenFromCookies(); // Get the JWT token from cookies
     const headers = new Headers({
       Authorization: `Bearer ${token}`, // Add the JWT token to the headers
-      'Content-Type': 'application/json', // Adjust content type as needed
+      "Content-Type": "application/json", // Adjust content type as needed
     });
     try {
       const response = await fetch(`${apiUrl}/${resource}/${params.id}`, {
-        method: 'PUT',
+        method: "PUT",
         headers,
         body: JSON.stringify(params.data), // Convert data to JSON
       });
@@ -74,6 +82,5 @@ const customDataProvider = {
     }
   },
   // Implement other dataProvider methods in a similar fashion if needed
-
 };
 export default customDataProvider;

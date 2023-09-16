@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Query } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { OwnerPortableDevice } from '../database/models/owners_portable_devices.model ';  // Подставьте путь к модели вашего портативного устройства
 import { Model } from 'sequelize-typescript';
 import { PortableDevice } from '../database/models/portable_devices.model ';  // Подставьте путь к модели ваших портативных устройств
 import { Sequelize } from 'sequelize';
 import { now } from 'sequelize/types/utils';
-
+import { Op } from 'sequelize';
 @Injectable()
 export class OwnersPortableDevicesService {
   constructor(
@@ -13,6 +13,60 @@ export class OwnersPortableDevicesService {
     private readonly OwnerPortableDeviceModel: typeof OwnerPortableDevice,
   ) {}
 
+
+  async searchDevices(query: string, userId: number): Promise<any[]> {
+    try {
+      const devices = await this.OwnerPortableDeviceModel.findAll({
+        where: {
+          [Op.and]: [
+            {
+              [Op.or]: [
+                Sequelize.literal(`"portable_devices"."name" ILIKE :textQuery`),
+                Sequelize.literal(`"portable_devices"."type" ILIKE :textQuery`),
+                {
+                  quantity: {
+                    [Op.eq]: Sequelize.literal(':numQuery'),
+                  },
+                },
+                {
+                  shared_quantity: {
+                    [Op.eq]: Sequelize.literal(':numQuery'), 
+                  },
+                },
+              ],
+            },
+            {
+              user_id: userId,
+            },
+          ],
+        },
+        attributes: [
+          'id',
+          'quantity',
+          'created_at',
+          'is_shared',
+          'shared_quantity',
+          [Sequelize.literal(`"portable_devices"."name"`), 'device_name'],
+          [Sequelize.literal(`"portable_devices"."type"`), 'device_type'],
+        ],
+        include: [
+          {
+            model: PortableDevice, 
+            as: 'portable_devices',
+            attributes: [], 
+          },
+        ],
+        replacements: {
+          textQuery: `%${query}%`, 
+          numQuery: query,
+        },
+      });
+
+      return devices;
+    } catch (error) {
+      console.log(error);
+    }
+  }
   async getDevicesByUserId(userId: number): Promise<any[]> {
     try {
       const devices = await this.OwnerPortableDeviceModel.findAll({
@@ -41,7 +95,6 @@ export class OwnersPortableDevicesService {
   }
   async createDevice(userId: number, deviceData: any): Promise<OwnerPortableDevice> {
     try {
-      // Create a new portable device record
       const newPortableDevice = await PortableDevice.create({
         name: deviceData.name,
         type: deviceData.type,
