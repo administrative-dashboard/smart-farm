@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { OwnerPortableDevice } from '../database/models/owners_portable_devices.model ';  // Подставьте путь к модели вашего портативного устройства
 import { Model } from 'sequelize-typescript';
 import { PortableDevice } from '../database/models/portable_devices.model ';  // Подставьте путь к модели ваших портативных устройств
-import { Sequelize } from 'sequelize';
+import { Sequelize ,Op} from 'sequelize';
 import { now } from 'sequelize/types/utils';
 
 @Injectable()
@@ -39,6 +39,69 @@ export class OwnersPortableDevicesService {
       throw error;
     }
   }
+
+  async searchDevices(query: any, userId: number): Promise<any[]> {
+    try {
+      if (query === null || query === undefined) {
+        // Обработка случая, когда query не предоставлен
+        return [];
+      }
+  
+      const whereClause: any = {
+        [Op.and]: [
+          {
+            user_id: userId,
+          },
+        ],
+      };
+  
+      if (!isNaN(query)) {
+        whereClause[Op.or]=[
+          Sequelize.literal(`"quantity" = :numQuery`),
+          Sequelize.literal(`"shared_quantity" = :numQuery`)
+       ];
+      }       // Если query - число, добавляем условия для quantity и shared_quantity
+         else  {
+        // Если query - строка, добавляем условия для name и type
+        whereClause[Op.or] = [
+          Sequelize.literal(`"portable_devices"."name" ILIKE :textQuery`),
+          Sequelize.literal(`"portable_devices"."type" ILIKE :textQuery`),
+        ];
+      }
+  
+      const devices = await this.OwnerPortableDeviceModel.findAll({
+        where: whereClause,
+        attributes: [
+          'id',
+          'quantity',
+          'created_at',
+          'is_shared',
+          'shared_quantity',
+          [Sequelize.literal(`"portable_devices"."name"`), 'device_name'],
+          [Sequelize.literal(`"portable_devices"."type"`), 'device_type'],
+        ],
+        include: [
+          {
+            model: PortableDevice,
+            as: 'portable_devices',
+            attributes: [],
+          },
+        ],
+        replacements: {
+          textQuery: `%${query}%`, // Для текстовых полей
+          numQuery: query, // Для числовых полей
+        },
+      });
+  
+      return devices;
+    } catch (error) {
+      console.log(error);
+      throw error; // Обработка ошибки или возврат значения по умолчанию
+    }
+  }
+  
+  
+
   async createDevice(userId: number, deviceData: any): Promise<OwnerPortableDevice> {
     try {
       // Create a new portable device record

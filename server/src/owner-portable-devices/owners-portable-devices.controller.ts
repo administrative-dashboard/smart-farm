@@ -29,32 +29,25 @@ export class PortableDevicesController {
   async getPortableDevices(@Query('q') searchTerm: string, @Request() req) {
     try {
       console.log('ЗАПРОС ПОЛУЧЕН');
-
+      console.log('SEARCH TERM==',searchTerm);
       const userId = req.user.user_id;
       console.log(userId);
-
-      // Fetch all portable devices for the user
-      let portableDevices = await this.ownersPortableDevicesService.getDevicesByUserId(userId);
-
-      // If a search term is provided, filter the devices
-      
       if (searchTerm) {
-        console.log(searchTerm+'bbb');
-        portableDevices = portableDevices.filter(device => {
-          // Modify the condition to filter based on your data structure
-          return (
-            device.device_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            device.device_type.toLowerCase().includes(searchTerm.toLowerCase())
-          );
-        });
+        console.log("Search Term:", searchTerm);
+        const filteredDevices = await this.ownersPortableDevicesService.searchDevices(searchTerm,userId);
+        console.log("After Filtering:",filteredDevices);
+        return filteredDevices;
       }
-
+      else{
+      let portableDevices = await this.ownersPortableDevicesService.getDevicesByUserId(userId);
+      console.log(portableDevices);
+     
       const totalItems = portableDevices.length;
 
-      // Return the filtered devices
       return portableDevices;
+      }
     } catch (error) {
-      // Use NestJS NotFoundException for better error handling
+      
       throw new NotFoundException('Portable devices not found', 'custom-error-code');
     }
   }

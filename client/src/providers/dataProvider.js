@@ -9,14 +9,24 @@ const customDataProvider = {
     const headers = new Headers({
       Authorization: `Bearer ${token}`, // Add the JWT token to the headers
     });
+    const { filter, pagination, sort } = params;
+    const query = {}; // Initialize an empty query object
+  
+    // Check if there's a 'q' parameter in the filter and include it in the query
+    if (filter && filter.q) {
+      query.q = filter.q;
+    }
+  
     try {
-      const response = await fetch(`${apiUrl}/${resource}`, {
+      const response = await fetch(`${apiUrl}/${resource}?${new URLSearchParams(query)}`, {
         method: 'GET',
         headers,
       });
+  
       if (!response.ok) {
         throw new Error(response.statusText);
       }
+  
       const data = await response.json();
       return {
         data: data,
@@ -26,6 +36,7 @@ const customDataProvider = {
       throw new Error(`Error fetching ${resource}: ${error.message}`);
     }
   },
+  
   // Implement other dataProvider methods in a similar fashion if needed
   async create(resource, params) {
     const token = getJwtTokenFromCookies(); // Get the JWT token from cookies
