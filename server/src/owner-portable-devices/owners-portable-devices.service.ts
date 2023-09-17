@@ -1,3 +1,4 @@
+//owners-portable-devices.service.ts
 import { Injectable, Query } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { OwnerPortableDevice } from '../database/models/owners_portable_devices.model ';  // Подставьте путь к модели вашего портативного устройства
@@ -100,6 +101,133 @@ export class OwnersPortableDevicesService {
     }
   }
   
+  async searchDeviceName(deviceName: string, userId: number): Promise<any[]> {
+    try {
+      const devices = await this.OwnerPortableDeviceModel.findAll({
+        where: {
+          user_id: userId,
+          '$portable_devices.name$': {
+            [Op.iLike]: `%${deviceName}%`,
+          },
+        },
+        attributes: [
+          'id',
+          [Sequelize.col('portable_devices.name'), 'device_name'],
+          [Sequelize.col('portable_devices.type'), 'device_type'],
+          'quantity',
+          'created_at',
+          'is_shared',
+          'shared_quantity',
+        ],
+        include: [
+          {
+            model: PortableDevice,
+            as: 'portable_devices',
+            attributes: [],
+          },
+        ],
+      });
+      return devices;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  
+  async searchDeviceType(deviceType: string, userId: number): Promise<any[]> {
+    try {
+      const devices = await this.OwnerPortableDeviceModel.findAll({
+        where: {
+          user_id: userId,
+          '$portable_devices.type$': {
+            [Op.iLike]: `%${deviceType}%`,
+          },
+        },
+        attributes: [
+          'id',
+          [Sequelize.col('portable_devices.name'), 'device_name'],
+          [Sequelize.col('portable_devices.type'), 'device_type'],
+          'quantity',
+          'created_at',
+          'is_shared',
+          'shared_quantity',
+        ],
+        include: [
+          {
+            model: PortableDevice,
+            as: 'portable_devices',
+            attributes: [],
+          },
+        ],
+      });
+      return devices;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async searchDeviceQuantity(quantity: number, userId: number): Promise<any[]> {
+    try {
+      const devices = await this.OwnerPortableDeviceModel.findAll({
+        where: {
+          user_id: userId,
+          [Op.or]: [
+            { quantity: quantity },
+            { shared_quantity: quantity },
+          ],
+        },
+        attributes: [
+          'id',
+          [Sequelize.col('portable_devices.name'), 'device_name'],
+          [Sequelize.col('portable_devices.type'), 'device_type'],
+          'quantity',
+          'created_at',
+          'is_shared',
+          'shared_quantity',
+        ],
+        include: [
+          {
+            model: PortableDevice,
+            as: 'portable_devices',
+            attributes: [],
+          },
+        ],
+      });
+      return devices;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async searchSharedQuantity(sharedQuantity: number, userId: number): Promise<any[]> {
+    try {
+      const devices = await this.OwnerPortableDeviceModel.findAll({
+        where: {
+          user_id: userId,
+          shared_quantity: sharedQuantity,
+        },
+        attributes: [
+          'id',
+          [Sequelize.col('portable_devices.name'), 'device_name'],
+          [Sequelize.col('portable_devices.type'), 'device_type'],
+          'quantity',
+          'created_at',
+          'is_shared',
+          'shared_quantity',
+        ],
+        include: [
+          {
+            model: PortableDevice,
+            as: 'portable_devices',
+            attributes: [],
+          },
+        ],
+      });
+      return devices;
+    } catch (error) {
+      throw error;
+    }
+  }
   
 
   async createDevice(userId: number, deviceData: any): Promise<OwnerPortableDevice> {
