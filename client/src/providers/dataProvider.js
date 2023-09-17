@@ -13,8 +13,13 @@ const customDataProvider = {
     const query = {}; // Initialize an empty query object
   
     // Check if there's a 'q' parameter in the filter and include it in the query
-    if (filter && filter.q) {
+    if (filter.q || filter.device_name || filter.device_type || filter.quantity || filter.shared_quantity || filter.created_at) {
       query.q = filter.q;
+      query.device_name=filter.device_name;
+      query.device_type=filter.device_type;
+      query.quantity=filter.quantity;
+      query.shared_quantity=filter.shared_quantity;
+      query.created_at=filter.created_at;
     }
   
     try {

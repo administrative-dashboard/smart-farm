@@ -12,7 +12,7 @@ import {
   Param,
   Query,
   UseGuards,
-  NotFoundException
+  NotFoundException,
 } from '@nestjs/common'; // Import Logger
 import { Response, query, response } from 'express';
 import { OwnersPortableDevicesService } from './owners-portable-devices.service';
@@ -29,46 +29,52 @@ export class PortableDevicesController {
 
   @Get()
   async getPortableDevices(
-    @Query() queryParams: any,
-    @Request() req,
+    @Query('q') searchTerm: any,
+    @Query('device_name') deviceName: any,
+    @Query('device_type') deviceType: any,
+    @Query('quantity') quantity: any,
+    @Query('shared_quantity') sharedQuantity: any,
+    @Query('created_at') date: any,
+    @Request() req
   ) {
     try {
-      console.log('ЗАПРОС ПОЛУЧЕН');
-      console.log('QUERY PARAMETERS:', queryParams);
+      console.log('ЗАПРОС ПОЛУЧЕН!!!!!!!!!');
+      console.log('searchTerm==', searchTerm);
+      console.log('device_name==', deviceName);
+      console.log('device_type==', deviceType);
+      console.log('quantity==', quantity);
+      console.log('shared_quantity==', sharedQuantity);
       const userId = req.user.user_id;
       console.log(userId);
-
-      let portableDevices;
-
-      if (queryParams.q) {
-        // Handle search by general query
-        portableDevices = await this.ownersPortableDevicesService.searchDevices(queryParams.q, userId);
-      } else if (queryParams.device_name) {
-        // Handle search by device name
-        portableDevices = await this.ownersPortableDevicesService.searchDeviceName(queryParams.device_name, userId);
-      } else if (queryParams.device_type) {
-        // Handle search by device type
-        portableDevices = await this.ownersPortableDevicesService.searchDeviceType(queryParams.device_type, userId);
-      } else if (queryParams.quantity) {
-        // Handle search by quantity
-        portableDevices = await this.ownersPortableDevicesService.searchDeviceQuantity(queryParams.quantity, userId);
-      } else if (queryParams.shared_quantity) {
-        // Handle search by shared quantity
-        portableDevices = await this.ownersPortableDevicesService.searchSharedQuantity(queryParams.shared_quantity, userId);
+      if (searchTerm || deviceName || deviceType || quantity || sharedQuantity || date) {
+        const filteredDevices =
+          await this.ownersPortableDevicesService.searchDevices(
+            userId,
+            searchTerm,
+            deviceName,
+            deviceType,
+            quantity,
+            sharedQuantity,
+           
+          );
+        /* console.log('After Filtering:', filteredDevices); */
+        return filteredDevices;
       } else {
-        // No valid query parameter provided, fetch all devices
-        portableDevices = await this.ownersPortableDevicesService.getDevicesByUserId(userId);
+        let portableDevices = await this.ownersPortableDevicesService.getDevicesByUserId(userId);
+        /* console.log(portableDevices); */
+        const totalItems = portableDevices.length;
+        return portableDevices;
       }
 
-      console.log('Filtered Devices:', portableDevices);
-      return portableDevices;
+      // console.log('Filtered Devices:', portableDevices);
+      // return portableDevices;
     } catch (error) {
-      throw new NotFoundException('Portable devices not found', 'custom-error-code');
+      throw new NotFoundException(
+        'Portable devices not found',
+        'custom-error-code'
+      );
     }
   }
-  
-
-
   
 
 
