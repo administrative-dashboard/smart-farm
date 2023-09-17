@@ -91,6 +91,7 @@ export class UserController {
   async getCommunityName(@Request() req) {
     try {
       const userId = req.user.user_id;
+      console.log(userId);
       const communityName = await this.userCommunityService.getCommunityNameByUserId(userId);
       return communityName;
     } catch (error) {

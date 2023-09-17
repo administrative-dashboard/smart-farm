@@ -61,8 +61,9 @@ import { BasicTable } from "./components/BasicTable";
 import simpleRestProvider from 'ra-data-simple-rest';
 import { API_URL } from "./consts";
 import { DesktopInfo } from "./pages/CommunityManager/DesktopInfo";
-// const dataProvider = simpleRestProvider(API_URL);
-import customDataProvider from "./providers/dataProvider";
+// import dataProvider from "./providers/dataProvider";
+const dataProvider = simpleRestProvider(API_URL);
+// import customDataProvider from "./providers/dataProvider";
 
 const i18nProvider = polyglotI18nProvider(
   (locale) => (locale === "am" ? armenianMessages : englishMessages),
@@ -74,7 +75,7 @@ const App = () => {
     <BrowserRouter>
       <Admin
         layout={MyLayout}
-        dataProvider={customDataProvider} 
+        dataProvider={dataProvider} 
         i18nProvider={i18nProvider}
       >
         <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />

@@ -7,13 +7,15 @@ import { UserController } from './user.controller';
 import { UserCommunityService } from './user-community.service';
 import { UserCommunity } from 'src/database/models/users_communities.model';
 import { Community } from 'src/database/models/communities.model';
+import { UserRole } from 'src/database/models/users_roles';
+import { Role } from 'src/database/models/roles.model';
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([User, UserCommunity, Community]),
+    SequelizeModule.forFeature([User, UserCommunity, Community, UserRole, Role]),
   ],
   providers: [UserService, UserCommunityService],
   controllers: [UserController],
-  // exports: [UserService],
+  exports: [UserCommunityService],
 })
 export class UserModule {}

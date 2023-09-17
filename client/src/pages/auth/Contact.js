@@ -1,3 +1,4 @@
+//contact.js
 import React, { useEffect, useState } from "react";
 import {
   ThemeProvider,
@@ -28,7 +29,13 @@ export const Contact = () => {
   const [communities, setCommunities] = useState([]);
   const [phone_number, setPhoneNumber] = useState("");
   useEffect(() => {
-    axios.get(`${API_URL}/community/info`).then((response) => {
+    axios.get(`${API_URL}/community/info`,
+    {
+      headers: {
+        Authorization: `Bearer ${getJwtTokenFromCookies()}`,
+      },
+    }
+      ).then((response) => {
       setCommunities(response.data)
     });
   }, []);

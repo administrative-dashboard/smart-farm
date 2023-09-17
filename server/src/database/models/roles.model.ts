@@ -16,12 +16,6 @@ export class Role extends Model<Role> {
   @Column
   description: string;
 
-  // @BelongsToMany(() => User, () => UserRole)
-  // users: User[];
-
-  // @BelongsToMany(() => Permission, () => RolePermission)
-  // permissions: Permission[];
-
   @HasMany(() => UserRole)
   users: User[];
 

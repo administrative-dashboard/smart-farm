@@ -18,6 +18,7 @@ import QueryStatsIcon from "@mui/icons-material/QueryStats";
 import ReduceCapacityIcon from "@mui/icons-material/ReduceCapacity";
 import LanIcon from "@mui/icons-material/Lan";
 import { SignupButton } from "../components/SignupButton";
+import { getJwtTokenFromCookies } from "../providers/authUtils";
 
 const Img1 = styled("img")({
   margin: "auto",
@@ -353,7 +354,9 @@ export const MainDashboard = () => {
                 Join us today and experience the seamless process of investing
                 in farms.
               </p>
-              <SignupButton />
+              {
+                !getJwtTokenFromCookies() ? <SignupButton /> : null
+              }
             </Typography>
           </Grid>
         </Grid>
