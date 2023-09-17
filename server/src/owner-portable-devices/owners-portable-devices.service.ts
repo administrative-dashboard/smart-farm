@@ -81,7 +81,7 @@ export class OwnersPortableDevicesService {
       }
       if (deviceType !== "" && deviceType !== "undefined") {
         console.log("device_type is pushed");
-        whereClause[Op.and].push(Sequelize.literal(`"portable_devices"."name" ILIKE :textDeviceType`));
+        whereClause[Op.and].push(Sequelize.literal(`"portable_devices"."type" ILIKE :textDeviceType`));
       }
       if (quantity !== "" && quantity !== "undefined") {
         console.log("quantity is pushed");
