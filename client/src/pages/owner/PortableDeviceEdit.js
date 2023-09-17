@@ -6,12 +6,15 @@ import {
   TextInput,
   DateInput,
   NumberInput,
+  useDataProvider,
 } from "react-admin";
 import { Box } from "@mui/material";
 
 import { HomeRedirectButton } from "../../components/HomeRedirectButton";
+import customDataProvider from "../../providers/dataProvider";
 
 export const PortableDeviceEdit = (props) => {
+ 
   return (
     <>
       <Edit 

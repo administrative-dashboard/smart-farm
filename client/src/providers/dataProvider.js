@@ -40,8 +40,44 @@ const customDataProvider = {
     } catch (error) {
       throw new Error(`Error fetching ${resource}: ${error.message}`);
     }
+  }
+  ,
+  
+  async getOne(resource, params) {
+    const token = getJwtTokenFromCookies(); // Получите JWT-токен из cookies
+    const headers = new Headers({
+      Authorization: `Bearer ${token}`, // Добавьте JWT-токен в заголовки
+    });
+  
+    if (!params.id) {
+      throw new Error('Не указан параметр "id"');
+    }
+  
+    try {
+      const response = await fetch(`${apiUrl}/${resource}/${params.id}`, {
+        method: 'GET',
+        headers,
+      });
+  
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+  
+      const data = await response.json();
+      return {
+        data: data,
+      };
+    } catch (error) {
+      throw new Error(`Ошибка при запросе ${resource}: ${error.message}`);
+    }
   },
   
+
+
+
+
+
+
   // Implement other dataProvider methods in a similar fashion if needed
   async create(resource, params) {
     const token = getJwtTokenFromCookies(); // Get the JWT token from cookies
@@ -90,6 +126,37 @@ const customDataProvider = {
     }
   },
   // Implement other dataProvider methods in a similar fashion if needed
+
+  async delete(resource, params) {
+    const token = getJwtTokenFromCookies(); // Получите JWT-токен из cookies
+    const headers = new Headers({
+      Authorization: `Bearer ${token}`, // Добавьте JWT-токен в заголовки
+    });
+  
+    if (!params.id) {
+      throw new Error('Не указан параметр "id"');
+    }
+  
+    try {
+      const response = await fetch(`${apiUrl}/${resource}/${params.id}`, {
+        method: 'DELETE',
+        headers,
+      });
+  
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+  
+      return {
+        data: params.id, // Возвращаем id удаленной записи
+      };
+    } catch (error) {
+      throw new Error(`Ошибка при удалении записи из ${resource}: ${error.message}`);
+    }
+  }
+  
+
+
 
 };
 export default customDataProvider;

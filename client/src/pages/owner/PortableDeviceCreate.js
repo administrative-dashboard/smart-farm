@@ -9,11 +9,11 @@ import {
   useRedirect, // Import the hooks here
   useDataProvider,
 } from "react-admin";
-
+import customDataProvider from "../../providers/dataProvider";
 import { HomeRedirectButton } from "../../components/HomeRedirectButton";
 
 export const PortableDeviceCreate = (props) => {
-  const dataprovider = useDataProvider();
+  
   const currentDate = new Date();
   const notify = useNotify(); 
   const redirect = useRedirect(); 
