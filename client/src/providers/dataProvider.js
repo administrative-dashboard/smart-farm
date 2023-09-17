@@ -1,18 +1,17 @@
-import simpleRestProvider from "ra-data-simple-rest";
-import { getJwtTokenFromCookies } from "./authUtils"; // Import your function to get the JWT token from cookies
-const apiUrl = "http://localhost:5000"; // Replace with your API URL
+import simpleRestProvider from 'ra-data-simple-rest';
+import { getJwtTokenFromCookies } from './authUtils'; 
+const apiUrl = 'http://localhost:5000'; 
 const dataProvider = simpleRestProvider(apiUrl);
 const customDataProvider = {
   ...dataProvider,
   async getList(resource, params) {
-    const token = getJwtTokenFromCookies(); // Get the JWT token from cookies
+    const token = getJwtTokenFromCookies(); 
     const headers = new Headers({
-      Authorization: `Bearer ${token}`, // Add the JWT token to the headers
+      Authorization: `Bearer ${token}`, 
     });
     const { filter, pagination, sort } = params;
-    const query = {}; // Initialize an empty query object
+    const query = {}; 
   
-    // Check if there's a 'q' parameter in the filter and include it in the query
     if (filter.q || filter.device_name || filter.device_type || filter.quantity || filter.shared_quantity || filter.created_at) {
       query.q = filter.q;
       query.device_name=filter.device_name;
@@ -35,22 +34,21 @@ const customDataProvider = {
       const data = await response.json();
       return {
         data: data,
-        total: data.length, // You may need to adjust this depending on your API response structure
+        total: data.length, 
       };
     } catch (error) {
       throw new Error(`Error fetching ${resource}: ${error.message}`);
     }
-  }
-  ,
+  },
   
   async getOne(resource, params) {
-    const token = getJwtTokenFromCookies(); // Получите JWT-токен из cookies
+    const token = getJwtTokenFromCookies(); 
     const headers = new Headers({
-      Authorization: `Bearer ${token}`, // Добавьте JWT-токен в заголовки
+      Authorization: `Bearer ${token}`, 
     });
   
     if (!params.id) {
-      throw new Error('Не указан параметр "id"');
+      throw new Error('Not set parameter "id"');
     }
   
     try {
@@ -68,28 +66,22 @@ const customDataProvider = {
         data: data,
       };
     } catch (error) {
-      throw new Error(`Ошибка при запросе ${resource}: ${error.message}`);
+      throw new Error(`Request Error ${resource}: ${error.message}`);
     }
   },
   
-
-
-
-
-
-
-  // Implement other dataProvider methods in a similar fashion if needed
+ 
   async create(resource, params) {
-    const token = getJwtTokenFromCookies(); // Get the JWT token from cookies
+    const token = getJwtTokenFromCookies(); 
     const headers = new Headers({
-      Authorization: `Bearer ${token}`, // Add the JWT token to the headers
-      "Content-Type": "application/json", // Adjust content type as needed
+      Authorization: `Bearer ${token}`, 
+      'Content-Type': 'application/json', 
     });
     try {
       const response = await fetch(`${apiUrl}/${resource}`, {
         method: "POST",
         headers,
-        body: JSON.stringify(params.data), // Convert data to JSON
+        body: JSON.stringify(params.data), 
       });
       if (!response.ok) {
         throw new Error(response.statusText);
@@ -103,16 +95,16 @@ const customDataProvider = {
     }
   },
   async update(resource, params) {
-    const token = getJwtTokenFromCookies(); // Get the JWT token from cookies
+    const token = getJwtTokenFromCookies(); 
     const headers = new Headers({
-      Authorization: `Bearer ${token}`, // Add the JWT token to the headers
-      "Content-Type": "application/json", // Adjust content type as needed
+      Authorization: `Bearer ${token}`, 
+      'Content-Type': 'application/json', 
     });
     try {
       const response = await fetch(`${apiUrl}/${resource}/${params.id}`, {
         method: "PUT",
         headers,
-        body: JSON.stringify(params.data), // Convert data to JSON
+        body: JSON.stringify(params.data), 
       });
       if (!response.ok) {
         throw new Error(response.statusText);
@@ -125,16 +117,16 @@ const customDataProvider = {
       throw new Error(`Error updating ${resource}: ${error.message}`);
     }
   },
-  // Implement other dataProvider methods in a similar fashion if needed
+  
 
   async delete(resource, params) {
-    const token = getJwtTokenFromCookies(); // Получите JWT-токен из cookies
+    const token = getJwtTokenFromCookies(); 
     const headers = new Headers({
-      Authorization: `Bearer ${token}`, // Добавьте JWT-токен в заголовки
+      Authorization: `Bearer ${token}`, 
     });
   
     if (!params.id) {
-      throw new Error('Не указан параметр "id"');
+      throw new Error('Not set parameter "id"');
     }
   
     try {
@@ -148,15 +140,12 @@ const customDataProvider = {
       }
   
       return {
-        data: params.id, // Возвращаем id удаленной записи
+        data: params.id, 
       };
     } catch (error) {
-      throw new Error(`Ошибка при удалении записи из ${resource}: ${error.message}`);
+      throw new Error(`Error deleting from ${resource}: ${error.message}`);
     }
   }
   
-
-
-
 };
 export default customDataProvider;

@@ -59,11 +59,10 @@ export class PortableDevicesController {
             sharedQuantity,
             date
           );
-        /* console.log('After Filtering:', filteredDevices); */
         return filteredDevices;
       } else {
-        let portableDevices = await this.ownersPortableDevicesService.getDevicesByUserId(userId);
-        /* console.log(portableDevices); */
+        let portableDevices =
+        await this.ownersPortableDevicesService.getDevicesByUserId(userId);
         const totalItems = portableDevices.length;
         return portableDevices;
       }
