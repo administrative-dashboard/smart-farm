@@ -22,6 +22,7 @@ import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
 import { NotFoundError } from 'rxjs';
 @Controller('portable_devices')
 @UseGuards(JwtAuthGuard)
+
 export class PortableDevicesController {
   constructor(
     private readonly ownersPortableDevicesService: OwnersPortableDevicesService
@@ -44,6 +45,7 @@ export class PortableDevicesController {
       console.log('device_type==', deviceType);
       console.log('quantity==', quantity);
       console.log('shared_quantity==', sharedQuantity);
+      console.log('created_at==', date);
       const userId = req.user.user_id;
       console.log(userId);
       if (searchTerm || deviceName || deviceType || quantity || sharedQuantity || date) {
@@ -55,7 +57,7 @@ export class PortableDevicesController {
             deviceType,
             quantity,
             sharedQuantity,
-           
+            date
           );
         /* console.log('After Filtering:', filteredDevices); */
         return filteredDevices;
@@ -119,7 +121,6 @@ export class PortableDevicesController {
   }
 
   @Post('create')
-  @UseGuards(JwtAuthGuard)
   async createPortableDevice(@Body() deviceData: any, @Request() req) {
     try {
       console.log(deviceData);

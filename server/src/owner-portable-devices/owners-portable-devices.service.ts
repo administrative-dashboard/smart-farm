@@ -50,14 +50,10 @@ export class OwnersPortableDevicesService {
     quantity?: any,
     sharedQuantity?: any,
     created_at?: any,
-    
   ): Promise<any[]> {
+    
+    console.log(created_at==="undefined");
     try {
-      if (query === null || query === undefined) {
-        // Обработка случая, когда query не предоставлен
-        return [];
-      }
-      console.log();
       const whereClause: any = {
         [Op.and]: [
           {
@@ -65,21 +61,41 @@ export class OwnersPortableDevicesService {
           },
         ],
       };
-
-      if (!isNaN(query)) {
+  
+      if (!isNaN(query) && query !== "") {
         whereClause[Op.or] = [
           Sequelize.literal(`"quantity" = :numQuery`),
           Sequelize.literal(`"shared_quantity" = :numQuery`),
         ];
-      } // Если query - число, добавляем условия для quantity и shared_quantity
-      else {
-        // Если query - строка, добавляем условия для name и type
+      } else if (query !== "" && query !== "undefined") {
+        
         whereClause[Op.or] = [
           Sequelize.literal(`"portable_devices"."name" ILIKE :textQuery`),
           Sequelize.literal(`"portable_devices"."type" ILIKE :textQuery`),
         ];
       }
-
+  
+      if (deviceName !== "" && deviceName !== "undefined") {
+        console.log("device_name is pushed");
+        whereClause[Op.and].push( Sequelize.literal(`"portable_devices"."name" ILIKE :textDeviceName`));
+      }
+      if (deviceType !== "" && deviceType !== "undefined") {
+        console.log("device_type is pushed");
+        whereClause[Op.and].push(Sequelize.literal(`"portable_devices"."name" ILIKE :textDeviceType`));
+      }
+      if (quantity !== "" && quantity !== "undefined") {
+        console.log("quantity is pushed");
+        whereClause[Op.and].push(Sequelize.literal(`"quantity" = :numQuantity`));
+      }
+      if (sharedQuantity !== "" && sharedQuantity !== "undefined") {
+        console.log("shared_quantity is pushed");
+        whereClause[Op.and].push(Sequelize.literal(`"shared_quantity" = :numSharedQuantity`));
+      }
+      if (created_at !== "" && created_at !== "undefined") {
+        console.log("created_at is pushed");
+        whereClause[Op.and].push({ created_at: created_at });
+      }
+  
       const devices = await this.OwnerPortableDeviceModel.findAll({
         where: whereClause,
         attributes: [
@@ -99,25 +115,27 @@ export class OwnersPortableDevicesService {
           },
         ],
         replacements: {
-          textQuery: `%${query}%`, // Для текстовых полей
-          numQuery: query, // Для числовых полей
+          textQuery: `%${query}%`, 
+          textDeviceName:`%${deviceName}%`,
+          textDeviceType:`%${deviceType}%`,
+          numQuantity: quantity,
+          numSharedQuantity: sharedQuantity,
+        
+          numQuery: query, 
         },
       });
-
       return devices;
     } catch (error) {
       throw error;
     }
   }
   
-  // Rest of your methods...
-
-
   async createDevice(
     userId: number,
     deviceData: any
   ): Promise<OwnerPortableDevice> {
     try {
+     
       const newPortableDevice = await PortableDevice.create({
         name: deviceData.name,
         type: deviceData.type,
