@@ -9,16 +9,11 @@ import {
   useRedirect,
   required,
 } from "react-admin";
-<<<<<<< HEAD
-=======
 import customDataProvider from "../../providers/dataProvider";
->>>>>>> 76e8fe9c58e148858fae6e5f18c86aab88cc4e3a
+
 import { HomeRedirectButton } from "../../components/HomeRedirectButton";
 export const PortableDeviceCreate = (props) => {
-<<<<<<< HEAD
-=======
   
->>>>>>> 76e8fe9c58e148858fae6e5f18c86aab88cc4e3a
   const currentDate = new Date();
   const notify = useNotify();
   const redirect = useRedirect();

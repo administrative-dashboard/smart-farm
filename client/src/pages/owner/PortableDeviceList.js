@@ -17,7 +17,7 @@ import { Box } from "@mui/material";
 import { useDataProvider } from "react-admin";
 import { HomeRedirectButton } from "../../components/HomeRedirectButton";
 import { ResetFilters } from "../../components/ResetFilters";
-
+import { useState, useEffect } from "react";
 import customDataProvider from "../../providers/dataProvider";
 export const PortableDeviceList = (props) => {
   /* const dataProvider = useDataProvider(); */
