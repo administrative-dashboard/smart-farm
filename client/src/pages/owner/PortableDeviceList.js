@@ -21,7 +21,6 @@ import { ResetFilters } from "../../components/ResetFilters";
 
 import customDataProvider from "../../providers/dataProvider";
 export const PortableDeviceList = (props) => {
-  /* const dataProvider = useDataProvider(); */
   const dataProvider = customDataProvider;
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -42,7 +41,7 @@ export const PortableDeviceList = (props) => {
            quantity: searchQuantity, 
            shared_quantity: searchSharedQuantity,
            created_at: searchDate, 
-        }, // Используем текущее значение поиска
+        }, 
       });
 
       console.log("ЗАПРОС ОТПРАВЛЕН  ");
@@ -63,13 +62,12 @@ export const PortableDeviceList = (props) => {
     </Filter>
   );
   useEffect(() => {
-    // Функция для загрузки данных с учетом поискового запроса
-    fetchData(); // Вызываем функцию при загрузке компонента
+    fetchData(); 
   }, [searchTerm,searchName,searchType,searchQuantity,searchSharedQuantity,searchDate]);
 
   const handleSearchInputChange = async (e) => {
     if (e.target.value) {
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      await new Promise((resolve) => setTimeout(resolve, 4000));
       setSearchTerm(e.target.value);
     }
   };
@@ -110,7 +108,7 @@ export const PortableDeviceList = (props) => {
       <List
         {...props}
         data={data}
-        filters={<DeviceFilter />} // Use the custom DeviceFilter
+        filters={<DeviceFilter />} 
         sx={{ color: "#38A505" }}
       >
         <Datagrid>
