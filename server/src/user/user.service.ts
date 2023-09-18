@@ -12,9 +12,9 @@ export class UserService {
     private readonly userModel: typeof User,
   ) {}
 
-  async getUserInfoById(userId: number) {
+  async getUserInfoByEmail(email: string) {
     try {
-      const userInfo = await this.userModel.findByPk(userId); 
+      const userInfo = await this.userModel.findOne({ where: { email } });
       return userInfo;
     } catch (error) {
       throw error;

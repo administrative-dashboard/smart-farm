@@ -5,19 +5,23 @@ import { UserService } from './user.service';
 import { UserCommunityService } from './user-community.service';
 import { UserCommunity } from 'src/database/models/users_communities.model';
 import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
-
+import { GoogleService } from 'src/auth/google.service';
 @Controller('user')
 export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly userCommunityService: UserCommunityService,
+    private readonly googleService: GoogleService
   ) { }
 
   @Get('info')
   @UseGuards(JwtAuthGuard)
   async getUserInfo(@Request() req) {
-    const userId = req.user.user_id;
-    const userInfo = await this.userService.getUserInfoById(userId);
+    // const userId = req.user.user_id;
+    const accessToken = req.user.accessToken;
+    const email = await this.googleService.getUserInfo(accessToken);
+    console.log("email", email);
+    const userInfo = await this.userService.getUserInfoByEmail(email);
     return userInfo;
   }
 
@@ -25,25 +29,25 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   async updateUserInfo(@Request() req, @Body() userData: any) {
     try {
-      const userId = req.user.user_id;
-      const existingUser = await this.userService.getUserInfoById(userId);
+      // const userId = req.user.user_id;
+      const accessToken = req.user.accessToken;
+      const email = await this.googleService.getUserInfo(accessToken);
+      const existingUser = await this.userService.getUserInfoByEmail(email);
       if (!existingUser) {
         throw new NotFoundException('User not found');
       }
-  
-      // Update only the fields provided in the request body
       if (userData.name) {
         existingUser.name = userData.name;
       }
-  
+
       if (userData.phone_number) {
         existingUser.phone_number = userData.phone_number;
       }
-  
+
       if (userData.profile_image) {
         existingUser.profile_image = userData.profile_image;
       }
-  
+
       const updatedUser = await existingUser.save();
       return updatedUser;
     } catch (error) {
@@ -55,8 +59,10 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   async updateUserPhoneNumber(@Request() req, @Body() userData: any) {
     try {
-      const userId = req.user.user_id;
-      const existingUser = await this.userService.getUserInfoById(userId);
+      // const userId = req.user.user_id;
+      const accessToken = req.user.accessToken;
+      const email = await this.googleService.getUserInfo(accessToken);
+      const existingUser = await this.userService.getUserInfoByEmail(email);
 
       if (!existingUser) {
         throw new NotFoundException('User not found');
@@ -75,14 +81,21 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   async addCommunity(@Request() req, @Body() userData: any) {
     try {
-      const userId = req.user.user_id;
-      const newUserCommunity = new UserCommunity();
-      newUserCommunity.user_id = userId;
-      newUserCommunity.community_id = userData.community_id;
-      await newUserCommunity.save();
+      const accessToken = req.user.accessToken;
+      const email = await this.googleService.getUserInfo(accessToken);
+      const user = await this.userService.getUserInfoByEmail(email);
+
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+
+      const userId = user.id;
+      const communityId = userData.community_id;
+      const newUserCommunity = await this.userCommunityService.addUserToCommunity(userId, communityId);
       return newUserCommunity;
     } catch (error) {
       console.error('Error adding community for user:', error);
+      throw new NotFoundException('Error adding community for user');
     }
   }
 
@@ -90,13 +103,20 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   async getCommunityName(@Request() req) {
     try {
-      const userId = req.user.user_id;
-      console.log(userId);
+      const accessToken = req.user.accessToken;
+      const email = await this.googleService.getUserInfo(accessToken);
+      const user = await this.userService.getUserInfoByEmail(email);
+
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+
+      const userId = user.id;
       const communityName = await this.userCommunityService.getCommunityNameByUserId(userId);
       return communityName;
     } catch (error) {
       console.error('Error fetching community name:', error);
-      return null;
+      throw new NotFoundException('Error fetching community name');
     }
   }
 }

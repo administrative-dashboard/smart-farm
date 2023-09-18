@@ -11,6 +11,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
 import { AccountMiddleware } from 'src/middlewares/auth/account.middleware';
+import { v4 as uuidv4 } from 'uuid';
 // import { UserService } from 'src/user/user.service';
 
 @Controller('google')
@@ -25,11 +26,12 @@ export class AuthController {
   @UseInterceptors(AccountMiddleware)
   async googleLoginCallback(@Req() req, @Res() res: Response) {
     const user = req.user;
-
+    // const sessionId = uuidv4();
     const jwtPayload = {
-      user_id: user.user_id,
-      email: user.email,
-      role: user.role,
+      //  user_id: user.user_id,
+      // email: user.email,
+      // role: user.role,
+      // sessionId,
       accessToken: user.accessToken,
       created: user.created,
     };
@@ -54,12 +56,4 @@ export class AuthController {
     res.clearCookie('token');
     res.redirect(`${process.env.CLIENT_URL}`);
   }
-
-  // @Get('info')
-  // @UseGuards(AuthGuard('jwt'))
-  // async getSecureData(@Req() req) {
-  //   const user = await this.userService.getUserInfo(req.user.jwtToken);
-  //   // Handle secure data retrieval and response here
-  //   return user;
-  // }
 }

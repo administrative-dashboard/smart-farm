@@ -16,20 +16,21 @@ export class CommunitiesController {
   async getCommunityInfo() {
     return await this.communitiesService.getAllCommunities();
   }
-
-  @Get('users')
-  @UseGuards(JwtAuthGuard)
-  async getUsersFromCommunity(@Request() req) {
-    try {
-      const userId = req.user.user_id;
-      const communityName = await this.userCommunityService.getCommunityNameByUserId(userId);
-      const users = await this.userCommunityService.getUsersInSameCommunity(userId);
-      //  response.header('Content-Range', `users 0-${users.length - 1}/${users.length}`);
-
-      return { communityName, users };
-    } catch (error) {
-      console.error('Error fetching community and users:', error);
-      return null;
-    }
-  }
 }
+
+  // @Get('users')
+  // @UseGuards(JwtAuthGuard)
+  // async getUsersFromCommunity(@Request() req) {
+  //   try {
+  //     const userId = req.user.user_id;
+  //     const communityName = await this.userCommunityService.getCommunityNameByUserId(userId);
+  //     const users = await this.userCommunityService.getUsersInSameCommunity(userId);
+  //     //  response.header('Content-Range', `users 0-${users.length - 1}/${users.length}`);
+
+  //     return { communityName, users };
+  //   } catch (error) {
+  //     console.error('Error fetching community and users:', error);
+  //     return null;
+  //   }
+  // }
+

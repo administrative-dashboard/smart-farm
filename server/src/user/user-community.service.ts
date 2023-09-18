@@ -40,61 +40,61 @@ export class UserCommunityService {
 
     return null;
   }
-
-  async getUsersInSameCommunity(userId: number) {
-    const userCommunity = await this.userCommunityModel.findOne({
-      where: { user_id: userId },
-    });
-    console.log(userCommunity.community_id)
-    if (userCommunity) {
-      const usersInSameCommunity = await this.userCommunityModel.findAll({
-        where: { community_id: userCommunity.community_id },
-        include: [
-          {
-            model: User,
-            attributes: ['id', 'name', 'email', 'phone_number'],
-          },
-        ],
-        attributes: [],
-      });
-      return usersInSameCommunity.map((entry) => ({
-        // communityName: entry.communities.name,
-        userId: entry.users.id,
-        userName: entry.users.name,
-        userEmail: entry.users.email,
-        userPhoneNumber: entry.users.phone_number,
-      }));
-    }
-
-    return null;
-  }
-  //   if (userCommunity) {
-  //     const usersInSameCommunity = await this.userCommunityModel.findAll({
-  //       where: { community_id: userCommunity.community_id },
-  //       include: [
-  //         {
-  //           model: User,
-  //           attributes: ['id', 'name', 'email', 'phone_number'],
-  //           include: [
-  //             {
-  //               model: UserRole,
-  //               attributes: ['role_id'],
-  //               include: [
-  //                 {
-  //                   model: Role,
-  //                   attributes: ['value'],
-  //                 },
-  //               ],
-  //             },
-  //           ],
-  //         },
-  //       ],
-  //     });
-
-  //     return usersInSameCommunity;
-  //   }
-
-  //   return null;
-  // }
 }
+// async getUsersInSameCommunity(userId: number) {
+//   const userCommunity = await this.userCommunityModel.findOne({
+//     where: { user_id: userId },
+//   });
+//   console.log(userCommunity.community_id)
+//   if (userCommunity) {
+//     const usersInSameCommunity = await this.userCommunityModel.findAll({
+//       where: { community_id: userCommunity.community_id },
+//       include: [
+//         {
+//           model: User,
+//           attributes: ['id', 'name', 'email', 'phone_number'],
+//         },
+//       ],
+//       attributes: [],
+//     });
+//     return usersInSameCommunity.map((entry) => ({
+//       // communityName: entry.communities.name,
+//       userId: entry.users.id,
+//       userName: entry.users.name,
+//       userEmail: entry.users.email,
+//       userPhoneNumber: entry.users.phone_number,
+//     }));
+//   }
+
+//   return null;
+// }
+//   if (userCommunity) {
+//     const usersInSameCommunity = await this.userCommunityModel.findAll({
+//       where: { community_id: userCommunity.community_id },
+//       include: [
+//         {
+//           model: User,
+//           attributes: ['id', 'name', 'email', 'phone_number'],
+//           include: [
+//             {
+//               model: UserRole,
+//               attributes: ['role_id'],
+//               include: [
+//                 {
+//                   model: Role,
+//                   attributes: ['value'],
+//                 },
+//               ],
+//             },
+//           ],
+//         },
+//       ],
+//     });
+
+//     return usersInSameCommunity;
+//   }
+
+//   return null;
+// }
+
 
