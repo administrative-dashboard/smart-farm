@@ -1,4 +1,7 @@
 import React from "react";
+import { useState } from "react";
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css";
 import {
   ThemeProvider,
   useMediaQuery,
@@ -22,6 +25,7 @@ const community = [
   },
 ];
 export const Contact = () => {
+  const [phone, setPhone] = useState('');
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <ThemeProvider theme={theme}>
@@ -83,15 +87,21 @@ export const Contact = () => {
               </MenuItem>
             ))}
           </TextField>
-          <TextField
+          {/* <TextField
             label="Phone number"
             variant="filled"
             color="primary"
             placeholder="+374 XXXXXXXX"
             sx={{ width: "100%", mb: 3 }}
+          /> */}
+
+          <PhoneInput
+            defaultCountry="am"
+            value={phone}
+            onChange={(phone) => setPhone(phone)}
           />
           <Box
-            sx={{ width: "100%", display: "flex", justifyContent: "center" }}
+            sx={{ mt: 5, width: "100%", display: "flex", justifyContent: "center" }}
           >
             <SaveButton />
           </Box>

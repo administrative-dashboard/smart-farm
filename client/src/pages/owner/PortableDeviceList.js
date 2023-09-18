@@ -11,14 +11,16 @@ import {
   NumberInput,
   DateInput,
   Filter,
-  SearchInput, // Import Filter
+  SearchInput, 
 } from "react-admin";
 import { Box } from "@mui/material";
+import { owner_drawer } from "../../assets/static/mockData/owner_drawer";
 import { useDataProvider } from "react-admin";
 import { HomeRedirectButton } from "../../components/HomeRedirectButton";
 import { ResetFilters } from "../../components/ResetFilters";
 import { useState, useEffect } from "react";
 import customDataProvider from "../../providers/dataProvider";
+import { MyBar } from "../../components/Drawer";
 export const PortableDeviceList = (props) => {
   const dataProvider = customDataProvider;
   const [data, setData] = useState([]);
@@ -65,11 +67,15 @@ export const PortableDeviceList = (props) => {
   }, [searchTerm,searchName,searchType,searchQuantity,searchSharedQuantity,searchDate]);
 
   const handleSearchInputChange = async (e) => {
-    if (e.target.value) {
-      await new Promise((resolve) => setTimeout(resolve, 4000));
+    // console.log("Event object:", e);
+    if (e.target && e.target.value) {
+      await new Promise((resolve) => setTimeout(resolve, 3000));
       setSearchTerm(e.target.value);
+    } else {
+      console.error("Event or event target is undefined.");
     }
   };
+  
   const handleSearchNameChange = async (e) => {
     if (e.target.value) {
       await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -104,6 +110,7 @@ export const PortableDeviceList = (props) => {
   return (
     <>
       <ResetFilters />
+      <MyBar drawerData={owner_drawer}/>
       <List
         {...props}
         data={data}
