@@ -61,6 +61,8 @@ import { BasicTable } from "./components/BasicTable";
 import simpleRestProvider from 'ra-data-simple-rest';
 import { API_URL } from "./consts";
 import { DesktopInfo } from "./pages/CommunityManager/DesktopInfo";
+import axios from "axios";
+import { getJwtTokenFromCookies } from "./providers/authUtils";
 // import dataProvider from "./providers/dataProvider";
 const dataProvider = simpleRestProvider(API_URL);
 // import customDataProvider from "./providers/dataProvider";
@@ -71,6 +73,32 @@ const i18nProvider = polyglotI18nProvider(
 );
 
 const App = () => {
+  const [roles, setRoles] = React.useState([]);
+
+  React.useEffect(() => {
+    const fetchUserRoles = async () => {
+      try {
+        const response = await axios.get(
+          `${API_URL}/user/roles`,
+          {
+            headers: {
+              Authorization: `Bearer ${getJwtTokenFromCookies()}`
+            }
+          }
+        );
+        setRoles(response.data);
+      } catch (error) {
+        console.error("Error fetching user roles:", error);
+      }
+    };
+
+    fetchUserRoles();
+  }, []);
+  if (roles.length === 0) {
+    return <div>Loading...</div>;
+  }
+  console.log(roles[0])
+
   return (
     <BrowserRouter>
       <Admin

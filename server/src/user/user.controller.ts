@@ -6,13 +6,15 @@ import { UserCommunityService } from './user-community.service';
 import { UserCommunity } from 'src/database/models/users_communities.model';
 import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
 import { GoogleService } from 'src/auth/google.service';
+import { UserRolesService } from './user-roles.service';
 @Controller('user')
 export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly userCommunityService: UserCommunityService,
-    private readonly googleService: GoogleService
-  ) { }
+    private readonly googleService: GoogleService,
+    private readonly userRolesService: UserRolesService
+  ) {}
 
   @Get('info')
   @UseGuards(JwtAuthGuard)
@@ -117,6 +119,27 @@ export class UserController {
     } catch (error) {
       console.error('Error fetching community name:', error);
       throw new NotFoundException('Error fetching community name');
+    }
+  }
+
+  @Get('roles')
+  @UseGuards(JwtAuthGuard)
+  async getRoles(@Request() req) {
+    try {
+      const accessToken = req.user.accessToken;
+      const email = await this.googleService.getUserInfo(accessToken);
+      const user = await this.userService.getUserInfoByEmail(email);
+  
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+  
+      const userId = user.id;
+      const rolesName = this.userRolesService.getRolesByUserId(userId); // Remove the "await" keyword here
+      return rolesName;
+    } catch (error) {
+      console.error('Error fetching roles name:', error);
+      throw new NotFoundException('Error fetching roles name');
     }
   }
 }

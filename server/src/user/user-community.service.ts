@@ -2,10 +2,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { UserCommunity } from 'src/database/models/users_communities.model';
-import { Community } from 'src/database/models/communities.model'; // Import the Community model
+import { Community } from 'src/database/models/communities.model';
 import { User } from 'src/database/models/users.model';
-import { UserRole } from 'src/database/models/users_roles';
-import { Role } from 'src/database/models/roles.model';
 
 @Injectable()
 export class UserCommunityService {
@@ -16,9 +14,12 @@ export class UserCommunityService {
     private readonly communityModel: typeof Community,
     @InjectModel(User)
     private readonly userModel: typeof User,
-  ) { }
+  ) {}
 
-  async addUserToCommunity(userId: number, communityId: number): Promise<UserCommunity> {
+  async addUserToCommunity(
+    userId: number,
+    communityId: number
+  ): Promise<UserCommunity> {
     return await UserCommunity.create({
       user_id: userId,
       community_id: communityId,
@@ -96,5 +97,3 @@ export class UserCommunityService {
 
 //   return null;
 // }
-
-

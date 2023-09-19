@@ -10,12 +10,24 @@ import { Community } from 'src/database/models/communities.model';
 import { UserRole } from 'src/database/models/users_roles';
 import { Role } from 'src/database/models/roles.model';
 import { GoogleService } from 'src/auth/google.service';
+import { UserRolesService } from './user-roles.service';
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([User, UserCommunity, Community, UserRole, Role]),
+    SequelizeModule.forFeature([
+      User,
+      UserCommunity,
+      Community,
+      UserRole,
+      Role,
+    ]),
   ],
-  providers: [UserService, UserCommunityService, GoogleService],
+  providers: [
+    UserService,
+    UserCommunityService,
+    GoogleService,
+    UserRolesService,
+  ],
   controllers: [UserController],
   exports: [UserCommunityService],
 })
