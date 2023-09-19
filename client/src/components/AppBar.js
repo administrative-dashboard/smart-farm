@@ -10,11 +10,12 @@ import {
 import { MenuItem, ListItemIcon } from "@mui/material";
 import ContactPageIcon from "@mui/icons-material/ContactPage";
 import Face6Icon from "@mui/icons-material/Face6";
-
 import { Logo } from "./LogoButton";
 import { SigninButton } from "./SigninButton";
 import { LogoutButton } from "./LogoutButton";
 import { ProfileButton } from "./ProfileButton";
+import Theme from './Theme';
+import { ThemeProvider } from "@mui/material/styles";
 
 export const MyAppBar = () => {
 //   const [isAuthenticated, setIsAuthenticated] = React.useState(true);
@@ -24,6 +25,7 @@ export const MyAppBar = () => {
 //   };
 // useAuthenticated();
   return (
+    <ThemeProvider theme={Theme}>
     <AppBar
       color="inherit"
       sx={{ p: 0 }}
@@ -58,5 +60,6 @@ export const MyAppBar = () => {
       />
       {/* {isAuthenticated ? null : <SigninButton />} */}
     </AppBar>
+    </ThemeProvider>
   );
 };

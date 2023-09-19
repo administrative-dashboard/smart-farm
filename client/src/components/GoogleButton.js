@@ -1,12 +1,11 @@
-//googleButton.js
+// GoogleButton.js
 import React, { useState } from "react";
 import { Button, useAuthProvider, useLogin, useRedirect } from "react-admin";
 import { useMediaQuery, useTheme } from "@mui/material";
-import { saveTokenToCookies } from "../providers/authUtils"
-import axios from "axios";
 import googleLogo from "../assets/static/googleLogo.svg";
 import authPovider from "../providers/authPovider";
-
+import { ThemeProvider } from "@mui/material/styles";
+import Theme from "./Theme";
 
 export const GoogleButton = () => {
   const redirect = useRedirect();
@@ -16,34 +15,35 @@ export const GoogleButton = () => {
   const login = useLogin();
   const handleLogin = () => {
     setLoading(true);
-   authPovider.login({});
+    authPovider.login({});
   };
 
-
   return (
-    <Button
-      onClick={handleLogin}
-      disabled={loading}
-      variant="outlined"
-      sx={{
-        color: "#38A505",
-        border: "1px solid #36D446",
-        px: isMediumScreen ? 4 : 2,
-        py: 1,
-        display: "flex",
-        alignItems: "center",
-      }}
-    >
-      <img
-        src={googleLogo}
-        alt="Google Logo"
-        style={{
-          width: "24px",
-          height: "24px",
-          marginRight: isMediumScreen ? "8px" : "4px",
+    <ThemeProvider theme={Theme}>
+      <Button
+        onClick={handleLogin}
+        disabled={loading}
+        variant="outlined"
+        sx={{
+          color: "#38A505",
+          border: "1px solid #36D446",
+          px: isMediumScreen ? 4 : 2,
+          py: 1,
+          display: "flex",
+          alignItems: "center",
         }}
-      />
-      {isMediumScreen && "Continue with Google"}
-    </Button>
+      >
+        <img
+          src={googleLogo}
+          alt="Google Logo"
+          style={{
+            width: "24px",
+            height: "24px",
+            marginRight: isMediumScreen ? "8px" : "4px",
+          }}
+        />
+        {isMediumScreen && "Continue with Google"}
+      </Button>
+    </ThemeProvider>
   );
 };

@@ -1,6 +1,9 @@
+// HomeRedirectButton.js
 import React from "react";
 import { Button, useRedirect } from "react-admin";
 import { Typography } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
+import Theme from "./Theme";
 
 export const HomeRedirectButton = ({ pageName, title }) => {
   const redirect = useRedirect();
@@ -10,7 +13,7 @@ export const HomeRedirectButton = ({ pageName, title }) => {
   };
 
   return (
-    <>
+    <ThemeProvider theme={Theme}>
       <Button
         variant="outlined"
         sx={{
@@ -28,6 +31,6 @@ export const HomeRedirectButton = ({ pageName, title }) => {
       >
         <Typography variant="h6">{title}</Typography>
       </Button>
-    </>
+    </ThemeProvider>
   );
 };

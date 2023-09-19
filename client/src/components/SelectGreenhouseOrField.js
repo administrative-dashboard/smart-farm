@@ -1,3 +1,5 @@
+// SelectGreenhouseOrField.js
+
 import * as React from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
@@ -6,6 +8,8 @@ import FormControl from "@mui/material/FormControl";
 import ListItemText from "@mui/material/ListItemText";
 import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
+import { ThemeProvider } from "@mui/material/styles";
+import Theme from "./Theme"; 
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -45,30 +49,32 @@ export const SelectGreenhouseOrField = () => {
   };
 
   return (
-    <div>
-      <FormControl sx={{ width: 400 }}>
-        <InputLabel id="demo-multiple-checkbox-label">
-          Greenhouse/Field
-        </InputLabel>
-        <Select
-          labelId="demo-multiple-checkbox-label"
-          id="demo-multiple-checkbox"
-          multiple
-          value={personName}
-          onChange={handleChange}
-          input={<OutlinedInput label="GreenHouse" />}
-          renderValue={(selected) => selected.join(", ")}
-          MenuProps={MenuProps}
-          style={{ height: 48 }}
-        >
-          {names.map((name) => (
-            <MenuItem key={name} value={name}>
-              <Checkbox checked={personName.indexOf(name) > -1} />
-              <ListItemText primary={name} />
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </div>
+    <ThemeProvider theme={Theme}>
+      <div>
+        <FormControl sx={{ width: 400 }}>
+          <InputLabel id="demo-multiple-checkbox-label">
+            Greenhouse/Field
+          </InputLabel>
+          <Select
+            labelId="demo-multiple-checkbox-label"
+            id="demo-multiple-checkbox"
+            multiple
+            value={personName}
+            onChange={handleChange}
+            input={<OutlinedInput label="GreenHouse" />}
+            renderValue={(selected) => selected.join(", ")}
+            MenuProps={MenuProps}
+            style={{ height: 48 }}
+          >
+            {names.map((name) => (
+              <MenuItem key={name} value={name}>
+                <Checkbox checked={personName.indexOf(name) > -1} />
+                <ListItemText primary={name} />
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </div>
+    </ThemeProvider>
   );
 };
