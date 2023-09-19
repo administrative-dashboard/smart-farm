@@ -11,17 +11,19 @@ async function start() {
   const PORT = process.env.PORT || 5001;
   const app = await NestFactory.create(AppModule);
   app.use(cookieParser());
-  app.use(
-    session({
-      secret: process.env.JWT_SECRET,
-      resave: false,
-      saveUninitialized: false,
-    })
-  );
+  // app.use(
+  //   session({
+  //     secret: process.env.JWT_SECRET,
+  //     resave: false,
+  //     saveUninitialized: false,
+  //   })
+  // );
   app.enableCors({
-    origin: 'http://localhost:3000',
+    // origin: '*',
+    origin: `${process.env.CLIENT_URL}`,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
+    exposedHeaders: ['Content-Range'],
   });
 
   await app.listen(PORT, () => {

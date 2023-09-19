@@ -1,10 +1,11 @@
 // users.model.ts
-import { Column, Model, Table, ForeignKey, HasMany } from 'sequelize-typescript';
+import { Column, Model, Table, BelongsToMany, HasMany } from 'sequelize-typescript';
 import { User } from './users.model';
 import { DeviceRequestHistory } from './device_requests_history.model';
 import { DeviceUsageStatisticsCommunities } from './device_usage_statistics_communities.model';
 import { DeviceUsageStatisticsFields } from './device_usage_statistics_fields.model';
 import { DeviceUsageStatisticsGreenhouses } from './device_usage_statistics_greenhouses.model';
+import { OwnerPortableDevice } from './owners_portable_devices.model ';
 
 @Table({ tableName: 'portable_devices', timestamps: false })
 export class PortableDevice extends Model<PortableDevice> {
@@ -17,25 +18,6 @@ export class PortableDevice extends Model<PortableDevice> {
   @Column({ allowNull: false })
   type: string;
 
-  @Column({ allowNull: false })
-  quantity: number;
-
-  @Column({})
-  created_at: Date;
-
-  @Column({})
-  updated_at: Date;
-
-  @Column({})
-  is_public: boolean;
-
-  @ForeignKey(() => User)
-  @Column
-  user_id: number;
-
-  @HasMany(() => DeviceRequestHistory)
-  device_requests_history: DeviceRequestHistory;
-
   @HasMany(() => DeviceUsageStatisticsCommunities)
   device_usage_statistics_communities: DeviceUsageStatisticsCommunities;
 
@@ -44,4 +26,7 @@ export class PortableDevice extends Model<PortableDevice> {
 
   @HasMany(() => DeviceUsageStatisticsGreenhouses)
   device_usage_statistics_greenhouses: DeviceUsageStatisticsGreenhouses;
+
+  @HasMany(() => OwnerPortableDevice)
+  owners_portable_devices: OwnerPortableDevice[];
 }

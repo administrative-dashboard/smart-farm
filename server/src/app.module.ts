@@ -17,6 +17,8 @@ import { Greenhouse } from './database/models/greenhouses.model';
 import { MeasurementUnit } from './database/models/measurement_units';
 import { OwnerField } from './database/models/owners_fields.model';
 import { OwnerGreenhouse } from './database/models/owners_greenhouses.model';
+import { OwnerFixedDevice } from './database/models/owners_fixed_devices.model';
+import { OwnerPortableDevice } from './database/models/owners_portable_devices.model ';
 import { PortableDevice } from './database/models/portable_devices.model ';
 import { Community } from './database/models/communities.model';
 import { ScheduleDevice } from './database/models/schedules_devices.model';
@@ -24,7 +26,11 @@ import { AuthModule } from './auth/auth.module';
 import { DeviceUsageStatisticsCommunities } from './database/models/device_usage_statistics_communities.model';
 import { DeviceUsageStatisticsFields } from './database/models/device_usage_statistics_fields.model';
 import { DeviceUsageStatisticsGreenhouses } from './database/models/device_usage_statistics_greenhouses.model';
-
+import { PortableDevicesController } from './owners-portable-devices.controller';
+import { OwnersPortableDevicesService } from './owners-portable-devices.service';
+import { OwnerPortableDeviceModule } from './owner-portable-devices.module';
+import { UserModule } from './user/user.module';
+import { CommunitiesModule } from './communities/communities.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -56,12 +62,22 @@ import { DeviceUsageStatisticsGreenhouses } from './database/models/device_usage
         DeviceUsageStatisticsCommunities,
         DeviceUsageStatisticsFields,
         DeviceUsageStatisticsGreenhouses,
-
+        OwnerFixedDevice,
+        OwnerPortableDevice
       ],
     }),
     AuthModule,
+    OwnerPortableDeviceModule,
+    UserModule,
+    CommunitiesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
+/* @Module({
+  imports: [],
+  controllers: [FixedDevicesController], // Include the controller here
+  providers: [],
+}) */
+
 export class AppModule {}

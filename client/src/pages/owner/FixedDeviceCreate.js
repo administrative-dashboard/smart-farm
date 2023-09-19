@@ -1,4 +1,4 @@
-//client//pages/owner/DeviceList.js
+//client//pages/FixedDeviceCreate.js
 import React from "react";
 import {
   Create,

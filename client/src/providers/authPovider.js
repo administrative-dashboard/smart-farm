@@ -1,36 +1,35 @@
 // authProvider.js
-import { fetchUtils } from 'react-admin';
 import Cookies from 'js-cookie';
-import { parseJwtTokenFromHeaders, saveTokenToCookies, getJwtTokenFromCookies } from './authUtils';
+import axios from 'axios';
+import { API_URL } from '../consts';
+import { getJwtTokenFromCookies } from './authUtils';
 
-const apiUrl = 'http://localhost:5000';
-const httpClient = fetchUtils.fetchJson;
 
-export default {
-  login: () => {
-    // saveTokenToCookies(token);
-    window.location.href = `${apiUrl}/google/redirect`;
+
+
+export const authProvider = {
+  async login() {
+    window.location.href = `${API_URL}/google/redirect`;
   },
 
-checkAuth: () => {
-  const jwtToken = getJwtTokenFromCookies();
-
-  console.log('JWT Token:', jwtToken);
-
-  if (jwtToken) {
-    return Promise.resolve();
-  } else {
-    return Promise.reject({ message: false });
-  }
-},
-
-  checkError: () => {
-
-    return Promise.resolve();
+  async checkAuth() {
+    // return Cookies.get("token") ? Promise.resolve() : Promise.reject();
+    // return localStorage.getItem('jwtToken') ? Promise.resolve() : Promise.reject();
+     return getJwtTokenFromCookies()? Promise.resolve() : Promise.reject();
   },
 
-  logout: () => {
-    Cookies.remove('jwt');
-    window.location.href = `${apiUrl}/google/logout`;
+  checkError: (error) => {
+    // Handle errors here
+    console.error('Authentication error:', error);
+
+    // You can throw an error or return a rejected promise with an error message
+    throw new Error('Authentication error occurred.');
+
+    // Alternatively, you can return a resolved promise to suppress the error
+    // return Promise.resolve();
+  },
+  async logout() {
+      localStorage.removeItem('jwtToken');
+      window.location.href = `${API_URL}/google/logout`;
   },
 };
