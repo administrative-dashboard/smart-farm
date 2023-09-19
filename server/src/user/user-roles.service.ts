@@ -28,6 +28,8 @@ export class UserRolesService {
       });
 
       return roles.map((role) => role.value);
+    } else {
+      return ["Gest"];
     }
 
     return null;

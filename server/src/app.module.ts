@@ -1,5 +1,5 @@
 //app.module.ts
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
@@ -31,6 +31,7 @@ import { OwnersPortableDevicesService } from './owners-portable-devices.service'
 import { OwnerPortableDeviceModule } from './owner-portable-devices.module';
 import { UserModule } from './user/user.module';
 import { CommunitiesModule } from './communities/communities.module';
+import { AuthMiddleware } from './middlewares/auth/auth.middleware';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -74,10 +75,15 @@ import { CommunitiesModule } from './communities/communities.module';
   controllers: [AppController],
   providers: [AppService],
 })
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes('*'); // Apply the middleware to all routes
+  }
+}
 /* @Module({
   imports: [],
   controllers: [FixedDevicesController], // Include the controller here
   providers: [],
 }) */
 
-export class AppModule {}
+// export class AppModule {}

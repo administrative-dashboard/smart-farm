@@ -73,6 +73,7 @@ const i18nProvider = polyglotI18nProvider(
 );
 
 const App = () => {
+  const isAuthenticated = getJwtTokenFromCookies() ? true : false;
   const [roles, setRoles] = React.useState([]);
 
   React.useEffect(() => {
@@ -91,8 +92,9 @@ const App = () => {
         console.error("Error fetching user roles:", error);
       }
     };
-
-    fetchUserRoles();
+    if (isAuthenticated) {
+      fetchUserRoles();
+    }
   }, []);
 
   console.log(roles[0])
@@ -101,7 +103,7 @@ const App = () => {
     <BrowserRouter>
       <Admin
         layout={MyLayout}
-        dataProvider={dataProvider} 
+        dataProvider={dataProvider}
         i18nProvider={i18nProvider}
       >
         <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />

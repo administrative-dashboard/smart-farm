@@ -13,7 +13,7 @@ import { MyBar } from "../../components/Drawer";
 import { drawer_new_data } from "../../assets/static/mockData/new_data";
 import { useTheme } from "@mui/material/styles";
 import { Link } from "react-router-dom";
-import { getJwtTokenFromCookies, getUserInfoFromCookies } from "../../providers/authUtils";
+import { getJwtTokenFromCookies} from "../../providers/authUtils";
 import axios from "axios";
 import { API_URL } from "../../consts";
 import { Form, ImageInput, TextInput, useNotify, useRedirect } from "react-admin";
@@ -23,9 +23,6 @@ export const Profile = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const [user, setUser] = React.useState(null);
-
-  const userInfo = getUserInfoFromCookies();
-  console.log(userInfo)
   const [formData, setFormData] = useState({});
 
   React.useEffect(() => {

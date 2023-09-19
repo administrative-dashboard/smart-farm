@@ -33,8 +33,8 @@ const MyCustomIcon = ({ profileImage }) => (
 export const MyAppBar = () => {
   const [user, setUser] = React.useState(null);
   const [profileImage, setProfileImage] = React.useState(null);
+  const [email, setEmail] = React.useState(null);
   const isAuthenticated = getJwtTokenFromCookies() ? true : false;
-  const userInfo=getUserInfoFromCookies();
   React.useEffect(() => {
     const fetchUserInfo = async () => {
       try {
@@ -48,6 +48,7 @@ export const MyAppBar = () => {
           );
           setUser(response.data);
           setProfileImage(response.data.profile_image);
+          setEmail(response.data.email)
           console.log()
       } catch (error) {
         console.error("Error fetching user info:", error);
@@ -81,7 +82,7 @@ export const MyAppBar = () => {
               <LogoutButton />
             </MenuItem>
             <Typography variant="body1" color="textSecondary">
-              {userInfo.email}
+              {email}
             </Typography>
           </UserMenu>
         ) : (

@@ -1,5 +1,5 @@
 //User.controller.ts
-import { Controller, Get, Request, UseGuards, NotFoundException, Param, Post, Body, Put } from '@nestjs/common';
+import { Controller, Get, Request, UseGuards, NotFoundException, Param, Post, Body, Put, UseInterceptors } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { UserService } from './user.service';
 import { UserCommunityService } from './user-community.service';
