@@ -94,9 +94,7 @@ const App = () => {
 
     fetchUserRoles();
   }, []);
-  if (roles.length === 0) {
-    return <div>Loading...</div>;
-  }
+
   console.log(roles[0])
 
   return (
