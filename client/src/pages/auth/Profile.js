@@ -13,19 +13,92 @@ import { MyBar } from "../../components/Drawer";
 import { drawer_new_data } from "../../assets/static/mockData/new_data";
 import { useTheme } from "@mui/material/styles";
 import { Link } from "react-router-dom";
+import { getJwtTokenFromCookies} from "../../providers/authUtils";
+import axios from "axios";
+import { API_URL } from "../../consts";
+import { Form, ImageInput, TextInput, useNotify, useRedirect } from "react-admin";
 export const Profile = () => {
+  const notify = useNotify();
+  const redirect = useRedirect();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const initialFormData = {
-    name: "",
-    community: "",
-    phone: "",
-    email: "",
-    role: "",
+  const [user, setUser] = React.useState(null);
+  const [formData, setFormData] = useState({});
+
+  React.useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        // const user_id = userInfo.user_id;
+        const response = await axios.get(
+          `${API_URL}/user/info`,
+          {
+            headers: {
+              Authorization: `Bearer ${getJwtTokenFromCookies()}`
+            }
+          }
+        );
+        setUser(response.data);
+        setFormData({
+          name: response.data.name,
+          phone_number: response.data.phone_number,
+          email: response.data.email,
+          profile_image: response.data.profile_image,
+        });
+
+        const response2 = await axios.get(
+          `${API_URL}/user/community`,
+          {
+            headers: {
+              Authorization: `Bearer ${getJwtTokenFromCookies()}`
+            }
+          }
+          );
+        console.log(response2.data);
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          community: response2.data,
+        }));
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
+
+  const handleUpdateUserInfo = async () => {
+    try {
+      const response = await axios.put(
+        `${API_URL}/user/info`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${getJwtTokenFromCookies()}`,
+          },
+        }
+      )
+      .then(() => {
+        notify('Edited successfully', { type: 'success' });
+        redirect('list', 'dashboard');
+        console.log("hjdksf", typeof formData.profile_image);
+      })
+      .catch((error) => {
+        notify(`Error: ${error.message}`, 'error');
+      });
+      setUser(response.data);
+    } catch (error) {
+      console.error("Error updating user info:", error);
+    }
   };
-  const [formData, setFormData] = useState(initialFormData);
+
   const handleReset = () => {
-    setFormData(initialFormData);
+    setFormData({
+      name: user?.name || "",
+      community: user?.community || "",
+      phone_number: user?.phone_number || "",
+      email: user?.email || "",
+      profile_image: user?.profile_image || "",
+    });
   };
   return (
     <Container>
@@ -38,72 +111,93 @@ export const Profile = () => {
         <Grid item xs={12} md={isSmallScreen ? 12 : 9}>
           <Box p={2}>
             <Typography variant="h4" gutterBottom>
-              New Data
+              My Profile
             </Typography>
-            <TextField
-              variant="filled"
-              label="Name"
-              color="primary"
-              fullWidth
-              margin="normal"
-              value={formData.name}
+            {/* <Form redirect="dashboard" onSubmit={handleEdit}></Form> */}
+            <Form redirect="dashboard" onSubmit={handleUpdateUserInfo} >
+              <TextInput
+                variant="filled"
+                label="Name"
+                color="primary"
+                fullWidth
+                margin="normal"
+                source="name"
+                defaultValue={formData.name}
+                type="text"
               onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
-            />
-            <TextField
-              variant="filled"
-              label="Profile image"
-              color="primary"
-              fullWidth
-              margin="normal"
-              value={formData.image}
+                  setFormData({ ...formData, name: e.target.value })
+                }
+              />
+             <ImageInput
+  variant="filled"
+  label="Profile image"
+  color="primary"
+  fullWidth
+  margin="normal"
+  source="profile_image"
+  defaultValue={formData.profile_image}
+  onChange={(e) => {
+    const file = e.target.files[0];
+    setFormData({ ...formData, profile_image: file });
+  }}
+  accept="image/*"
+  multiple={false}
+/>
+              {formData.profile_image && (
+          <img
+            src={formData.profile_image} 
+            alt="Profile"
+            style={{ width: "15%" }}
+          />
+        )}
+              <TextInput
+                variant="filled"
+                label="Community"
+                color="primary"
+                fullWidth
+                margin="normal"
+                source="community" 
+                defaultValue={formData.community}
+                disabled={true}
+                type="text"
+              // onChange={(e) =>
+              //   setFormData({ ...formData, community: e.target.value })
+              // }
+              />
+              <TextInput
+                variant="filled"
+                label="Phone"
+                color="primary"
+                fullWidth
+                margin="normal"
+                source="phone_number"
+                defaultValue={formData.phone_number}
+                type="text"
               onChange={(e) =>
-                setFormData({ ...formData, image: e.target.value })
+                setFormData({ ...formData, phone_number: e.target.value })
               }
-            />
-            <TextField
-              variant="filled"
-              label="Community"
-              color="primary"
-              fullWidth
-              margin="normal"
-              value={formData.community}
-              onChange={(e) =>
-                setFormData({ ...formData, community: e.target.value })
-              }
-            />
-            <TextField
-              variant="filled"
-              label="Phone"
-              color="primary"
-              fullWidth
-              margin="normal"
-              value={formData.phone}
-              onChange={(e) =>
-                setFormData({ ...formData, phone: e.target.value })
-              }
-            />
-            <TextField
-              variant="filled"
-              label="Email"
-              color="primary"
-              fullWidth
-              margin="normal"
-              value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-            />
-
+              />
+              <TextInput
+                variant="filled"
+                label="Email"
+                color="primary"
+                fullWidth
+                margin="normal"
+                source="email"
+                type="email"
+                defaultValue={formData.email}
+                disabled={true}
+              // onChange={(e) =>
+              //   setFormData({ ...formData, email: e.target.value })
+              // }
+              />
+       
             <Box display="flex" justifyContent="flex-end" mt={3}>
               <CustomCancelButton
                 onClick={handleReset}
                 sx={{ backgroundColor: " #1F4700" }}
               />
-              <Button
-                component={Link}
-                to="/users"
+              <Button type="submit"
                 variant="contained"
                 color="primary"
                 sx={{
@@ -112,9 +206,11 @@ export const Profile = () => {
                   color: "white",
                 }}
               >
-                Request
+                Save
               </Button>
+              
             </Box>
+            </Form>
           </Box>
         </Grid>
       </Grid>
@@ -122,139 +218,3 @@ export const Profile = () => {
   );
 };
 
-/*import React, { useState } from 'react';
-import {
-  Box,
-  Button,
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  TextField,
-  Typography,
-  Grid,
-} from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import { SaveButton } from '../../components/SaveButton';
-import { CustomCancelButton } from '../../components/CancelButton';
-
-
-export const Profile = () => {
-  const [state, setState] = useState({
-    left: false,
-  });
-
-  const toggleDrawer = (open) => (event) => {
-    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-      return;
-    }
-    setState({ ...state, left: open });
-  };
-
-  const list = (
-    <Box
-      sx={{
-        width: 300,
-        color: 'white',
-      }}
-      role="presentation"
-      onClick={toggleDrawer(false)}
-      onKeyDown={toggleDrawer(false)}
-    >
-      <List>
-        <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemText primary="Profile Image" />
-          </ListItemButton>
-        </ListItem>
-
-        <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemText primary="My Profile" />
-          </ListItemButton>
-        </ListItem>
-
-        <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemText primary="About Us" />
-          </ListItemButton>
-        </ListItem>
-
-        <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemText primary="Info" />
-          </ListItemButton>
-        </ListItem>
-      </List>
-    </Box>
-  );
-
-  return (
-    <div>
-      <Button onClick={toggleDrawer(true)}>
-        <MenuIcon sx={{ color: '#1F4700' }} />
-      </Button>
-      <Drawer
-        PaperProps={{ sx: { backgroundColor: '#1F4700' } }}
-        anchor="left"
-        open={state.left}
-        onClose={toggleDrawer(false)}
-      >
-        {list}
-      </Drawer>
-
-      <Grid container spacing={10} alignItems="center">
-        <Grid item xs={6}>
-          <Grid container spacing={2}>
-            <Grid item xs={4}>
-              <Typography variant="subtitle1">Name</Typography>
-            </Grid>
-            <Grid item xs={8}>
-              <TextField variant="filled" color="primary" fullWidth />
-            </Grid>
-
-            <Grid item xs={4}>
-              <Typography variant="subtitle1">Community</Typography>
-            </Grid>
-            <Grid item xs={8}>
-              <TextField variant="filled" color="primary" fullWidth />
-            </Grid>
-
-            <Grid item xs={4}>
-              <Typography variant="subtitle1">Phone</Typography>
-            </Grid>
-            <Grid item xs={8}>
-              <TextField variant="filled" color="primary" fullWidth />
-            </Grid>
-
-            <Grid item xs={4}>
-              <Typography variant="subtitle1">Email</Typography>
-            </Grid>
-            <Grid item xs={8}>
-              <TextField variant="filled" color="primary" fullWidth />
-            </Grid>
-
-            <Grid item xs={4}>
-              <Typography variant="subtitle1">Role</Typography>
-            </Grid>
-            <Grid item xs={8}>
-              <TextField
-                variant="filled"
-                color="primary"
-                fullWidth
-                sx={{ background: '#78D819' }}
-              />
-            </Grid>
-          </Grid>
-        </Grid>
-
-        <Grid item xs={6}>
-          <SaveButton />
-          <CustomCancelButton/>
-          <CustomCancelButton/>
-        </Grid>
-      </Grid>
-    </div>
-  );
-};*/

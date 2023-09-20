@@ -14,14 +14,6 @@ import { OwnerPortableDevice } from './owners_portable_devices.model ';
 
 @Table({ tableName: 'users', timestamps: false })
 export class User extends Model<User> {
-    @BeforeCreate
-    static async setDefaultRole(instance: User) {
-      const defaultRole = await Role.findOne({ where: { value: 'EMPLOYEE' } });
-      if (defaultRole) {
-        instance.roles = [defaultRole];
-      }
-    }
-
   @Column({ primaryKey: true, autoIncrement: true, allowNull: false })
   id: number;
 
@@ -40,7 +32,9 @@ export class User extends Model<User> {
   @HasOne(() => UserCommunity)
   users_communities: UserCommunity;
 
-  @BelongsToMany(() => Role, () => UserRole)
+  // @BelongsToMany(() => Role, () => UserRole)
+  // roles: Role[];
+  @HasMany(() => UserRole)
   roles: Role[];
 
   @HasMany(() => OwnerField)

@@ -1,17 +1,34 @@
-// user/user.module.ts or the module where UserModule is defined
+// user/user.module.ts
 import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt'; // Import JwtModule
+import { SequelizeModule } from '@nestjs/sequelize'; // Import SequelizeModule
 import { UserService } from './user.service';
+import { User } from 'src/database/models/users.model'; // Import your User model
+import { UserController } from './user.controller';
+import { UserCommunityService } from './user-community.service';
+import { UserCommunity } from 'src/database/models/users_communities.model';
+import { Community } from 'src/database/models/communities.model';
+import { UserRole } from 'src/database/models/users_roles';
+import { Role } from 'src/database/models/roles.model';
+import { GoogleService } from 'src/auth/google.service';
+import { UserRolesService } from './user-roles.service';
 
 @Module({
   imports: [
-    // ... other imports
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '1h' },
-    }),
+    SequelizeModule.forFeature([
+      User,
+      UserCommunity,
+      Community,
+      UserRole,
+      Role,
+    ]),
   ],
-  providers: [UserService], // Ensure UserService is included here
-  exports: [UserService],
+  providers: [
+    UserService,
+    UserCommunityService,
+    GoogleService,
+    UserRolesService,
+  ],
+  controllers: [UserController],
+  exports: [UserCommunityService],
 })
 export class UserModule {}

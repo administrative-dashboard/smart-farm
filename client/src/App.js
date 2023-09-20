@@ -1,12 +1,9 @@
 import * as React from "react";
 import "./App.css";
 import { Admin, Resource } from "react-admin";
-import restProvider from "ra-data-simple-rest";
-import jsonServerProvider from "ra-data-json-server";
 import { MyLayout } from "./layouts/Layout";
 import HomeIcon from "@mui/icons-material/Home";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
-import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import FaceRetouchingNaturalIcon from "@mui/icons-material/FaceRetouchingNatural";
 import ArticleIcon from "@mui/icons-material/Article";
@@ -55,47 +52,69 @@ import { ProductListAdm } from "./pages/admin/ProductList";
 import { ProductShow } from "./pages/admin/ProductListAdm";
 import { DeviceStatisticPage } from "./pages/admin/DeviceStatistic";
 import { Contact } from "./pages/auth/Contact";
-import { NewData } from "./pages/auth/Profile";
-import { CommunityManager } from "./pages/CommunityManager/CommunityManager";
+import { CommunityManager } from "./pages/CommunityManager/Desktop";
 import { UserList } from "./pages/CommunityManager/UserList";
 import { UserCreate } from "./pages/CommunityManager/UserCreate";
 import { UserEdit } from "./pages/CommunityManager/UserEdit";
 import { BasicTableShow } from "./components/BasicTableShow";
 import { BasicTable } from "./components/BasicTable";
-import { authProvider } from "./providers/authPovider"
 import simpleRestProvider from 'ra-data-simple-rest';
-import GoogleLoginComponent from "./components/Gooogle";
 import { API_URL } from "./consts";
-//const dataProvider = jsonServerProvider(API_URL);
+import { DesktopInfo } from "./pages/CommunityManager/DesktopInfo";
+import axios from "axios";
+import { getJwtTokenFromCookies } from "./providers/authUtils";
+// import dataProvider from "./providers/dataProvider";
 const dataProvider = simpleRestProvider(API_URL);
+// import customDataProvider from "./providers/dataProvider";
 
-// const dataProvider = jsonServerProvider(process.env.API_URL);
-// const dataProvider = simpleRestProvider(process.env.API_URL);
-
-// import AbacApp from "./abac";
 const i18nProvider = polyglotI18nProvider(
   (locale) => (locale === "am" ? armenianMessages : englishMessages),
   "en" // Default locale
 );
 
 const App = () => {
+  const isAuthenticated = getJwtTokenFromCookies() ? true : false;
+  const [roles, setRoles] = React.useState([]);
+
+  React.useEffect(() => {
+    const fetchUserRoles = async () => {
+      try {
+        const response = await axios.get(
+          `${API_URL}/user/roles`,
+          {
+            headers: {
+              Authorization: `Bearer ${getJwtTokenFromCookies()}`
+            }
+          }
+        );
+        setRoles(response.data);
+      } catch (error) {
+        console.error("Error fetching user roles:", error);
+      }
+    };
+    if (isAuthenticated) {
+      fetchUserRoles();
+    }
+  }, []);
+
+  console.log(roles[0])
+
   return (
     <BrowserRouter>
       <Admin
         layout={MyLayout}
-        dataProvider={dataProvider} 
+        dataProvider={dataProvider}
         i18nProvider={i18nProvider}
-        // authProvider={authProvider}
-        // loginPage={Signup}
       >
         <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />
         <Resource name="signin" list={Signin} icon={VpnKeyIcon} />
-        <Route exact path="/signup" element={Signup} />
+        <Route exact path="signup" element={Signup} />
         <Resource name="signup" list={Signup} />
         <Resource name="profile" list={Profile} icon={PermIdentityIcon} />
         <Resource name="adminPage" list={AdminDesktop} />
         <Resource name="chooseCommunity" list={ChooseCommunity} />
         <Resource name="chooseDevice" list={ChooseDevice} />
+        <Resource name="contact" list={Contact} />
         <Resource
           name="all_fixedDevices"
           list={FixedDeviceListAdm}
@@ -151,8 +170,9 @@ const App = () => {
         <Resource name="Statistic" list={DeviceStatisticPage} />
         <Resource name="contact" list={Contact} />
         <Resource name="community_manager" list={CommunityManager} />
+        <Resource name="usersinfo" list={DesktopInfo} />
         <Resource
-          name="users"
+          name="community/users"
           list={UserList}
           create={UserCreate}
           edit={UserEdit}

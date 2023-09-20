@@ -7,7 +7,7 @@ export const SignupButton = () => {
   const isMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
   const redirect = useRedirect();
   const handleClick = () => {
-    redirect("/dashboard");
+    redirect("/signup");
   };
 
   return (

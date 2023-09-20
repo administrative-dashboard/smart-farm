@@ -11,13 +11,13 @@ async function start() {
   const PORT = process.env.PORT || 5001;
   const app = await NestFactory.create(AppModule);
   app.use(cookieParser());
-  app.use(
-    session({
-      secret: process.env.JWT_SECRET,
-      resave: false,
-      saveUninitialized: false,
-    })
-  );
+  // app.use(
+  //   session({
+  //     secret: process.env.JWT_SECRET,
+  //     resave: false,
+  //     saveUninitialized: false,
+  //   })
+  // );
   app.enableCors({
     // origin: '*',
     origin: `${process.env.CLIENT_URL}`,
