@@ -32,6 +32,7 @@ import { OwnerPortableDeviceModule } from './owner-portable-devices.module';
 import { UserModule } from './user/user.module';
 import { CommunitiesModule } from './communities/communities.module';
 import { AuthMiddleware } from './middlewares/auth/auth.middleware';
+import { UserController } from './user/user.controller';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -75,15 +76,15 @@ import { AuthMiddleware } from './middlewares/auth/auth.middleware';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes('*'); // Apply the middleware to all routes
-  }
-}
+// export class AppModule implements NestModule {
+//   configure(consumer: MiddlewareConsumer) {
+//     consumer.apply(AuthMiddleware).forRoutes('*'); 
+//   }
+// }
 /* @Module({
   imports: [],
   controllers: [FixedDevicesController], // Include the controller here
   providers: [],
 }) */
 
-// export class AppModule {}
+export class AppModule {}

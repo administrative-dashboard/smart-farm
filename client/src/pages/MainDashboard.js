@@ -328,32 +328,35 @@ export const MainDashboard = () => {
               sx={{
                 m: 4,
                 p: 4,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
               }}
             >
-              <p>
+              <span>
                 <span style={{ fontWeight: "bold" }}>Explore:</span> Discover
                 diverse farm investment opportunities.
-              </p>
-              <p>
+              </span>
+              <span>
                 <span style={{ fontWeight: "bold" }}>Research :</span> Access
                 detailed information about farms, returns, and risks.
-              </p>
-              <p>
+              </span>
+              <span>
                 <span style={{ fontWeight: "bold" }}>Invest : </span>Choose your
                 desired farm and invest securely.
-              </p>
-              <p>
+              </span>
+              <span>
                 <span style={{ fontWeight: "bold" }}> Track : </span>Monitor
                 your investments and farm progress.
-              </p>
-              <p>
+              </span>
+              <span>
                 <span style={{ fontWeight: "bold" }}>Manage :</span> Easily
                 manage your profile and make adjustments.
-              </p>
-              <p>
+              </span>
+              <span>
                 Join us today and experience the seamless process of investing
                 in farms.
-              </p>
+              </span>
               {
                 !getJwtTokenFromCookies() ? <SignupButton /> : null
               }

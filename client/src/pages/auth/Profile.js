@@ -13,10 +13,11 @@ import { MyBar } from "../../components/Drawer";
 import { drawer_new_data } from "../../assets/static/mockData/new_data";
 import { useTheme } from "@mui/material/styles";
 import { Link } from "react-router-dom";
-import { getJwtTokenFromCookies} from "../../providers/authUtils";
+import { getJwtTokenFromCookies } from "../../providers/authUtils";
 import axios from "axios";
 import { API_URL } from "../../consts";
 import { Form, ImageInput, TextInput, useNotify, useRedirect } from "react-admin";
+import { authProvider } from "../../providers/authPovider";
 export const Profile = () => {
   const notify = useNotify();
   const redirect = useRedirect();
@@ -28,7 +29,6 @@ export const Profile = () => {
   React.useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        // const user_id = userInfo.user_id;
         const response = await axios.get(
           `${API_URL}/user/info`,
           {
@@ -52,7 +52,7 @@ export const Profile = () => {
               Authorization: `Bearer ${getJwtTokenFromCookies()}`
             }
           }
-          );
+        );
         console.log(response2.data);
         setFormData((prevFormData) => ({
           ...prevFormData,
@@ -60,6 +60,7 @@ export const Profile = () => {
         }));
       } catch (error) {
         console.error("Error fetching user info:", error);
+        authProvider.logout();
       }
     };
 
@@ -74,17 +75,18 @@ export const Profile = () => {
         {
           headers: {
             Authorization: `Bearer ${getJwtTokenFromCookies()}`,
+            // "Content-Type": "multipart/form-data",
           },
         }
       )
-      .then(() => {
-        notify('Edited successfully', { type: 'success' });
-        redirect('list', 'dashboard');
-        console.log("hjdksf", typeof formData.profile_image);
-      })
-      .catch((error) => {
-        notify(`Error: ${error.message}`, 'error');
-      });
+        .then(() => {
+          notify('Edited successfully', { type: 'success' });
+          redirect('list', 'dashboard');
+          console.log("hjdksf", typeof formData.profile_image);
+        })
+        .catch((error) => {
+          notify(`Error: ${error.message}`, 'error');
+        });
       setUser(response.data);
     } catch (error) {
       console.error("Error updating user info:", error);
@@ -124,39 +126,39 @@ export const Profile = () => {
                 source="name"
                 defaultValue={formData.name}
                 type="text"
-              onChange={(e) =>
+                onChange={(e) =>
                   setFormData({ ...formData, name: e.target.value })
                 }
               />
-             <ImageInput
-  variant="filled"
-  label="Profile image"
-  color="primary"
-  fullWidth
-  margin="normal"
-  source="profile_image"
-  defaultValue={formData.profile_image}
-  onChange={(e) => {
-    const file = e.target.files[0];
-    setFormData({ ...formData, profile_image: file });
-  }}
-  accept="image/*"
-  multiple={false}
-/>
+              <ImageInput
+                variant="filled"
+                label="Profile image"
+                color="primary"
+                fullWidth
+                margin="normal"
+                source="profile_image"
+                defaultValue={formData.profile_image}
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  setFormData({ ...formData, profile_image: file });
+                }}
+                accept="image/*"
+                multiple={false}
+              />
               {formData.profile_image && (
-          <img
-            src={formData.profile_image} 
-            alt="Profile"
-            style={{ width: "15%" }}
-          />
-        )}
+                <img
+                  src={formData.profile_image}
+                  alt="Profile"
+                  style={{ width: "15%" }}
+                />
+              )}
               <TextInput
                 variant="filled"
                 label="Community"
                 color="primary"
                 fullWidth
                 margin="normal"
-                source="community" 
+                source="community"
                 defaultValue={formData.community}
                 disabled={true}
                 type="text"
@@ -173,9 +175,9 @@ export const Profile = () => {
                 source="phone_number"
                 defaultValue={formData.phone_number}
                 type="text"
-              onChange={(e) =>
-                setFormData({ ...formData, phone_number: e.target.value })
-              }
+                onChange={(e) =>
+                  setFormData({ ...formData, phone_number: e.target.value })
+                }
               />
               <TextInput
                 variant="filled"
@@ -191,25 +193,25 @@ export const Profile = () => {
               //   setFormData({ ...formData, email: e.target.value })
               // }
               />
-       
-            <Box display="flex" justifyContent="flex-end" mt={3}>
-              <CustomCancelButton
-                onClick={handleReset}
-                sx={{ backgroundColor: " #1F4700" }}
-              />
-              <Button type="submit"
-                variant="contained"
-                color="primary"
-                sx={{
-                  marginLeft: "10px",
-                  backgroundColor: "#1F4700",
-                  color: "white",
-                }}
-              >
-                Save
-              </Button>
-              
-            </Box>
+
+              <Box display="flex" justifyContent="flex-end" mt={3}>
+                <CustomCancelButton
+                  onClick={handleReset}
+                  sx={{ backgroundColor: " #1F4700" }}
+                />
+                <Button type="submit"
+                  variant="contained"
+                  color="primary"
+                  sx={{
+                    marginLeft: "10px",
+                    backgroundColor: "#1F4700",
+                    color: "white",
+                  }}
+                >
+                  Save
+                </Button>
+
+              </Box>
             </Form>
           </Box>
         </Grid>
