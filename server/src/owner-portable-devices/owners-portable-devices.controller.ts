@@ -20,12 +20,14 @@ import { HttpCode } from '@nestjs/common';
 import { Headers } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
 import { NotFoundError } from 'rxjs';
+import { GoogleService } from 'src/auth/google.service';
 @Controller('portable_devices')
 @UseGuards(JwtAuthGuard)
 
 export class PortableDevicesController {
   constructor(
-    private readonly ownersPortableDevicesService: OwnersPortableDevicesService
+    private readonly ownersPortableDevicesService: OwnersPortableDevicesService,
+    private readonly googleService: GoogleService,
   ) {}
 
   @Get()
@@ -46,12 +48,13 @@ export class PortableDevicesController {
       console.log('quantity==', quantity);
       console.log('shared_quantity==', sharedQuantity);
       console.log('created_at==', date);
-      const userId = req.user.user_id;
-      console.log(userId);
-      if (searchTerm || deviceName || deviceType || quantity || sharedQuantity || date) {
+      const accessToken = req.user.accessToken;
+      const email = await this.googleService.getUserInfo(accessToken);
+      console.log(email);
+       if (searchTerm || deviceName || deviceType || quantity || sharedQuantity || date) {
         const filteredDevices =
           await this.ownersPortableDevicesService.searchDevices(
-            userId,
+            email,
             searchTerm,
             deviceName,
             deviceType,
@@ -62,10 +65,10 @@ export class PortableDevicesController {
         return filteredDevices;
       } else {
         let portableDevices =
-        await this.ownersPortableDevicesService.getDevicesByUserId(userId);
+        await this.ownersPortableDevicesService.getDevicesByEmail(email);
         const totalItems = portableDevices.length;
         return portableDevices;
-      }
+      } 
 
       // console.log('Filtered Devices:', portableDevices);
       // return portableDevices;
@@ -120,18 +123,33 @@ export class PortableDevicesController {
   }
 
   @Post('create')
-  async createPortableDevice(@Body() deviceData: any, @Request() req) {
-    try {
-      console.log(deviceData);
-      const userId = req.user.user_id;
-      return await this.ownersPortableDevicesService.createDevice(
-        userId,
-        deviceData
-      );
-    } catch (error) {
+async createPortableDevice(@Body() deviceData: any, @Request() req) {
+  try {
+    console.log(deviceData);
+    const accessToken = req.user.accessToken;
+    const email = await this.googleService.getUserInfo(accessToken);
+    
+    const result = await this.ownersPortableDevicesService.createDevice(
+      email,
+      deviceData
+    );
+
+    return result; // If successful, return the created device
+  } catch (error) {
+    if (error.message === 'User has already associated with this device.') {
+      // Return a specific response when the error message matches
+      return {
+        message: 'User has already associated with this device.',
+        status: 'error',
+      };
+    } else {
       console.log(error);
+      // Handle other errors or rethrow if needed
+      throw error;
     }
   }
+}
+
 
   @Delete(':id')
   async deletePortableDeviceById(@Param('id') id: string) {

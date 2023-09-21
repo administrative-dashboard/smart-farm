@@ -4,13 +4,31 @@ import { SequelizeModule } from '@nestjs/sequelize'; // Import SequelizeModule
 import { UserService } from './user.service';
 import { User } from 'src/database/models/users.model'; // Import your User model
 import { UserController } from './user.controller';
+import { UserCommunityService } from './user-community.service';
+import { UserCommunity } from 'src/database/models/users_communities.model';
+import { Community } from 'src/database/models/communities.model';
+import { UserRole } from 'src/database/models/users_roles';
+import { Role } from 'src/database/models/roles.model';
+import { GoogleService } from 'src/auth/google.service';
+import { UserRolesService } from './user-roles.service';
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([User]), // Import the User model for use within the module
+    SequelizeModule.forFeature([
+      User,
+      UserCommunity,
+      Community,
+      UserRole,
+      Role,
+    ]),
   ],
-  providers: [UserService],
+  providers: [
+    UserService,
+    UserCommunityService,
+    GoogleService,
+    UserRolesService,
+  ],
   controllers: [UserController],
-  // exports: [UserService],
+  exports: [UserCommunityService],
 })
 export class UserModule {}

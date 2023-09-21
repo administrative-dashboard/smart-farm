@@ -1,6 +1,5 @@
 //app.module.ts
-import { Module, Logger } from '@nestjs/common';
-import { RouterModule } from '@nestjs/core';
+import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
@@ -27,12 +26,13 @@ import { AuthModule } from './auth/auth.module';
 import { DeviceUsageStatisticsCommunities } from './database/models/device_usage_statistics_communities.model';
 import { DeviceUsageStatisticsFields } from './database/models/device_usage_statistics_fields.model';
 import { DeviceUsageStatisticsGreenhouses } from './database/models/device_usage_statistics_greenhouses.model';
-import { PortableDevicesController } from './portable-devices/portable-devices.controller';
+import { PortableDevicesController } from './owner-portable-devices/owners-portable-devices.controller';
 import { OwnersPortableDevicesService } from './owner-portable-devices/owners-portable-devices.service';
 import { OwnerPortableDeviceModule } from './owner-portable-devices/owner-portable-devices.module';
-import { PortableDevicesModule } from './portable-devices/portable-devices.module';
-import { Router } from 'express';
 import { UserModule } from './user/user.module';
+import { CommunitiesModule } from './communities/communities.module';
+import { AuthMiddleware } from './middlewares/auth/auth.middleware';
+import { UserController } from './user/user.controller';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -70,12 +70,17 @@ import { UserModule } from './user/user.module';
     }),
     AuthModule,
     OwnerPortableDeviceModule,
-    PortableDevicesModule,
     UserModule,
+    CommunitiesModule,
   ],
   controllers: [AppController],
-  providers: [AppService, Logger],
+  providers: [AppService],
 })
+// export class AppModule implements NestModule {
+//   configure(consumer: MiddlewareConsumer) {
+//     consumer.apply(AuthMiddleware).forRoutes('*'); 
+//   }
+// }
 /* @Module({
   imports: [],
   controllers: [FixedDevicesController], // Include the controller here

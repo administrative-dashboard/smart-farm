@@ -6,16 +6,41 @@ import { Model } from 'sequelize-typescript';
 import { PortableDevice } from '../database/models/portable_devices.model '; // Подставьте путь к модели ваших портативных устройств
 import { Sequelize, Op } from 'sequelize';
 import { now } from 'sequelize/types/utils';
-
+import { User } from 'src/database/models/users.model';
 @Injectable()
 export class OwnersPortableDevicesService {
   constructor(
     @InjectModel(OwnerPortableDevice)
-    private readonly OwnerPortableDeviceModel: typeof OwnerPortableDevice
+    private readonly OwnerPortableDeviceModel: typeof OwnerPortableDevice,
+    
   ) {}
 
-  async getDevicesByUserId(userId: number): Promise<any[]> {
+  async  getUserIdByEmail(email: string): Promise<number | null> {
     try {
+      const user = await User.findOne({
+        attributes: ['id'],
+        where: {
+          email: email,
+        },
+      });
+  
+      if (user) {
+        return user.id;
+      } else {
+        return null; // Return null if the user with the specified email does not exist
+      }
+    } catch (error) {
+      console.error('Error retrieving user ID by email:', error);
+      throw error;
+    }
+  }
+
+
+
+
+  async getDevicesByEmail(email: string): Promise<any[]> {
+    try {
+      const userId = await this.getUserIdByEmail(email);
       const devices = await this.OwnerPortableDeviceModel.findAll({
         where: {
           user_id: userId,
@@ -42,8 +67,9 @@ export class OwnersPortableDevicesService {
     }
   }
 
+
   async searchDevices(
-    userId: number,
+    email: string,
     query: any,
     deviceName?: any,
     deviceType?: any,
@@ -53,6 +79,7 @@ export class OwnersPortableDevicesService {
   ): Promise<any[]> {
     console.log(created_at);
     try {
+      const userId = await this.getUserIdByEmail(email);
       const whereClause: any = {
         [Op.and]: [
           {
@@ -145,35 +172,44 @@ export class OwnersPortableDevicesService {
     }
   }
 
-  async createDevice(
-    userId: number,
-    deviceData: any
-  ): Promise<OwnerPortableDevice> {
+  async createDevice(email: string, deviceData: any): Promise<OwnerPortableDevice> {
     try {
-      const newPortableDevice = await PortableDevice.create({
-        name: deviceData.name,
-        type: deviceData.type,
+      const userId = await this.getUserIdByEmail(email);
+      let existingPortableDevice = await PortableDevice.findOne({
+        where: {
+          name: deviceData.name,
+          type: deviceData.type,
+        },
       });
-
-      // Determine the value of is_shared based on shared_quantity
-      const isShared = deviceData.shared_quantity > 0;
-
-      // Create an association between the owner and the newly created portable device
+      if (!existingPortableDevice) {
+        existingPortableDevice = await PortableDevice.create({
+          name: deviceData.name,
+          type: deviceData.type,
+        });
+      }
+      const existingRecord = await this.OwnerPortableDeviceModel.findOne({
+        where: {
+          user_id: userId,
+          portable_device_id: existingPortableDevice.id,
+        },
+      });
+      if (existingRecord) {
+        throw new Error('User has already associated with this device.');
+      }
       const ownerPortableDevice = await this.OwnerPortableDeviceModel.create({
-        user_id: userId, // Assuming you have the user_id in deviceData
-        portable_device_id: newPortableDevice.id,
+        user_id: userId,
+        portable_device_id: existingPortableDevice.id,
         quantity: deviceData.quantity,
-        is_shared: isShared, // Set is_shared based on the condition
+        is_shared: deviceData.shared_quantity > 0,
         shared_quantity: deviceData.shared_quantity,
         created_at: deviceData.created_at,
       });
-
       return ownerPortableDevice;
     } catch (error) {
-      console.log('>>>>>>>>>>>>>>', error);
-      throw error;
+      throw error; // Rethrow the error
     }
   }
+  
 
   async getPortableDeviceById(id: string): Promise<any | null> {
     try {
@@ -286,4 +322,7 @@ export class OwnersPortableDevicesService {
       throw error;
     }
   }
+ 
+
+
 }

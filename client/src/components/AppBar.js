@@ -3,7 +3,6 @@ import * as React from "react";
 import {
   AppBar,
   TitlePortal,
-  useAuthenticated,
   UserMenu,
   LocalesMenuButton,
 } from "react-admin";
@@ -15,9 +14,11 @@ import { SigninButton } from "./SigninButton";
 import { LogoutButton } from "./LogoutButton";
 import { ProfileButton } from "./ProfileButton";
 import axios from "axios";
-import { authProvider } from "../providers/authPovider";
 import { API_URL } from "../consts";
-import { getJwtTokenFromCookies, getUserInfoFromCookies } from "../providers/authUtils";
+import { 
+  getJwtTokenFromCookies, 
+  getUserInfoFromCookies 
+} from "../providers/authUtils";
 
 const MyCustomIcon = ({ profileImage }) => (
   <Avatar
@@ -29,24 +30,26 @@ const MyCustomIcon = ({ profileImage }) => (
   />
 );
 
-
 export const MyAppBar = () => {
   const [user, setUser] = React.useState(null);
   const [profileImage, setProfileImage] = React.useState(null);
-
+  const [email, setEmail] = React.useState(null);
   const isAuthenticated = getJwtTokenFromCookies() ? true : false;
-  const userInfo = getUserInfoFromCookies();
-
   React.useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const user_id = userInfo.user_id;
-        if (userInfo) {
-          const response = await axios.get(`${API_URL}/user/info/${user_id}`);
+          const response = await axios.get(
+            `${API_URL}/user/info`,
+            {
+              headers: {
+                Authorization: `Bearer ${getJwtTokenFromCookies()}`
+              }
+            }
+          );
           setUser(response.data);
           setProfileImage(response.data.profile_image);
+          setEmail(response.data.email)
           console.log()
-        }
       } catch (error) {
         console.error("Error fetching user info:", error);
       }
@@ -55,7 +58,7 @@ export const MyAppBar = () => {
     if (isAuthenticated) {
       fetchUserInfo();
     }
-  }, [isAuthenticated]);
+  }, []);
 
   return (
     <AppBar
@@ -79,7 +82,7 @@ export const MyAppBar = () => {
               <LogoutButton />
             </MenuItem>
             <Typography variant="body1" color="textSecondary">
-              {userInfo.email}
+              {email}
             </Typography>
           </UserMenu>
         ) : (

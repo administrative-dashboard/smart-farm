@@ -47,21 +47,32 @@ export const PortableDeviceCreate = (props) => {
         shared_quantity: values.shared_quantity,
         created_at: values.created_at.toISOString(),
       };
-      notify("Device created successfully", "info");
-      redirect("/portable_devices");
+      
+      // Make a POST request to create the device
+      const response = await customDataProvider.create("portable_devices", {
+        data: deviceData,
+      });
+      
+      if (response.data) {
+        notify("Device created successfully", "info");
+        redirect("/portable_devices");
+      } else {
+        // Handle the case where the creation was not successful
+        console.error("Device creation failed:", response.error);
+      }
     } catch (error) {
       console.error("Error creating device:", error);
     }
   };
+  
   return (
     <>
       <Create
-        resource="portable_devices/create"
         title="Create a portable device"
         {...props}
         save={handleSave}
       >
-        <SimpleForm>
+        <SimpleForm onSubmit={handleSave}>
           <TextInput source="name" validate={validateDeviceName} />
           <TextInput source="type" validate={validateDeviceType} />
           <NumberInput source="quantity" validate={validateQuantity} />
@@ -73,8 +84,7 @@ export const PortableDeviceCreate = (props) => {
           <DateInput source="created_at" defaultValue={currentDate} disabled />
         </SimpleForm>
       </Create>
-      <HomeRedirectButton pageName="devices" title="Devices" />
-      <HomeRedirectButton pageName="ownerPage" title="Home" />
+      
     </>
   );
 };

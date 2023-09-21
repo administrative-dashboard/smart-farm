@@ -5,6 +5,7 @@ import { Strategy } from 'passport-google-oauth20';
 import { config } from 'dotenv';
 import { User } from 'src/database/models/users.model';
 import { Role } from 'src/database/models/roles.model';
+import { UserRole } from 'src/database/models/users_roles';
 
 config();
 
@@ -32,36 +33,28 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         phone_number: '',
         profile_image: photos[0].value,
       },
-      include: [Role],
     });
 
-    if (created ) {
+    if (created) {
       const defaultRole = await Role.findOne({ where: { value: 'EMPLOYEE' } });
       if (defaultRole) {
-        await user.$add('roles', defaultRole);
+        await UserRole.create({ role_id: defaultRole.id, user_id: user.id });
       }
     }
 
-    // if (!created) {
-    //   // User already exists, check if they have the new role, and add it if not
-    //   const newRoleValue = 'ADMIN'; // Replace with the desired new role value
-    //   const hasNewRole = user.roles.some((role) => role.value === newRoleValue);
+    // const userRoles = await UserRole.findAll({
+    //   where: { user_id: user.id },
+    //   include: Role,
+    // });
 
-    //   if (!hasNewRole) {
-    //     const newRole = await Role.findOne({ where: { value: newRoleValue } });
-    //     if (newRole) {
-    //       await user.$add('roles', newRole);
-    //     }
-    //   }
-    // }
-
-    const userRoles = user.roles.map((role) => role.value);
+    // const roleValues = userRoles.map((userRole) => userRole.roles.value);
     const payload = {
       provider: 'google',
-      email: emails[0].value,
-      user_id: user.id, 
-      role: userRoles ,
+      // email: emails[0].value,
+      // user_id: user.id,
+      // role: roleValues,
       accessToken,
+      created,
     };
 
     return payload;

@@ -5,6 +5,7 @@ import { OwnersPortableDevicesService } from './owners-portable-devices.service'
 import { OwnerPortableDevice } from '../database/models/owners_portable_devices.model '; // Adjust the path
 import { PortableDevicesController } from './owners-portable-devices.controller';
 import { PortableDevice } from 'src/database/models/portable_devices.model ';
+import { GoogleService } from 'src/auth/google.service';
 @Module({
   imports: [SequelizeModule.forFeature([OwnerPortableDevice, PortableDevice]),
   // RouterModule.register([
@@ -15,7 +16,9 @@ import { PortableDevice } from 'src/database/models/portable_devices.model ';
   // ]
   // )
 ], 
-  providers: [OwnersPortableDevicesService],
+  providers: [
+    OwnersPortableDevicesService,
+    GoogleService,],
   controllers: [PortableDevicesController],
 })
 export class OwnerPortableDeviceModule {}

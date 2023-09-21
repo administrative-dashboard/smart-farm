@@ -36,8 +36,7 @@ export const PortableDeviceEdit = (props) => {
         justifyContent="center"
         alignItems="center"
       >
-        <HomeRedirectButton pageName="devices" title="Devices" />
-        <HomeRedirectButton pageName="ownerPage" title="Home" />
+     
       </Box>
     </>
   );

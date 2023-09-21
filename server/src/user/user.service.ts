@@ -1,5 +1,7 @@
 // user.service.ts
 
+// user.service.ts
+
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/database/models/users.model';
@@ -12,16 +14,18 @@ export class UserService {
     private readonly userModel: typeof User,
   ) {}
 
-  async getUserInfoById(userId: number) {
+  async getUserInfoByEmail(email: string) {
     try {
-      const userInfo = await this.userModel.findByPk(userId); 
+      const userInfo = await this.userModel.findOne({ where: { email } });
       return userInfo;
     } catch (error) {
       throw error;
     }
   }
-}
 
+  
+
+}
 // @Injectable()
 // export class UserService {
 //   constructor(private readonly jwtService: JwtService) {}
