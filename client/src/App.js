@@ -95,9 +95,135 @@ const App = () => {
     if (isAuthenticated) {
       fetchUserRoles();
     }
+    else{
+      roles[0]="1";
+    }
   }, []);
 
   console.log(roles[0])
+  roles[0]="ADMIN";
+  const role = roles[0];
+
+  const commonResources = [
+    <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
+    <Resource name="signin" list={Signin} icon={VpnKeyIcon} />,
+    <Route exact path="/signup" element={Signup} />,
+    <Resource name="signup" list={Signup} />,
+  ];
+
+  const employeeResources = [
+    <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,,
+    <Resource
+      name="all_portableDevices"
+      list={PortableDeviceListAdm}
+      show={PortableDeviceShow}
+    />,
+    <Resource name="User" list={UserListAdm} show={UserShowAdm} />,
+  ];
+  
+
+  const otherResources = [
+    <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,,
+    <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
+    <Resource name="adminPage" list={AdminDesktop} />,
+    <Resource name="chooseCommunity" list={ChooseCommunity} />,
+    <Resource name="chooseDevice" list={ChooseDevice} />,
+    <Resource name="contact" list={Contact} />,
+  ];
+
+  const AdminResources = [
+    <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,,
+    <Resource
+          name="all_fixedDevices"
+          list={FixedDeviceListAdm}
+          show={FixedDeviceShow}
+        />,
+        <Resource
+          name="all_portableDevices"
+          list={PortableDeviceListAdm}
+          show={PortableDeviceShow}
+        />,
+        <Resource name="User" list={UserListAdm} show={UserShowAdm} />,
+        <Resource
+          name="Greenhouse"
+          list={GreenhouseListAdm}
+          show={GreenhouseShow}
+        />,
+        <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
+        <Resource name="signin" list={Signin} icon={VpnKeyIcon} />,
+        <Route exact path="signup" element={Signup} />,
+        <Resource name="signup" list={Signup} />,
+        <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
+        <Resource name="adminPage" list={AdminDesktop} />,
+        <Resource name="chooseCommunity" list={ChooseCommunity} />,
+        <Resource name="chooseDevice" list={ChooseDevice} />,
+        <Resource name="contact" list={Contact} />,
+        <Resource
+          name="all_fixedDevices"
+          list={FixedDeviceListAdm}
+          show={FixedDeviceShow}
+        />,
+        <Resource
+          name="all_portableDevices"
+          list={PortableDeviceListAdm}
+          show={PortableDeviceShow}
+        />,
+        <Resource name="User" list={UserListAdm} show={UserShowAdm} />,
+        <Resource
+          name="Greenhouse"
+          list={GreenhouseListAdm}
+          show={GreenhouseShow}
+        />,
+        <Resource
+          name="ownerPage"
+          list={OwnerDesktop}
+          icon={FaceRetouchingNaturalIcon}
+        />,
+        <Resource
+          name="greenhouses"
+          list={GreenhouseList}
+          create={GreenhouseCreate}
+          edit={GreenhouseEdit}
+        />,
+        <Resource
+          name="fields"
+          list={FieldList}
+          create={FieldCreate}
+          edit={FieldEdit}
+        />,
+        <Resource name="devices" list={DeviceDesktop} />,
+        <Resource
+          name="portable_devices"
+          list={PortableDeviceList}
+          create={PortableDeviceCreate}
+          edit={PortableDeviceEdit}
+        />,
+        <Resource
+          name="fixed_devices"
+          list={FixedDeviceList}
+          create={FixedDeviceCreate}
+          edit={FixedDeviceEdit}
+        />,
+        <Resource
+          name="device_requests_history"
+          create={DeviceRequest}
+          list={DeviceRequest}
+        />,
+        <Resource name="Product" list={ProductListAdm} show={ProductShow} />,
+        <Resource name="Statistic" list={DeviceStatisticPage} />,
+        <Resource name="contact" list={Contact} />,
+        <Resource name="community_manager" list={CommunityManager} />,
+        <Resource name="usersinfo" list={DesktopInfo} />,
+        <Resource
+          name="community/users"
+          list={UserList}
+          create={UserCreate}
+          edit={UserEdit}
+          icon={ArticleIcon}
+        />,
+        <Resource name="BasicTable" list={BasicTable} show={BasicTableShow} />,
+  ];
+
 
   return (
     <BrowserRouter>
@@ -106,79 +232,15 @@ const App = () => {
         dataProvider={dataProvider}
         i18nProvider={i18nProvider}
       >
-        <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />
-        <Resource name="signin" list={Signin} icon={VpnKeyIcon} />
-        <Route exact path="signup" element={Signup} />
-        <Resource name="signup" list={Signup} />
-        <Resource name="profile" list={Profile} icon={PermIdentityIcon} />
-        <Resource name="adminPage" list={AdminDesktop} />
-        <Resource name="chooseCommunity" list={ChooseCommunity} />
-        <Resource name="chooseDevice" list={ChooseDevice} />
-        <Resource name="contact" list={Contact} />
-        <Resource
-          name="all_fixedDevices"
-          list={FixedDeviceListAdm}
-          show={FixedDeviceShow}
-        />
-        <Resource
-          name="all_portableDevices"
-          list={PortableDeviceListAdm}
-          show={PortableDeviceShow}
-        />
-        <Resource name="User" list={UserListAdm} show={UserShowAdm} />
-        <Resource
-          name="Greenhouse"
-          list={GreenhouseListAdm}
-          show={GreenhouseShow}
-        />
-        <Resource
-          name="ownerPage"
-          list={OwnerDesktop}
-          icon={FaceRetouchingNaturalIcon}
-        />
-        <Resource
-          name="greenhouses"
-          list={GreenhouseList}
-          create={GreenhouseCreate}
-          edit={GreenhouseEdit}
-        />
-        <Resource
-          name="fields"
-          list={FieldList}
-          create={FieldCreate}
-          edit={FieldEdit}
-        />
-        <Resource name="devices" list={DeviceDesktop} />
-        <Resource
-          name="portable_devices"
-          list={PortableDeviceList}
-          create={PortableDeviceCreate}
-          edit={PortableDeviceEdit}
-        />
-        <Resource
-          name="fixed_devices"
-          list={FixedDeviceList}
-          create={FixedDeviceCreate}
-          edit={FixedDeviceEdit}
-        />
-        <Resource
-          name="device_requests_history"
-          create={DeviceRequest}
-          list={DeviceRequest}
-        />
-        <Resource name="Product" list={ProductListAdm} show={ProductShow} />
-        <Resource name="Statistic" list={DeviceStatisticPage} />
-        <Resource name="contact" list={Contact} />
-        <Resource name="community_manager" list={CommunityManager} />
-        <Resource name="usersinfo" list={DesktopInfo} />
-        <Resource
-          name="community/users"
-          list={UserList}
-          create={UserCreate}
-          edit={UserEdit}
-          icon={ArticleIcon}
-        />
-        <Resource name="BasicTable" list={BasicTable} show={BasicTableShow} />
+
+        {role === "EMPLOYEE" ? (
+          [ ...employeeResources]
+        ) : role === "ADMIN" ? (
+          [ ...AdminResources]
+        ) : (
+          [...commonResources]
+        )} 
+        
       </Admin>
     </BrowserRouter>
   );
