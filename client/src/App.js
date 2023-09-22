@@ -63,6 +63,7 @@ import { API_URL } from "./consts";
 import { DesktopInfo } from "./pages/CommunityManager/DesktopInfo";
 import axios from "axios";
 import { getJwtTokenFromCookies } from "./providers/authUtils";
+import { authProvider } from "./providers/authPovider";
 // import dataProvider from "./providers/dataProvider";
 const dataProvider = simpleRestProvider(API_URL);
 // import customDataProvider from "./providers/dataProvider";
@@ -90,6 +91,7 @@ const App = () => {
         setRoles(response.data);
       } catch (error) {
         console.error("Error fetching user roles:", error);
+        authProvider.logout();
       }
     };
     if (isAuthenticated) {
