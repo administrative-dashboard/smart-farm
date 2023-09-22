@@ -11,7 +11,7 @@ import polyglotI18nProvider from "ra-i18n-polyglot";
 import englishMessages from "ra-language-english";
 import armenianMessages from "ra-language-armenian";
 import AbacApp from "./abac";
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route } from "react-router-dom";
 
 import { AbacProvider } from "react-abac";
 import { checkAccess } from "./abac";
@@ -58,7 +58,7 @@ import { UserCreate } from "./pages/CommunityManager/UserCreate";
 import { UserEdit } from "./pages/CommunityManager/UserEdit";
 import { BasicTableShow } from "./components/BasicTableShow";
 import { BasicTable } from "./components/BasicTable";
-import simpleRestProvider from 'ra-data-simple-rest';
+import simpleRestProvider from "ra-data-simple-rest";
 import { API_URL } from "./consts";
 import { DesktopInfo } from "./pages/CommunityManager/DesktopInfo";
 import axios from "axios";
@@ -80,25 +80,143 @@ const App = () => {
   React.useEffect(() => {
     const fetchUserRoles = async () => {
       try {
-        const response = await axios.get(
-          `${API_URL}/user/roles`,
-          {
-            headers: {
-              Authorization: `Bearer ${getJwtTokenFromCookies()}`
-            }
-          }
-        );
+        const response = await axios.get(`${API_URL}/user/roles`, {
+          headers: {
+            Authorization: `Bearer ${getJwtTokenFromCookies()}`,
+          },
+        });
         setRoles(response.data);
       } catch (error) {
         console.error("Error fetching user roles:", error);
+        authProvider.logout();
       }
     };
     if (isAuthenticated) {
       fetchUserRoles();
+    } else {
+      roles[0] = "1";
     }
   }, []);
 
+  console.log(roles[0]);
+  const role = roles[0];
 
+  const commonResources = [
+    <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
+    <Resource name="signin" list={Signin} icon={VpnKeyIcon} />,
+    <Route exact path="/signup" element={Signup} />,
+    <Resource name="signup" list={Signup} />,
+  ];
+
+  const employeeResources = [
+    <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
+    <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
+    <Resource name="contact" list={Contact} />,
+  ];
+
+  const ownerResources = [
+    <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
+    <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
+    <Resource name="chooseCommunity" list={ChooseCommunity} />,
+    <Resource name="chooseDevice" list={ChooseDevice} />,
+    <Resource name="contact" list={Contact} />,
+    <Resource name="devices" list={DeviceDesktop} />,
+    <Resource
+      name="portable_devices"
+      list={PortableDeviceList}
+      create={PortableDeviceCreate}
+      edit={PortableDeviceEdit}
+    />,
+    <Resource
+      name="fixed_devices"
+      list={FixedDeviceList}
+      create={FixedDeviceCreate}
+      edit={FixedDeviceEdit}
+    />,
+    <Resource
+      name="device_requests_history"
+      create={DeviceRequest}
+      list={DeviceRequest}
+    />,
+  ];
+
+  const AdminResources = [
+    <Resource name="adminPage" list={AdminDesktop} />,
+    <Resource name="contact" list={Contact} />,
+    <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
+    <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
+    <Resource
+      name="all_fixedDevices"
+      list={FixedDeviceListAdm}
+      show={FixedDeviceShow}
+    />,
+    <Resource
+      name="all_portableDevices"
+      list={PortableDeviceListAdm}
+      show={PortableDeviceShow}
+    />,
+    <Resource name="User" list={UserListAdm} show={UserShowAdm} />,
+    <Resource
+      name="all_portableDevices"
+      list={PortableDeviceListAdm}
+      show={PortableDeviceShow}
+    />,
+    <Resource name="User" list={UserListAdm} show={UserShowAdm} />,
+    <Resource
+      name="Greenhouse"
+      list={GreenhouseListAdm}
+      show={GreenhouseShow}
+    />,
+    <Resource name="chooseCommunity" list={ChooseCommunity} />,
+    <Resource name="chooseDevice" list={ChooseDevice} />,
+    <Resource name="contact" list={Contact} />,
+    <Resource
+      name="all_fixedDevices"
+      list={FixedDeviceListAdm}
+      show={FixedDeviceShow}
+    />,
+    <Resource
+      name="all_portableDevices"
+      list={PortableDeviceListAdm}
+      show={PortableDeviceShow}
+    />,
+    <Resource name="User" list={UserListAdm} show={UserShowAdm} />,
+    <Resource
+      name="Greenhouse"
+      list={GreenhouseListAdm}
+      show={GreenhouseShow}
+    />,
+    <Resource
+      name="ownerPage"
+      list={OwnerDesktop}
+      icon={FaceRetouchingNaturalIcon}
+    />,
+    <Resource
+      name="greenhouses"
+      list={GreenhouseList}
+      create={GreenhouseCreate}
+      edit={GreenhouseEdit}
+    />,
+    <Resource
+      name="fields"
+      list={FieldList}
+      create={FieldCreate}
+      edit={FieldEdit}
+    />,
+    <Resource name="Product" list={ProductListAdm} show={ProductShow} />,
+    <Resource name="Statistic" list={DeviceStatisticPage} />,
+    <Resource name="contact" list={Contact} />,
+    <Resource name="community_manager" list={CommunityManager} />,
+    <Resource name="usersinfo" list={DesktopInfo} />,
+    <Resource
+      name="community/users"
+      list={UserList}
+      create={UserCreate}
+      edit={UserEdit}
+      icon={ArticleIcon}
+    />,
+    <Resource name="BasicTable" list={BasicTable} show={BasicTableShow} />,
+  ];
 
   return (
     <BrowserRouter>
@@ -107,79 +225,13 @@ const App = () => {
         dataProvider={dataProvider}
         i18nProvider={i18nProvider}
       >
-        <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />
-        <Resource name="signin" list={Signin} icon={VpnKeyIcon} />
-        <Route exact path="signup" element={Signup} />
-        <Resource name="signup" list={Signup} />
-        <Resource name="profile" list={Profile} icon={PermIdentityIcon} />
-        <Resource name="adminPage" list={AdminDesktop} />
-        <Resource name="chooseCommunity" list={ChooseCommunity} />
-        <Resource name="chooseDevice" list={ChooseDevice} />
-        <Resource name="contact" list={Contact} />
-        <Resource
-          name="all_fixedDevices"
-          list={FixedDeviceListAdm}
-          show={FixedDeviceShow}
-        />
-        <Resource
-          name="all_portableDevices"
-          list={PortableDeviceListAdm}
-          show={PortableDeviceShow}
-        />
-        <Resource name="User" list={UserListAdm} show={UserShowAdm} />
-        <Resource
-          name="Greenhouse"
-          list={GreenhouseListAdm}
-          show={GreenhouseShow}
-        />
-        <Resource
-          name="ownerPage"
-          list={OwnerDesktop}
-          icon={FaceRetouchingNaturalIcon}
-        />
-        <Resource
-          name="greenhouses"
-          list={GreenhouseList}
-          create={GreenhouseCreate}
-          edit={GreenhouseEdit}
-        />
-        <Resource
-          name="fields"
-          list={FieldList}
-          create={FieldCreate}
-          edit={FieldEdit}
-        />
-        <Resource name="devices" list={DeviceDesktop} />
-        <Resource
-          name="portable_devices"
-          list={PortableDeviceList}
-          create={PortableDeviceCreate}
-          edit={PortableDeviceEdit}
-        />
-        <Resource
-          name="fixed_devices"
-          list={FixedDeviceList}
-          create={FixedDeviceCreate}
-          edit={FixedDeviceEdit}
-        />
-        <Resource
-          name="device_requests_history"
-          create={DeviceRequest}
-          list={DeviceRequest}
-        />
-        <Resource name="Product" list={ProductListAdm} show={ProductShow} />
-        <Resource name="Statistic" list={DeviceStatisticPage} />
-        <Resource name="contact" list={Contact} />
-        <Resource name="community_manager" list={CommunityManager} />
-        <Resource name="usersinfo" list={DesktopInfo} />
-        <Resource
-          name="community/users"
-          list={UserList}
-          create={UserCreate}
-          edit={UserEdit}
-          icon={ArticleIcon}
-        />
-        <Resource name="BasicTable" list={BasicTable} show={BasicTableShow} />
+        {role === "EMPLOYEE"
+          ? [...employeeResources]
+          : role === "ADMIN"
+          ? [...AdminResources]
+          : role === "OWNER"
+          ? [...ownerResources]
+          : [...commonResources]}
       </Admin>
     </BrowserRouter>
   );
