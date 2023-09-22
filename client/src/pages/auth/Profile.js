@@ -9,8 +9,8 @@ import {
   Button,
 } from "@mui/material";
 import { CustomCancelButton } from "../../components/CancelButton";
-import { MyBar } from "../../components/Drawer";
-import { drawer_new_data } from "../../assets/static/mockData/new_data";
+//import { MyBar } from "../../components/Drawer";
+//import { drawer_new_data } from "../../assets/static/mockData/new_data";
 import { useTheme } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import { getJwtTokenFromCookies} from "../../providers/authUtils";
@@ -103,11 +103,11 @@ export const Profile = () => {
   return (
     <Container>
       <Grid container spacing={2}>
-        {!isSmallScreen && (
+        {/* {!isSmallScreen && (
           <Grid item xs={12} md={3}>
             <MyBar drawerData={drawer_new_data} />
           </Grid>
-        )}
+        )} */}
         <Grid item xs={12} md={isSmallScreen ? 12 : 9}>
           <Box p={2}>
             <Typography variant="h4" gutterBottom>

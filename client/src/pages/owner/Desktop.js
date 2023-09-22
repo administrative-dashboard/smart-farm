@@ -2,10 +2,10 @@
 import * as React from "react";
 import { Container, useMediaQuery, Box, Typography } from "@mui/material";
 
-import { MyBar } from "../../components/Drawer";
+// import { MyBar } from "../../components/Drawer";
 import { ownerItemData } from "../../assets/static/mockData/owner.mockData";
 import { CustomImageList } from "../../components/ImageList";
-import { owner_drawer } from "../../assets/static/mockData/owner_drawer";
+// import { owner_drawer } from "../../assets/static/mockData/owner_drawer";
 
 export const OwnerDesktop = () => {
   const isLgScreen = useMediaQuery((theme) => theme.breakpoints.down("lg"));
@@ -18,7 +18,7 @@ export const OwnerDesktop = () => {
         alignItems: "center",
       }}
     >
-      {!isLgScreen && <MyBar drawerData={owner_drawer} />}
+      {/* {!isLgScreen && <MyBar drawerData={owner_drawer} />} */}
       <Container sx={{ m: "auto" }}>
         <Typography
           variant="h3"
