@@ -67,7 +67,8 @@ import { getJwtTokenFromCookies } from "./providers/authUtils";
 import customDataProvider from "./providers/dataProvider";
 //const dataProvider = jsonServerProvider(API_URL);
 /* const dataProvider = simpleRestProvider(API_URL); */
-
+import { authProvider } from "./providers/authPovider";
+import { API_URL } from "./consts";
 const i18nProvider = polyglotI18nProvider(
   (locale) => (locale === "am" ? armenianMessages : englishMessages),
   "en" // Default locale
