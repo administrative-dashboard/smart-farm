@@ -111,6 +111,7 @@ const App = () => {
   const employeeResources = [
     <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
     <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
+    <Resource name="contact" list={Contact} />,
   ];
 
   const ownerResources = [
@@ -141,6 +142,7 @@ const App = () => {
 
   const AdminResources = [
     <Resource name="adminPage" list={AdminDesktop} />,
+    <Resource name="contact" list={Contact} />,
     <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
     <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
     <Resource
@@ -227,6 +229,8 @@ const App = () => {
           ? [...employeeResources]
           : role === "ADMIN"
           ? [...AdminResources]
+          : role === "OWNER"
+          ? [...ownerResources]
           : [...commonResources]}
       </Admin>
     </BrowserRouter>
