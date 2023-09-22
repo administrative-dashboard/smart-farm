@@ -14,45 +14,9 @@ import { getJwtTokenFromCookies } from "../../providers/authUtils";
 import { API_URL } from "../../consts";
 
 export const UserList = (props) => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [communityName, setCommunityName] = useState("");
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${API_URL}/community/users`, {
-          headers: {
-            Authorization: `Bearer ${getJwtTokenFromCookies()}`,
-          },
-          // params: {
-          //   page: 1,
-          //   perPage: 10,
-          //   sort: "id",
-          //   order: "ASC",
-          // },
-        });
-        const { communityName, users } = response.data;
-
-        setCommunityName(communityName);
-        setData(users);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching data: ", error);
-        setLoading(false);
-      }
-    };
-
-    // Call the fetchData function
-    fetchData();
-  }, []); 
-
-  if (loading) {
-    return <Loading />;
-  }
-
+  
   return (
-    <List {...props} title={`Community: ${communityName}`} >
+    <List {...props} >
       <Datagrid>
         <TextField source="id" />
         <TextField source="name" />
