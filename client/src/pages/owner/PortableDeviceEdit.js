@@ -6,22 +6,28 @@ import {
   TextInput,
   DateInput,
   NumberInput,
+  useDataProvider,
 } from "react-admin";
 import { Box } from "@mui/material";
 
 import { HomeRedirectButton } from "../../components/HomeRedirectButton";
+import customDataProvider from "../../providers/dataProvider";
 
 export const PortableDeviceEdit = (props) => {
+ 
   return (
     <>
-      <Edit title="Edit a portable device" {...props}>
+      <Edit 
+        title="Edit a portable device" {...props}
+        resource="portable_devices"
+      >
         <SimpleForm>
           {/* <NumberInput source="id" disable /> */}
-          <TextInput source="name" />
-          <TextInput source="type" />
-          <TextInput source="description" />
-          <NumberInput source="quantity" />
-          <DateInput source="date" />
+          <TextInput source="device_name" label="Name" />
+          <TextInput source="device_type" label="Type" />
+          <NumberInput source="quantity" label="Quantity" />
+          <NumberInput source="shared_quantity" label="Shared Quantity" />
+          <DateInput source="created_at" label="Date" disabled/>
         </SimpleForm>
       </Edit>
       <Box
@@ -30,8 +36,7 @@ export const PortableDeviceEdit = (props) => {
         justifyContent="center"
         alignItems="center"
       >
-        <HomeRedirectButton pageName="devices" title="Devices" />
-        <HomeRedirectButton pageName="ownerPage" title="Home" />
+     
       </Box>
     </>
   );

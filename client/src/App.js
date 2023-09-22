@@ -65,8 +65,16 @@ import axios from "axios";
 import { getJwtTokenFromCookies } from "./providers/authUtils";
 import { authProvider } from "./providers/authPovider";
 // import dataProvider from "./providers/dataProvider";
-const dataProvider = simpleRestProvider(API_URL);
+// const dataProvider = simpleRestProvider(API_URL);
 // import customDataProvider from "./providers/dataProvider";
+import { authProvider } from "./providers/authPovider"
+import simpleRestProvider from 'ra-data-simple-rest';
+import { fetchUtils } from "react-admin";
+import GoogleLoginComponent from "./components/Gooogle";
+import { API_URL } from "./consts";
+import customDataProvider from "./providers/dataProvider";
+//const dataProvider = jsonServerProvider(API_URL);
+/* const dataProvider = simpleRestProvider(API_URL); */
 
 const i18nProvider = polyglotI18nProvider(
   (locale) => (locale === "am" ? armenianMessages : englishMessages),
@@ -222,7 +230,7 @@ const App = () => {
     <BrowserRouter>
       <Admin
         layout={MyLayout}
-        dataProvider={dataProvider}
+        dataProvider={customDataProvider} 
         i18nProvider={i18nProvider}
       >
         {role === "EMPLOYEE"

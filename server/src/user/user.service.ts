@@ -1,5 +1,7 @@
 // user.service.ts
 
+// user.service.ts
+
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/database/models/users.model';

@@ -13,32 +13,32 @@ const imageCardData = [
   {
     img: users,
     title: "Users",
-    link: "#admin/usersInfo",
+    link: "/User",
   },
   {
     img: greenhouse,
     title: "Greenhouse",
-    link: "#admin/greenhousesInfo",
+    link: "/Greenhouse",
   },
   {
     img: field,
     title: "Fields",
-    link: "#admin/fieldsInfo",
+    link: "/fieldsInfo",
   },
   {
     img: product,
     title: "Products",
-    link: "#admin/productsInfo",
+    link: "/productsInfo",
   },
   {
     img: device,
     title: "Devices",
-    link: "#/ChooseCommunity",
+    link: "/chooseDevice",
   },
   {
     img: Statistics,
     title: "Statistics",
-    link: "#admin/statisticsInfo",
+    link: "/statisticsInfo",
   },
 ];
 

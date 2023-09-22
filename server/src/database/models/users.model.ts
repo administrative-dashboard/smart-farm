@@ -46,9 +46,11 @@ export class User extends Model<User> {
   @HasMany(() => DeviceRequestHistory)
   device_requests_history: DeviceRequestHistory;
 
-  @BelongsToMany(() => FixedDevice, () => OwnerFixedDevice)
-  fixed_devices: FixedDevice[];
 
   @HasMany(() => OwnerPortableDevice)
   owners_portable_devices: OwnerPortableDevice[];
+
+  @HasMany(() => OwnerFixedDevice)
+  owners_fixed_devices: OwnerFixedDevice[];
 }
+

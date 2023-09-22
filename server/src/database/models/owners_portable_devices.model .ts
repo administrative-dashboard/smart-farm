@@ -1,5 +1,5 @@
-// users.model.ts
-import { Column, Model, Table, ForeignKey, HasMany } from 'sequelize-typescript';
+// owners_portable_devices.model.ts
+import { Column, Model, Table, ForeignKey, HasMany, BelongsTo} from 'sequelize-typescript';
 import { User } from './users.model';
 import { DeviceRequestHistory } from './device_requests_history.model';
 import { DeviceUsageStatisticsCommunities } from './device_usage_statistics_communities.model';
@@ -34,7 +34,9 @@ export class OwnerPortableDevice extends Model<OwnerPortableDevice> {
   @ForeignKey(() => PortableDevice)
   @Column
   portable_device_id: number;
-
-
   
+  @BelongsTo(() => PortableDevice)
+  declare portable_devices: PortableDevice;
+  
+
 }
