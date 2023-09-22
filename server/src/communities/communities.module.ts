@@ -6,12 +6,14 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { UserCommunityService } from 'src/user/user-community.service';
 import { User } from 'src/database/models/users.model';
 import { UserCommunity } from 'src/database/models/users_communities.model';
+import { GoogleService } from 'src/auth/google.service';
+import { UserService } from 'src/user/user.service';
 
 @Module({
   imports: [
     SequelizeModule.forFeature([Community, User, UserCommunity]),
   ],
   controllers: [CommunitiesController],
-  providers: [CommunitiesService, UserCommunityService]
+  providers: [CommunitiesService, UserCommunityService, GoogleService, UserService]
 })
 export class CommunitiesModule { }

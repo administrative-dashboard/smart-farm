@@ -6,33 +6,79 @@ import {
   EmailField,
   EditButton,
   DeleteButton,
+  useListContext,
   Loading,
 } from "react-admin";
-import { Typography } from "@mui/material";
-import axios from "axios";
-import { getJwtTokenFromCookies } from "../../providers/authUtils";
-import { API_URL } from "../../consts";
+import customDataProvider from "../../providers/dataProvider";
 
 export const UserList = (props) => {
-  
+  const dataProvider = customDataProvider;
+  const [data, setData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchName, setSearchName] = useState("");
+  const [searchEmail, setSearchEmail] = useState("");
+  const [searchPhone, setSearchPhone] = useState("");
+  const [communityName, setCommunityName] = useState(""); // Added communityName state
+
+  const fetchData = async () => {
+    try {
+      const response = await dataProvider.getList("community/users", {
+        pagination: { page: 1, perPage: 10 },
+        sort: { field: "id", order: "ASC" },
+        filter: {
+          q: searchTerm,
+          name: searchName,
+          email: searchEmail,
+          phone_number: searchPhone,
+        },
+      });
+
+      // Update the data and communityName states
+      setData(response.data);
+      setCommunityName(response.communityName); // Assuming the communityName is part of the response
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [searchTerm, searchName, searchEmail, searchPhone]); // Listen for changes in search criteria
+
   return (
-    <List {...props} >
-      <Datagrid>
-        <TextField source="id" />
-        <TextField source="name" />
-        <EmailField source="email" />
-        <TextField source="phone_number" />
-        {/* Use the `render` prop to display roles */}
-        <TextField label="Role" render={(record) => (
-          record.roles.map((role, index) => (
-            <span key={index}>{role.value}{index !== record.roles.length - 1 ? ', ' : ''}</span>
-          ))
-        )} />
-        <EditButton basePath="/posts" />
-        <DeleteButton basePath="/posts" />
-      </Datagrid>
-    </List>
+    <div>
+      <input
+        type="text"
+        placeholder="Search term"
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Search name"
+        onChange={(e) => setSearchName(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Search email"
+        onChange={(e) => setSearchEmail(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Search phone"
+        onChange={(e) => setSearchPhone(e.target.value)}
+      />
+      {communityName && <h2>Community: {communityName}</h2>} {/* Display communityName */}
+      <List {...props} data={data}>
+        <Datagrid>
+          <TextField source="id" />
+          <TextField source="name" />
+          <EmailField source="email" />
+          <TextField source="phone_number" />
+          <TextField label="Role" source="roles" cellClassName="roles-field" />
+          <EditButton basePath="/users" />
+          <DeleteButton basePath="/users" />
+        </Datagrid>
+      </List>
+    </div>
   );
 };
-
-

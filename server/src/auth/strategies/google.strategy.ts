@@ -36,23 +36,13 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     });
 
     if (created) {
-      const defaultRole = await Role.findOne({ where: { value: 'EMPLOYEE' } });
+      const defaultRole = await Role.findOne({ where: { value: 'ADMIN' } });
       if (defaultRole) {
         await UserRole.create({ role_id: defaultRole.id, user_id: user.id });
       }
     }
-
-    // const userRoles = await UserRole.findAll({
-    //   where: { user_id: user.id },
-    //   include: Role,
-    // });
-
-    // const roleValues = userRoles.map((userRole) => userRole.roles.value);
     const payload = {
       provider: 'google',
-      // email: emails[0].value,
-      // user_id: user.id,
-      // role: roleValues,
       accessToken,
       created,
     };
