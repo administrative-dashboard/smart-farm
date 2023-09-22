@@ -34,6 +34,7 @@ export class AuthController {
       // role: user.role,
       // sessionId,
       accessToken: user.accessToken,
+      created,
     };
 
     const jwtToken = this.jwtService.sign(jwtPayload, { expiresIn: '7d' });
