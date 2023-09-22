@@ -34,7 +34,6 @@ export const PortableDeviceCreate = (props) => {
   const validateDeviceType = [required()];
   const validateQuantity = [required(), validatePositiveNumber];
   const validateSharedQuantity = [
-    required(),
     validatePositiveNumber,
     validationSharedQuantity,
   ];
@@ -49,7 +48,7 @@ export const PortableDeviceCreate = (props) => {
       };
       
       // Make a POST request to create the device
-      const response = await customDataProvider.create("portable_devices", {
+      const response = await customDataProvider.create("portable_devices/create", {
         data: deviceData,
       });
       
@@ -62,6 +61,7 @@ export const PortableDeviceCreate = (props) => {
       }
     } catch (error) {
       console.error("Error creating device:", error);
+      notify('Device already is existing', { type: 'error' });
     }
   };
   

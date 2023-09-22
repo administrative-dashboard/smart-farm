@@ -1,79 +1,84 @@
-//client//pages/FixedDeviceCreate.js
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Create,
-  DateInput,
-  NumberInput,
   SimpleForm,
   TextInput,
+  NumberInput,
+  DateInput,
   useNotify,
   useRedirect,
+  required,
 } from "react-admin";
-import { Box } from "@mui/material";
+import customDataProvider from "../../providers/dataProvider";
 
 import { HomeRedirectButton } from "../../components/HomeRedirectButton";
-
 export const FixedDeviceCreate = (props) => {
+  
   const currentDate = new Date();
   const notify = useNotify();
   const redirect = useRedirect();
-
-  const onSuccess = (data) => {
-    notify(`Changes saved`);
-    redirect("/portable_devices");
+  const [quantity, setQuantity] = useState("");
+  const validatePositiveNumber = (value) => {
+    if (isNaN(value) || value <= 0) {
+      return "Value must be a positive number";
+    }
+    return undefined;
   };
-
-  // const saveWithOwner = async (values) => {
-  //     const { name, type, description, quantity, date } = values;
-
-  //     // Create the entry in fixed_devices
-  //     const createdDevice = await axios.post('http://localhost:5000/fixed_devices', {
-  //       name,
-  //       type,
-  //       description,
-  //     });
-
-  //     // Create the entry in owners_fixedDevices using the reference to the created fixed_device
-  //     await axios.post('http://localhost:5000/owners_fixedDevices', {
-  //       user_id: 1,
-  //       fixed_device_id: createdDevice.data.id,
-  //       quantity,
-  //       measurement_id: 1,
-  //       date,
-  //     });
-
-  //   };
+  const validationSharedQuantity = (value, allValues) => {
+    if (value > allValues.quantity) {
+      return "Shared quantity must be less than quantity";
+    }
+    return undefined;
+  };
+  const validateDeviceName = [required()];
+  const validateDeviceType = [required()];
+  const validateQuantity = [required(), validatePositiveNumber];
+  const validateSharedQuantity = [
+    required(),
+    validatePositiveNumber,
+    validationSharedQuantity,
+  ];
+  const handleSave = async (values) => {
+    try {
+      const deviceData = {
+        name: values.device_name,
+        type: values.device_type,
+        quantity: values.quantity,
+        created_at: values.created_at.toISOString(),
+      };
+      
+      const response = await customDataProvider.create("fixed_devices/create", {
+        data: deviceData,
+      });
+      
+      if (response.data) {
+        notify("Device created successfully", "info");
+        redirect("/fixed_devices");
+      } else {
+        console.error("Device creation failed:", response.error);
+        
+      }
+    } catch (error) {
+      console.error("Error creating device:", error);
+      notify('Device already is existing', { type: 'error' });
+    }
+  };
+  
   return (
     <>
       <Create
-        title="Create a portable device"
+        title="Create a fixed device"
         {...props}
-        mutationOptions={{ onSuccess }}
+        // save={handleSave}
       >
-        <SimpleForm>
-          {/* <SimpleForm save={saveWithOwner}> */}
-          {/* <NumberInput source="id" disable/> */}
-          <TextInput source="name" />
-          <TextInput source="type" />
-          <TextInput source="description" />
-          <NumberInput source="quantity" />
-          <DateInput
-            source="date"
-            showTime={true}
-            defaultValue={currentDate}
-            disabled
-          />
+        <SimpleForm onSubmit={handleSave}>
+          <TextInput source="device_name" validate={validateDeviceName} />
+          <TextInput source="device_type" validate={validateDeviceType} />
+          <NumberInput source="quantity" validate={validateQuantity} />
+          <DateInput source="created_at" defaultValue={currentDate} disabled />
         </SimpleForm>
       </Create>
-      <Box
-        display="flex"
-        flexDirection="row"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <HomeRedirectButton pageName="devices" title="Devices" />
-        <HomeRedirectButton pageName="ownerPage" title="Home" />
-      </Box>
+      
     </>
   );
 };

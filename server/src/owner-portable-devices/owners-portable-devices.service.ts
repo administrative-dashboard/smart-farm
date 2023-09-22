@@ -11,11 +11,10 @@ import { User } from 'src/database/models/users.model';
 export class OwnersPortableDevicesService {
   constructor(
     @InjectModel(OwnerPortableDevice)
-    private readonly OwnerPortableDeviceModel: typeof OwnerPortableDevice,
-    
+    private readonly OwnerPortableDeviceModel: typeof OwnerPortableDevice
   ) {}
 
-  async  getUserIdByEmail(email: string): Promise<number | null> {
+  async getUserIdByEmail(email: string): Promise<number | null> {
     try {
       const user = await User.findOne({
         attributes: ['id'],
@@ -23,7 +22,7 @@ export class OwnersPortableDevicesService {
           email: email,
         },
       });
-  
+
       if (user) {
         return user.id;
       } else {
@@ -34,9 +33,6 @@ export class OwnersPortableDevicesService {
       throw error;
     }
   }
-
-
-
 
   async getDevicesByEmail(email: string): Promise<any[]> {
     try {
@@ -67,10 +63,9 @@ export class OwnersPortableDevicesService {
     }
   }
 
-
   async searchDevices(
     email: string,
-    query: any,
+    query?: any,
     deviceName?: any,
     deviceType?: any,
     quantity?: any,
@@ -93,38 +88,38 @@ export class OwnersPortableDevicesService {
           Sequelize.literal(`"quantity" = :numQuery`),
           Sequelize.literal(`"shared_quantity" = :numQuery`),
         ];
-      } else if (query !== '' && query !== 'undefined') {
+      } else if (query !== '' && query !== undefined) {
         whereClause[Op.or] = [
           Sequelize.literal(`"portable_devices"."name" ILIKE :textQuery`),
           Sequelize.literal(`"portable_devices"."type" ILIKE :textQuery`),
         ];
       }
 
-      if (deviceName !== '' && deviceName !== 'undefined') {
+      if (deviceName !== '' && deviceName !== undefined) {
         console.log('device_name is pushed');
         whereClause[Op.and].push(
           Sequelize.literal(`"portable_devices"."name" ILIKE :textDeviceName`)
         );
       }
-      if (deviceType !== '' && deviceType !== 'undefined') {
+      if (deviceType !== '' && deviceType !== undefined) {
         console.log('device_type is pushed');
         whereClause[Op.and].push(
           Sequelize.literal(`"portable_devices"."type" ILIKE :textDeviceType`)
         );
       }
-      if (quantity !== '' && quantity !== 'undefined') {
+      if (quantity !== '' && quantity !== undefined) {
         console.log('quantity is pushed');
         whereClause[Op.and].push(
           Sequelize.literal(`"quantity" = :numQuantity`)
         );
       }
-      if (sharedQuantity !== '' && sharedQuantity !== 'undefined') {
+      if (sharedQuantity !== '' && sharedQuantity !== undefined) {
         console.log('shared_quantity is pushed');
         whereClause[Op.and].push(
           Sequelize.literal(`"shared_quantity" = :numSharedQuantity`)
         );
       }
-      if (created_at !== '' && created_at !== 'undefined') {
+      if (created_at !== '' && created_at !== undefined) {
         console.log('created_at is pushed');
         const date = new Date(created_at);
         date.setHours(0, 0, 0, 0);
@@ -162,7 +157,6 @@ export class OwnersPortableDevicesService {
           textDeviceDate: `%${created_at}%`,
           numQuantity: quantity,
           numSharedQuantity: sharedQuantity,
-
           numQuery: query,
         },
       });
@@ -172,7 +166,10 @@ export class OwnersPortableDevicesService {
     }
   }
 
-  async createDevice(email: string, deviceData: any): Promise<OwnerPortableDevice> {
+  async createDevice(
+    email: string,
+    deviceData: any
+  ): Promise<OwnerPortableDevice> {
     try {
       const userId = await this.getUserIdByEmail(email);
       let existingPortableDevice = await PortableDevice.findOne({
@@ -194,22 +191,22 @@ export class OwnersPortableDevicesService {
         },
       });
       if (existingRecord) {
-        throw new Error('User has already associated with this device.');
+        throw new Error("USER IS ASSOCIATED WITH THE DEVICE");
+      } else {
+        const ownerPortableDevice = await this.OwnerPortableDeviceModel.create({
+          user_id: userId,
+          portable_device_id: existingPortableDevice.id,
+          quantity: deviceData.quantity,
+          is_shared: deviceData.shared_quantity > 0,
+          shared_quantity: deviceData.shared_quantity,
+          created_at: deviceData.created_at,
+        });
+        return ownerPortableDevice;
       }
-      const ownerPortableDevice = await this.OwnerPortableDeviceModel.create({
-        user_id: userId,
-        portable_device_id: existingPortableDevice.id,
-        quantity: deviceData.quantity,
-        is_shared: deviceData.shared_quantity > 0,
-        shared_quantity: deviceData.shared_quantity,
-        created_at: deviceData.created_at,
-      });
-      return ownerPortableDevice;
     } catch (error) {
-      throw error; // Rethrow the error
+      console.error(error); 
     }
   }
-  
 
   async getPortableDeviceById(id: string): Promise<any | null> {
     try {
@@ -322,7 +319,4 @@ export class OwnersPortableDevicesService {
       throw error;
     }
   }
- 
-
-
 }
