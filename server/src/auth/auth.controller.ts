@@ -26,6 +26,7 @@ export class AuthController {
   @UseInterceptors(AccountMiddleware)
   async googleLoginCallback(@Req() req, @Res() res: Response) {
     const user = req.user;
+    const created = user.created;
     // const sessionId = uuidv4();
     const jwtPayload = {
       //  user_id: user.user_id,
@@ -33,18 +34,15 @@ export class AuthController {
       // role: user.role,
       // sessionId,
       accessToken: user.accessToken,
-      created: user.created,
     };
 
-    const jwtToken = this.jwtService.sign(jwtPayload);
-
-    const expirationDate = new Date();
-    expirationDate.setHours(expirationDate.getHours() + 5);
+    const jwtToken = this.jwtService.sign(jwtPayload, { expiresIn: '7d' });
 
     res.cookie('token', jwtToken, {
-      expires: expirationDate,
+      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days in milliseconds
     });
-    if (!user.created) {
+
+    if (!created) {
       res.redirect(`${process.env.CLIENT_URL}/dashboard`);
     } else {
       res.redirect(`${process.env.CLIENT_URL}/contact`);

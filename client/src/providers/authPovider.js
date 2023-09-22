@@ -28,8 +28,10 @@ export const authProvider = {
     // Alternatively, you can return a resolved promise to suppress the error
     // return Promise.resolve();
   },
+
+  
   async logout() {
-      localStorage.removeItem('jwtToken');
+      // localStorage.removeItem('jwtToken');
       window.location.href = `${API_URL}/google/logout`;
   },
 };

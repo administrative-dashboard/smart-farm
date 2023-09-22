@@ -1,5 +1,5 @@
 //User.controller.ts
-import { Controller, Get, Request, UseGuards, NotFoundException, Param, Post, Body, Put } from '@nestjs/common';
+import { Controller, Get, Request, UseGuards, NotFoundException, Param, Post, Body, Put, UseInterceptors, UnauthorizedException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { UserService } from './user.service';
 import { UserCommunityService } from './user-community.service';
@@ -19,12 +19,20 @@ export class UserController {
   @Get('info')
   @UseGuards(JwtAuthGuard)
   async getUserInfo(@Request() req) {
-    // const userId = req.user.user_id;
-    const accessToken = req.user.accessToken;
-    const email = await this.googleService.getUserInfo(accessToken);
-    console.log("email", email);
-    const userInfo = await this.userService.getUserInfoByEmail(email);
-    return userInfo;
+    try {
+      const accessToken = req.user.accessToken;
+      const email = await this.googleService.getUserInfo(accessToken);
+      const userInfo = await this.userService.getUserInfoByEmail(email);
+      return userInfo;
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        // Handle unauthorized (401) error here
+        return { message: 'Unauthorized access' };
+      } else {
+        // Handle other errors as needed
+        throw error;
+      }
+    }
   }
 
   @Put('info')
@@ -132,10 +140,11 @@ export class UserController {
   
       if (!user) {
         throw new NotFoundException('User not found');
+        
       }
   
       const userId = user.id;
-      const rolesName = this.userRolesService.getRolesByUserId(userId); // Remove the "await" keyword here
+      const rolesName = this.userRolesService.getRolesByUserId(userId);
       return rolesName;
     } catch (error) {
       console.error('Error fetching roles name:', error);

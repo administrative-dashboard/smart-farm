@@ -26,11 +26,11 @@ const ImageCardList = ({ data }) => (
           style={{ width: "100%", height: "auto" }}
         />
         <CardContent>
-        <Link key={item.link} to={`/${item.link}`}>
           <Typography variant="h6" component="div">
-            {item.title}
+            <Link key={item.link} to={`/${item.link}`}>
+              {item.title}
+            </Link>
           </Typography>
-          </Link>
         </CardContent>
       </Card>
     ))}

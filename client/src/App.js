@@ -63,6 +63,7 @@ import { API_URL } from "./consts";
 import { DesktopInfo } from "./pages/CommunityManager/DesktopInfo";
 import axios from "axios";
 import { getJwtTokenFromCookies } from "./providers/authUtils";
+import { authProvider } from "./providers/authPovider";
 // import dataProvider from "./providers/dataProvider";
 const dataProvider = simpleRestProvider(API_URL);
 // import customDataProvider from "./providers/dataProvider";
@@ -73,6 +74,7 @@ const i18nProvider = polyglotI18nProvider(
 );
 
 const App = () => {
+  const isAuthenticated = getJwtTokenFromCookies() ? true : false;
   const [roles, setRoles] = React.useState([]);
 
   React.useEffect(() => {
@@ -91,19 +93,18 @@ const App = () => {
         console.error("Error fetching user roles:", error);
       }
     };
-
-    fetchUserRoles();
+    if (isAuthenticated) {
+      fetchUserRoles();
+    }
   }, []);
-  if (roles.length === 0) {
-    return <div>Loading...</div>;
-  }
-  console.log(roles[0])
+
+
 
   return (
     <BrowserRouter>
       <Admin
         layout={MyLayout}
-        dataProvider={dataProvider} 
+        dataProvider={dataProvider}
         i18nProvider={i18nProvider}
       >
         <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />

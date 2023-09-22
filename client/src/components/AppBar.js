@@ -19,6 +19,7 @@ import {
   getJwtTokenFromCookies, 
   getUserInfoFromCookies 
 } from "../providers/authUtils";
+import { authProvider } from "../providers/authPovider";
 
 const MyCustomIcon = ({ profileImage }) => (
   <Avatar
@@ -33,31 +34,30 @@ const MyCustomIcon = ({ profileImage }) => (
 export const MyAppBar = () => {
   const [user, setUser] = React.useState(null);
   const [profileImage, setProfileImage] = React.useState(null);
+  const [email, setEmail] = React.useState(null);
   const isAuthenticated = getJwtTokenFromCookies() ? true : false;
-  const userInfo=getUserInfoFromCookies();
-  React.useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-          const response = await axios.get(
-            `${API_URL}/user/info`,
-            {
-              headers: {
-                Authorization: `Bearer ${getJwtTokenFromCookies()}`
-              }
-            }
-          );
-          setUser(response.data);
-          setProfileImage(response.data.profile_image);
-          console.log()
-      } catch (error) {
-        console.error("Error fetching user info:", error);
+React.useEffect(() => {
+  const fetchUserInfo = () => {
+    axios.get(`${API_URL}/user/info`, {
+      headers: {
+        Authorization: `Bearer ${getJwtTokenFromCookies()}`
       }
-    };
+    })
+    .then(response => {
+      setUser(response.data);
+      setProfileImage(response.data.profile_image);
+      setEmail(response.data.email);
+    })
+    .catch(error => {
+      console.error("Error fetching user info:", error);
+      authProvider.logout();
+    });
+  };
 
-    if (isAuthenticated) {
-      fetchUserInfo();
-    }
-  }, []);
+  if (isAuthenticated) {
+    fetchUserInfo();
+  }
+}, []);
 
   return (
     <AppBar
@@ -81,7 +81,7 @@ export const MyAppBar = () => {
               <LogoutButton />
             </MenuItem>
             <Typography variant="body1" color="textSecondary">
-              {userInfo.email}
+              {email}
             </Typography>
           </UserMenu>
         ) : (

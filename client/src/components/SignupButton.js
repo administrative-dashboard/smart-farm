@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, useRedirect } from "react-admin";
-import { useMediaQuery, useTheme } from "@mui/material";
+import { Typography, useMediaQuery, useTheme } from "@mui/material";
 
 export const SignupButton = () => {
   const theme = useTheme();
@@ -24,7 +24,9 @@ export const SignupButton = () => {
       }}
       onClick={handleClick}
     >
-      Signup
+      <Typography>
+        Signup
+      </Typography>
     </Button>
   );
 };

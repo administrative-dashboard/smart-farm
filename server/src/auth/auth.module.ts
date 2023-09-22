@@ -14,7 +14,7 @@ import { GoogleService } from './google.service';
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '7d' },
     }),
     // UserModule,
   ],
