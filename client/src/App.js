@@ -64,8 +64,6 @@ import { getJwtTokenFromCookies } from "./providers/authUtils";
 // import dataProvider from "./providers/dataProvider";
 // const dataProvider = simpleRestProvider(API_URL);
 // import customDataProvider from "./providers/dataProvider";
-import { authProvider } from "./providers/authPovider";
-import { API_URL } from "./consts";
 import customDataProvider from "./providers/dataProvider";
 //const dataProvider = jsonServerProvider(API_URL);
 /* const dataProvider = simpleRestProvider(API_URL); */
