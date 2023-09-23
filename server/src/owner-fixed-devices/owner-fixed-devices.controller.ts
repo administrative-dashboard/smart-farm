@@ -36,9 +36,15 @@ export class FixedDevicesController {
     @Query('device_type') deviceType: any,
     @Query('quantity') quantity: any,
     @Query('created_at') date: any,
+    @Query('page') page:any,
+    @Query('perPage') perPage:any,
+    @Query('field') field:any,
+    @Query('order') order:any,
     @Request() req
   ) {
     try {
+      page=parseInt(page);
+      perPage=parseInt(perPage);
       console.log('ЗАПРОС ПОЛУЧЕН!!!!!!!!!');
       console.log('searchTerm==', searchTerm);
       console.log('device_name==', deviceName);
@@ -57,14 +63,17 @@ export class FixedDevicesController {
             deviceName,
             deviceType,
             quantity,
-            date
+            date,
+            page,
+            perPage,
+            field,
+            order,
           );
         return filteredDevices;
       } else {
         console.log('else');
-        let fixedDevices = await this.ownersFixedDevicesService.getDevicesByEmail(email);
-        const totalItems = fixedDevices.length;
-        return fixedDevices;
+        const {devices,total} = await this.ownersFixedDevicesService.getDevicesByEmail(email,page,perPage,field,order,);
+        return {devices,total};
       } 
 
       // console.log('Filtered Devices:', FixedDevices);

@@ -102,14 +102,14 @@ export const FixedDeviceList = (props) => {
   return (
     <>
       <ResetFilters />
-      <MyBar drawerData={owner_drawer}/>
+      
       <List
         {...props}
         data={data}
         filters={<DeviceFilter />} 
         sx={{ color: "#38A505" }}
       >
-        <Datagrid>
+        <Datagrid rowClick="edit">
           <TextField source="device_name" label="Name" />
           <TextField source="device_type" label="Type" />
           <NumberField source="quantity" label="Quantity" />
@@ -124,8 +124,7 @@ export const FixedDeviceList = (props) => {
         justifyContent="center"
         alignItems="center"
       >
-        <HomeRedirectButton pageName="devices" title="Devices" />
-        <HomeRedirectButton pageName="ownerPage" title="Home" />
+        
       </Box>
     </>
   );

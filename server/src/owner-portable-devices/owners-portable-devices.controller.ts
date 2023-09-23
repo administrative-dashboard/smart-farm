@@ -38,9 +38,18 @@ export class PortableDevicesController {
     @Query('quantity') quantity: any,
     @Query('shared_quantity') sharedQuantity: any,
     @Query('created_at') date: any,
+    @Query('page') page:any,
+    @Query('perPage') perPage:any,
+    @Query('field') field:any,
+    @Query('order') order:any,
     @Request() req
   ) {
     try {
+      console.log(typeof(page));
+      page=parseInt(page);
+      perPage=parseInt(perPage);
+      console.log('page::::===',page);
+      console.log('perPage::::===',perPage);
       console.log('ЗАПРОС ПОЛУЧЕН!!!!!!!!!');
       console.log('searchTerm==', searchTerm);
       console.log('device_name==', deviceName);
@@ -60,18 +69,18 @@ export class PortableDevicesController {
             deviceType,
             quantity,
             sharedQuantity,
-            date
+            date,
+            page,
+            perPage,
+            field,
+            order,
           );
         return filteredDevices;
-      } else {
-        let portableDevices =
-        await this.ownersPortableDevicesService.getDevicesByEmail(email);
-        const totalItems = portableDevices.length;
-        return portableDevices;
+      } else if(page && perPage){
+        const {devices,total} =
+        await this.ownersPortableDevicesService.getDevicesByEmail(email,page,perPage,field,order,);
+        return {devices,total};
       } 
-
-      // console.log('Filtered Devices:', portableDevices);
-      // return portableDevices;
     } catch (error) {
       throw new NotFoundException(
         'Portable devices not found',
@@ -80,7 +89,6 @@ export class PortableDevicesController {
     }
   }
   
-
 
   @Get(':id')
   async getPortableDeviceById(@Param('id') id: string) {

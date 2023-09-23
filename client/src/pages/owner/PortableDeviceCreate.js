@@ -52,7 +52,7 @@ export const PortableDeviceCreate = (props) => {
         data: deviceData,
       });
       
-      if (response.data) {
+      if (response.ok) {
         notify("Device created successfully", "info");
         redirect("/portable_devices");
       } else {
