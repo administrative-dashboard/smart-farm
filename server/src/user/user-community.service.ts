@@ -41,6 +41,27 @@ export class UserCommunityService {
 
     return null;
   }
+
+  async getUsersInSameCommunity(communityName: string): Promise<User[]> {
+    // Use Sequelize to fetch users based on the community name
+    const users = await User.findAll({
+      include: [
+        {
+          model: UserCommunity,
+          include: [
+            {
+              model: Community,
+              where: {
+                name: communityName,
+              },
+            },
+          ],
+        },
+      ],
+    });
+
+    return users;
+  }
 }
 // async getUsersInSameCommunity(userId: number) {
 //   const userCommunity = await this.userCommunityModel.findOne({

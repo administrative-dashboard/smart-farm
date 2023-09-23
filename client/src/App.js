@@ -77,8 +77,10 @@ const i18nProvider = polyglotI18nProvider(
 const App = () => {
   const isAuthenticated = getJwtTokenFromCookies() ? true : false;
   const [roles, setRoles] = React.useState([]);
-
+  const [isLoading, setIsLoading] = React.useState(true);
   React.useEffect(() => {
+    localStorage.setItem("appLoading", "true");
+
     const fetchUserRoles = async () => {
       try {
         const response = await axios.get(`${API_URL}/user/roles`, {
@@ -90,12 +92,17 @@ const App = () => {
       } catch (error) {
         console.error("Error fetching user roles:", error);
         authProvider.logout();
+      } finally {
+        localStorage.removeItem("appLoading");
+        setIsLoading(false);
       }
     };
+
     if (isAuthenticated) {
       fetchUserRoles();
     } else {
-      roles[0] = "1";
+      setRoles(["GUEST"]);
+      setIsLoading(false);
     }
   }, []);
 
@@ -221,19 +228,25 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <Admin
-        layout={MyLayout}
-        dataProvider={customDataProvider} 
-        i18nProvider={i18nProvider}
-      >
-        {role === "EMPLOYEE"
-          ? [...employeeResources]
-          : role === "ADMIN"
-          ? [...AdminResources]
-          : role === "OWNER"
-          ? [...ownerResources]
-          : [...commonResources]}
-      </Admin>
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : (
+        <Admin
+          layout={MyLayout}
+          dataProvider={customDataProvider}
+          i18nProvider={i18nProvider}
+        >
+          {role === "EMPLOYEE"
+            ? [...employeeResources]
+            : role === "ADMIN"
+            ? [...AdminResources]
+            : role === "OWNER"
+            ? [...ownerResources]
+            : role === "GUEST"
+            ? [...commonResources]
+            : <div>...loading</div>}
+        </Admin>
+      )}
     </BrowserRouter>
   );
 };
