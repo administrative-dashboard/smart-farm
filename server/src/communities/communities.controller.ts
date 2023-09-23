@@ -62,8 +62,7 @@ export class CommunitiesController {
         return false;
       });
 
-      // return { communityName, data };
-      return data;
+      return { communityName, data };
     } catch (error) {
       console.error('Error fetching community and users:', error);
       return null;
