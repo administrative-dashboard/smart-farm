@@ -1,5 +1,12 @@
 //community.controller.ts
-import { Controller, Get, NotFoundException, Query, Request, Res, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  NotFoundException,
+  Query,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { CommunitiesService } from './communities.service';
 import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
 import { UserCommunityService } from 'src/user/user-community.service';
@@ -13,7 +20,7 @@ export class CommunitiesController {
     private readonly userCommunityService: UserCommunityService,
     private readonly googleService: GoogleService,
     private readonly userService: UserService,
-  ) { }
+  ) {}
 
   @Get('info')
   @UseGuards(JwtAuthGuard)
@@ -41,9 +48,9 @@ export class CommunitiesController {
 
       const userId = user.id;
       const communityName = await this.userCommunityService.getCommunityNameByUserId(userId);
-      const users = await this.userCommunityService.getUsersInSameCommunity(communityName);
+      const data = await this.userCommunityService.getUsersInSameCommunity(communityName);
 
-      const filteredUsers = users.filter((user) => {
+      const filteredUsers = data.filter((user) => {
         if (
           (searchTerm && user.name.includes(searchTerm)) ||
           (name && user.name === name) ||
@@ -55,9 +62,11 @@ export class CommunitiesController {
         return false;
       });
 
-      return { communityName, users: filteredUsers };
+      // return { communityName, data };
+      return data;
     } catch (error) {
       console.error('Error fetching community and users:', error);
       return null;
     }
   }
+}

@@ -35,7 +35,7 @@ export const UserList = (props) => {
 
       // Update the data and communityName states
       setData(response.data);
-      setCommunityName(response.communityName); // Assuming the communityName is part of the response
+      // setCommunityName(response.communityName); // Assuming the communityName is part of the response
     } catch (error) {
       console.error("Error fetching data: ", error);
     }
@@ -46,28 +46,7 @@ export const UserList = (props) => {
   }, [searchTerm, searchName, searchEmail, searchPhone]); // Listen for changes in search criteria
 
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="Search term"
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Search name"
-        onChange={(e) => setSearchName(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Search email"
-        onChange={(e) => setSearchEmail(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Search phone"
-        onChange={(e) => setSearchPhone(e.target.value)}
-      />
-      {communityName && <h2>Community: {communityName}</h2>} {/* Display communityName */}
+  <>
       <List {...props} data={data}>
         <Datagrid>
           <TextField source="id" />
@@ -79,6 +58,6 @@ export const UserList = (props) => {
           <DeleteButton basePath="/users" />
         </Datagrid>
       </List>
-    </div>
+    </>
   );
 };
