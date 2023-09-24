@@ -1,4 +1,4 @@
-// users.model.ts
+// portable_devices.model.ts
 import { Column, Model, Table, BelongsToMany, HasMany } from 'sequelize-typescript';
 import { User } from './users.model';
 import { DeviceRequestHistory } from './device_requests_history.model';
@@ -18,15 +18,14 @@ export class PortableDevice extends Model<PortableDevice> {
   @Column({ allowNull: false })
   type: string;
 
-  @HasMany(() => DeviceUsageStatisticsCommunities)
-  device_usage_statistics_communities: DeviceUsageStatisticsCommunities;
-
-  @HasMany(() => DeviceUsageStatisticsFields)
-  device_usage_statistics_fields: DeviceUsageStatisticsFields;
-
-  @HasMany(() => DeviceUsageStatisticsGreenhouses)
-  device_usage_statistics_greenhouses: DeviceUsageStatisticsGreenhouses;
-
   @HasMany(() => OwnerPortableDevice)
-  owners_portable_devices: OwnerPortableDevice[];
+  users: User[];
+  // @HasMany(() => DeviceUsageStatisticsCommunities)
+  // device_usage_statistics_communities: DeviceUsageStatisticsCommunities;
+
+  // @HasMany(() => DeviceUsageStatisticsFields)
+  // device_usage_statistics_fields: DeviceUsageStatisticsFields;
+
+  // @HasMany(() => DeviceUsageStatisticsGreenhouses)
+  // device_usage_statistics_greenhouses: DeviceUsageStatisticsGreenhouses;
 }

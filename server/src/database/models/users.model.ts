@@ -42,6 +42,8 @@ export class User extends Model<User> {
 
   @BelongsToMany(() => Role, () => UserRole)
   roles: Role[];
+  // @HasMany(() => UserRole)
+  // roles: Role[];
 
   @HasMany(() => OwnerField)
   owners_fields: OwnerField;
@@ -52,9 +54,11 @@ export class User extends Model<User> {
   @HasMany(() => DeviceRequestHistory)
   device_requests_history: DeviceRequestHistory;
 
-  @BelongsToMany(() => FixedDevice, () => OwnerFixedDevice)
-  fixed_devices: FixedDevice[];
 
   @HasMany(() => OwnerPortableDevice)
   owners_portable_devices: OwnerPortableDevice[];
+
+  @HasMany(() => OwnerFixedDevice)
+  owners_fixed_devices: OwnerFixedDevice[];
 }
+
