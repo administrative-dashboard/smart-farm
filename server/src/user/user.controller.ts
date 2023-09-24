@@ -14,7 +14,7 @@ export class UserController {
     private readonly userCommunityService: UserCommunityService,
     private readonly googleService: GoogleService,
     private readonly userRolesService: UserRolesService
-  ) {}
+  ) { }
 
   @Get('info')
   @UseGuards(JwtAuthGuard)
@@ -130,19 +130,19 @@ export class UserController {
     }
   }
 
-  @Get('roles')
+  @Get('role')
   @UseGuards(JwtAuthGuard)
-  async getRoles(@Request() req) {
+  async getRole(@Request() req) {
     try {
       const accessToken = req.user.accessToken;
       const email = await this.googleService.getUserInfo(accessToken);
       const user = await this.userService.getUserInfoByEmail(email);
-  
+
       if (!user) {
         throw new NotFoundException('User not found');
-        
+
       }
-  
+
       const userId = user.id;
       const rolesName = this.userRolesService.getRolesByUserId(userId);
       return rolesName;
@@ -150,5 +150,17 @@ export class UserController {
       console.error('Error fetching roles name:', error);
       throw new NotFoundException('Error fetching roles name');
     }
+  }
+
+  @Get('roles')
+  @UseGuards(JwtAuthGuard)
+  async getRolesInfo() {
+    return await this.userRolesService.getAllRoles();
+  }
+
+  @Put('roles/:id')
+  @UseGuards(JwtAuthGuard)
+  async editUserRoles(@Param('id') id: number, @Body() roleData: any) {
+    return this.userRolesService.editUserRoles(id, roleData.roles);
   }
 }

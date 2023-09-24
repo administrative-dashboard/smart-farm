@@ -56,8 +56,6 @@ import { Contact } from "./pages/auth/Contact";
 import { NewData } from "./pages/auth/Profile";
 import { CommunityManager } from "./pages/CommunityManager/Desktop";
 import { UserList } from "./pages/CommunityManager/UserList";
-import { UserCreate } from "./pages/CommunityManager/UserCreate";
-import { UserEdit } from "./pages/CommunityManager/UserEdit";
 import { BasicTableShow } from "./components/BasicTableShow";
 import { BasicTable } from "./components/BasicTable";
 

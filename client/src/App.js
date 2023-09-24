@@ -54,8 +54,6 @@ import { DeviceStatisticPage } from "./pages/admin/DeviceStatistic";
 import { Contact } from "./pages/auth/Contact";
 import { CommunityManager } from "./pages/CommunityManager/Desktop";
 import { UserList } from "./pages/CommunityManager/UserList";
-import { UserCreate } from "./pages/CommunityManager/UserCreate";
-import { UserEdit } from "./pages/CommunityManager/UserEdit";
 import { BasicTableShow } from "./components/BasicTableShow";
 import { BasicTable } from "./components/BasicTable";
 import { DesktopInfo } from "./pages/CommunityManager/DesktopInfo";
@@ -83,7 +81,7 @@ const App = () => {
 
     const fetchUserRoles = async () => {
       try {
-        const response = await axios.get(`${API_URL}/user/roles`, {
+        const response = await axios.get(`${API_URL}/user/role`, {
           headers: {
             Authorization: `Bearer ${getJwtTokenFromCookies()}`,
           },
@@ -106,7 +104,7 @@ const App = () => {
     }
   }, []);
 
-  console.log(roles[0]);
+  // console.log(roles[0]);
   const role = roles[0];
 
   const commonResources = [
@@ -219,8 +217,6 @@ const App = () => {
     <Resource
       name="community/users"
       list={UserList}
-      create={UserCreate}
-      edit={UserEdit}
       icon={ArticleIcon}
     />,
     <Resource name="BasicTable" list={BasicTable} show={BasicTableShow} />,

@@ -1,7 +1,5 @@
 // user.service.ts
 
-// user.service.ts
-
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/database/models/users.model';
@@ -23,8 +21,14 @@ export class UserService {
     }
   }
 
-  
-
+  async getUserInfoById(id: number) {
+    try {
+      const userInfo = await this.userModel.findOne({ where: { id } });
+      return userInfo;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 // @Injectable()
