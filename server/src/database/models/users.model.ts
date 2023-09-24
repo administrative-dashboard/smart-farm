@@ -34,8 +34,8 @@ export class User extends Model<User> {
 
   // @BelongsToMany(() => Role, () => UserRole)
   // roles: Role[];
-  @HasMany(() => UserRole)
-  roles: Role[];
+  @HasMany(() => UserRole, 'user_id')
+  users_roles: UserRole[];
 
   @HasMany(() => OwnerField)
   owners_fields: OwnerField;

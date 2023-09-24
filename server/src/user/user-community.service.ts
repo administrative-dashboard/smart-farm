@@ -4,7 +4,16 @@ import { InjectModel } from '@nestjs/sequelize';
 import { UserCommunity } from 'src/database/models/users_communities.model';
 import { Community } from 'src/database/models/communities.model';
 import { User } from 'src/database/models/users.model';
-
+import { UserRole } from 'src/database/models/users_roles';
+import { Role } from 'src/database/models/roles.model';
+export interface UserWithRoles {
+  id: number;
+  name: string;
+  email: string;
+  phone_number: string;
+  profile_image: string;
+  roles: string[];
+}
 @Injectable()
 export class UserCommunityService {
   constructor(
@@ -14,7 +23,7 @@ export class UserCommunityService {
     private readonly communityModel: typeof Community,
     @InjectModel(User)
     private readonly userModel: typeof User,
-  ) {}
+  ) { }
 
   async addUserToCommunity(
     userId: number,
@@ -42,8 +51,9 @@ export class UserCommunityService {
     return null;
   }
 
-  async getUsersInSameCommunity(communityName: string): Promise<User[]> {
-    // Use Sequelize to fetch users based on the community name
+  async getUsersInSameCommunity(
+    communityName: string
+  ): Promise<UserWithRoles[]> {
     const users = await User.findAll({
       include: [
         {
@@ -57,64 +67,29 @@ export class UserCommunityService {
             },
           ],
         },
+        {
+          model: UserRole,
+          include: [
+            {
+              model: Role,
+            },
+          ],
+        },
       ],
     });
 
-    return users;
+    const usersWithRoles: UserWithRoles[] = users.map((user) => {
+      const roles = user.users_roles.map((userRole) => userRole.roles.value);
+      return {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        phone_number: user.phone_number,
+        profile_image: user.profile_image,
+        roles: roles,
+      };
+    });
+
+    return usersWithRoles;
   }
 }
-// async getUsersInSameCommunity(userId: number) {
-//   const userCommunity = await this.userCommunityModel.findOne({
-//     where: { user_id: userId },
-//   });
-//   console.log(userCommunity.community_id)
-//   if (userCommunity) {
-//     const usersInSameCommunity = await this.userCommunityModel.findAll({
-//       where: { community_id: userCommunity.community_id },
-//       include: [
-//         {
-//           model: User,
-//           attributes: ['id', 'name', 'email', 'phone_number'],
-//         },
-//       ],
-//       attributes: [],
-//     });
-//     return usersInSameCommunity.map((entry) => ({
-//       // communityName: entry.communities.name,
-//       userId: entry.users.id,
-//       userName: entry.users.name,
-//       userEmail: entry.users.email,
-//       userPhoneNumber: entry.users.phone_number,
-//     }));
-//   }
-
-//   return null;
-// }
-//   if (userCommunity) {
-//     const usersInSameCommunity = await this.userCommunityModel.findAll({
-//       where: { community_id: userCommunity.community_id },
-//       include: [
-//         {
-//           model: User,
-//           attributes: ['id', 'name', 'email', 'phone_number'],
-//           include: [
-//             {
-//               model: UserRole,
-//               attributes: ['role_id'],
-//               include: [
-//                 {
-//                   model: Role,
-//                   attributes: ['value'],
-//                 },
-//               ],
-//             },
-//           ],
-//         },
-//       ],
-//     });
-
-//     return usersInSameCommunity;
-//   }
-
-//   return null;
-// }
