@@ -14,6 +14,9 @@ module.exports = {
       value: {
         type: Sequelize.STRING,
       },
+      type: {
+        type: Sequelize.STRING,
+      },
     };
 
     await queryInterface.createTable(tableName, columns);

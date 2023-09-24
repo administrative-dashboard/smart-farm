@@ -24,6 +24,7 @@ export const FieldList = (props) => {
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchName, setSearchName] = useState("");
+  const [searchLocation, setSearchLocation] = useState("");
   const [searchSize, setSearchSize] = useState("");
   const [searchMeasurement, setSearchMeasurement] = useState("");
   const [searchDescription, setSearchDescription] = useState("");
@@ -55,8 +56,9 @@ export const FieldList = (props) => {
       <SearchInput source="q" alwaysOn onChange={handleSearchInputChange} />
       <TextInput label="Name" source="field_name" onChange={handleSearchNameChange} />
       <NumberInput label="Size" source="field_size" onChange={handleSearchSizeChange}/>
-      <TextInput label="Measurement" source="field_size_measurment" onChange={handleSearchMeasurementChange}/>
+      <TextInput label="Measurement" source="measurement" onChange={handleSearchMeasurementChange}/>
       <TextInput label="Description" source="field_description" onChange={handleSearchDescriptionChange}/>
+      <TextInput label="Location" source="field_location" onChange={handleSearchLocationChange}/>
       <DateInput label="Date" source="created_at" onChange={handleSearchDateChange}/>
     </Filter>
   );
@@ -66,7 +68,7 @@ export const FieldList = (props) => {
   }, [data]); 
   useEffect(() => {
     fetchData(); 
-  }, [searchTerm,searchName,searchSize,searchMeasurement,searchDescription,searchDate]);
+  }, [searchTerm,searchName,searchSize,searchMeasurement,searchDescription,searchLocation,searchDate]);
   
   const handleSearchInputChange = async (e) => {
     // console.log("Event object:", e);
@@ -107,6 +109,14 @@ export const FieldList = (props) => {
     }
   };
 
+  const handleSearchLocationChange = async (e) => {
+    if (e.target.value) {
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      setSearchLocation(e.target.value);
+      console.log(searchName);
+    }
+  };
+
   const handleSearchDateChange = async (e) => {
     if (e.target.value) {
       await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -117,11 +127,11 @@ export const FieldList = (props) => {
   return (
     <>
       <ResetFilters />
-      <List {...props} filters={<FieldFilter/>} sx={{ color: "#38A505" }}>
+      <List {...props} data={data} filters={<FieldFilter/>} sx={{ color: "#38A505" }}>
         <Datagrid rowClick="edit">
           <TextField source="field_name" label="Name"/>
           <NumberField source="field_size" label="Size" />
-          <TextField source="field_size_measurment" label="Measurement"/>
+          <TextField source="measurement" label="Measurement"/>
           <TextField source="field_description" label="Description"/>
           <TextField source="field_location" label="Location" />
           <DateField source="created_at" label="Date" />

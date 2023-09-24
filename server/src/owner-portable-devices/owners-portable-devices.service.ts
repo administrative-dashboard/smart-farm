@@ -40,7 +40,7 @@ export class OwnersPortableDevicesService {
     perPage?: number,
     field?: string,
     order?: string
-  ): Promise<{ devices: any[], total: number }> {
+  ): Promise<{ data: any[], total: number }> {
     try {
       const userId = await this.getUserIdByEmail(email);
       const sort = [];
@@ -54,7 +54,7 @@ export class OwnersPortableDevicesService {
           user_id: userId,
         },
       });
-      const devices = await this.OwnerPortableDeviceModel.findAll({
+      const data = await this.OwnerPortableDeviceModel.findAll({
         where: {
           user_id: userId,
         },
@@ -79,7 +79,7 @@ export class OwnersPortableDevicesService {
         subQuery: false,
       });
 
-      return { devices, total };
+      return { data, total };
     } catch (error) {
       throw error;
     }

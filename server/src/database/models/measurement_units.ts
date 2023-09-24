@@ -10,6 +10,9 @@ export class MeasurementUnit extends Model<MeasurementUnit> {
   @Column({})
   value: string;
 
+  @Column({})
+  type: string;
+
   @HasMany(() => Field)
   fields: Field[];
 }

@@ -29,12 +29,13 @@ export class OwnerFieldsController {
   ) {}
 
   @Get()
-  async getPortableDevices(
+  async getFields(
     @Query('q') searchTerm: any,
     @Query('field_name') fieldName: any,
     @Query('field_size') fieldSize: any,
-    @Query('field_size_measurment') fieldSizeMeasurement: any,
+    @Query('measurement') fieldSizeMeasurement: any,
     @Query('field_description') fieldDescription: any,
+    @Query('field_location') fieldLocation: any,
     @Query('created_at') date: any,
     @Query('page') page: any,
     @Query('perPage') perPage: any,
@@ -64,6 +65,7 @@ export class OwnerFieldsController {
         fieldSize ||
         fieldSizeMeasurement ||
         fieldDescription ||
+        fieldLocation ||
         date
       ) {
         const filteredFields = await this.ownerFieldsService.searchFields(
@@ -73,6 +75,7 @@ export class OwnerFieldsController {
           fieldSize,
           fieldSizeMeasurement,
           fieldDescription,
+          fieldLocation,
           date,
           page,
           perPage,
@@ -81,7 +84,7 @@ export class OwnerFieldsController {
         );
         return filteredFields;
       } else if (page && perPage) {
-        const { fields, total } =
+        const { data, total } =
           await this.ownerFieldsService.getFieldsByEmail(
             email,
             page,
@@ -89,7 +92,7 @@ export class OwnerFieldsController {
             field,
             order
           );
-        return { fields, total };
+        return { data, total };
       }
     } catch (error) {
       throw new NotFoundException('Fields not found', 'custom-error-code');

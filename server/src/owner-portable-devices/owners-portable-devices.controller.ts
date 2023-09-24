@@ -77,9 +77,9 @@ export class PortableDevicesController {
           );
         return filteredDevices;
       } else if(page && perPage){
-        const {devices,total} =
+        const {data,total} =
         await this.ownersPortableDevicesService.getDevicesByEmail(email,page,perPage,field,order,);
-        return {devices,total};
+        return {data,total};
       } 
     } catch (error) {
       throw new NotFoundException(
