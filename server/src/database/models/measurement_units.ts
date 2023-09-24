@@ -1,4 +1,4 @@
-// users.model.ts
+// measurement.model.ts
 import { Column, HasMany, Model, Table } from 'sequelize-typescript';
 import { Field } from './fields.model';
 

@@ -6,6 +6,7 @@ import { Field } from 'src/database/models/fields.model';
 import { Sequelize, Op } from 'sequelize';
 import { now } from 'sequelize/types/utils';
 import { User } from 'src/database/models/users.model';
+import { MeasurementUnit } from 'src/database/models/measurement_units';
 @Injectable()
 export class OwnerFieldsService {
   constructor(
@@ -53,23 +54,30 @@ export class OwnerFieldsService {
           user_id: userId,
         },
       });
-      const devices = await this.ownerField.findAll({
+      const fields = await this.ownerField.findAll({
         where: {
           user_id: userId,
         },
         attributes: [
           'id',
-          [Sequelize.col('portable_devices.name'), 'device_name'],
-          [Sequelize.col('portable_devices.type'), 'device_type'],
-          'quantity',
+          [Sequelize.col('fields.name'), 'field_name'],
+          [Sequelize.col('fields.size'), 'field_size'],
+          
+          [Sequelize.col('fields.description'), 'field_description'],
+          [Sequelize.col('fields.location'), 'field_location'],
           'created_at',
-          'is_shared',
-          'shared_quantity',
+          'updated_at',
+          [Sequelize.col('fields.measurement_units.value'), 'measurement'],
         ],
         include: [
           {
             model: Field,
             attributes: [],
+            include: [
+            {
+              model: MeasurementUnit,
+            },
+        ]
           },
         ],
         order: sort, 

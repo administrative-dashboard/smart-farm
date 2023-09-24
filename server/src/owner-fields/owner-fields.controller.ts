@@ -1,21 +1,21 @@
 import {
-    Controller,
-    Get,
-    Put,
-    Request,
-    Delete,
-    Res,
-    Post,
-    Body,
-    Logger,
-    Param,
-    Query,
-    UseGuards,
-    NotFoundException,
-  } from '@nestjs/common';
-  import { Response, query, response } from 'express';
-  import { OwnerFieldsService } from './owner-fields.service';
-  import { HttpCode } from '@nestjs/common';
+  Controller,
+  Get,
+  Put,
+  Request,
+  Delete,
+  Res,
+  Post,
+  Body,
+  Logger,
+  Param,
+  Query,
+  UseGuards,
+  NotFoundException,
+} from '@nestjs/common';
+import { Response, query, response } from 'express';
+import { OwnerFieldsService } from './owner-fields.service';
+import { HttpCode } from '@nestjs/common';
 import { Headers } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
 import { NotFoundError } from 'rxjs';
@@ -23,12 +23,12 @@ import { GoogleService } from 'src/auth/google.service';
 @Controller('fields')
 @UseGuards(JwtAuthGuard)
 export class OwnerFieldsController {
-    constructor(
-        private readonly ownerFieldsService: OwnerFieldsService,
-        private readonly googleService: GoogleService,
-      ) {}
+  constructor(
+    private readonly ownerFieldsService: OwnerFieldsService,
+    private readonly googleService: GoogleService
+  ) {}
 
-      @Get()
+  @Get()
   async getPortableDevices(
     @Query('q') searchTerm: any,
     @Query('field_name') fieldName: any,
@@ -36,18 +36,18 @@ export class OwnerFieldsController {
     @Query('field_size_measurment') fieldSizeMeasurement: any,
     @Query('field_description') fieldDescription: any,
     @Query('created_at') date: any,
-    @Query('page') page:any,
-    @Query('perPage') perPage:any,
-    @Query('field') field:any,
-    @Query('order') order:any,
+    @Query('page') page: any,
+    @Query('perPage') perPage: any,
+    @Query('field') field: any,
+    @Query('order') order: any,
     @Request() req
   ) {
     try {
-      console.log(typeof(page));
-      page=parseInt(page);
-      perPage=parseInt(perPage);
-      console.log('page::::===',page);
-      console.log('perPage::::===',perPage);
+      console.log(typeof page);
+      page = parseInt(page);
+      perPage = parseInt(perPage);
+      console.log('page::::===', page);
+      console.log('perPage::::===', perPage);
       console.log('ЗАПРОС ПОЛУЧЕН!!!!!!!!!');
       console.log('searchTerm==', searchTerm);
       console.log('field_name==', fieldName);
@@ -58,33 +58,41 @@ export class OwnerFieldsController {
       const accessToken = req.user.accessToken;
       const email = await this.googleService.getUserInfo(accessToken);
       console.log(email);
-       if (searchTerm || fieldName || fieldSize || fieldSizeMeasurement || fieldDescription || date) {
-        const filteredFields =
-          await this.ownerFieldsService.searchFields(
+      if (
+        searchTerm ||
+        fieldName ||
+        fieldSize ||
+        fieldSizeMeasurement ||
+        fieldDescription ||
+        date
+      ) {
+        const filteredFields = await this.ownerFieldsService.searchFields(
+          email,
+          searchTerm,
+          fieldName,
+          fieldSize,
+          fieldSizeMeasurement,
+          fieldDescription,
+          date,
+          page,
+          perPage,
+          field,
+          order
+        );
+        return filteredFields;
+      } else if (page && perPage) {
+        const { fields, total } =
+          await this.ownerFieldsService.getFieldsByEmail(
             email,
-            searchTerm,
-            fieldName,
-            fieldSize,
-            fieldSizeMeasurement,
-            fieldDescription,
-            date,
             page,
             perPage,
             field,
-            order,
+            order
           );
-        return filteredFields;
-      } else if(page && perPage){
-        const {fields,total} =
-        await this.ownerFieldsService.getFieldsByEmail(email,page,perPage,field,order,);
-        return {fields,total};
-      } 
+        return { fields, total };
+      }
     } catch (error) {
-      throw new NotFoundException(
-        'Fields not found',
-        'custom-error-code'
-      );
+      throw new NotFoundException('Fields not found', 'custom-error-code');
     }
   }
-    
 }

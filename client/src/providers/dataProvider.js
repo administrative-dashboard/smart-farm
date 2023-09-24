@@ -36,9 +36,9 @@ const customDataProvider = {
         throw new Error(response.statusText);
       }
 
-      const { devices, total } = await response.json();
+      const { fields, total } = await response.json();
       return {
-        data: devices,
+        data: fields,
         total: total,
       };
     } catch (error) {
