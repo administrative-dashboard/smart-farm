@@ -34,6 +34,7 @@ import { CommunitiesModule } from './communities/communities.module';
 import { AuthMiddleware } from './middlewares/auth/auth.middleware';
 import { UserController } from './user/user.controller';
 import { OwnerFixedDeviceModule } from './owner-fixed-devices/owner-fixed-devices.module';
+import { OwnerFieldsModule } from './owner-fields/owner-fields.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -74,6 +75,7 @@ import { OwnerFixedDeviceModule } from './owner-fixed-devices/owner-fixed-device
     UserModule,
     CommunitiesModule,
     OwnerFixedDeviceModule,
+    OwnerFieldsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

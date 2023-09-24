@@ -1,7 +1,8 @@
 // users.model.ts
-import { Column, Model, Table, HasOne, HasMany } from 'sequelize-typescript';
+import { Column, Model, Table, HasOne, HasMany, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import { OwnerField } from './owners_fields.model';
 import { DeviceUsageStatisticsFields } from './device_usage_statistics_fields.model';
+import { MeasurementUnit } from './measurement_units';
 
 @Table({ tableName: 'fields', timestamps: false })
 export class Field extends Model<Field> {
@@ -21,8 +22,15 @@ export class Field extends Model<Field> {
   location: string;
 
   @HasOne(() => OwnerField)
-  owners_fields: OwnerField;
+  owners_fields: OwnerField;  
+  
+  @ForeignKey(() => MeasurementUnit)
+  @Column({allowNull: false})
+  measurement_id: number;
 
-  @HasMany(() => DeviceUsageStatisticsFields)
-  device_usage_statistics_fields: DeviceUsageStatisticsFields
+  @BelongsTo(() => MeasurementUnit)
+  declare measurement_units: MeasurementUnit;
+
+  // @HasMany(() => DeviceUsageStatisticsFields)
+  // device_usage_statistics_fields: DeviceUsageStatisticsFields
 }
