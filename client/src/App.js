@@ -225,26 +225,50 @@ const App = () => {
     />,
     <Resource name="BasicTable" list={BasicTable} show={BasicTableShow} />,
   ];
-
+  const myTheme = {
+    palette: {
+      primary: {
+        main: "#357A38",
+      },
+      secondary: {
+        main: "#4CAF50",
+      },
+      error: {
+        main: "#BA000D",
+      },
+    },
+    typography: {
+      fontFamily: [
+        "-apple-system",
+        "BlinkMacSystemFont",
+        '"Segoe UI"',
+        "Arial",
+        "sans-serif",
+      ].join(","),
+    },
+  };
   return (
     <BrowserRouter>
       {isLoading ? (
         <div>Loading...</div>
       ) : (
         <Admin
+          theme={myTheme}
           layout={MyLayout}
           dataProvider={customDataProvider}
           i18nProvider={i18nProvider}
         >
-          {role === "EMPLOYEE"
-            ? [...employeeResources]
-            : role === "ADMIN"
-            ? [...AdminResources]
-            : role === "OWNER"
-            ? [...ownerResources]
-            : role === "GUEST"
-            ? [...commonResources]
-            : <div>...loading</div>}
+          {role === "EMPLOYEE" ? (
+            [...employeeResources]
+          ) : role === "ADMIN" ? (
+            [...AdminResources]
+          ) : role === "OWNER" ? (
+            [...ownerResources]
+          ) : role === "GUEST" ? (
+            [...commonResources]
+          ) : (
+            <div>...loading</div>
+          )}
         </Admin>
       )}
     </BrowserRouter>
