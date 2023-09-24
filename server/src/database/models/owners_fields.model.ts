@@ -14,4 +14,11 @@ export class OwnerField extends Model<OwnerField> {
   @ForeignKey(() => Field)
   @Column
   field_id: number;
+
+  @Column
+  created_at: Date;
+
+  @Column
+  updated_at: Date;
+  
 }

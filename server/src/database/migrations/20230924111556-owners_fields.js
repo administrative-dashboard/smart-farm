@@ -17,6 +17,12 @@ module.exports = {
       field_id: {
         type: Sequelize.INTEGER,
       },
+      created_at: {
+        type: Sequelize.DATE,
+      },
+      updated_at: {
+        type: Sequelize.DATE,
+      },
     };
 
     await queryInterface.createTable(tableName, columns);

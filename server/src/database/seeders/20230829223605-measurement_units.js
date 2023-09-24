@@ -26,7 +26,6 @@ module.exports = {
         { value: 'inches' },
         { value: 'feet' },
         { value: 'yards' },
-        // Add more measurement units here
       ], {});
     },
   
