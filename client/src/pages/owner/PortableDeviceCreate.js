@@ -52,11 +52,12 @@ export const PortableDeviceCreate = (props) => {
         data: deviceData,
       });
       
-      if (response.ok) {
+      if (response.data) {
         notify("Device created successfully", "info");
         redirect("/portable_devices");
       } else {
         // Handle the case where the creation was not successful
+        notify("Something went wrong", "info");
         console.error("Device creation failed:", response.error);
       }
     } catch (error) {
