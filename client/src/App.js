@@ -15,7 +15,6 @@ import { BrowserRouter, Route } from "react-router-dom";
 
 import { AbacProvider } from "react-abac";
 import { checkAccess } from "./abac";
-
 import { MainDashboard } from "./pages/MainDashboard";
 import { Signin } from "./pages/auth/Signin";
 import { Signup } from "./pages/auth/Signup";
@@ -122,11 +121,25 @@ const App = () => {
 
   const ownerResources = [
     <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
-    <Resource name="Profile" list={Profile} icon={PermIdentityIcon} />,    
+    <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
     <Resource name="contact" list={Contact} />,
-    // <Resource name="chooseCommunity" list={ChooseCommunity} />,
-    // <Resource name="chooseDevice" list={ChooseDevice} />,
-    <Resource name="Property" list={OwnerDesktop} />,
+    <Resource
+      name="ownerPage"
+      list={OwnerDesktop}
+      icon={FaceRetouchingNaturalIcon}
+    />,
+    <Resource
+      name="greenhouses"
+      list={GreenhouseList}
+      create={GreenhouseCreate}
+      edit={GreenhouseEdit}
+    />,
+    <Resource
+      name="fields"
+      list={FieldList}
+      create={FieldCreate}
+      edit={FieldEdit}
+    />,
     <Resource name="devices" list={DeviceDesktop} />,
     <Resource
       name="portable_devices"
@@ -152,12 +165,22 @@ const App = () => {
     //   list={DeviceRequest}
     // />,
   ];
-
+  const CMResources = [
+    <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
+    <Resource name="contact" list={Contact} />,
+    <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
+    <Resource name="usersinfo" list={DesktopInfo} />,
+    <Resource
+      name="community/users"
+      list={UserList}
+      icon={ArticleIcon}
+    />,
+  ];
   const AdminResources = [
+    <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
     <Resource name="adminPage" list={AdminDesktop} />,
     <Resource name="contact" list={Contact} />,
     <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
-    <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
     <Resource
       name="all_fixedDevices"
       list={FixedDeviceListAdm}
@@ -182,7 +205,6 @@ const App = () => {
     />,
     <Resource name="chooseCommunity" list={ChooseCommunity} />,
     <Resource name="chooseDevice" list={ChooseDevice} />,
-    <Resource name="contact" list={Contact} />,
     <Resource
       name="all_fixedDevices"
       list={FixedDeviceListAdm}
@@ -199,34 +221,17 @@ const App = () => {
       list={GreenhouseListAdm}
       show={GreenhouseShow}
     />,
-    <Resource
-      name="ownerPage"
-      list={OwnerDesktop}
-      icon={FaceRetouchingNaturalIcon}
-    />,
-    <Resource
-      name="greenhouses"
-      list={GreenhouseList}
-      create={GreenhouseCreate}
-      edit={GreenhouseEdit}
-    />,
-    <Resource
-      name="fields"
-      list={FieldList}
-      create={FieldCreate}
-      edit={FieldEdit}
-    />,
+
     <Resource name="Product" list={ProductListAdm} show={ProductShow} />,
     <Resource name="Statistic" list={DeviceStatisticPage} />,
-    <Resource name="contact" list={Contact} />,
-    <Resource name="community_manager" list={CommunityManager} />,
+    //<Resource name="community_manager" list={CommunityManager} />,
     <Resource name="usersinfo" list={DesktopInfo} />,
     <Resource
       name="community/users"
       list={UserList}
       icon={ArticleIcon}
     />,
-    <Resource name="BasicTable" list={BasicTable} show={BasicTableShow} />,
+    //<Resource name="BasicTable" list={BasicTable} show={BasicTableShow} />,
   ];
   const myTheme = {
     palette: {
