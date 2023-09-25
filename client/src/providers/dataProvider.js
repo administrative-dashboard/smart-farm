@@ -1,6 +1,8 @@
 import simpleRestProvider from "ra-data-simple-rest";
 import { getJwtTokenFromCookies } from "./authUtils";
-const apiUrl = "http://localhost:5000";
+import { API_URL } from "../consts";
+
+const apiUrl = API_URL;
 const dataProvider = simpleRestProvider(apiUrl);
 const customDataProvider = {
   ...dataProvider,

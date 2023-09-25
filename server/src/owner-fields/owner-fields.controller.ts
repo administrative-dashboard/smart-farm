@@ -28,11 +28,11 @@ export class OwnerFieldsController {
     private readonly googleService: GoogleService
   ) {}
   @Get()
-  async getPortableDevices(
+  async getFields(
     @Query('q') searchTerm: any,
     @Query('field_name') fieldName: any,
     @Query('field_size') fieldSize: any,
-    @Query('field_size_measurment') fieldSizeMeasurement: any,
+    @Query('measurement') fieldSizeMeasurement: any,
     @Query('field_description') fieldDescription: any,
     @Query('field_location') fieldLocation: any,
     @Query('created_at') date: any,

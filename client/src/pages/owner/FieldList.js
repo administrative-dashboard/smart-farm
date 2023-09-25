@@ -22,6 +22,7 @@ export const FieldList = (props) => {
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchName, setSearchName] = useState("");
+  const [searchLocation, setSearchLocation] = useState("");
   const [searchSize, setSearchSize] = useState("");
   const [searchMeasurement, setSearchMeasurement] = useState("");
   const [searchDescription, setSearchDescription] = useState("");
@@ -53,7 +54,7 @@ export const FieldList = (props) => {
       <SearchInput source="q" alwaysOn onChange={handleSearchInputChange} />
       <TextInput label="Name" source="field_name" onChange={handleSearchNameChange} />
       <NumberInput label="Size" source="field_size" onChange={handleSearchSizeChange}/>
-      <TextInput label="Measurement" source="field_size_measurment" onChange={handleSearchMeasurementChange}/>
+      <TextInput label="Measurement" source="measurement" onChange={handleSearchMeasurementChange}/>
       <TextInput label="Description" source="field_description" onChange={handleSearchDescriptionChange}/>
       <TextInput label="Location" source="field_location" onChange={handleSearchLocationChange}/>
       <DateInput label="Date" source="created_at" onChange={handleSearchDateChange}/>
@@ -114,7 +115,7 @@ export const FieldList = (props) => {
   return (
     <>
       <ResetFilters />
-      <List {...props} filters={<FieldFilter/>} sx={{ color: "#38A505" }}>
+      <List {...props} data={data} filters={<FieldFilter/>} sx={{ color: "#38A505" }}>
         <Datagrid rowClick="edit">
           <TextField source="field_name" label="Name"/>
           <NumberField source="field_size" label="Size" />
