@@ -16,9 +16,9 @@ export class UserRole extends Model<UserRole> {
   @Column
   user_id: number;
 
-  @BelongsTo(() => Role)
+  @BelongsTo(() => Role, 'role_id')
   declare roles: Role;
 
-  @BelongsTo(() => User)
+  @BelongsTo(() => User, 'user_id')
   declare users: User;
 }
