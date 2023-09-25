@@ -13,12 +13,24 @@ import {
 } from "react-admin";
 //import { HomeRedirectButton } from "../../components/HomeRedirectButton";
 import customDataProvider from "../../providers/dataProvider";
-
+import { API_URL } from "../../consts";
 export const FieldCreate = (props) => {
   const currentDate= new Date();
   const notify = useNotify();
   const redirect = useRedirect();
 
+  const [measurementChoices, setMeasurementChoices] = useState([]); // State to store measurement choices
+
+  useEffect(() => {
+    axios.get(`${API_URL}/fields/measurements`)
+      .then(response => {
+        setMeasurementChoices(response.data);
+      })
+      .catch(error => {
+        console.error("Error fetching measurement choices:", error);
+      });
+  }, []); 
+  
   const validatePositiveNumber = (value) => {
     if (isNaN(value) || value <= 0) {
       return "Value must be a positive number";
@@ -66,7 +78,7 @@ export const FieldCreate = (props) => {
         <SimpleForm onSubmit={handleSave}>
           <TextInput source="name" validate={validateFieldName}/>
           <NumberInput source="size" validate={validateFieldSize}/>
-          <SelectField source = "measurement" choices = ""/>
+          <SelectField source = "measurement" choices={measurementChoices}/>
           <TextInput source="location" validate={validateLocation}/>
           <TextInput source="description" multiline/>
           <DateInput source="created_at" defaultValue={currentDate} disabled />
