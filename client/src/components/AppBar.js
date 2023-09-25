@@ -19,6 +19,7 @@ import {
   getJwtTokenFromCookies, 
   getUserInfoFromCookies 
 } from "../providers/authUtils";
+import { authProvider } from "../providers/authPovider";
 
 const MyCustomIcon = ({ profileImage }) => (
   <Avatar
@@ -35,30 +36,28 @@ export const MyAppBar = () => {
   const [profileImage, setProfileImage] = React.useState(null);
   const [email, setEmail] = React.useState(null);
   const isAuthenticated = getJwtTokenFromCookies() ? true : false;
-  React.useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-          const response = await axios.get(
-            `${API_URL}/user/info`,
-            {
-              headers: {
-                Authorization: `Bearer ${getJwtTokenFromCookies()}`
-              }
-            }
-          );
-          setUser(response.data);
-          setProfileImage(response.data.profile_image);
-          setEmail(response.data.email)
-          console.log()
-      } catch (error) {
-        console.error("Error fetching user info:", error);
+React.useEffect(() => {
+  const fetchUserInfo = () => {
+    axios.get(`${API_URL}/user/info`, {
+      headers: {
+        Authorization: `Bearer ${getJwtTokenFromCookies()}`
       }
-    };
+    })
+    .then(response => {
+      setUser(response.data);
+      setProfileImage(response.data.profile_image);
+      setEmail(response.data.email);
+    })
+    .catch(error => {
+      console.error("Error fetching user info:", error);
+      authProvider.logout();
+    });
+  };
 
-    if (isAuthenticated) {
-      fetchUserInfo();
-    }
-  }, []);
+  if (isAuthenticated) {
+    fetchUserInfo();
+  }
+}, []);
 
   return (
     <AppBar

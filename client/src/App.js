@@ -15,7 +15,6 @@ import { BrowserRouter, Route } from "react-router-dom";
 
 import { AbacProvider } from "react-abac";
 import { checkAccess } from "./abac";
-
 import { MainDashboard } from "./pages/MainDashboard";
 import { Signin } from "./pages/auth/Signin";
 import { Signup } from "./pages/auth/Signup";
@@ -63,6 +62,7 @@ import { API_URL } from "./consts";
 import { DesktopInfo } from "./pages/CommunityManager/DesktopInfo";
 import axios from "axios";
 import { getJwtTokenFromCookies } from "./providers/authUtils";
+import { authProvider } from "./providers/authPovider";
 import { authProvider } from "./providers/authPovider";
 // import dataProvider from "./providers/dataProvider";
 const dataProvider = simpleRestProvider(API_URL);
@@ -119,22 +119,22 @@ const App = () => {
     <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
     <Resource name="contact" list={Contact} />,
     <Resource
-    name="ownerPage"
-    list={OwnerDesktop}
-    icon={FaceRetouchingNaturalIcon}
-  />,
-  <Resource
-    name="greenhouses"
-    list={GreenhouseList}
-    create={GreenhouseCreate}
-    edit={GreenhouseEdit}
-  />,
-  <Resource
-    name="fields"
-    list={FieldList}
-    create={FieldCreate}
-    edit={FieldEdit}
-  />,
+      name="ownerPage"
+      list={OwnerDesktop}
+      icon={FaceRetouchingNaturalIcon}
+    />,
+    <Resource
+      name="greenhouses"
+      list={GreenhouseList}
+      create={GreenhouseCreate}
+      edit={GreenhouseEdit}
+    />,
+    <Resource
+      name="fields"
+      list={FieldList}
+      create={FieldCreate}
+      edit={FieldEdit}
+    />,
     <Resource name="devices" list={DeviceDesktop} />,
     <Resource
       name="portable_devices"
@@ -203,7 +203,7 @@ const App = () => {
 
     <Resource name="Product" list={ProductListAdm} show={ProductShow} />,
     <Resource name="Statistic" list={DeviceStatisticPage} />,
-    <Resource name="community_manager" list={CommunityManager} />,
+    //<Resource name="community_manager" list={CommunityManager} />,
     <Resource name="usersinfo" list={DesktopInfo} />,
     <Resource
       name="community/users"
@@ -212,7 +212,7 @@ const App = () => {
       edit={UserEdit}
       icon={ArticleIcon}
     />,
-    <Resource name="BasicTable" list={BasicTable} show={BasicTableShow} />,
+    //<Resource name="BasicTable" list={BasicTable} show={BasicTableShow} />,
   ];
 
   return (

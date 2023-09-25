@@ -10,16 +10,13 @@ export class AuthMiddleware implements NestMiddleware {
 
   use(req: Request, res: Response, next: NextFunction) {
     const token = req.cookies.token;
-
     if (token) {
       try {
         const decodedToken = this.jwtService.verify(token);
         if (decodedToken.exp * 1000 < Date.now()) {
-          // res.clearCookie('token');
           return res.redirect('google/logout');
         }
       } catch (error) {
-        // res.clearCookie('token');
         return res.redirect('google/logout');
       }
     }
