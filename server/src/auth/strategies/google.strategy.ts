@@ -36,7 +36,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     });
 
     if (created) {
-      const defaultRole = await Role.findOne({ where: { value: 'COMMUNITY_MANAGER' } });
+      const defaultRole = await Role.findOne({ where: { value: 'EMPLOYEE' } });
       if (defaultRole) {
         await UserRole.create({ role_id: defaultRole.id, user_id: user.id });
       }

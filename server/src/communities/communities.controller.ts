@@ -51,7 +51,7 @@ export class CommunitiesController {
 
       const userId = user.id;
       const communityName = await this.userCommunityService.getCommunityNameByUserId(userId);
-      const data = await this.userCommunityService.getUsersInSameCommunity(communityName);
+      const {data, total} = await this.userCommunityService.getUsersInSameCommunity(communityName);
 
       // const filteredUsers = data.filter((user) => {
       //   if (
@@ -65,7 +65,7 @@ export class CommunitiesController {
       //   }
       //   return false;
       // });
-      return data;
+      return {data, total};
       // return { communityName, data };
     } catch (error) {
       console.error('Error fetching community and users:', error);
