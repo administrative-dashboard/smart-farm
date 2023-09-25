@@ -63,7 +63,6 @@ import { DesktopInfo } from "./pages/CommunityManager/DesktopInfo";
 import axios from "axios";
 import { getJwtTokenFromCookies } from "./providers/authUtils";
 import { authProvider } from "./providers/authPovider";
-import { authProvider } from "./providers/authPovider";
 // import dataProvider from "./providers/dataProvider";
 const dataProvider = simpleRestProvider(API_URL);
 // import customDataProvider from "./providers/dataProvider";
@@ -154,7 +153,17 @@ const App = () => {
       list={DeviceRequest}
     />,
   ];
-
+  const CMResources = [
+    <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
+    <Resource name="contact" list={Contact} />,
+    <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
+    <Resource name="usersinfo" list={DesktopInfo} />,
+    <Resource
+      name="community/users"
+      list={UserList}
+      icon={ArticleIcon}
+    />,
+  ];
   const AdminResources = [
     <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
     <Resource name="adminPage" list={AdminDesktop} />,
@@ -208,8 +217,6 @@ const App = () => {
     <Resource
       name="community/users"
       list={UserList}
-      create={UserCreate}
-      edit={UserEdit}
       icon={ArticleIcon}
     />,
     //<Resource name="BasicTable" list={BasicTable} show={BasicTableShow} />,
@@ -228,6 +235,8 @@ const App = () => {
           ? [...AdminResources]
           : role === "OWNER"
           ? [...ownerResources]
+          : role === "COMMUNITY_MANAGER"
+          ? [...CMResources]
           : [...commonResources]}
       </Admin>
     </BrowserRouter>

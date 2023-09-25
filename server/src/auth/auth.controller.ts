@@ -5,7 +5,7 @@ import {
   Req,
   Res,
   UseGuards,
-  UseInterceptors
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@nestjs/jwt';
@@ -17,9 +17,9 @@ import { v4 as uuidv4 } from 'uuid';
 @Controller('google')
 export class AuthController {
   constructor(
-    private readonly jwtService: JwtService,
-    // private readonly userService: UserService,
-  ) { }
+    private readonly jwtService: JwtService
+  ) // private readonly userService: UserService,
+  {}
 
   @Get('redirect')
   @UseGuards(AuthGuard('google'))
@@ -47,7 +47,7 @@ export class AuthController {
     } else {
       res.redirect(`${process.env.CLIENT_URL}/contact`);
     }
-  };
+  }
 
   @Get('logout')
   async logout(@Req() req, @Res() res: Response) {
