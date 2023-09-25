@@ -274,7 +274,9 @@ const App = () => {
             [...ownerResources]
           ) : role === "GUEST" ? (
             [...commonResources]
-          ) : (
+          ) : role === "COMMUNITY_MANAGER" ? (
+            [...CMResources]
+          ): (
             <div>...loading</div>
           )}
         </Admin>
