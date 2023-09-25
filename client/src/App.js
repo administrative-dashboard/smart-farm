@@ -124,10 +124,11 @@ const App = () => {
 
   const ownerResources = [
     <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
-    <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
-    <Resource name="chooseCommunity" list={ChooseCommunity} />,
-    <Resource name="chooseDevice" list={ChooseDevice} />,
+    <Resource name="Profile" list={Profile} icon={PermIdentityIcon} />,    
     <Resource name="contact" list={Contact} />,
+    // <Resource name="chooseCommunity" list={ChooseCommunity} />,
+    // <Resource name="chooseDevice" list={ChooseDevice} />,
+    <Resource name="Property" list={OwnerDesktop} />,
     <Resource name="devices" list={DeviceDesktop} />,
     <Resource
       name="portable_devices"
@@ -142,10 +143,16 @@ const App = () => {
       edit={FixedDeviceEdit}
     />,
     <Resource
-      name="device_requests_history"
-      create={DeviceRequest}
-      list={DeviceRequest}
+      name="fields"
+      list={FieldList}
+      create={FieldCreate}
+      edit={FieldEdit}
     />,
+    // <Resource
+    //   name="device_requests_history"
+    //   create={DeviceRequest}
+    //   list={DeviceRequest}
+    // />,
   ];
 
   const AdminResources = [
