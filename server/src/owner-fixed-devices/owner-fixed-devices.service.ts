@@ -34,11 +34,24 @@ export class OwnersFixedDevicesService {
     }
   }
 
-  async getDevicesByEmail(email: string): Promise<any[]> {
+  async getDevicesByEmail(email: string,page?:number,
+    perPage?:number,field?: string,
+    order?: string): Promise<{ data: any[], total: number }> {
     try {
       const userId = await this.getUserIdByEmail(email);
+      const sort = [];
+      if (field && order) {
+        sort.push([field, order]); 
+      } else {
+        sort.push(['id', 'ASC']);
+      } 
+      const total = await this.OwnerFixedDeviceModel.count({
+        where: {
+          user_id: userId,
+        },
+      });
       console.log(userId);
-      const devices = await this.OwnerFixedDeviceModel.findAll({
+      const data = await this.OwnerFixedDeviceModel.findAll({
         where: {
           user_id: userId,
         },
@@ -55,8 +68,12 @@ export class OwnersFixedDevicesService {
             attributes: [],
           },
         ],
+        order: sort,
+        offset:((page-1)*perPage),
+        limit : perPage,
+        subQuery:false,
       });
-      return devices;
+      return {data, total};
     } catch (error) {
       throw error;
     }
@@ -68,12 +85,27 @@ export class OwnersFixedDevicesService {
     deviceName?: any,
     deviceType?: any,
     quantity?: any,
-    created_at?: any
-  ): Promise<any[]> {
+    created_at?: any,
+    page?:number,
+    perPage?:number,
+    field?:any,
+    order?:any,
+  ): Promise<{ devices: any[], total: number }> {
     console.log(created_at);
     try {
       //console.log("searchdevice");
       const userId = await this.getUserIdByEmail(email);
+      const sort = [];
+      if (field && order) {
+        sort.push([field, order]); 
+      } else {
+        sort.push(['id', 'ASC']);
+      } 
+      const total = await this.OwnerFixedDeviceModel.count({
+        where: {
+          user_id: userId,
+        },
+      });
       const whereClause: any = {
         [Op.and]: [
           {
@@ -147,8 +179,12 @@ export class OwnersFixedDevicesService {
           numQuantity: quantity,
           numQuery: query,
         },
+        order: sort,
+        offset:((page-1)*perPage), 
+        limit : perPage,
+        subQuery:false, 
       });
-      return devices;
+      return {devices, total};
     } catch (error) {
       throw error;
     }

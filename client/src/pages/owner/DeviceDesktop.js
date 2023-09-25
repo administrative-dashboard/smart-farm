@@ -20,7 +20,7 @@ export const DeviceDesktop = () => {
         height: "90vh",
       }}
     >
-      {/* {!isLgScreen && <MyBar drawerData={owner_drawer} />} */}
+      
       <Container sx={{ m: "auto" }}>
         <Typography
           variant="h3"
@@ -35,7 +35,7 @@ export const DeviceDesktop = () => {
         </Typography>
         <CustomImageList data={deviceItemData} />
       </Container>
-      <HomeRedirectButton pageName="OwnerPage" title="home" />
+      {/* <HomeRedirectButton pageName="OwnerPage" title="home" /> */}
     </Box>
   );
 };

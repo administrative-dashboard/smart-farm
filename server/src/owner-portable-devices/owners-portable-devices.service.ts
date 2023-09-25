@@ -34,10 +34,27 @@ export class OwnersPortableDevicesService {
     }
   }
 
-  async getDevicesByEmail(email: string): Promise<any[]> {
+  async getDevicesByEmail(
+    email: string,
+    page?: number,
+    perPage?: number,
+    field?: string,
+    order?: string
+  ): Promise<{ data: any[], total: number }> {
     try {
       const userId = await this.getUserIdByEmail(email);
-      const devices = await this.OwnerPortableDeviceModel.findAll({
+      const sort = [];
+      if (field && order) {
+        sort.push([field, order]); 
+      } else {
+        sort.push(['id', 'ASC']);
+      }  
+      const total = await this.OwnerPortableDeviceModel.count({
+        where: {
+          user_id: userId,
+        },
+      });
+      const data = await this.OwnerPortableDeviceModel.findAll({
         where: {
           user_id: userId,
         },
@@ -56,13 +73,19 @@ export class OwnersPortableDevicesService {
             attributes: [],
           },
         ],
+        order: sort, 
+        offset: ((page - 1) * perPage),
+        limit: perPage,
+        subQuery: false,
       });
-      return devices;
+
+      return { data, total };
     } catch (error) {
       throw error;
     }
   }
-
+  
+  
   async searchDevices(
     email: string,
     query?: any,
@@ -70,11 +93,28 @@ export class OwnersPortableDevicesService {
     deviceType?: any,
     quantity?: any,
     sharedQuantity?: any,
-    created_at?: any
-  ): Promise<any[]> {
+    created_at?: any,
+    page?:number,
+    perPage?:number,
+    field?:any,
+    order?:any,
+  ): Promise<{ devices: any[], total: number }>{
+
     console.log(created_at);
     try {
+      
       const userId = await this.getUserIdByEmail(email);
+      const sort = [];
+      if (field && order) {
+        sort.push([field, order]); 
+      } else {
+        sort.push(['id', 'ASC']);
+      } 
+      const total = await this.OwnerPortableDeviceModel.count({
+        where: {
+          user_id: userId,
+        },
+      });
       const whereClause: any = {
         [Op.and]: [
           {
@@ -159,8 +199,12 @@ export class OwnersPortableDevicesService {
           numSharedQuantity: sharedQuantity,
           numQuery: query,
         },
+        order:sort,
+        offset:((page-1)*perPage), 
+        limit : perPage,
+        subQuery:false, 
       });
-      return devices;
+      return  {devices, total};
     } catch (error) {
       throw error;
     }
