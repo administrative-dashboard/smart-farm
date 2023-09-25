@@ -72,8 +72,8 @@ export class FixedDevicesController {
         return filteredDevices;
       } else {
         console.log('else');
-        const {devices,total} = await this.ownersFixedDevicesService.getDevicesByEmail(email,page,perPage,field,order,);
-        return {devices,total};
+        const {data,total} = await this.ownersFixedDevicesService.getDevicesByEmail(email,page,perPage,field,order,);
+        return {data,total};
       } 
 
       // console.log('Filtered Devices:', FixedDevices);

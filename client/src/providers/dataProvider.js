@@ -11,9 +11,8 @@ const customDataProvider = {
     });
     const { filter, pagination, sort } = params;
     const query = {};
-
     for (const prop in filter) {
-      if (filter[prop]) 
+      if (filter[prop])
       query[prop] = filter[prop];
     }
     for (const prop in pagination) {
@@ -31,14 +30,14 @@ const customDataProvider = {
           headers,
         }
       );
-
+      console.log(response.ok);
       if (!response.ok) {
+        console.log("ahahahhaha")
         throw new Error(response.statusText);
       }
-
-      const { fields, total } = await response.json();
+      const { data, total } = await response.json();
       return {
-        data: fields,
+        data: data,
         total: total,
       };
     } catch (error) {
@@ -68,32 +67,26 @@ const customDataProvider = {
       throw new Error(`Error creating ${resource}: ${error.message}`);
     }
   },
-
   async getOne(resource, params) {
     const token = getJwtTokenFromCookies();
     const headers = new Headers({
       Authorization: `Bearer ${token}`,
     });
-
     if (!params.id) {
       throw new Error('Not set parameter "id"');
     }
-
     try {
       const response = await fetch(`${apiUrl}/${resource}/${params.id}`, {
         method: "GET",
         headers,
       });
-
       if (!response.ok) {
         throw new Error(response.statusText);
       }
-
       const data = await response.json();
       if (!data.id) {
         throw new Error('API response is missing the "id" attribute');
       }
-
       return {
         data: data,
       };
@@ -101,7 +94,6 @@ const customDataProvider = {
       throw new Error(`Request Error ${resource}: ${error.message}`);
     }
   },
-
   async update(resource, params) {
     const token = getJwtTokenFromCookies();
     const headers = new Headers({
@@ -125,27 +117,22 @@ const customDataProvider = {
       throw new Error(`Error updating ${resource}: ${error.message}`);
     }
   },
-
   async delete(resource, params) {
     const token = getJwtTokenFromCookies();
     const headers = new Headers({
       Authorization: `Bearer ${token}`,
     });
-
     if (!params.id) {
       throw new Error('Not set parameter "id"');
     }
-
     try {
       const response = await fetch(`${apiUrl}/${resource}/${params.id}`, {
         method: "DELETE",
         headers,
       });
-
       if (!response.ok) {
         throw new Error(response.statusText);
       }
-
       return {
         data: params.id,
       };

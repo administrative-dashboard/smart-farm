@@ -35,6 +35,8 @@ import { AuthMiddleware } from './middlewares/auth/auth.middleware';
 import { UserController } from './user/user.controller';
 import { OwnerFixedDeviceModule } from './owner-fixed-devices/owner-fixed-devices.module';
 import { OwnerFieldsModule } from './owner-fields/owner-fields.module';
+import { MeasurementUnitsModule } from './measurement-units/measurement-units.module';
+import { OwnerGreenhousesModule } from './owner-greenhouses/owner-greenhouses.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -76,6 +78,8 @@ import { OwnerFieldsModule } from './owner-fields/owner-fields.module';
     CommunitiesModule,
     OwnerFixedDeviceModule,
     OwnerFieldsModule,
+    MeasurementUnitsModule,
+    OwnerGreenhousesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

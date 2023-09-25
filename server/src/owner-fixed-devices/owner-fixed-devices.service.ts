@@ -36,7 +36,7 @@ export class OwnersFixedDevicesService {
 
   async getDevicesByEmail(email: string,page?:number,
     perPage?:number,field?: string,
-    order?: string): Promise<{ devices: any[], total: number }> {
+    order?: string): Promise<{ data: any[], total: number }> {
     try {
       const userId = await this.getUserIdByEmail(email);
       const sort = [];
@@ -51,7 +51,7 @@ export class OwnersFixedDevicesService {
         },
       });
       console.log(userId);
-      const devices = await this.OwnerFixedDeviceModel.findAll({
+      const data = await this.OwnerFixedDeviceModel.findAll({
         where: {
           user_id: userId,
         },
@@ -73,7 +73,7 @@ export class OwnersFixedDevicesService {
         limit : perPage,
         subQuery:false,
       });
-      return {devices, total};
+      return {data, total};
     } catch (error) {
       throw error;
     }
@@ -90,7 +90,7 @@ export class OwnersFixedDevicesService {
     perPage?:number,
     field?:any,
     order?:any,
-  ): Promise<{ devices: any[], total: number }> {
+  ): Promise<{ data: any[], total: number }> {
     console.log(created_at);
     try {
       //console.log("searchdevice");
@@ -155,7 +155,7 @@ export class OwnersFixedDevicesService {
         });
       }
 
-      const devices = await this.OwnerFixedDeviceModel.findAll({
+      const data = await this.OwnerFixedDeviceModel.findAll({
         where: whereClause,
         attributes: [
           'id',
@@ -184,7 +184,7 @@ export class OwnersFixedDevicesService {
         limit : perPage,
         subQuery:false, 
       });
-      return {devices, total};
+      return {data, total};
     } catch (error) {
       throw error;
     }

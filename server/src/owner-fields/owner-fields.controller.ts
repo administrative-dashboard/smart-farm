@@ -27,7 +27,6 @@ export class OwnerFieldsController {
     private readonly ownerFieldsService: OwnerFieldsService,
     private readonly googleService: GoogleService
   ) {}
-
   @Get()
   async getPortableDevices(
     @Query('q') searchTerm: any,
@@ -35,6 +34,7 @@ export class OwnerFieldsController {
     @Query('field_size') fieldSize: any,
     @Query('field_size_measurment') fieldSizeMeasurement: any,
     @Query('field_description') fieldDescription: any,
+    @Query('field_location') fieldLocation: any,
     @Query('created_at') date: any,
     @Query('page') page: any,
     @Query('perPage') perPage: any,
@@ -54,6 +54,7 @@ export class OwnerFieldsController {
       console.log('field_size==', fieldSize);
       console.log('field_size_measurment==', fieldSizeMeasurement);
       console.log('field_description==', fieldDescription);
+      console.log('field_location==', fieldLocation);
       console.log('created_at==', date);
       const accessToken = req.user.accessToken;
       const email = await this.googleService.getUserInfo(accessToken);
@@ -64,6 +65,7 @@ export class OwnerFieldsController {
         fieldSize ||
         fieldSizeMeasurement ||
         fieldDescription ||
+        fieldLocation || 
         date
       ) {
         const filteredFields = await this.ownerFieldsService.searchFields(
@@ -73,15 +75,17 @@ export class OwnerFieldsController {
           fieldSize,
           fieldSizeMeasurement,
           fieldDescription,
+          fieldLocation,
           date,
           page,
           perPage,
           field,
           order
         );
+        console.log(filteredFields);
         return filteredFields;
       } else if (page && perPage) {
-        const { fields, total } =
+        const { data, total } =
           await this.ownerFieldsService.getFieldsByEmail(
             email,
             page,
@@ -89,7 +93,7 @@ export class OwnerFieldsController {
             field,
             order
           );
-        return { fields, total };
+        return { data, total };
       }
     } catch (error) {
       throw new NotFoundException('Fields not found', 'custom-error-code');

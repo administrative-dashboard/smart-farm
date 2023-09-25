@@ -13,7 +13,6 @@ export class OwnerFieldsService {
     @InjectModel(OwnerField)
     private readonly ownerField: typeof OwnerField
   ) {}
-
   async getUserIdByEmail(email: string): Promise<number | null> {
     try {
       const user = await User.findOne({
@@ -22,7 +21,6 @@ export class OwnerFieldsService {
           email: email,
         },
       });
-
       if (user) {
         return user.id;
       } else {
@@ -33,28 +31,27 @@ export class OwnerFieldsService {
       throw error;
     }
   }
-
   async getFieldsByEmail(
     email: string,
     page?: number,
     perPage?: number,
     field?: string,
     order?: string
-  ): Promise<{ fields: any[], total: number }> {
+  ): Promise<{ data: any[], total: number }> {
     try {
       const userId = await this.getUserIdByEmail(email);
       const sort = [];
       if (field && order) {
-        sort.push([field, order]); 
+        sort.push([field, order]);
       } else {
         sort.push(['id', 'ASC']);
-      }  
+      }
       const total = await this.ownerField.count({
         where: {
           user_id: userId,
         },
       });
-      const fields = await this.ownerField.findAll({
+      const data = await this.ownerField.findAll({
         where: {
           user_id: userId,
         },
@@ -62,12 +59,11 @@ export class OwnerFieldsService {
           'id',
           [Sequelize.col('fields.name'), 'field_name'],
           [Sequelize.col('fields.size'), 'field_size'],
-          
+          [Sequelize.col('fields.measurement_units.value'), 'measurement'],
           [Sequelize.col('fields.description'), 'field_description'],
           [Sequelize.col('fields.location'), 'field_location'],
           'created_at',
           'updated_at',
-          [Sequelize.col('fields.measurement_units.value'), 'measurement'],
         ],
         include: [
           {
@@ -76,47 +72,44 @@ export class OwnerFieldsService {
             include: [
             {
               model: MeasurementUnit,
+              attributes: [],
             },
         ]
           },
         ],
-        order: sort, 
+        order: sort,
         offset: ((page - 1) * perPage),
         limit: perPage,
         subQuery: false,
       });
-
-      return { fields, total };
+      return { data, total };
     } catch (error) {
       throw error;
     }
   }
-  
-  
   async searchFields(
     email: string,
     query?: any,
-    deviceName?: any,
-    deviceType?: any,
-    quantity?: any,
-    sharedQuantity?: any,
+    fieldName?: any,
+    fieldSize?: any,
+    fieldSizeMeasurement?: any,
+    fieldDescription?: any,
+    fieldLocation?: any,
     created_at?: any,
     page?:number,
     perPage?:number,
     field?:any,
     order?:any,
-  ): Promise<{ devices: any[], total: number }>{
-
+  ): Promise<{ data: any[], total: number }>{
     console.log(created_at);
     try {
-      
       const userId = await this.getUserIdByEmail(email);
       const sort = [];
       if (field && order) {
-        sort.push([field, order]); 
+        sort.push([field, order]);
       } else {
         sort.push(['id', 'ASC']);
-      } 
+      }
       const total = await this.ownerField.count({
         where: {
           user_id: userId,
@@ -129,41 +122,46 @@ export class OwnerFieldsService {
           },
         ],
       };
-
       if (!isNaN(query) && query !== '') {
         whereClause[Op.or] = [
-          Sequelize.literal(`"quantity" = :numQuery`),
-          Sequelize.literal(`"shared_quantity" = :numQuery`),
+          Sequelize.literal(`"fields"."size" = :numQuery`),
         ];
       } else if (query !== '' && query !== undefined) {
         whereClause[Op.or] = [
-          Sequelize.literal(`"portable_devices"."name" ILIKE :textQuery`),
-          Sequelize.literal(`"portable_devices"."type" ILIKE :textQuery`),
+          Sequelize.literal(`"fields"."name" ILIKE :textQuery`),
+          Sequelize.literal(`"fields->measurement_units"."value" ILIKE :textSizeMeasurement`), 
+          Sequelize.literal(`"fields"."description" ILIKE :textQuery`),
+          Sequelize.literal(`"fields"."location" ILIKE :textQuery`),
         ];
       }
-
-      if (deviceName !== '' && deviceName !== undefined) {
-        console.log('device_name is pushed');
+      if (fieldName !== '' && fieldName !== undefined) {
+        console.log('field_name is pushed');
         whereClause[Op.and].push(
-          Sequelize.literal(`"portable_devices"."name" ILIKE :textDeviceName`)
+          Sequelize.literal(`"fields"."name" ILIKE :textFieldName`)
         );
       }
-      if (deviceType !== '' && deviceType !== undefined) {
-        console.log('device_type is pushed');
+      if (fieldSize !== '' && fieldSize !== undefined) {
+        console.log('field_size is pushed');
         whereClause[Op.and].push(
-          Sequelize.literal(`"portable_devices"."type" ILIKE :textDeviceType`)
+          Sequelize.literal(`"fields"."size" = :numSize`)
         );
       }
-      if (quantity !== '' && quantity !== undefined) {
-        console.log('quantity is pushed');
+      if (fieldSizeMeasurement !== '' && fieldSizeMeasurement !== undefined) {
+        console.log('fieldSizeMeasurement is pushed');
         whereClause[Op.and].push(
-          Sequelize.literal(`"quantity" = :numQuantity`)
+          Sequelize.literal(`"fields->measurement_units"."value" ILIKE :textSizeMeasurement`),
         );
       }
-      if (sharedQuantity !== '' && sharedQuantity !== undefined) {
-        console.log('shared_quantity is pushed');
+      if (fieldDescription !== '' && fieldDescription !== undefined) {
+        console.log('fieldDescription is pushed');
         whereClause[Op.and].push(
-          Sequelize.literal(`"shared_quantity" = :numSharedQuantity`)
+          Sequelize.literal(`"fields"."description" ILIKE :textDescription`)
+        );
+      }
+      if (fieldLocation !== '' && fieldLocation !== undefined) {
+        console.log('fieldLocation is pushed');
+        whereClause[Op.and].push(
+          Sequelize.literal(`"fields"."location" ILIKE :textLocation`)
         );
       }
       if (created_at !== '' && created_at !== undefined) {
@@ -178,40 +176,47 @@ export class OwnerFieldsService {
           },
         });
       }
-
-      const devices = await this.ownerField.findAll({
+      const data = await this.ownerField.findAll({
         where: whereClause,
         attributes: [
           'id',
-          'quantity',
+          [Sequelize.col('fields.name'), 'field_name'],
+          [Sequelize.col('fields.size'), 'field_size'],
+          [Sequelize.col('fields.measurement_units.value'), 'measurement'],
+          [Sequelize.col('fields.description'), 'field_description'],
+          [Sequelize.col('fields.location'), 'field_location'],
           'created_at',
-          'is_shared',
-          'shared_quantity',
-          [Sequelize.literal(`"portable_devices"."name"`), 'device_name'],
-          [Sequelize.literal(`"portable_devices"."type"`), 'device_type'],
+      
         ],
         include: [
           {
             model: Field,
-            as: 'portable_devices',
+            as: 'fields',
             attributes: [],
+            include: [
+              {
+                model: MeasurementUnit,
+                attributes: ['value'],
+              },
+            ]
           },
         ],
         replacements: {
           textQuery: `%${query}%`,
-          textDeviceName: `%${deviceName}%`,
-          textDeviceType: `%${deviceType}%`,
-          textDeviceDate: `%${created_at}%`,
-          numQuantity: quantity,
-          numSharedQuantity: sharedQuantity,
+          textFieldName: `%${fieldName}%`,
+          textSizeMeasurement:`%${fieldSizeMeasurement}%`,
+          textDescription: `%${fieldDescription}%`,
+          textLocation:`%${fieldLocation}%`,
           numQuery: query,
+          numSize: fieldSize,
+         
         },
         order:sort,
-        offset:((page-1)*perPage), 
+        offset:((page-1)*perPage),
         limit : perPage,
-        subQuery:false, 
+        subQuery:false,
       });
-      return  {devices, total};
+      return  {data, total};
     } catch (error) {
       throw error;
     }
