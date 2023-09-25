@@ -53,7 +53,7 @@ export class UserCommunityService {
 
   async getUsersInSameCommunity(
     communityName: string
-  ): Promise<UserWithRoles[]> {
+  ): Promise<{ data: UserWithRoles[], total: number }> {
     const users = await User.findAll({
       include: [
         {
@@ -77,8 +77,8 @@ export class UserCommunityService {
         },
       ],
     });
-
-    const usersWithRoles: UserWithRoles[] = users.map((user) => {
+    const total = 6;
+    const data = users.map((user) => {
       const roles = user.users_roles.map((userRole) => userRole.roles.value);
       return {
         id: user.id,
@@ -90,6 +90,6 @@ export class UserCommunityService {
       };
     });
 
-    return usersWithRoles;
+    return { data, total };
   }
 }
