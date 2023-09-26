@@ -21,7 +21,7 @@ export const FieldCreate = (props) => {
 
   const [measurementChoices, setMeasurementChoices] = useState([]); // State to store measurement choices
 
-  useEffect(() => {
+ /*  useEffect(() => {
     axios.get(`${API_URL}/fields/measurements`)
       .then(response => {
         setMeasurementChoices(response.data);
@@ -29,7 +29,7 @@ export const FieldCreate = (props) => {
       .catch(error => {
         console.error("Error fetching measurement choices:", error);
       });
-  }, []); 
+  }, []);  */
   
   const validatePositiveNumber = (value) => {
     if (isNaN(value) || value <= 0) {

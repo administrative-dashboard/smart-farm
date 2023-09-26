@@ -1,9 +1,8 @@
 // require('dotenv').config();
-
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const tableName = 'owners_greenhouses';
+    const tableName = 'greenhouses';
     const columns = {
       id: {
         type: Sequelize.INTEGER,
@@ -11,17 +10,28 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true,
       },
-      user_id: {
-        type: Sequelize.INTEGER,
+      name: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
-      greenhouse_id: {
+      size: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      measurement_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      description: {
+        type: Sequelize.STRING,
+      },
+      location: {
+        type: Sequelize.STRING,
       },
     };
-
     await queryInterface.createTable(tableName, columns);
   },
   down: async (queryInterface) => {
-    await queryInterface.dropTable('owners_greenhouses');
+    await queryInterface.dropTable('greenhouses');
   }
 };

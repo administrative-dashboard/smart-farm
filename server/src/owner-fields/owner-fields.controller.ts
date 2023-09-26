@@ -100,7 +100,7 @@ export class OwnerFieldsController {
     }
   }
 
-  @Post('create')
+  /* @Post('create')
   async createPortableDevice(@Body() fieldData: any, @Request() req) {
     try {
       console.log("Field data: ", fieldData);
@@ -114,7 +114,7 @@ export class OwnerFieldsController {
       return result; 
     } catch (error) {
         throw error
-        .
+        
     }
-  }
+  } */
 }
