@@ -19,6 +19,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      measurement_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       description: {
         type: Sequelize.STRING,
       },
@@ -33,3 +37,4 @@ module.exports = {
     await queryInterface.dropTable('greenhouses');
   }
 };
+

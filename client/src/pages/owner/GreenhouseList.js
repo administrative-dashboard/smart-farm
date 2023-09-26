@@ -39,7 +39,7 @@ export const GreenhouseList = (props) => {
            q: searchTerm,
            greenhouse_name: searchName,
            greenhouse_size: searchSize,
-           greenhouse_size_measurment: searchMeasurement,
+           greenhouse_size_measurement: searchMeasurement,
            greenhouse_description: searchDescription,
            greenhouse_location: searchLocation,
            created_at: searchDate,
@@ -56,7 +56,7 @@ export const GreenhouseList = (props) => {
     <SearchInput source="q" alwaysOn onChange={handleSearchInputChange} />
     <TextInput label="Name" source="greenhouse_name" onChange={handleSearchNameChange} />
     <NumberInput label="Size" source="greenhouse_size" onChange={handleSearchSizeChange}/>
-    <TextInput label="Measurement" source="greenhouse_size_measurment" onChange={handleSearchMeasurementChange}/>
+    <TextInput label="Measurement" source="greenhouse_size_measurement" onChange={handleSearchMeasurementChange}/>
     <TextInput label="Description" source="greenhouse_description" onChange={handleSearchDescriptionChange}/>
     <TextInput label="Location" source="greenhouse_location" onChange={handleSearchLocationChange}/>
     <DateInput label="Date" source="created_at" onChange={handleSearchDateChange}/>

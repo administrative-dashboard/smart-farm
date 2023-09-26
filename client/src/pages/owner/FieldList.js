@@ -36,7 +36,7 @@ export const FieldList = (props) => {
            q: searchTerm,
            field_name: searchName,
            field_size: searchSize,
-           field_size_measurment: searchMeasurement,
+           field_size_measurement: searchMeasurement,
            field_description: searchDescription,
            field_location: searchLocation,
            created_at: searchDate,
@@ -53,7 +53,7 @@ export const FieldList = (props) => {
       <SearchInput source="q" alwaysOn onChange={handleSearchInputChange} />
       <TextInput label="Name" source="field_name" onChange={handleSearchNameChange} />
       <NumberInput label="Size" source="field_size" onChange={handleSearchSizeChange}/>
-      <TextInput label="Measurement" source="measurement" onChange={handleSearchMeasurementChange}/>
+      <TextInput label="Measurement" source="field_size_measurement" onChange={handleSearchMeasurementChange}/>
       <TextInput label="Description" source="field_description" onChange={handleSearchDescriptionChange}/>
       <TextInput label="Location" source="field_location" onChange={handleSearchLocationChange}/>
       <DateInput label="Date" source="created_at" onChange={handleSearchDateChange}/>

@@ -33,7 +33,7 @@ export class OwnerGreenhousesController {
     @Query('q') searchTerm: any,
     @Query('greenhouse_name') greenhouseName: any,
     @Query('greenhouse_size') greenhouseSize: any,
-    @Query('measurement') greenhouseSizeMeasurement: any,
+    @Query('greenhouse_size_measurement') greenhouseSizeMeasurement: any,
     @Query('greenhouse_description') greenhouseDescription: any,
     @Query('greenhouse_location') greenhouseLocation: any,
     @Query('created_at') date: any,
@@ -53,7 +53,7 @@ export class OwnerGreenhousesController {
       console.log('searchTerm==', searchTerm);
       console.log('greenhouse_name==', greenhouseName);
       console.log('greenhouse_size==', greenhouseSize);
-      console.log('greenhouse_size_measurment==', greenhouseSizeMeasurement);
+      console.log('greenhouse_size_measurement==', greenhouseSizeMeasurement);
       console.log('greenhouse_description==', greenhouseDescription);
       console.log('greenhouse_location==', greenhouseLocation);
       console.log('created_at==', date);
@@ -69,7 +69,7 @@ export class OwnerGreenhousesController {
         greenhouseLocation || 
         date
       ) {
-        const filteredGreenhouses = await this.ownerGreenhousesService.searchFields(
+        const filteredGreenhouses = await this.ownerGreenhousesService.searchGreenhouses(
           email,
           searchTerm,
           greenhouseName,
@@ -86,18 +86,21 @@ export class OwnerGreenhousesController {
         console.log(filteredGreenhouses);
         return filteredGreenhouses;
       } else if (page && perPage) {
+        console.log('aaaaa');
         const { data, total } =
-          await this.ownerGreenhousesService.getFieldsByEmail(
+          await this.ownerGreenhousesService.getGreenhousesByEmail(
             email,
             page,
             perPage,
             field,
             order
           );
+        console.log('hello');
+        console.log("data",data);
         return { data, total };
       }
     } catch (error) {
-      throw new NotFoundException('Fields not found', 'custom-error-code');
+      throw new NotFoundException('Greenhouses not found', 'custom-error-code');
     }
   }
 }
