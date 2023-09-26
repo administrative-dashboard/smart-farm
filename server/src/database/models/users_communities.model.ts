@@ -1,3 +1,4 @@
+//user_communities.ts
 import { Column, Model, Table, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import { User } from './users.model';
 import { Community } from './communities.model';
@@ -17,7 +18,7 @@ export class UserCommunity extends Model<UserCommunity> {
 
   @BelongsTo(() => User)
   declare users: User;
-  
+
   @BelongsTo(() => Community)
   declare communities: Community;
 }

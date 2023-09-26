@@ -8,6 +8,7 @@ import {
   useListContext,
   Loading,
   Button,
+  EditButton,
 } from "react-admin";
 import customDataProvider from "../../providers/dataProvider";
 import axios from "axios";
@@ -90,17 +91,9 @@ export const UserList = (props) => {
               <EmailField source="email" />
               <TextField source="phone_number" />
               <TextField label="Role" source="roles" />
-                <EditRolesButton
-                  record={data}
-                  onClick={() => handleEditRoles(data)}
-                />
+                <EditButton />
             </Datagrid>
           </List>
-          {selectedUserId && (
-            <EditRolesButton
-              record={data.find((user) => user.id === selectedUserId)}
-            />
-          )}
         </>
       )}
     </>

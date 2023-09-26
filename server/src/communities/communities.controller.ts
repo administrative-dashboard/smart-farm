@@ -1,9 +1,11 @@
 //community.controller.ts
 import {
+  Body,
   Controller,
   Get,
   NotFoundException,
   Param,
+  Put,
   Query,
   Request,
   UseGuards,
@@ -74,9 +76,9 @@ export class CommunitiesController {
   }
   @Get('users/:id')
   @UseGuards(JwtAuthGuard)
-  async getUserById(@Param('id') id: number) {
+  async getUserById(@Param('id') id: string) {
     try {
-      const data = await this.userService.getUserInfoById(id);
+      const data = await this.userRoleService.getUserById(id);
       if (!data) {
         return { message: 'user not found' };
       }
@@ -87,4 +89,29 @@ export class CommunitiesController {
       return { error: 'An error occurred' };
     }
   }
+
+  @Put('users/:id')
+  @UseGuards(JwtAuthGuard)
+  async updateUserById(
+    @Param('id') id: string,
+    @Body() data: any
+  ) {
+    try {
+      const updateUserById =
+        await this.userRoleService.updateUserById(
+          id,
+          data
+        );
+
+      if (!updateUserById) {
+        return { message: 'user not found' };
+      }
+
+      return updateUserById;
+    } catch (error) {
+      console.log(error);
+      return { error: 'An error occurred' };
+    }
+  }
+
 }
