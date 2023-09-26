@@ -158,9 +158,9 @@ export class UserController {
     return await this.userRolesService.getAllRoles();
   }
 
-  @Put('roles/:id')
-  @UseGuards(JwtAuthGuard)
-  async editUserRoles(@Param('id') id: number, @Body() roleData: any) {
-    return this.userRolesService.editUserRoles(id, roleData.roles);
-  }
+  // @Put('roles/:id')
+  // @UseGuards(JwtAuthGuard)
+  // async editUserRoles(@Param('id') id: number, @Body() roleData: any) {
+  //   return this.userRolesService.editUserRoles(id, roleData.roles);
+  // }
 }

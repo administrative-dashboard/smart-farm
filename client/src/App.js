@@ -66,6 +66,7 @@ import customDataProvider from "./providers/dataProvider";
 /* const dataProvider = simpleRestProvider(API_URL); */
 import { authProvider } from "./providers/authPovider";
 import { API_URL } from "./consts";
+import { UserEdit } from "./pages/CommunityManager/UserEdit";
 const i18nProvider = polyglotI18nProvider(
   (locale) => (locale === "am" ? armenianMessages : englishMessages),
   "en" // Default locale
@@ -173,6 +174,7 @@ const App = () => {
     <Resource
       name="community/users"
       list={UserList}
+      edit={UserEdit}
       icon={ArticleIcon}
     />,
   ];

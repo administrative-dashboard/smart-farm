@@ -6,13 +6,14 @@ import { Community } from 'src/database/models/communities.model';
 import { User } from 'src/database/models/users.model';
 import { UserRole } from 'src/database/models/users_roles';
 import { Role } from 'src/database/models/roles.model';
+import { Sequelize } from 'sequelize';
 export interface UserWithRoles {
   id: number;
   name: string;
   email: string;
   phone_number: string;
   profile_image: string;
-  roles: string[];
+  roles: string;
 }
 @Injectable()
 export class UserCommunityService {
@@ -51,45 +52,54 @@ export class UserCommunityService {
     return null;
   }
 
-  async getUsersInSameCommunity(
-    communityName: string
-  ): Promise<UserWithRoles[]> {
-    const users = await User.findAll({
+  async getUsersInSameCommunity(communityName: string): Promise<{
+    data: any[],
+    total: number
+  }> {
+    const community = await Community.findOne({
+      where: {
+        name: communityName,
+      },
       include: [
         {
           model: UserCommunity,
-          include: [
-            {
-              model: Community,
-              where: {
-                name: communityName,
-              },
-            },
-          ],
+          attributes: ['user_id'],
         },
+      ],
+    });
+
+    if (!community || !community.user_communities) {
+      return { data: [], total: 0 };
+    }
+    const userIDsInCommunity = community.user_communities.map(
+      (uc) => uc.user_id
+    );
+    const data = await User.findAll({
+      where: {
+        id: userIDsInCommunity,
+      },
+      attributes: [
+        'id',
+        'name',
+        'email',
+        'phone_number',
+        [Sequelize.col('users_roles.roles.value'), 'roles'],
+      ],
+      include: [
         {
           model: UserRole,
+          attributes: [],
           include: [
             {
               model: Role,
+              attributes: ['value'],
             },
           ],
         },
       ],
     });
 
-    const usersWithRoles: UserWithRoles[] = users.map((user) => {
-      const roles = user.users_roles.map((userRole) => userRole.roles.value);
-      return {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        phone_number: user.phone_number,
-        profile_image: user.profile_image,
-        roles: roles,
-      };
-    });
-
-    return usersWithRoles;
+    const total = data.length;
+    return { data, total };
   }
 }
