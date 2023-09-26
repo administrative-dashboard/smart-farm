@@ -32,7 +32,7 @@ export class OwnerFieldsController {
     @Query('q') searchTerm: any,
     @Query('field_name') fieldName: any,
     @Query('field_size') fieldSize: any,
-    @Query('measurement') fieldSizeMeasurement: any,
+    @Query('field_size_measurement') fieldSizeMeasurement: any,
     @Query('field_description') fieldDescription: any,
     @Query('field_location') fieldLocation: any,
     @Query('created_at') date: any,
@@ -49,10 +49,10 @@ export class OwnerFieldsController {
       console.log('page::::===', page);
       console.log('perPage::::===', perPage);
       console.log('ЗАПРОС ПОЛУЧЕН!!!!!!!!!');
-      console.log('searchTerm==', searchTerm);
+      console.log('searchTerm==', typeof(searchTerm));
       console.log('field_name==', fieldName);
       console.log('field_size==', fieldSize);
-      console.log('field_size_measurment==', fieldSizeMeasurement);
+      console.log('field_size_measurement==', fieldSizeMeasurement);
       console.log('field_description==', fieldDescription);
       console.log('field_location==', fieldLocation);
       console.log('created_at==', date);
@@ -114,7 +114,7 @@ export class OwnerFieldsController {
       return result; 
     } catch (error) {
         throw error
-        
+        .
     }
   } */
 }

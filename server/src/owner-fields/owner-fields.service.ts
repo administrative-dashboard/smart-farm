@@ -129,7 +129,7 @@ export class OwnerFieldsService {
       } else if (query !== '' && query !== undefined) {
         whereClause[Op.or] = [
           Sequelize.literal(`"fields"."name" ILIKE :textQuery`),
-          Sequelize.literal(`"fields->measurement_units"."value" ILIKE :textSizeMeasurement`), 
+          Sequelize.literal(`"fields->measurement_units"."value" ILIKE :textQuery`), 
           Sequelize.literal(`"fields"."description" ILIKE :textQuery`),
           Sequelize.literal(`"fields"."location" ILIKE :textQuery`),
         ];
@@ -222,5 +222,4 @@ export class OwnerFieldsService {
     }
   }
 
-  
 }

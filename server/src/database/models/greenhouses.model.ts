@@ -30,7 +30,6 @@ export class Greenhouse extends Model<Greenhouse> {
   @BelongsTo(() => MeasurementUnit)
   declare measurement_units: MeasurementUnit;
 
-
   @HasMany(() => DeviceUsageStatisticsGreenhouses)
   device_usage_statistics_greenhouses: DeviceUsageStatisticsGreenhouses
 }

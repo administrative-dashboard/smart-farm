@@ -32,7 +32,7 @@ export class OwnerGreenhousesService {
           throw error;
         }
       }
-      async getFieldsByEmail(
+      async getGreenhousesByEmail(
         email: string,
         page?: number,
         perPage?: number,
@@ -88,7 +88,7 @@ export class OwnerGreenhousesService {
           throw error;
         }
       }
-      async searchFields(
+      async searchGreenhouses(
         email: string,
         query?: any,
         greenhouseName?: any,
@@ -130,7 +130,7 @@ export class OwnerGreenhousesService {
           } else if (query !== '' && query !== undefined) {
             whereClause[Op.or] = [
               Sequelize.literal(`"greenhouses"."name" ILIKE :textQuery`),
-              Sequelize.literal(`"greenhouses->measurement_units"."value" ILIKE :textSizeMeasurement`), 
+              Sequelize.literal(`"greenhouses->measurement_units"."value" ILIKE :textQuery`), 
               Sequelize.literal(`"greenhouses"."description" ILIKE :textQuery`),
               Sequelize.literal(`"greenhouses"."location" ILIKE :textQuery`),
             ];
