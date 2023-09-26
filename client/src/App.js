@@ -231,6 +231,7 @@ const App = () => {
     <Resource
       name="community/users"
       list={UserList}
+      edit={UserEdit}
       icon={ArticleIcon}
     />,
     //<Resource name="BasicTable" list={BasicTable} show={BasicTableShow} />,
