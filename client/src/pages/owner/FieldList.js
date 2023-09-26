@@ -22,7 +22,6 @@ export const FieldList = (props) => {
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchName, setSearchName] = useState("");
-  const [searchLocation, setSearchLocation] = useState("");
   const [searchSize, setSearchSize] = useState("");
   const [searchMeasurement, setSearchMeasurement] = useState("");
   const [searchDescription, setSearchDescription] = useState("");

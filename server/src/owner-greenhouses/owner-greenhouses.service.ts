@@ -1,4 +1,225 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Query } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
+import { OwnerGreenhouse } from 'src/database/models/owners_greenhouses.model';
+import { Model } from 'sequelize-typescript';
+import { Greenhouse } from 'src/database/models/greenhouses.model';
+import { Sequelize, Op } from 'sequelize';
+import { now } from 'sequelize/types/utils';
+import { User } from 'src/database/models/users.model';
+import { MeasurementUnit } from 'src/database/models/measurement_units';
 
 @Injectable()
-export class OwnerGreenhousesService {}
+export class OwnerGreenhousesService {
+    constructor(
+        @InjectModel(OwnerGreenhouse)
+        private readonly ownerGreenhouse: typeof OwnerGreenhouse
+      ) {}
+      async getUserIdByEmail(email: string): Promise<number | null> {
+        try {
+          const user = await User.findOne({
+            attributes: ['id'],
+            where: {
+              email: email,
+            },
+          });
+          if (user) {
+            return user.id;
+          } else {
+            return null; // Return null if the user with the specified email does not exist
+          }
+        } catch (error) {
+          console.error('Error retrieving user ID by email:', error);
+          throw error;
+        }
+      }
+      async getFieldsByEmail(
+        email: string,
+        page?: number,
+        perPage?: number,
+        field?: string,
+        order?: string
+      ): Promise<{ data: any[], total: number }> {
+        try {
+          const userId = await this.getUserIdByEmail(email);
+          const sort = [];
+          if (field && order) {
+            sort.push([field, order]);
+          } else {
+            sort.push(['id', 'ASC']);
+          }
+          const total = await this.ownerGreenhouse.count({
+            where: {
+              user_id: userId,
+            },
+          });
+          const data = await this.ownerGreenhouse.findAll({
+            where: {
+              user_id: userId,
+            },
+            attributes: [
+              'id',
+              [Sequelize.col('greenhouses.name'), 'greenhouse_name'],
+              [Sequelize.col('greenhouses.size'), 'greenhouse_size'],
+              [Sequelize.col('greenhouses.measurement_units.value'), 'measurement'],
+              [Sequelize.col('greenhouses.description'), 'greenhouse_description'],
+              [Sequelize.col('greenhouses.location'), 'greenhouse_location'],
+              'created_at',
+              'updated_at',
+            ],
+            include: [
+              {
+                model: Greenhouse,
+                attributes: [],
+                include: [
+                {
+                  model: MeasurementUnit,
+                  attributes: [],
+                },
+            ]
+              },
+            ],
+            order: sort,
+            offset: ((page - 1) * perPage),
+            limit: perPage,
+            subQuery: false,
+          });
+          return { data, total };
+        } catch (error) {
+          throw error;
+        }
+      }
+      async searchFields(
+        email: string,
+        query?: any,
+        greenhouseName?: any,
+        greenhouseSize?: any,
+        greenhouseSizeMeasurement?: any,
+        greenhouseDescription?: any,
+        greenhouseLocation?: any,
+        created_at?: any,
+        page?:number,
+        perPage?:number,
+        field?:any,
+        order?:any,
+      ): Promise<{ data: any[], total: number }>{
+        console.log(created_at);
+        try {
+          const userId = await this.getUserIdByEmail(email);
+          const sort = [];
+          if (field && order) {
+            sort.push([field, order]);
+          } else {
+            sort.push(['id', 'ASC']);
+          }
+          const total = await this.ownerGreenhouse.count({
+            where: {
+              user_id: userId,
+            },
+          });
+          const whereClause: any = {
+            [Op.and]: [
+              {
+                user_id: userId,
+              },
+            ],
+          };
+          if (!isNaN(query) && query !== '') {
+            whereClause[Op.or] = [
+              Sequelize.literal(`"greenhouses"."size" = :numQuery`),
+            ];
+          } else if (query !== '' && query !== undefined) {
+            whereClause[Op.or] = [
+              Sequelize.literal(`"greenhouses"."name" ILIKE :textQuery`),
+              Sequelize.literal(`"greenhouses->measurement_units"."value" ILIKE :textSizeMeasurement`), 
+              Sequelize.literal(`"greenhouses"."description" ILIKE :textQuery`),
+              Sequelize.literal(`"greenhouses"."location" ILIKE :textQuery`),
+            ];
+          }
+          if (greenhouseName !== '' && greenhouseName !== undefined) {
+            console.log('greenhouse_name is pushed');
+            whereClause[Op.and].push(
+              Sequelize.literal(`"fields"."name" ILIKE :textFieldName`)
+            );
+          }
+          if (greenhouseSize !== '' && greenhouseSize !== undefined) {
+            console.log('greenhouse_size is pushed');
+            whereClause[Op.and].push(
+              Sequelize.literal(`"greenhouses"."size" = :numSize`)
+            );
+          }
+          if (greenhouseSizeMeasurement !== '' && greenhouseSizeMeasurement !== undefined) {
+            console.log('greenhouseSizeMeasurement is pushed');
+            whereClause[Op.and].push(
+              Sequelize.literal(`"greenhouses->measurement_units"."value" ILIKE :textSizeMeasurement`),
+            );
+          }
+          if (greenhouseDescription !== '' && greenhouseDescription !== undefined) {
+            console.log('greenhouseDescription is pushed');
+            whereClause[Op.and].push(
+              Sequelize.literal(`"greenhouses"."description" ILIKE :textDescription`)
+            );
+          }
+          if (greenhouseLocation !== '' && greenhouseLocation !== undefined) {
+            console.log('greenhouseLocation is pushed');
+            whereClause[Op.and].push(
+              Sequelize.literal(`"greenhouses"."location" ILIKE :textLocation`)
+            );
+          }
+          if (created_at !== '' && created_at !== undefined) {
+            console.log('created_at is pushed');
+            const date = new Date(created_at);
+            date.setHours(0, 0, 0, 0);
+            const endDate = new Date(date);
+            endDate.setHours(23, 59, 59, 999);
+            whereClause[Op.and].push({
+              created_at: {
+                [Op.between]: [date, endDate],
+              },
+            });
+          }
+          const data = await this.ownerGreenhouse.findAll({
+            where: whereClause,
+            attributes: [
+              'id',
+              [Sequelize.col('greenhouses.name'), 'greenhouse_name'],
+              [Sequelize.col('greenhouses.size'), 'greenhouse_size'],
+              [Sequelize.col('greenhouses.measurement_units.value'), 'measurement'],
+              [Sequelize.col('greenhouses.description'), 'greenhouse_description'],
+              [Sequelize.col('greenhouses.location'), 'greenhouse_location'],
+              'created_at',
+          
+            ],
+            include: [
+              {
+                model: Greenhouse,
+                as: 'greenhouses',
+                attributes: [],
+                include: [
+                  {
+                    model: MeasurementUnit,
+                    attributes: ['value'],
+                  },
+                ]
+              },
+            ],
+            replacements: {
+              textQuery: `%${query}%`,
+              textFieldName: `%${greenhouseName}%`,
+              textSizeMeasurement:`%${greenhouseSizeMeasurement}%`,
+              textDescription: `%${greenhouseDescription}%`,
+              textLocation:`%${greenhouseLocation}%`,
+              numQuery: query,
+              numSize: greenhouseSize,
+             
+            },
+            order:sort,
+            offset:((page-1)*perPage),
+            limit : perPage,
+            subQuery:false,
+          });
+          return  {data, total};
+        } catch (error) {
+          throw error;
+        }
+      }
+}
