@@ -57,6 +57,7 @@ export const PortableDeviceCreate = (props) => {
         redirect("/portable_devices");
       } else {
         // Handle the case where the creation was not successful
+        notify("Something went wrong", "info");
         console.error("Device creation failed:", response.error);
       }
     } catch (error) {

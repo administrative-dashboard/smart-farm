@@ -37,7 +37,7 @@ export class OwnerFieldsService {
     perPage?: number,
     field?: string,
     order?: string
-  ): Promise<{ data: any[]; total: number }> {
+  ): Promise<{ data: any[], total: number }> {
     try {
       const userId = await this.getUserIdByEmail(email);
       const sort = [];
@@ -70,15 +70,15 @@ export class OwnerFieldsService {
             model: Field,
             attributes: [],
             include: [
-              {
-                model: MeasurementUnit,
-                attributes: [],
-              },
-            ],
+            {
+              model: MeasurementUnit,
+              attributes: [],
+            },
+        ]
           },
         ],
         order: sort,
-        offset: (page - 1) * perPage,
+        offset: ((page - 1) * perPage),
         limit: perPage,
         subQuery: false,
       });
@@ -96,11 +96,11 @@ export class OwnerFieldsService {
     fieldDescription?: any,
     fieldLocation?: any,
     created_at?: any,
-    page?: number,
-    perPage?: number,
-    field?: any,
-    order?: any
-  ): Promise<{ data: any[]; total: number }> {
+    page?:number,
+    perPage?:number,
+    field?:any,
+    order?:any,
+  ): Promise<{ data: any[], total: number }>{
     console.log(created_at);
     try {
       const userId = await this.getUserIdByEmail(email);
@@ -123,11 +123,13 @@ export class OwnerFieldsService {
         ],
       };
       if (!isNaN(query) && query !== '') {
-        whereClause[Op.or] = [Sequelize.literal(`"fields"."size" = :numQuery`)];
+        whereClause[Op.or] = [
+          Sequelize.literal(`"fields"."size" = :numQuery`),
+        ];
       } else if (query !== '' && query !== undefined) {
         whereClause[Op.or] = [
           Sequelize.literal(`"fields"."name" ILIKE :textQuery`),
-          Sequelize.literal(`"fields->measurement_units"."value" ILIKE :textQuery`),
+          Sequelize.literal(`"fields->measurement_units"."value" ILIKE :textSizeMeasurement`), 
           Sequelize.literal(`"fields"."description" ILIKE :textQuery`),
           Sequelize.literal(`"fields"."location" ILIKE :textQuery`),
         ];
@@ -147,7 +149,7 @@ export class OwnerFieldsService {
       if (fieldSizeMeasurement !== '' && fieldSizeMeasurement !== undefined) {
         console.log('fieldSizeMeasurement is pushed');
         whereClause[Op.and].push(
-          Sequelize.literal(`"fields->measurement_units"."value" ILIKE :textSizeMeasurement`)
+          Sequelize.literal(`"fields->measurement_units"."value" ILIKE :textSizeMeasurement`),
         );
       }
       if (fieldDescription !== '' && fieldDescription !== undefined) {
@@ -184,6 +186,7 @@ export class OwnerFieldsService {
           [Sequelize.col('fields.description'), 'field_description'],
           [Sequelize.col('fields.location'), 'field_location'],
           'created_at',
+      
         ],
         include: [
           {
@@ -195,24 +198,25 @@ export class OwnerFieldsService {
                 model: MeasurementUnit,
                 attributes: ['value'],
               },
-            ],
+            ]
           },
         ],
         replacements: {
           textQuery: `%${query}%`,
           textFieldName: `%${fieldName}%`,
-          textSizeMeasurement: `%${fieldSizeMeasurement}%`,
+          textSizeMeasurement:`%${fieldSizeMeasurement}%`,
           textDescription: `%${fieldDescription}%`,
-          textLocation: `%${fieldLocation}%`,
+          textLocation:`%${fieldLocation}%`,
           numQuery: query,
           numSize: fieldSize,
+         
         },
-        order: sort,
-        offset: (page - 1) * perPage,
-        limit: perPage,
-        subQuery: false,
+        order:sort,
+        offset:((page-1)*perPage),
+        limit : perPage,
+        subQuery:false,
       });
-      return { data, total };
+      return  {data, total};
     } catch (error) {
       throw error;
     }

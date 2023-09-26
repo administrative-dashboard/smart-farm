@@ -1,4 +1,3 @@
-//client//pages/owner/GreenhouseList.js
 import React from "react";
 import {
   DateField,
@@ -18,18 +17,16 @@ import { HomeRedirectButton } from "../../components/HomeRedirectButton";
 import { ResetFilters } from "../../components/ResetFilters";
 import { useState, useEffect } from "react";
 import customDataProvider from "../../providers/dataProvider";
-
 export const FieldList = (props) => {
   const dataProvider = customDataProvider;
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchName, setSearchName] = useState("");
-  const [searchLocation, setSearchLocation] = useState("");
   const [searchSize, setSearchSize] = useState("");
   const [searchMeasurement, setSearchMeasurement] = useState("");
   const [searchDescription, setSearchDescription] = useState("");
+  const [searchLocation, setSearchLocation] = useState("");
   const [searchDate,setSearchDate]= useState("");
-
   const fetchData = async () => {
     try {
       const response = await dataProvider.getList("fields", {
@@ -39,10 +36,11 @@ export const FieldList = (props) => {
            q: searchTerm,
            field_name: searchName,
            field_size: searchSize,
-           field_size_measurment: searchMeasurement, 
+           field_size_measurment: searchMeasurement,
            field_description: searchDescription,
-           created_at: searchDate, 
-        }, 
+           field_location: searchLocation,
+           created_at: searchDate,
+        },
       });
       console.log("REQUEST SEND  ");
       setData(response.data);
@@ -50,7 +48,6 @@ export const FieldList = (props) => {
       console.error("Error fetching data: ", error);
     }
   };
-
   const FieldFilter = (props) => (
     <Filter {...props}>
       <SearchInput source="q" alwaysOn onChange={handleSearchInputChange} />
@@ -62,14 +59,12 @@ export const FieldList = (props) => {
       <DateInput label="Date" source="created_at" onChange={handleSearchDateChange}/>
     </Filter>
   );
-
   useEffect(() => {
-    console.log("Accepted Data: ", data); 
-  }, [data]); 
+    console.log("Accepted Data: ", data);
+  }, [data]);
   useEffect(() => {
-    fetchData(); 
-  }, [searchTerm,searchName,searchSize,searchMeasurement,searchDescription,searchLocation,searchDate]);
-  
+    fetchData();
+  }, [searchTerm,searchName,searchSize,searchMeasurement,searchDescription,searchDate]);
   const handleSearchInputChange = async (e) => {
     // console.log("Event object:", e);
     if (e.target && e.target.value) {
@@ -79,7 +74,6 @@ export const FieldList = (props) => {
       console.error("Event or event target is undefined.");
     }
   };
-
   const handleSearchNameChange = async (e) => {
     if (e.target.value) {
       await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -87,43 +81,36 @@ export const FieldList = (props) => {
       console.log(searchName);
     }
   };
-
   const handleSearchSizeChange = async (e) => {
     if (e.target.value) {
       await new Promise((resolve) => setTimeout(resolve, 3000));
       setSearchSize(e.target.value);
     }
   };
-
   const handleSearchMeasurementChange = async (e) => {
     if (e.target.value) {
       await new Promise((resolve) => setTimeout(resolve, 3000));
       setSearchMeasurement(e.target.value);
     }
   };
-
   const handleSearchDescriptionChange = async (e) => {
     if (e.target.value) {
       await new Promise((resolve) => setTimeout(resolve, 3000));
       setSearchDescription(e.target.value);
     }
   };
-
   const handleSearchLocationChange = async (e) => {
     if (e.target.value) {
       await new Promise((resolve) => setTimeout(resolve, 3000));
       setSearchLocation(e.target.value);
-      console.log(searchName);
     }
   };
-
   const handleSearchDateChange = async (e) => {
     if (e.target.value) {
       await new Promise((resolve) => setTimeout(resolve, 3000));
       setSearchDate(e.target.value);
     }
   };
-  
   return (
     <>
       <ResetFilters />

@@ -14,27 +14,28 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Response, query, response } from 'express';
-import { OwnerFieldsService } from './owner-fields.service';
+import { OwnerGreenhousesModule } from './owner-greenhouses.module';
 import { HttpCode } from '@nestjs/common';
 import { Headers } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
 import { NotFoundError } from 'rxjs';
 import { GoogleService } from 'src/auth/google.service';
-@Controller('fields')
+import { OwnerGreenhousesService } from './owner-greenhouses.service';
+@Controller('greenhouses')
 @UseGuards(JwtAuthGuard)
-export class OwnerFieldsController {
+export class OwnerGreenhousesController {
   constructor(
-    private readonly ownerFieldsService: OwnerFieldsService,
+    private readonly ownerGreenhousesService: OwnerGreenhousesService,
     private readonly googleService: GoogleService
   ) {}
   @Get()
-  async getFields(
+  async getGreenhouses(
     @Query('q') searchTerm: any,
-    @Query('field_name') fieldName: any,
-    @Query('field_size') fieldSize: any,
-    @Query('measurement') fieldSizeMeasurement: any,
-    @Query('field_description') fieldDescription: any,
-    @Query('field_location') fieldLocation: any,
+    @Query('greenhouse_name') greenhouseName: any,
+    @Query('greenhouse_size') greenhouseSize: any,
+    @Query('measurement') greenhouseSizeMeasurement: any,
+    @Query('greenhouse_description') greenhouseDescription: any,
+    @Query('greenhouse_location') greenhouseLocation: any,
     @Query('created_at') date: any,
     @Query('page') page: any,
     @Query('perPage') perPage: any,
@@ -50,43 +51,43 @@ export class OwnerFieldsController {
       console.log('perPage::::===', perPage);
       console.log('ЗАПРОС ПОЛУЧЕН!!!!!!!!!');
       console.log('searchTerm==', searchTerm);
-      console.log('field_name==', fieldName);
-      console.log('field_size==', fieldSize);
-      console.log('field_size_measurment==', fieldSizeMeasurement);
-      console.log('field_description==', fieldDescription);
-      console.log('field_location==', fieldLocation);
+      console.log('greenhouse_name==', greenhouseName);
+      console.log('greenhouse_size==', greenhouseSize);
+      console.log('greenhouse_size_measurment==', greenhouseSizeMeasurement);
+      console.log('greenhouse_description==', greenhouseDescription);
+      console.log('greenhouse_location==', greenhouseLocation);
       console.log('created_at==', date);
       const accessToken = req.user.accessToken;
       const email = await this.googleService.getUserInfo(accessToken);
       console.log(email);
       if (
         searchTerm ||
-        fieldName ||
-        fieldSize ||
-        fieldSizeMeasurement ||
-        fieldDescription ||
-        fieldLocation || 
+        greenhouseName ||
+        greenhouseSize ||
+        greenhouseSizeMeasurement ||
+        greenhouseDescription ||
+        greenhouseLocation || 
         date
       ) {
-        const filteredFields = await this.ownerFieldsService.searchFields(
+        const filteredGreenhouses = await this.ownerGreenhousesService.searchFields(
           email,
           searchTerm,
-          fieldName,
-          fieldSize,
-          fieldSizeMeasurement,
-          fieldDescription,
-          fieldLocation,
+          greenhouseName,
+          greenhouseSize,
+          greenhouseSizeMeasurement,
+          greenhouseDescription,
+          greenhouseLocation,
           date,
           page,
           perPage,
           field,
           order
         );
-        console.log(filteredFields);
-        return filteredFields;
+        console.log(filteredGreenhouses);
+        return filteredGreenhouses;
       } else if (page && perPage) {
         const { data, total } =
-          await this.ownerFieldsService.getFieldsByEmail(
+          await this.ownerGreenhousesService.getFieldsByEmail(
             email,
             page,
             perPage,
@@ -97,24 +98,6 @@ export class OwnerFieldsController {
       }
     } catch (error) {
       throw new NotFoundException('Fields not found', 'custom-error-code');
-    }
-  }
-
-  @Post('create')
-  async createPortableDevice(@Body() fieldData: any, @Request() req) {
-    try {
-      console.log("Field data: ", fieldData);
-      const accessToken = req.user.accessToken;
-      const email = await this.googleService.getUserInfo(accessToken);
-      
-      const result = await this.ownerFieldsService.createField(
-        email,
-        fieldData
-      );
-      return result; 
-    } catch (error) {
-        throw error
-        .
     }
   }
 }

@@ -75,6 +75,7 @@ export class PortableDevicesController {
             field,
             order,
           );
+        console.log(filteredDevices);
         return filteredDevices;
       } else if(page && perPage){
         const {data,total} =
@@ -131,7 +132,7 @@ export class PortableDevicesController {
   }
 
   @Post('create')
-async createPortableDevice(@Body() deviceData: any, @Request() req) {
+  async createPortableDevice(@Body() deviceData: any, @Request() req) {
   try {
     console.log(deviceData);
     const accessToken = req.user.accessToken;

@@ -98,7 +98,7 @@ export class OwnersPortableDevicesService {
     perPage?:number,
     field?:any,
     order?:any,
-  ): Promise<{ devices: any[], total: number }>{
+  ): Promise<{ data: any[], total: number }>{
 
     console.log(created_at);
     try {
@@ -172,7 +172,7 @@ export class OwnersPortableDevicesService {
         });
       }
 
-      const devices = await this.OwnerPortableDeviceModel.findAll({
+      const data = await this.OwnerPortableDeviceModel.findAll({
         where: whereClause,
         attributes: [
           'id',
@@ -204,7 +204,7 @@ export class OwnersPortableDevicesService {
         limit : perPage,
         subQuery:false, 
       });
-      return  {devices, total};
+      return  {data, total};
     } catch (error) {
       throw error;
     }

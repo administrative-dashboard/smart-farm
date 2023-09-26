@@ -74,7 +74,7 @@ export const PortableDeviceList = (props) => {
   const handleSearchInputChange = async (e) => {
     // console.log("Event object:", e);
     if (e.target && e.target.value) {
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      await new Promise((resolve) => setTimeout(resolve, 3500));
       setSearchTerm(e.target.value);
     } else {
       console.error("Event or event target is undefined.");
