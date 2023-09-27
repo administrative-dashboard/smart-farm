@@ -11,6 +11,7 @@ import {
   useRedirect,
   required,
   SelectField,
+  choices,
   SelectInput,
 } from "react-admin";
 //import { HomeRedirectButton } from "../../components/HomeRedirectButton";
@@ -23,11 +24,12 @@ export const FieldCreate = (props) => {
 
   const [measurementChoices, setMeasurementChoices] = useState([]); // State to store measurement choices
 
-  useEffect(() => {
+ useEffect(() => {
     axios.get(`${API_URL}/measurement_units/fields`)
       .then(response => {
         console.log(response.data);
         setMeasurementChoices(response.data);
+        console.log(response.data)
       })
       .catch(error => {
         console.error("Error fetching measurement choices:", error);
@@ -60,16 +62,17 @@ export const FieldCreate = (props) => {
       const response = await customDataProvider.create("fields/create", {
         data: fieldData,
       });
-      
-      if (response.ok) {
+      console.log(response);
+      if (response.data) {
         notify("Field created successfully", "info");
-        redirect("/fields");
+        /* redirect("/fields"); */
       } else {
         console.error("Field creation failed:", response.error);
+        notify('Field already is existing', { type: 'error' });
       }
     } catch (error) {
       console.error("Error creating field:", error);
-      notify('Field already is existing', { type: 'error' });
+      
     }
   };
   return (
@@ -82,11 +85,10 @@ export const FieldCreate = (props) => {
           <TextInput source="name" validate={validateFieldName}/>
           <NumberInput source="size" validate={validateFieldSize}/>
           <SelectInput
-            source="value"
             choices={measurementChoices.map(choice => ({
               id: choice.id,
               name: choice.value
-            }))}
+            }))} source="measurement" label="Measurement"
           />
           <TextInput source="location" validate={validateLocation}/>
           <TextInput source="description" multiline/>

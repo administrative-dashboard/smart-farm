@@ -222,60 +222,43 @@ export class OwnerFieldsService {
     }
   }
 
-  // async createField(email: string, fieldData: any): Promise<OwnerField> {
-  //   try {
-  //     const userId = await this.getUserIdByEmail(email);
-
-  //     const ownerFields = await OwnerField.findAll({
-  //       where: {
-  //         user_id: userId,
-  //       },
-  //       attributes: [
-  //         'id',
-  //         [Sequelize.col('fields.name'), 'field_name'],
-  //       ],
-  //       include: Field, // Include the Field table in the query
-  //     });
-
-      
-
-      // console.log(ownerFields);
-      // return;
-
-
-  //   } catch (error) {
-  //     console.error(error);
-  //     throw new Error("Failed to create a field.");
-  //   }
-  // }
-
-  async getFieldById(id: string): Promise<any | null> {
+  async  createField(email:string,fieldData:any) : Promise<OwnerField> {
     try {
-      const ParsedId = parseInt(id, 10);
-      /* const portableDevices = await this.getDevicesByUserId(userId); */
-      const fields = await this.ownerField.findOne({
+      const userId = await this.getUserIdByEmail(email);
+      
+      // 1. Проверяем, существует ли у пользователя поле с указанным именем
+      const existingOwnerField = await OwnerField.findOne({
         where: {
-          id: ParsedId,
+          user_id: userId,
         },
-        attributes: [
-          'id',
-          [Sequelize.col('fields.name'), 'field_name'],
-          [Sequelize.col('fields.size'), 'field_size'],
-          [Sequelize.col('fields.measurement_units.value'), 'measurement'],
-          [Sequelize.col('fields.description'), 'field_description'],
-          [Sequelize.col('fields.location'), 'field_location'],
-          'created_at',
-          'updated_at',
-        ],
         include: [
           {
             model: Field,
-            attributes: [],
+            where: {
+              name: fieldData.name,
+            },
           },
         ],
       });
-
-      return fields || null;
+  
+      if (existingOwnerField) {
+        throw new Error('У вас уже существует поле с таким именем.');
+      }
+  
+      const createdField = await Field.create({
+        name: fieldData.name,
+        size: fieldData.size,
+        measurement_id: fieldData.measurement,
+        description: fieldData.description,
+        location: fieldData.location,
+      });
+  
+      const ownerCreatedField =   await OwnerField.create({
+        user_id: userId,
+        field_id: createdField.id, 
+      });
+  
+      return ownerCreatedField; 
     } catch (error) {
       throw error;
     }
