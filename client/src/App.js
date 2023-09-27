@@ -15,7 +15,6 @@ import { BrowserRouter, Route } from "react-router-dom";
 
 import { AbacProvider } from "react-abac";
 import { checkAccess } from "./abac";
-
 import { MainDashboard } from "./pages/MainDashboard";
 import { Signin } from "./pages/auth/Signin";
 import { Signup } from "./pages/auth/Signup";
@@ -118,81 +117,13 @@ const App = () => {
   const employeeResources = [
     <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
     <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
-    <Resource name="contact" list={Contact} />,
+    <Resource name="contact" list={Contact} options={{ label: "My contacts" }}/>,
   ];
 
   const ownerResources = [
     <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
     <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
-    <Resource name="chooseCommunity" list={ChooseCommunity} />,
-    <Resource name="chooseDevice" list={ChooseDevice} />,
-    <Resource name="contact" list={Contact} />,
-    <Resource name="devices" list={DeviceDesktop} />,
-    <Resource
-      name="portable_devices"
-      list={PortableDeviceList}
-      create={PortableDeviceCreate}
-      edit={PortableDeviceEdit}
-    />,
-    <Resource
-      name="fixed_devices"
-      list={FixedDeviceList}
-      create={FixedDeviceCreate}
-      edit={FixedDeviceEdit}
-    />,
-    <Resource
-      name="device_requests_history"
-      create={DeviceRequest}
-      list={DeviceRequest}
-    />,
-  ];
-
-  const AdminResources = [
-    <Resource name="adminPage" list={AdminDesktop} />,
-    <Resource name="contact" list={Contact} />,
-    <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
-    <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
-    <Resource
-      name="all_fixedDevices"
-      list={FixedDeviceListAdm}
-      show={FixedDeviceShow}
-    />,
-    <Resource
-      name="all_portableDevices"
-      list={PortableDeviceListAdm}
-      show={PortableDeviceShow}
-    />,
-    <Resource name="User" list={UserListAdm} show={UserShowAdm} />,
-    <Resource
-      name="all_portableDevices"
-      list={PortableDeviceListAdm}
-      show={PortableDeviceShow}
-    />,
-    <Resource name="User" list={UserListAdm} show={UserShowAdm} />,
-    <Resource
-      name="Greenhouse"
-      list={GreenhouseListAdm}
-      show={GreenhouseShow}
-    />,
-    <Resource name="chooseCommunity" list={ChooseCommunity} />,
-    <Resource name="chooseDevice" list={ChooseDevice} />,
-    <Resource name="contact" list={Contact} />,
-    <Resource
-      name="all_fixedDevices"
-      list={FixedDeviceListAdm}
-      show={FixedDeviceShow}
-    />,
-    <Resource
-      name="all_portableDevices"
-      list={PortableDeviceListAdm}
-      show={PortableDeviceShow}
-    />,
-    <Resource name="User" list={UserListAdm} show={UserShowAdm} />,
-    <Resource
-      name="Greenhouse"
-      list={GreenhouseListAdm}
-      show={GreenhouseShow}
-    />,
+    <Resource name="contact" list={Contact} options={{ label: "My contacts" }}/>,
     <Resource
       name="ownerPage"
       list={OwnerDesktop}
@@ -210,10 +141,93 @@ const App = () => {
       create={FieldCreate}
       edit={FieldEdit}
     />,
+    <Resource name="devices" list={DeviceDesktop} />,
+    <Resource
+      name="portable_devices"
+      list={PortableDeviceList}
+      create={PortableDeviceCreate}
+      edit={PortableDeviceEdit}
+    />,
+    <Resource
+      name="fixed_devices"
+      list={FixedDeviceList}
+      create={FixedDeviceCreate}
+      edit={FixedDeviceEdit}
+    />,
+    <Resource
+      name="fields"
+      list={FieldList}
+      create={FieldCreate}
+      edit={FieldEdit}
+    />,
+    // <Resource
+    //   name="device_requests_history"
+    //   create={DeviceRequest}
+    //   list={DeviceRequest}
+    // />,
+  ];
+  const CMResources = [
+    <Resource name="dashboard" list={MainDashboard} icon={HomeIcon}  options={{ label: "Home" }} />,
+    <Resource name="contact" list={Contact} options={{ label: "My contacts" }}/>,
+    <Resource name="profile" list={Profile} icon={PermIdentityIcon}  options={{ label: "Profile" }}/>,
+    <Resource name="usersinfo" list={DesktopInfo}   options={{ label: "Dashboard" }}/>,
+    <Resource
+      name="community/users"
+      list={UserList}
+      edit={UserEdit}
+      icon={ArticleIcon}
+      options={{ label: "Users" }}
+    />,
+  ];
+  const AdminResources = [
+    <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
+    <Resource name="adminPage" list={AdminDesktop} />,
+    <Resource name="contact" list={Contact} options={{ label: "My contacts" }}/>,
+    <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
+    <Resource
+      name="all_fixedDevices"
+      list={FixedDeviceListAdm}
+      show={FixedDeviceShow}
+    />,
+    <Resource
+      name="all_portableDevices"
+      list={PortableDeviceListAdm}
+      show={PortableDeviceShow}
+    />,
+    <Resource name="User" list={UserListAdm} show={UserShowAdm} />,
+    <Resource
+      name="all_portableDevices"
+      list={PortableDeviceListAdm}
+      show={PortableDeviceShow}
+    />,
+    <Resource name="User" list={UserListAdm} show={UserShowAdm} />,
+    <Resource
+      name="Greenhouse"
+      list={GreenhouseListAdm}
+      show={GreenhouseShow}
+    />,
+    <Resource name="chooseCommunity" list={ChooseCommunity} />,
+    <Resource name="chooseDevice" list={ChooseDevice} />,
+    <Resource
+      name="all_fixedDevices"
+      list={FixedDeviceListAdm}
+      show={FixedDeviceShow}
+    />,
+    <Resource
+      name="all_portableDevices"
+      list={PortableDeviceListAdm}
+      show={PortableDeviceShow}
+    />,
+    <Resource name="User" list={UserListAdm} show={UserShowAdm} />,
+    <Resource
+      name="Greenhouse"
+      list={GreenhouseListAdm}
+      show={GreenhouseShow}
+    />,
+
     <Resource name="Product" list={ProductListAdm} show={ProductShow} />,
     <Resource name="Statistic" list={DeviceStatisticPage} />,
-    <Resource name="contact" list={Contact} />,
-    <Resource name="community_manager" list={CommunityManager} />,
+    //<Resource name="community_manager" list={CommunityManager} />,
     <Resource name="usersinfo" list={DesktopInfo} />,
     <Resource
       name="community/users"
@@ -221,28 +235,54 @@ const App = () => {
       edit={UserEdit}
       icon={ArticleIcon}
     />,
-    <Resource name="BasicTable" list={BasicTable} show={BasicTableShow} />,
+    //<Resource name="BasicTable" list={BasicTable} show={BasicTableShow} />,
   ];
-
+  const myTheme = {
+    palette: {
+      primary: {
+        main: "#357A38",
+      },
+      secondary: {
+        main: "#4CAF50",
+      },
+      error: {
+        main: "#BA000D",
+      },
+    },
+    typography: {
+      fontFamily: [
+        "-apple-system",
+        "BlinkMacSystemFont",
+        '"Segoe UI"',
+        "Arial",
+        "sans-serif",
+      ].join(","),
+    },
+  };
   return (
     <BrowserRouter>
       {isLoading ? (
         <div>Loading...</div>
       ) : (
         <Admin
+          theme={myTheme}
           layout={MyLayout}
           dataProvider={customDataProvider}
           i18nProvider={i18nProvider}
         >
-          {role === "EMPLOYEE"
-            ? [...employeeResources]
-            : role === "ADMIN"
-            ? [...AdminResources]
-            : role === "OWNER"
-            ? [...ownerResources]
-            : role === "GUEST"
-            ? [...commonResources]
-            : <div>...loading</div>}
+          {role === "EMPLOYEE" ? (
+            [...employeeResources]
+          ) : role === "ADMIN" ? (
+            [...AdminResources]
+          ) : role === "OWNER" ? (
+            [...ownerResources]
+          ) : role === "GUEST" ? (
+            [...commonResources]
+          ) : role === "COMMUNITY_MANAGER" ? (
+            [...CMResources]
+          ): (
+            <div>...loading</div>
+          )}
         </Admin>
       )}
     </BrowserRouter>
