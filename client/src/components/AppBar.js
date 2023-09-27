@@ -3,40 +3,77 @@ import * as React from "react";
 import {
   AppBar,
   TitlePortal,
-  useAuthenticated,
   UserMenu,
   LocalesMenuButton,
 } from "react-admin";
-import { MenuItem, ListItemIcon } from "@mui/material";
+import { MenuItem, ListItemIcon, Typography, Avatar } from "@mui/material";
 import ContactPageIcon from "@mui/icons-material/ContactPage";
 import Face6Icon from "@mui/icons-material/Face6";
 import { Logo } from "./LogoButton";
 import { SigninButton } from "./SigninButton";
 import { LogoutButton } from "./LogoutButton";
 import { ProfileButton } from "./ProfileButton";
-import Theme from './Theme';
-import { ThemeProvider } from "@mui/material/styles";
+import axios from "axios";
+import { API_URL } from "../consts";
+import { 
+  getJwtTokenFromCookies, 
+  getUserInfoFromCookies 
+} from "../providers/authUtils";
+
+const MyCustomIcon = ({ profileImage }) => (
+  <Avatar
+    sx={{
+      height: 30,
+      width: 30,
+    }}
+    src={profileImage}
+  />
+);
 
 export const MyAppBar = () => {
-//   const [isAuthenticated, setIsAuthenticated] = React.useState(true);
+  const [user, setUser] = React.useState(null);
+  const [profileImage, setProfileImage] = React.useState(null);
+  const [email, setEmail] = React.useState(null);
+  const isAuthenticated = getJwtTokenFromCookies() ? true : false;
+  React.useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+          const response = await axios.get(
+            `${API_URL}/user/info`,
+            {
+              headers: {
+                Authorization: `Bearer ${getJwtTokenFromCookies()}`
+              }
+            }
+          );
+          setUser(response.data);
+          setProfileImage(response.data.profile_image);
+          setEmail(response.data.email)
+          console.log()
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
+    };
 
-//   const handleLogout = () => {
-//     setIsAuthenticated((prevIsAuthenticated) => !prevIsAuthenticated);
-//   };
-// useAuthenticated();
+    if (isAuthenticated) {
+      fetchUserInfo();
+    }
+  }, []);
+
   return (
-    <ThemeProvider theme={Theme}>
     <AppBar
       color="inherit"
       sx={{ p: 0 }}
       userMenu={
-        // isAuthenticated ? (
-          <UserMenu>
-            <MenuItem>
+        isAuthenticated ? (
+          <UserMenu
+          icon={<MyCustomIcon profileImage={profileImage} />}
+        >
+            <MenuItem   >
               <ListItemIcon>
                 <ContactPageIcon fontSize="small" />
               </ListItemIcon>
-              <ProfileButton />
+              <ProfileButton/> 
             </MenuItem>
             <MenuItem>
               <ListItemIcon>
@@ -44,10 +81,13 @@ export const MyAppBar = () => {
               </ListItemIcon>
               <LogoutButton />
             </MenuItem>
+            <Typography variant="body1" color="textSecondary">
+              {email}
+            </Typography>
           </UserMenu>
-        // ) : (
-        //   false
-        // )
+        ) : (
+          false
+        )
       }
     >
       <Logo />
@@ -58,8 +98,7 @@ export const MyAppBar = () => {
           { locale: "am", name: "Հայերեն" },
         ]}
       />
-      {/* {isAuthenticated ? null : <SigninButton />} */}
+      {isAuthenticated ? null : <SigninButton />}
     </AppBar>
-    </ThemeProvider>
   );
 };

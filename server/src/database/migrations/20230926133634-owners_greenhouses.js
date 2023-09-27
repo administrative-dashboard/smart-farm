@@ -3,7 +3,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const tableName = 'owners_fields';
+    const tableName = 'owners_greenhouses';
     const columns = {
       id: {
         type: Sequelize.INTEGER,
@@ -14,14 +14,20 @@ module.exports = {
       user_id: {
         type: Sequelize.INTEGER,
       },
-      field_id: {
+      greenhouse_id: {
         type: Sequelize.INTEGER,
+      },
+      created_at: {
+        type: Sequelize.DATE,
+      },
+      updated_at: {
+        type: Sequelize.DATE,
       },
     };
 
     await queryInterface.createTable(tableName, columns);
   },
   down: async (queryInterface) => {
-    await queryInterface.dropTable('owners_fields');
+    await queryInterface.dropTable('owners_greenhouses');
   }
 };

@@ -1,4 +1,3 @@
-// Profile.js
 import React, { useState } from "react";
 import {
   Container,
@@ -14,8 +13,6 @@ import { MyBar } from "../../components/Drawer";
 import { drawer_new_data } from "../../assets/static/mockData/new_data";
 import { useTheme } from "@mui/material/styles";
 import { Link } from "react-router-dom";
-import { validatePhoneNumber } from "../../validations/PhoneNumber";
-
 export const Profile = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -27,33 +24,9 @@ export const Profile = () => {
     role: "",
   };
   const [formData, setFormData] = useState(initialFormData);
-  const [isArmenianPhoneNumber, setIsArmenianPhoneNumber] = useState(true);
-  const [isZeroAfterPrefix, setIsZeroAfterPrefix] = useState(false);
-  const [error, setError] = useState(null);
-
   const handleReset = () => {
     setFormData(initialFormData);
-    setIsArmenianPhoneNumber(true);
-    setIsZeroAfterPrefix(false);
-    setError(null);
   };
-
-  const handlePhoneChange = (e) => {
-    const phoneNumber = e.target.value;
-    setFormData({ ...formData, phone: phoneNumber });
-
-    const { isArmenian, isZeroAfterPrefix, isPhoneNumberValid, error } = validatePhoneNumber(phoneNumber);
-
-    setIsArmenianPhoneNumber(isArmenian);
-    setIsZeroAfterPrefix(isZeroAfterPrefix);
-    setError(error);
-
-    // Clear the error message after a brief delay (optional)
-    if (error) {
-      setTimeout(() => setError(null), 3000); // Clear error after 3 seconds (adjust as needed)
-    }
-  };
-
   return (
     <Container>
       <Grid container spacing={2}>
@@ -74,7 +47,9 @@ export const Profile = () => {
               fullWidth
               margin="normal"
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
             />
             <TextField
               variant="filled"
@@ -83,7 +58,9 @@ export const Profile = () => {
               fullWidth
               margin="normal"
               value={formData.image}
-              onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, image: e.target.value })
+              }
             />
             <TextField
               variant="filled"
@@ -92,7 +69,9 @@ export const Profile = () => {
               fullWidth
               margin="normal"
               value={formData.community}
-              onChange={(e) => setFormData({ ...formData, community: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, community: e.target.value })
+              }
             />
             <TextField
               variant="filled"
@@ -101,22 +80,10 @@ export const Profile = () => {
               fullWidth
               margin="normal"
               value={formData.phone}
-              onChange={handlePhoneChange}
-              placeholder="+374XXXXXXXX"
+              onChange={(e) =>
+                setFormData({ ...formData, phone: e.target.value })
+              }
             />
-            {!isArmenianPhoneNumber || error ? (
-              <Typography variant="body2" color="error">
-                {error || "Phone number must start with '+374' and should have exactly 8 digits following the prefix."}
-              </Typography>
-            ) : isZeroAfterPrefix ? (
-              <Typography variant="body2" color="error">
-                "0" after "+374" is not allowed.
-              </Typography>
-            ) : formData.phone.length !== 12 ? (
-              <Typography variant="body2" color="error">
-                Exactly 8 digits are required after "+374."
-              </Typography>
-            ) : null}
             <TextField
               variant="filled"
               label="Email"
@@ -124,11 +91,16 @@ export const Profile = () => {
               fullWidth
               margin="normal"
               value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
             />
 
             <Box display="flex" justifyContent="flex-end" mt={3}>
-              <CustomCancelButton onClick={handleReset} sx={{ backgroundColor: " #1F4700" }} />
+              <CustomCancelButton
+                onClick={handleReset}
+                sx={{ backgroundColor: " #1F4700" }}
+              />
               <Button
                 component={Link}
                 to="/users"
@@ -136,10 +108,9 @@ export const Profile = () => {
                 color="primary"
                 sx={{
                   marginLeft: "10px",
-                  backgroundColor: isArmenianPhoneNumber && !isZeroAfterPrefix && !error ? "#2BB31C" : "#C0C0C0",
+                  backgroundColor: "#1F4700",
                   color: "white",
                 }}
-                disabled={!formData.phone || !isArmenianPhoneNumber || isZeroAfterPrefix || error || formData.phone.length !== 12}
               >
                 Request
               </Button>
@@ -150,3 +121,140 @@ export const Profile = () => {
     </Container>
   );
 };
+
+/*import React, { useState } from 'react';
+import {
+  Box,
+  Button,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  TextField,
+  Typography,
+  Grid,
+} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import { SaveButton } from '../../components/SaveButton';
+import { CustomCancelButton } from '../../components/CancelButton';
+
+
+export const Profile = () => {
+  const [state, setState] = useState({
+    left: false,
+  });
+
+  const toggleDrawer = (open) => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+    setState({ ...state, left: open });
+  };
+
+  const list = (
+    <Box
+      sx={{
+        width: 300,
+        color: 'white',
+      }}
+      role="presentation"
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
+    >
+      <List>
+        <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemText primary="Profile Image" />
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemText primary="My Profile" />
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemText primary="About Us" />
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemText primary="Info" />
+          </ListItemButton>
+        </ListItem>
+      </List>
+    </Box>
+  );
+
+  return (
+    <div>
+      <Button onClick={toggleDrawer(true)}>
+        <MenuIcon sx={{ color: '#1F4700' }} />
+      </Button>
+      <Drawer
+        PaperProps={{ sx: { backgroundColor: '#1F4700' } }}
+        anchor="left"
+        open={state.left}
+        onClose={toggleDrawer(false)}
+      >
+        {list}
+      </Drawer>
+
+      <Grid container spacing={10} alignItems="center">
+        <Grid item xs={6}>
+          <Grid container spacing={2}>
+            <Grid item xs={4}>
+              <Typography variant="subtitle1">Name</Typography>
+            </Grid>
+            <Grid item xs={8}>
+              <TextField variant="filled" color="primary" fullWidth />
+            </Grid>
+
+            <Grid item xs={4}>
+              <Typography variant="subtitle1">Community</Typography>
+            </Grid>
+            <Grid item xs={8}>
+              <TextField variant="filled" color="primary" fullWidth />
+            </Grid>
+
+            <Grid item xs={4}>
+              <Typography variant="subtitle1">Phone</Typography>
+            </Grid>
+            <Grid item xs={8}>
+              <TextField variant="filled" color="primary" fullWidth />
+            </Grid>
+
+            <Grid item xs={4}>
+              <Typography variant="subtitle1">Email</Typography>
+            </Grid>
+            <Grid item xs={8}>
+              <TextField variant="filled" color="primary" fullWidth />
+            </Grid>
+
+            <Grid item xs={4}>
+              <Typography variant="subtitle1">Role</Typography>
+            </Grid>
+            <Grid item xs={8}>
+              <TextField
+                variant="filled"
+                color="primary"
+                fullWidth
+                sx={{ background: '#78D819' }}
+              />
+            </Grid>
+          </Grid>
+        </Grid>
+
+        <Grid item xs={6}>
+          <SaveButton />
+          <CustomCancelButton/>
+          <CustomCancelButton/>
+        </Grid>
+      </Grid>
+    </div>
+  );
+};*/

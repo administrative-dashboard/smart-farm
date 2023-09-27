@@ -1,5 +1,5 @@
 //app.module.ts
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
@@ -26,11 +26,17 @@ import { AuthModule } from './auth/auth.module';
 import { DeviceUsageStatisticsCommunities } from './database/models/device_usage_statistics_communities.model';
 import { DeviceUsageStatisticsFields } from './database/models/device_usage_statistics_fields.model';
 import { DeviceUsageStatisticsGreenhouses } from './database/models/device_usage_statistics_greenhouses.model';
-import { PortableDevicesController } from './owners-portable-devices.controller';
-import { OwnersPortableDevicesService } from './owners-portable-devices.service';
-import { OwnerPortableDeviceModule } from './owner-portable-devices.module';
+import { PortableDevicesController } from './owner-portable-devices/owners-portable-devices.controller';
+import { OwnersPortableDevicesService } from './owner-portable-devices/owners-portable-devices.service';
+import { OwnerPortableDeviceModule } from './owner-portable-devices/owner-portable-devices.module';
 import { UserModule } from './user/user.module';
 import { CommunitiesModule } from './communities/communities.module';
+import { AuthMiddleware } from './middlewares/auth/auth.middleware';
+import { UserController } from './user/user.controller';
+import { OwnerFixedDeviceModule } from './owner-fixed-devices/owner-fixed-devices.module';
+import { OwnerFieldsModule } from './owner-fields/owner-fields.module';
+import { MeasurementUnitsModule } from './measurement-units/measurement-units.module';
+import { OwnerGreenhousesModule } from './owner-greenhouses/owner-greenhouses.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -70,10 +76,19 @@ import { CommunitiesModule } from './communities/communities.module';
     OwnerPortableDeviceModule,
     UserModule,
     CommunitiesModule,
+    OwnerFixedDeviceModule,
+    OwnerFieldsModule,
+    MeasurementUnitsModule,
+    OwnerGreenhousesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
+// export class AppModule implements NestModule {
+//   configure(consumer: MiddlewareConsumer) {
+//     consumer.apply(AuthMiddleware).forRoutes('*'); 
+//   }
+// }
 /* @Module({
   imports: [],
   controllers: [FixedDevicesController], // Include the controller here

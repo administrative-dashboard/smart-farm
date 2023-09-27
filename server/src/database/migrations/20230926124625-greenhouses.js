@@ -3,7 +3,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const tableName = 'fields';
+    const tableName = 'greenhouses';
     const columns = {
       id: {
         type: Sequelize.INTEGER,
@@ -19,6 +19,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      measurement_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       description: {
         type: Sequelize.STRING,
       },
@@ -30,6 +34,7 @@ module.exports = {
     await queryInterface.createTable(tableName, columns);
   },
   down: async (queryInterface) => {
-    await queryInterface.dropTable('fields');
+    await queryInterface.dropTable('greenhouses');
   }
 };
+

@@ -1,7 +1,6 @@
-//client//pages/owner/DeviceList.js
-import React, { useEffect, useState } from "react";
+//portable device list
 import Axios from "axios";
-
+import { Pagination } from 'react-admin';
 import {
   List,
   Datagrid,
@@ -13,65 +12,124 @@ import {
   TextInput,
   NumberInput,
   DateInput,
+  Filter,
+  SearchInput, 
 } from "react-admin";
 import { Box } from "@mui/material";
-
+import { owner_drawer } from "../../assets/static/mockData/owner_drawer";
+import { useDataProvider } from "react-admin";
 import { HomeRedirectButton } from "../../components/HomeRedirectButton";
 import { ResetFilters } from "../../components/ResetFilters";
-import { useDataProvider } from 'react-admin';
-const deviceFilter = [
-  <TextInput label="Search" source="q" alwaysOn />,
-  <TextInput label="name" source="name" />,
-  <TextInput label="type" source="type" />,
-  <DateInput label="date" source="date" />,
-  <NumberInput label="quantity" source="quantity" />,
-];
-
+import { useState, useEffect } from "react";
+import customDataProvider from "../../providers/dataProvider";
+import { MyBar } from "../../components/Drawer";
 export const PortableDeviceList = (props) => {
-  const dataProvider = useDataProvider(); 
+  const dataProvider = customDataProvider;
   const [data, setData] = useState([]);
-  /* useEffect(() => {
-    // Отправляем запрос на сервер для получения данных
-    Axios.get("http://localhost:5000/portable_devices") // Замените "ВАШ_СЕРВЕР_URL_ЗДЕСЬ" на URL вашего сервера
-      .then((response) => {
-        setData(response.data); // Обновляем состояние данными с сервера
-        
-        
-      })
-      .catch((error) => {
-        console.error("Ошибка при загрузке данных: ", error);
-      })
-      
-  }, []); */
-
-  useEffect(() => {
-    // Fetch data using the getList method
-    dataProvider
-      .getList('portable_devices', {
-        pagination: { page: 1, perPage: 10 }, // Adjust perPage and page as needed
-        sort: { field: 'id', order: 'ASC' }, // Adjust sorting as needed
-        filter: {}, // Add filters as needed
-      })
-      .then(({ data }) => {
-        setData(data);
-      })
-      .catch((error) => {
-        console.error('Error fetching data: ', error);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchName, setSearchName] = useState("");
+  const [searchType, setSearchType] = useState("");
+  const [searchQuantity, setSearchQuantity] = useState("");
+  const [searchSharedQuantity, setSearchSharedQuantity] = useState("");
+  const [searchDate,setSearchDate]= useState("");
+  const fetchData = async () => {
+    try {
+      const response = await dataProvider.getList("portable_devices", {
+        pagination: { page: 1, perPage: 5 },
+        sort: { field: "id", order: "ASC" },
+        filter: {
+           q: searchTerm,
+           device_name: searchName,
+           device_type: searchType,
+           quantity: searchQuantity, 
+           shared_quantity: searchSharedQuantity,
+           created_at: searchDate, 
+        }, 
       });
-  }, [dataProvider]);
+      console.log("REQUEST SEND  ");
+      setData(response.data);
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
+  
+  const DeviceFilter = (props) => (
+    <Filter {...props}>
+      <SearchInput source="q" alwaysOn onChange={handleSearchInputChange} />
+      <TextInput label="Name" source="device_name" onChange={handleSearchNameChange} />
+      <TextInput label="Type" source="device_type" onChange={handleSearchTypeChange}/>
+      <NumberInput label="Quantity" source="quantity" onChange={handleSearchQuantityChange}/>
+      <NumberInput label="Shared Quantity" source="shared_quantity" onChange={handleSearchSharedQuantityChange}/>
+      <DateInput label="Date" source="created_at" onChange={handleSearchDateChange}/>
+    </Filter>
+  );
+  useEffect(() => {
+    console.log("Accepted Data: ", data); 
+  }, [data]); 
+  useEffect(() => {
+    fetchData(); 
+  }, [searchTerm,searchName,searchType,searchQuantity,searchSharedQuantity,searchDate]);
+
+ 
+  const handleSearchInputChange = async (e) => {
+    // console.log("Event object:", e);
+    if (e.target && e.target.value) {
+      await new Promise((resolve) => setTimeout(resolve, 3500));
+      setSearchTerm(e.target.value);
+    } else {
+      console.error("Event or event target is undefined.");
+    }
+  };
+  
+  const handleSearchNameChange = async (e) => {
+    if (e.target.value) {
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      setSearchName(e.target.value);
+      console.log(searchName);
+    }
+  };
+  const handleSearchTypeChange = async (e) => {
+    if (e.target.value) {
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      setSearchType(e.target.value);
+    }
+  };
+  const handleSearchQuantityChange = async (e) => {
+    if (e.target.value) {
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      setSearchQuantity(e.target.value);
+    }
+  };
+  const handleSearchSharedQuantityChange = async (e) => {
+    if (e.target.value) {
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      setSearchSharedQuantity(e.target.value);
+    }
+  };
+  const handleSearchDateChange = async (e) => {
+    if (e.target.value) {
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      setSearchDate(e.target.value);
+    }
+  };
   return (
     <>
       <ResetFilters />
-      <List {...props} data={data} filters={deviceFilter} sx={{ color: "#38A505" }}>
-        <Datagrid>
-          {/* <NumberField source="id" disable/> */}
-          <TextField source="name" />
-          <TextField source="type" />
-          <TextField source="description" />
-          <NumberField source="quantity" />
-          <DateField source="date" />
-          <EditButton  />
-          <DeleteButton  />
+      
+      <List
+        {...props}
+        data={data}
+        filters={<DeviceFilter />} 
+        sx={{ color: "#38A505" }}
+      >
+        <Datagrid rowClick='edit'>
+          <TextField source="device_name" label="Name" />
+          <TextField source="device_type" label="Type" />
+          <NumberField source="quantity" label="Quantity" />
+          <NumberField source="shared_quantity" label="Shared Quantity" />
+          <DateField source="created_at" label="Date" />
+          <EditButton />
+          <DeleteButton />
         </Datagrid>
       </List>
       <Box
@@ -80,8 +138,8 @@ export const PortableDeviceList = (props) => {
         justifyContent="center"
         alignItems="center"
       >
-        <HomeRedirectButton pageName="devices" title="Devices" />
-        <HomeRedirectButton pageName="ownerPage" title="Home" />
+        
+       
       </Box>
     </>
   );

@@ -1,4 +1,4 @@
-import { Column, Model, Table, ForeignKey } from 'sequelize-typescript';
+import { Column, Model, Table, ForeignKey,BelongsTo } from 'sequelize-typescript';
 import { User } from './users.model';
 import { Greenhouse } from './greenhouses.model';
 
@@ -14,4 +14,13 @@ export class OwnerGreenhouse extends Model<OwnerGreenhouse> {
   @ForeignKey(() => Greenhouse)
   @Column
   greenhouse_id: number;
+
+  @Column
+  created_at: Date;
+
+  @Column
+  updated_at: Date;
+
+  @BelongsTo(() => Greenhouse)
+  declare greenhouses: Greenhouse;
 }

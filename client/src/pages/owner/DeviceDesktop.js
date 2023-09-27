@@ -20,7 +20,7 @@ export const DeviceDesktop = () => {
         height: "90vh",
       }}
     >
-      {!isLgScreen && <MyBar drawerData={owner_drawer} />}
+      
       <Container sx={{ m: "auto" }}>
         <Typography
           variant="h3"

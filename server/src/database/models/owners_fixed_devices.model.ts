@@ -1,7 +1,8 @@
 // users.model.ts
-import { Column, Model, Table, ForeignKey } from 'sequelize-typescript';
+import { Column, Model, Table, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import { User } from './users.model';
 import { FixedDevice } from './fixed_devices.model';
+import { Field } from './fields.model';
 
 @Table({ tableName: 'owners_fixed_devices', timestamps: false })
 export class OwnerFixedDevice extends Model<OwnerFixedDevice> {
@@ -24,4 +25,7 @@ export class OwnerFixedDevice extends Model<OwnerFixedDevice> {
   @ForeignKey(() => FixedDevice)
   @Column
   fixed_device_id: number;
+
+  @BelongsTo(() => FixedDevice)
+  declare fixed_devices: FixedDevice;
 }

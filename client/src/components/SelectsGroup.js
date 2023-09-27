@@ -1,11 +1,10 @@
-// SelectsGroup.js
 import React from "react";
 import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import Button from "@mui/material/Button";
 import { BasicSelect } from "./BasicSelectForm";
-import { Diagram } from "./Diagram";
+import { Diagram } from "./Diagram"; // Import your components
 import { BarDiagram } from "./BarDiagram";
 import { CircleDiagram } from "./CircleDiagram";
 import { BasicTable } from "./BasicTable";
@@ -15,10 +14,8 @@ import { useState } from "react";
 import { DateRange } from "./DateRange";
 import { SelectGreenhouseOrField } from "./SelectGreenhouseOrField";
 import { BasicTableShow } from "./BasicTableShow";
-import { ThemeProvider } from "@mui/material/styles";
-import Theme from "./Theme"; 
 
-export const SelectsGroup = ({ showCommunityPicker, inAdmin }) => {
+export const SelectsGroup = ({ showCommunityPicker }) => {
   const [form, setForm] = React.useState("");
   const [selectedComponent, setSelectedComponent] = React.useState(null); // State for selected component
   const [selectedDevice, setSelectedDevice] = useState(null);
@@ -94,7 +91,7 @@ export const SelectsGroup = ({ showCommunityPicker, inAdmin }) => {
       case "CircleDiagram":
         return <CircleDiagram />;
       case "BasicTable":
-        return <BasicTable list={BasicTable} show={BasicTableShow} />;
+        return <BasicTable list={BasicTable} show={BasicTableShow}/>;
       default:
         return null;
     }
@@ -108,38 +105,36 @@ export const SelectsGroup = ({ showCommunityPicker, inAdmin }) => {
   };
 
   return (
-    <ThemeProvider theme={Theme}>
-      <div style={containerStyle}>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <div style={centeredBoxStyle}>
-            <DateRange value={value} setValue={setValue} />
-            {showCommunityPicker && (
-              <CommunityPicker
-                selectedCommunity={selectedCommunity}
-                handleCommunityChange={handleCommunityChange}
-              />
-            )}
-            <SelectGreenhouseOrField />
-            <ComboBoxDevice
-              selectedDevice={selectedDevice}
-              handleDeviceChange={handleDeviceChange}
+    <div style={containerStyle}>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <div style={centeredBoxStyle}>
+          <DateRange value={value} setValue={setValue} />
+          {showCommunityPicker && (
+            <CommunityPicker
+              selectedCommunity={selectedCommunity}
+              handleCommunityChange={handleCommunityChange}
             />
-            <BasicSelect onChange={(newForm) => setForm(newForm)} />
-            <Button
-              variant="contained"
-              style={{
-                ...buttonStyle,
-                backgroundColor: isButtonEnabled ? "#2BB31C" : "#C0C0C0",
-              }}
-              disabled={!isButtonEnabled}
-              onClick={handleButtonClick}
-            >
-              Send
-            </Button>
-            {selectedComponent && renderSelectedComponent()}
-          </div>
-        </LocalizationProvider>
-      </div>
-    </ThemeProvider>
+          )}
+          <SelectGreenhouseOrField />
+          <ComboBoxDevice
+            selectedDevice={selectedDevice}
+            handleDeviceChange={handleDeviceChange}
+          />
+          <BasicSelect onChange={(newForm) => setForm(newForm)} />
+          <Button
+            variant="contained"
+            style={{
+              ...buttonStyle,
+              backgroundColor: isButtonEnabled ? "#2BB31C" : "#C0C0C0",
+            }}
+            disabled={!isButtonEnabled}
+            onClick={handleButtonClick}
+          >
+            Send
+          </Button>
+          {selectedComponent && renderSelectedComponent()}
+        </div>
+      </LocalizationProvider>
+    </div>
   );
 };

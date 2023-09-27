@@ -20,7 +20,7 @@ export const DeviceStatisticPage = () => {
     >
       {!isLgScreen && <MyBar drawerData={drawer_new_data} />}
       <Container>
-        <SelectsGroup showCommunityPicker={false} inAdmin={false} />
+        <SelectsGroup showCommunityPicker={false}/>
       </Container>
     </Box>
   );

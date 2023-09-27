@@ -1,5 +1,4 @@
-//client//pages/owner/DeviceList.js
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Create,
   SimpleForm,
@@ -8,49 +7,85 @@ import {
   DateInput,
   useNotify,
   useRedirect,
+  required,
 } from "react-admin";
-import axios from "axios"; // Import Axios
+import customDataProvider from "../../providers/dataProvider";
 
 import { HomeRedirectButton } from "../../components/HomeRedirectButton";
-
 export const PortableDeviceCreate = (props) => {
+  
   const currentDate = new Date();
   const notify = useNotify();
   const redirect = useRedirect();
-
-  const onSuccess = (data) => {
-    notify(`Device created successfully`);
-    redirect("/portable_devices"); // Redirect to the portable devices list after successful creation
+  const [quantity, setQuantity] = useState("");
+  const validatePositiveNumber = (value) => {
+    if (isNaN(value) || value <= 0) {
+      return "Value must be a positive number";
+    }
+    return undefined;
   };
-
+  const validationSharedQuantity = (value, allValues) => {
+    if (value > allValues.quantity) {
+      return "Shared quantity must be less than quantity";
+    }
+    return undefined;
+  };
+  const validateDeviceName = [required()];
+  const validateDeviceType = [required()];
+  const validateQuantity = [required(), validatePositiveNumber];
+  const validateSharedQuantity = [
+    validatePositiveNumber,
+    validationSharedQuantity,
+  ];
   const handleSave = async (values) => {
     try {
-      // Make a POST request to your NestJS API to create the device
-      await axios.post("http://your-nestjs-api-url/portable_devices", values);
-      onSuccess(); // Trigger onSuccess callback on success
+      const deviceData = {
+        name: values.name,
+        type: values.type,
+        quantity: values.quantity,
+        shared_quantity: values.shared_quantity,
+        created_at: values.created_at.toISOString(),
+      };
+      
+      // Make a POST request to create the device
+      const response = await customDataProvider.create("portable_devices/create", {
+        data: deviceData,
+      });
+      
+      if (response.data) {
+        notify("Device created successfully", "info");
+        redirect("/portable_devices");
+      } else {
+        // Handle the case where the creation was not successful
+        notify("Something went wrong", "info");
+        console.error("Device creation failed:", response.error);
+      }
     } catch (error) {
       console.error("Error creating device:", error);
-      // Handle error notification or display an error message to the user
+      notify('Device already is existing', { type: 'error' });
     }
   };
-
+  
   return (
     <>
       <Create
         title="Create a portable device"
         {...props}
-        save={handleSave} // Use the custom handleSave function
+        save={handleSave}
       >
-        <SimpleForm>
-          <TextInput source="name" />
-          <TextInput source="type" />
-          <TextInput source="description" />
-          <NumberInput source="quantity" />
-          <DateInput source="date" defaultValue={currentDate} disabled />
+        <SimpleForm onSubmit={handleSave}>
+          <TextInput source="name" validate={validateDeviceName} />
+          <TextInput source="type" validate={validateDeviceType} />
+          <NumberInput source="quantity" validate={validateQuantity} />
+          <NumberInput
+            source="shared_quantity"
+            validate={validateSharedQuantity}
+            minValue={quantity}
+          />
+          <DateInput source="created_at" defaultValue={currentDate} disabled />
         </SimpleForm>
       </Create>
-      <HomeRedirectButton pageName="devices" title="Devices" />
-      <HomeRedirectButton pageName="ownerPage" title="Home" />
+      
     </>
   );
 };

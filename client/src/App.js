@@ -14,7 +14,12 @@ import polyglotI18nProvider from "ra-i18n-polyglot";
 import englishMessages from "ra-language-english";
 import armenianMessages from "ra-language-armenian";
 import AbacApp from "./abac";
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route } from "react-router-dom";
+
+import { ProductCreate } from "../src/pages/admin/ProductCreate";
+import { ProductList } from "../src/pages/admin/ProductList";
+import { ProductEdit } from "../src/pages/admin/ProductEdit";
+import { ProductRequest } from "./pages/admin/ProductRequest";
 
 import { AbacProvider } from "react-abac";
 import { checkAccess } from "./abac";
@@ -51,9 +56,6 @@ import { FieldEdit } from "./pages/owner/FieldEdit";
 import { DeviceRequest } from "./pages/owner/DeviceRequest";
 import { GreenhouseShow } from "./pages/admin/GreenhouseShow";
 import { GreenhouseListAdm } from "./pages/admin/GreenhouseList";
-import { ProductListAdm } from "./pages/admin/ProductList";
-import { ProductShow } from "./pages/admin/ProductListAdm";
-import { DeviceStatisticPage } from "./pages/admin/DeviceStatistic";
 import { Contact } from "./pages/auth/Contact";
 import { NewData } from "./pages/auth/Profile";
 import { CommunityManager } from "./pages/CommunityManager/CommunityManager";
@@ -62,10 +64,14 @@ import { UserCreate } from "./pages/CommunityManager/UserCreate";
 import { UserEdit } from "./pages/CommunityManager/UserEdit";
 import { BasicTableShow } from "./components/BasicTableShow";
 import { BasicTable } from "./components/BasicTable";
-import authPovider from "./providers/authPovider";
-import simpleRestProvider from 'ra-data-simple-rest';
-//const dataProvider = jsonServerProvider("http://localhost:5000");
-const dataProvider = simpleRestProvider("http://localhost:5000");
+import { authProvider } from "./providers/authPovider";
+import simpleRestProvider from "ra-data-simple-rest";
+import { fetchUtils } from "react-admin";
+import GoogleLoginComponent from "./components/Gooogle";
+import { API_URL } from "./consts";
+import customDataProvider from "./providers/dataProvider";
+//const dataProvider = jsonServerProvider(API_URL);
+/* const dataProvider = simpleRestProvider(API_URL); */
 
 // const dataProvider = jsonServerProvider(process.env.API_URL);
 // const dataProvider = simpleRestProvider(process.env.API_URL);
@@ -81,15 +87,15 @@ const App = () => {
     <BrowserRouter>
       <Admin
         layout={MyLayout}
-        dataProvider={dataProvider} 
+        dataProvider={customDataProvider}
         i18nProvider={i18nProvider}
-        // authProvider={authPovider}
-      //  loginPage={Signup}
+        // authProvider={authProvider}
+        // loginPage={Signup}
       >
         <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />
         <Resource name="signin" list={Signin} icon={VpnKeyIcon} />
-        <Resource name="signup" list={Signup} />
         <Route exact path="/signup" element={Signup} />
+        <Resource name="signup" list={Signup} />
         <Resource name="profile" list={Profile} icon={PermIdentityIcon} />
         <Resource name="adminPage" list={AdminDesktop} />
         <Resource name="chooseCommunity" list={ChooseCommunity} />
@@ -145,8 +151,17 @@ const App = () => {
           create={DeviceRequest}
           list={DeviceRequest}
         />
-        <Resource name="Product" list={ProductListAdm} show={ProductShow} />
-        <Resource name="Statistic" list={DeviceStatisticPage} />
+        <Resource
+          name="products"
+          list={ProductList}
+          create={ProductCreate}
+          edit={ProductEdit}
+        />
+        <Resource
+          name="product_requests_history"
+          create={ProductRequest}
+          list={ProductRequest}
+        />
         <Resource name="contact" list={Contact} />
         <Resource name="community_manager" list={CommunityManager} />
         <Resource
