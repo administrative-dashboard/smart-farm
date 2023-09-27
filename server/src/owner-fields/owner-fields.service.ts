@@ -222,4 +222,46 @@ export class OwnerFieldsService {
     }
   }
 
+  async  createField(email:string,fieldData:any) : Promise<OwnerField> {
+    try {
+      const userId = await this.getUserIdByEmail(email);
+      
+      // 1. Проверяем, существует ли у пользователя поле с указанным именем
+      const existingOwnerField = await OwnerField.findOne({
+        where: {
+          user_id: userId,
+        },
+        include: [
+          {
+            model: Field,
+            where: {
+              name: fieldData.name,
+            },
+          },
+        ],
+      });
+  
+      if (existingOwnerField) {
+        throw new Error('У вас уже существует поле с таким именем.');
+      }
+  
+      const createdField = await Field.create({
+        name: fieldData.name,
+        size: fieldData.size,
+        measurement_id: fieldData.measurement,
+        description: fieldData.description,
+        location: fieldData.location,
+      });
+  
+      const ownerCreatedField =   await OwnerField.create({
+        user_id: userId,
+        field_id: createdField.id, 
+      });
+  
+      return ownerCreatedField; 
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }

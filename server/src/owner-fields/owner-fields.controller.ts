@@ -100,8 +100,8 @@ export class OwnerFieldsController {
     }
   }
 
-  /* @Post('create')
-  async createPortableDevice(@Body() fieldData: any, @Request() req) {
+  @Post('create')
+  async createPortableDevice(@Body() fieldData: any, @Request() req, ) {
     try {
       console.log("Field data: ", fieldData);
       const accessToken = req.user.accessToken;
@@ -113,8 +113,8 @@ export class OwnerFieldsController {
       );
       return result; 
     } catch (error) {
-        throw error
-        .
+        return error
+        
     }
-  } */
+  } 
 }
