@@ -222,4 +222,135 @@ export class OwnerFieldsService {
     }
   }
 
+  // async createField(email: string, fieldData: any): Promise<OwnerField> {
+  //   try {
+  //     const userId = await this.getUserIdByEmail(email);
+
+  //     const ownerFields = await OwnerField.findAll({
+  //       where: {
+  //         user_id: userId,
+  //       },
+  //       attributes: [
+  //         'id',
+  //         [Sequelize.col('fields.name'), 'field_name'],
+  //       ],
+  //       include: Field, // Include the Field table in the query
+  //     });
+
+      
+
+      // console.log(ownerFields);
+      // return;
+
+
+  //   } catch (error) {
+  //     console.error(error);
+  //     throw new Error("Failed to create a field.");
+  //   }
+  // }
+
+  async getFieldById(id: string): Promise<any | null> {
+    try {
+      const ParsedId = parseInt(id, 10);
+      /* const portableDevices = await this.getDevicesByUserId(userId); */
+      const fields = await this.ownerField.findOne({
+        where: {
+          id: ParsedId,
+        },
+        attributes: [
+          'id',
+          [Sequelize.col('fields.name'), 'field_name'],
+          [Sequelize.col('fields.size'), 'field_size'],
+          [Sequelize.col('fields.measurement_units.value'), 'measurement'],
+          [Sequelize.col('fields.description'), 'field_description'],
+          [Sequelize.col('fields.location'), 'field_location'],
+          'created_at',
+          'updated_at',
+        ],
+        include: [
+          {
+            model: Field,
+            attributes: [],
+          },
+        ],
+      });
+
+      return fields || null;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
+
+//   async updateFieldsById(id: string, fieldData: any): Promise<any> {
+//     try {
+//       const ParsedId = parseInt(id, 10);
+
+//       const existingField =
+//         await this.ownerField.findOne({
+//           where: {
+//             id: ParsedId,
+//           },
+//         });
+
+//       if (!existingField) {
+//         return null;
+//       }
+
+
+//       const associatedField = await Field.findByPk(
+//         existingField.field_id
+//       );
+
+//         await associatedField.update({
+//           name: fieldData.name,
+//           size: fieldData.size,
+//           measurement_id: fieldData.measurement,
+//           location: fieldData.location,
+//           description: fieldData.description,
+//         });
+//       }
+
+//       // Return the updated OwnerPortableDevice
+//       return existingPortableDevice;
+//     } catch (error) {
+//       throw error;
+//     }
+//   }
+// }
+//   async deletePortableDeviceById(id: string): Promise<boolean> {
+//     try {
+//       const ParsedId = parseInt(id, 10);
+
+//       // Find the OwnerPortableDevice record with the given ID
+//       const existingPortableDevice =
+//         await this.OwnerPortableDeviceModel.findOne({
+//           where: {
+//             id: ParsedId,
+//           },
+//         });
+
+//       if (!existingPortableDevice) {
+//         return false; // Portable device not found
+//       }
+
+//       // Find the associated PortableDevice record
+//       const associatedPortableDevice = await PortableDevice.findByPk(
+//         existingPortableDevice.portable_device_id
+//       );
+
+//       if (associatedPortableDevice) {
+//         // Delete the associated PortableDevice record
+//         await associatedPortableDevice.destroy();
+//       }
+
+//       // Delete the OwnerPortableDevice record
+//       await existingPortableDevice.destroy();
+
+//       return true; // Deletion successful
+//     } catch (error) {
+//       throw error;
+//     }
+//   }
+// }
+// 

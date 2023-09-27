@@ -143,18 +143,15 @@ export class PortableDevicesController {
       deviceData
     );
 
-    return result; // If successful, return the created device
+    return result; 
   } catch (error) {
-    if (error.message === 'User has already associated with this device.') {
-      // Return a specific response when the error message matches
+    if (error.message === 'USER IS ASSOCIATED WITH THE DEVICE') {
       return {
         message: 'User has already associated with this device.',
         status: 'error',
       };
     } else {
       console.log(error);
-      // Handle other errors or rethrow if needed
-      throw error;
     }
   }
 }

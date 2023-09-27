@@ -99,21 +99,26 @@ export class OwnerFieldsController {
       throw new NotFoundException('Fields not found', 'custom-error-code');
     }
   }
-}
-//   @Post('create')
-//   async createPortableDevice(@Body() fieldData: any, @Request() req) {
-//     try {
-//       console.log("Field data: ", fieldData);
-//       const accessToken = req.user.accessToken;
-//       const email = await this.googleService.getUserInfo(accessToken);
+
+  // @Post('create')
+  // async createPortableDevice(@Body() fieldData: any, @Request() req) {
+  //   try {
+  //     console.log("Field data: ", fieldData);
+  //     const accessToken = req.user.accessToken;
+  //     const email = await this.googleService.getUserInfo(accessToken);
       
-//       const result = await this.ownerFieldsService.createField(
-//         email,
-//         fieldData
-//       );
-//       return result; 
-//     } catch (error) {
-//         throw error;
-//     }
-//   }
-// }
+  //     const result = await this.ownerFieldsService.createField(
+  //       email,
+  //       fieldData
+  //     );
+  //     return result; 
+  //   } catch (error) {
+  //       throw error
+        
+  //   }
+  // }
+}
+  
+
+  
+  

@@ -1,5 +1,6 @@
 //client//pages/owner/DeviceList.js
 import React, { useState, useEffect } from "react";
+import axios from 'axios';
 import {
   Create,
   SimpleForm,
@@ -10,6 +11,7 @@ import {
   useRedirect,
   required,
   SelectField,
+  SelectInput,
 } from "react-admin";
 //import { HomeRedirectButton } from "../../components/HomeRedirectButton";
 import customDataProvider from "../../providers/dataProvider";
@@ -22,8 +24,9 @@ export const FieldCreate = (props) => {
   const [measurementChoices, setMeasurementChoices] = useState([]); // State to store measurement choices
 
   useEffect(() => {
-    axios.get(`${API_URL}/fields/measurements`)
+    axios.get(`${API_URL}/measurement_units/fields`)
       .then(response => {
+        console.log(response.data);
         setMeasurementChoices(response.data);
       })
       .catch(error => {
@@ -78,7 +81,13 @@ export const FieldCreate = (props) => {
         <SimpleForm onSubmit={handleSave}>
           <TextInput source="name" validate={validateFieldName}/>
           <NumberInput source="size" validate={validateFieldSize}/>
-          <SelectField source = "measurement" choices={measurementChoices}/>
+          <SelectInput
+            source="value"
+            choices={measurementChoices.map(choice => ({
+              id: choice.id,
+              name: choice.value
+            }))}
+          />
           <TextInput source="location" validate={validateLocation}/>
           <TextInput source="description" multiline/>
           <DateInput source="created_at" defaultValue={currentDate} disabled />

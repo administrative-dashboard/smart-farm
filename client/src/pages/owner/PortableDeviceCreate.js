@@ -52,17 +52,16 @@ export const PortableDeviceCreate = (props) => {
         data: deviceData,
       });
       
-      if (response.data) {
+      if (response.data.message) {
+        notify('Device already is existing', { type: 'error' });
+      } else {
         notify("Device created successfully", "info");
         redirect("/portable_devices");
-      } else {
-        // Handle the case where the creation was not successful
-        notify("Something went wrong", "info");
-        console.error("Device creation failed:", response.error);
+        
       }
     } catch (error) {
       console.error("Error creating device:", error);
-      notify('Device already is existing', { type: 'error' });
+     
     }
   };
   
@@ -80,12 +79,11 @@ export const PortableDeviceCreate = (props) => {
           <NumberInput
             source="shared_quantity"
             validate={validateSharedQuantity}
-            minValue={quantity}
+            //minValue={quantity}
           />
           <DateInput source="created_at" defaultValue={currentDate} disabled />
         </SimpleForm>
       </Create>
-      
     </>
   );
 };
