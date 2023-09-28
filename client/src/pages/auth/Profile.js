@@ -18,6 +18,7 @@ import axios from "axios";
 import { API_URL } from "../../consts";
 import { Form, ImageInput, TextInput, useNotify, useRedirect } from "react-admin";
 import { authProvider } from "../../providers/authPovider";
+import { AllowedTo, AbacProvider} from "react-abac";
 export const Profile = () => {
   const notify = useNotify();
   const redirect = useRedirect();
@@ -103,6 +104,10 @@ export const Profile = () => {
     });
   };
   return (
+    <AbacProvider
+    yes: Yes = () => null,
+  no: No = () => null,
+    >
     <Container>
       <Grid container spacing={2}>
         {/* {!isSmallScreen && (
@@ -217,5 +222,6 @@ export const Profile = () => {
         </Grid>
       </Grid>
     </Container>
+    </AbacProvider>
   );
 };
