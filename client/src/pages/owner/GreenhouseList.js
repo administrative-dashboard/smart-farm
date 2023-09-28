@@ -12,13 +12,12 @@ import {
   DeleteButton,
   TextInput,
   Filter,
-  SearchInput
+  SearchInput,
 } from "react-admin";
 import { useState, useEffect } from "react";
 import { HomeRedirectButton } from "../../components/HomeRedirectButton";
 import { ResetFilters } from "../../components/ResetFilters";
 import customDataProvider from "../../providers/dataProvider";
-
 
 export const GreenhouseList = (props) => {
   const dataProvider = customDataProvider;
@@ -29,20 +28,20 @@ export const GreenhouseList = (props) => {
   const [searchMeasurement, setSearchMeasurement] = useState("");
   const [searchDescription, setSearchDescription] = useState("");
   const [searchLocation, setSearchLocation] = useState("");
-  const [searchDate,setSearchDate]= useState("");
+  const [searchDate, setSearchDate] = useState("");
   const fetchData = async () => {
     try {
       const response = await dataProvider.getList("greenhouses", {
         pagination: { page: 1, perPage: 5 },
         sort: { field: "id", order: "ASC" },
         filter: {
-           q: searchTerm,
-           greenhouse_name: searchName,
-           greenhouse_size: searchSize,
-           greenhouse_size_measurement: searchMeasurement,
-           greenhouse_description: searchDescription,
-           greenhouse_location: searchLocation,
-           created_at: searchDate,
+          q: searchTerm,
+          greenhouse_name: searchName,
+          greenhouse_size: searchSize,
+          greenhouse_size_measurement: searchMeasurement,
+          greenhouse_description: searchDescription,
+          greenhouse_location: searchLocation,
+          created_at: searchDate,
         },
       });
       console.log("REQUEST SEND  ");
@@ -51,23 +50,54 @@ export const GreenhouseList = (props) => {
       console.error("Error fetching data: ", error);
     }
   };
-  const greenhouseFilter = (props) => (
+  const GreenhouseFilter = (props) => (
     <Filter {...props}>
-    <SearchInput source="q" alwaysOn onChange={handleSearchInputChange} />
-    <TextInput label="Name" source="greenhouse_name" onChange={handleSearchNameChange} />
-    <NumberInput label="Size" source="greenhouse_size" onChange={handleSearchSizeChange}/>
-    <TextInput label="Measurement" source="greenhouse_size_measurement" onChange={handleSearchMeasurementChange}/>
-    <TextInput label="Description" source="greenhouse_description" onChange={handleSearchDescriptionChange}/>
-    <TextInput label="Location" source="greenhouse_location" onChange={handleSearchLocationChange}/>
-    <DateInput label="Date" source="created_at" onChange={handleSearchDateChange}/>
-  </Filter>
+      <SearchInput source="q" alwaysOn onChange={handleSearchInputChange} />
+      <TextInput
+        label="Name"
+        source="greenhouse_name"
+        onChange={handleSearchNameChange}
+      />
+      <NumberInput
+        label="Size"
+        source="greenhouse_size"
+        onChange={handleSearchSizeChange}
+      />
+      <TextInput
+        label="Measurement"
+        source="greenhouse_size_measurement"
+        onChange={handleSearchMeasurementChange}
+      />
+      <TextInput
+        label="Description"
+        source="greenhouse_description"
+        onChange={handleSearchDescriptionChange}
+      />
+      <TextInput
+        label="Location"
+        source="greenhouse_location"
+        onChange={handleSearchLocationChange}
+      />
+      <DateInput
+        label="Date"
+        source="created_at"
+        onChange={handleSearchDateChange}
+      />
+    </Filter>
   );
   useEffect(() => {
     console.log("Accepted Data: ", data);
   }, [data]);
   useEffect(() => {
     fetchData();
-  }, [searchTerm,searchName,searchSize,searchMeasurement,searchDescription,searchDate]);
+  }, [
+    searchTerm,
+    searchName,
+    searchSize,
+    searchMeasurement,
+    searchDescription,
+    searchDate,
+  ]);
   const handleSearchInputChange = async (e) => {
     // console.log("Event object:", e);
     if (e.target && e.target.value) {
@@ -117,18 +147,17 @@ export const GreenhouseList = (props) => {
   return (
     <>
       <ResetFilters />
-      <List {...props} filters={<greenhouseFilter/>} sx={{ color: "#38A505" }}>
-        <Datagrid>
+      <List {...props} filters={<GreenhouseFilter />} sx={{ color: "#38A505" }}>
+        <Datagrid rowClick="edit">
           <TextField source="greenhouse_name" />
           <NumberField source="greenhouse_size" />
-          <TextField source="measurement" label="Measurement"/>
+          <TextField source="measurement" label="Measurement" />
           <TextField source="greenhouse_description" />
           <TextField source="greenhouse_location" />
           <EditButton />
-          <DeleteButton/>
+          <DeleteButton />
         </Datagrid>
       </List>
-
     </>
   );
 };

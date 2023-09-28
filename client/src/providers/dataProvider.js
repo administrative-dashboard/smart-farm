@@ -58,13 +58,15 @@ const customDataProvider = {
         headers,
         body: JSON.stringify(params.data),
       });
-      if (!response.ok) {
+     /*  if (!response.ok) {
         throw new Error(response.statusText);
-      }
-      const data = await response.json();
+      } */
+      /* const data = await response.json();
+      console.log(data);
       return {
         data: data,
-      };
+      }; */
+      return response;
     } catch (error) {
       throw new Error(`Error creating ${resource}: ${error.message}`);
     }

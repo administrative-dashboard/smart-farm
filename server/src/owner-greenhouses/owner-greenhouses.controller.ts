@@ -103,4 +103,35 @@ export class OwnerGreenhousesController {
       throw new NotFoundException('Greenhouses not found', 'custom-error-code');
     }
   }
+  @Post('create')
+  async createGreenhouse(@Body() greenhouseData: any, @Request() req, @Res() res) {
+    try {
+      console.log("Greenhouse data: ", greenhouseData);
+      const accessToken = req.user.accessToken;
+      const email = await this.googleService.getUserInfo(accessToken);
+      const result = await this.ownerGreenhousesService.createGreenhouse(
+        email,
+        greenhouseData
+      );
+      res.status(200).json(result);
+    } catch (error) {
+      if (error.message === 'You already have a greenhouse with the same name.') {
+        // Если возникла ошибка с определенным сообщением, отправляем ответ с ошибкой
+        res.status(400).json({
+          message: 'You already have a greenhouse with the same name.',
+          status: 'error',
+        });
+      } else {
+        res.status(500).json({
+          message: 'An error occurred.',
+          status: 'error',
+        });
+      }
+    }
+  }
+
+
+
+
+
 }

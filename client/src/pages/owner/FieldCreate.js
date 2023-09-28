@@ -49,31 +49,36 @@ export const FieldCreate = (props) => {
  
   const handleSave = async (values) => {
     try {
-      const fieldData = {
-        name: values.name,
-        size: values.size,
-        measurement: values.measurement,
-        description: values.description,
-        location: values.location,
-        created_at: values.created_at.toISOString(),
-      };
-      
-      // Make a POST request to create the device
-      const response = await customDataProvider.create("fields/create", {
-        data: fieldData,
-      });
-      console.log(response);
-      if (response.data) {
-        notify("Field created successfully", "info");
-        /* redirect("/fields"); */
-      } else {
-        console.error("Field creation failed:", response.error);
-        notify('Field already is existing', { type: 'error' });
-      }
-    } catch (error) {
-      console.error("Error creating field:", error);
-      
+  const fieldData = {
+    name: values.name,
+    size: values.size,
+    measurement: values.measurement,
+    description: values.description,
+    location: values.location,
+    created_at: values.created_at.toISOString(),
+  };
+
+  const response = await customDataProvider.create("fields/create", {
+    data: fieldData,
+  });
+  
+  if (response.status === 200) {
+    notify("Field created successfully", "info");
+    redirect("/fields");
+  } else if (response.status === 400) {
+    const Error = await response.json();
+    const message=Error.message
+    if (message) {
+      notify(message, { type: 'error' });
+    } else {
+      notify('An error occurred', { type: 'error' });
     }
+  } else {
+    notify('An error occurred', { type: 'error' });
+  }
+} catch (error) {
+  console.error("Error creating field:", error);
+}
   };
   return (
     <>

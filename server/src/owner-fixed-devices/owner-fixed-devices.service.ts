@@ -227,6 +227,9 @@ export class OwnersFixedDevicesService {
       }
       
     } catch (error) {
+      if(error.message="USER IS ASSOCIATED WITH THE DEVICE"){
+        throw(error);
+      }
       console.error(error);
 
     }

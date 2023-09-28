@@ -225,8 +225,6 @@ export class OwnerFieldsService {
   async  createField(email:string,fieldData:any) : Promise<OwnerField> {
     try {
       const userId = await this.getUserIdByEmail(email);
-      
-      // 1. Проверяем, существует ли у пользователя поле с указанным именем
       const existingOwnerField = await OwnerField.findOne({
         where: {
           user_id: userId,
@@ -242,7 +240,7 @@ export class OwnerFieldsService {
       });
   
       if (existingOwnerField) {
-        throw new Error('У вас уже существует поле с таким именем.');
+        throw new Error('You already have a field with the same name.');
       }
   
       const createdField = await Field.create({
@@ -263,6 +261,38 @@ export class OwnerFieldsService {
       throw error;
     }
   }
+  async deleteFieldById(id: string): Promise<boolean> {
+    try {
+      const ParsedId = parseInt(id, 10);
+      const existingField =
+        await this.ownerField.findOne({
+          where: {
+            id: ParsedId,
+          },
+        });
+
+      if (!existingField) {
+        return false; 
+      }
+
+      const associatedField = await Field.findByPk(
+        existingField.field_id
+      );
+
+      if (associatedField) {
+        await associatedField.destroy();
+      }
+      await existingField.destroy();
+      return true; // Deletion successful
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
+
+
+
 }
 
 //   async updateFieldsById(id: string, fieldData: any): Promise<any> {

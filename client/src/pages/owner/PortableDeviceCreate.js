@@ -52,12 +52,19 @@ export const PortableDeviceCreate = (props) => {
         data: deviceData,
       });
       
-      if (response.data.message) {
-        notify('Device already is existing', { type: 'error' });
-      } else {
+      if (response.status === 200) {
         notify("Device created successfully", "info");
         redirect("/portable_devices");
-        
+      } else if (response.status === 400) {
+        const Error = await response.json();
+        const message=Error.message
+        if (message) {
+          notify(message, { type: 'error' });
+        } else {
+          notify('An error occurred', { type: 'error' });
+        }
+      } else {
+        notify('An error occurred', { type: 'error' });
       }
     } catch (error) {
       console.error("Error creating device:", error);
@@ -70,7 +77,7 @@ export const PortableDeviceCreate = (props) => {
       <Create
         title="Create a portable device"
         {...props}
-        save={handleSave}
+
       >
         <SimpleForm onSubmit={handleSave}>
           <TextInput source="name" validate={validateDeviceName} />

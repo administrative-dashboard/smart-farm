@@ -222,4 +222,75 @@ export class OwnerGreenhousesService {
           throw error;
         }
       }
+
+      async  createGreenhouse(email:string,greenhouseData:any) : Promise<OwnerGreenhouse> {
+        try {
+          const userId = await this.getUserIdByEmail(email);
+          const existingOwnerGreenhouse = await OwnerGreenhouse.findOne({
+            where: {
+              user_id: userId,
+            },
+            include: [
+              {
+                model: Greenhouse,
+                where: {
+                  name: greenhouseData.name,
+                },
+              },
+            ],
+          });
+      
+          if (existingOwnerGreenhouse) {
+            throw new Error('You already have a greenhouse with the same name.');
+          }
+      
+          const createdGreenhouse = await Greenhouse.create({
+            name: greenhouseData.name,
+            size: greenhouseData.size,
+            measurement_id: greenhouseData.measurement,
+            description: greenhouseData.description,
+            location: greenhouseData.location,
+          });
+      
+          const ownerCreatedGreenhouse =   await this.ownerGreenhouse.create({
+            user_id: userId,
+            greenhouse_id: createdGreenhouse.id, 
+          });
+      
+          return ownerCreatedGreenhouse; 
+        } catch (error) {
+          throw error;
+        }
+      }
+
+      async deleteGreenhouseById(id: string): Promise<boolean> {
+        try {
+          const ParsedId = parseInt(id, 10);
+          const existingGreenhouse =
+            await this.ownerGreenhouse.findOne({
+              where: {
+                id: ParsedId,
+              },
+            });
+    
+          if (!existingGreenhouse) {
+            return false; 
+          }
+    
+          const associatedGreenhouse = await Greenhouse.findByPk(
+            existingGreenhouse.greenhouse_id
+          );
+    
+          if (associatedGreenhouse) {
+            await associatedGreenhouse.destroy();
+          }
+          await existingGreenhouse.destroy();
+          return true; // Deletion successful
+        } catch (error) {
+          throw error;
+        }
+      }
+
+
+
 }

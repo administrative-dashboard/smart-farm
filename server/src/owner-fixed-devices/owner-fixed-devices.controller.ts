@@ -127,7 +127,7 @@ export class FixedDevicesController {
   }
 
   @Post('create')
-  async createFixedDevice(@Body() deviceData: any, @Request() req) {
+  async createFixedDevice(@Body() deviceData: any, @Request() req, @Res() res) {
     try {
       console.log(deviceData);
       const accessToken = req.user.accessToken;
@@ -138,18 +138,20 @@ export class FixedDevicesController {
         deviceData
       );
 
-      return result; // If successful, return the created device
+      res.status(200).json(result);
     } catch (error) {
-      if (error.message === 'User has already associated with this device.') {
+      if (error.message === 'USER IS ASSOCIATED WITH THE DEVICE') {
         // Return a specific response when the error message matches
-        return {
-          message: 'User has already associated with this device.',
+        res.status(400).json({
+          message: 'You already have a device with the same name and type.',
           status: 'error',
-        };
+        });
       } else {
+        res.status(500).json({
+          message: 'An error occurred.',
+          status: 'error',
+        });
         console.log(error);
-        // Handle other errors or rethrow if needed
-        throw error;
       }
     }
   }

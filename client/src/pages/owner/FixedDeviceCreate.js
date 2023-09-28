@@ -46,18 +46,24 @@ export const FixedDeviceCreate = (props) => {
         quantity: values.quantity,
         created_at: values.created_at.toISOString(),
       };
-      
       const response = await customDataProvider.create("fixed_devices/create", {
         data: deviceData,
       });
-      
-      if (response.data) {
+      if (response.status === 200) {
         notify("Device created successfully", "info");
         redirect("/fixed_devices");
+      } else if (response.status === 400) {
+        const Error = await response.json();
+        const message=Error.message
+        if (message) {
+          notify(message, { type: 'error' });
+        } else {
+          notify('An error occurred', { type: 'error' });
+        }
       } else {
-        console.error("Device creation failed:", response.error);
-        
+        notify('An error occurred', { type: 'error' });
       }
+     
     } catch (error) {
       console.error("Error creating device:", error);
       notify('Device already is existing', { type: 'error' });
