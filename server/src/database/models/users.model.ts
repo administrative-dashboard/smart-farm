@@ -11,6 +11,7 @@ import { FixedDevice } from './fixed_devices.model';
 import { PortableDevice } from './portable_devices.model ';
 import { OwnerFixedDevice } from './owners_fixed_devices.model';
 import { OwnerPortableDevice } from './owners_portable_devices.model ';
+import { UserPermission } from './users_permissions.model';
 
 @Table({ tableName: 'users', timestamps: false })
 export class User extends Model<User> {
@@ -52,5 +53,8 @@ export class User extends Model<User> {
 
   @HasMany(() => OwnerFixedDevice)
   owners_fixed_devices: OwnerFixedDevice[];
+
+  @HasMany(() => UserPermission)
+  users_permissions: UserPermission[];
 }
 
