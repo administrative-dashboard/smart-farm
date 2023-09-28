@@ -54,7 +54,7 @@ export const FieldList = (props) => {
       <TextInput label="Name" source="field_name" onChange={handleSearchNameChange} />
       <NumberInput label="Size" source="field_size" onChange={handleSearchSizeChange}/>
       <TextInput label="Measurement" source="field_size_measurement" onChange={handleSearchMeasurementChange}/>
-      <TextInput label="Description" source="field_description" onChange={handleSearchDescriptionChange}/>
+      <TextInput label="Description" source="field_description" onChange={handleSearchDescriptionChange} multiline/>
       <TextInput label="Location" source="field_location" onChange={handleSearchLocationChange}/>
       <DateInput label="Date" source="created_at" onChange={handleSearchDateChange}/>
     </Filter>
@@ -119,7 +119,7 @@ export const FieldList = (props) => {
           <TextField source="field_name" label="Name"/>
           <NumberField source="field_size" label="Size" />
           <TextField source="measurement" label="Measurement"/>
-          <TextField source="field_description" label="Description"/>
+          <TextField source="field_description" label="Description" multiline fullWidth/>
           <TextField source="field_location" label="Location" />
           <DateField source="created_at" label="Date" />
           <EditButton />

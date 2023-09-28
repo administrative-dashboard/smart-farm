@@ -84,10 +84,12 @@ const customDataProvider = {
         method: "GET",
         headers,
       });
+     
       if (!response.ok) {
         throw new Error(response.statusText);
       }
       const data = await response.json();
+      console.log(data);
       if (!data.id) {
         throw new Error('API response is missing the "id" attribute');
       }

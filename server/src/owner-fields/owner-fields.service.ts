@@ -249,6 +249,7 @@ export class OwnerFieldsService {
         measurement_id: fieldData.measurement,
         description: fieldData.description,
         location: fieldData.location,
+        createdAt: fieldData.created_at,
       });
   
       const ownerCreatedField =   await OwnerField.create({
@@ -261,6 +262,87 @@ export class OwnerFieldsService {
       throw error;
     }
   }
+  async getFieldById(id:string): Promise<any | null> {
+    try {
+      const ParsedId = parseInt(id, 10);
+      
+      const field = await this.ownerField.findOne({
+        where: {
+          id: ParsedId,
+        },
+        attributes: [
+          'id',
+          [Sequelize.col('fields.name'), 'field_name'],
+          [Sequelize.col('fields.size'), 'field_size'],
+          [Sequelize.col('fields.measurement_units.value'), 'measurement'],
+          [Sequelize.col('fields.description'), 'field_description'],
+          [Sequelize.col('fields.location'), 'field_location'],
+          'created_at',
+        ],
+        include: [
+          {
+            model: Field,
+            attributes: [],
+            include: [
+            {
+              model: MeasurementUnit,
+              attributes: [],
+            },
+        ]
+          },
+        ],
+        
+      });
+      return  field || null; 
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateFieldById(id: string, fieldData: any): Promise<any> {
+    try {
+      const ParsedId = parseInt(id, 10);
+
+      // First, check if the portable device with the given ID exists
+      const existingField =
+        await this.ownerField.findOne({
+          where: {
+            id: ParsedId,
+          },
+        });
+
+      if (!existingField) {
+        return null; // Portable device not found
+      }
+
+
+      // Update the portable device record with the specified data
+      await existingField.update({
+        updated_at: new Date(), // Update the updated_at timestamp
+      });
+
+      // Find the associated Field record
+      const associatedField = await Field.findByPk(
+        existingField.field_id,
+      );
+
+      if (associatedField) {
+        // Update the Field record
+        await associatedField.update({
+          name: fieldData.name,
+          size: fieldData.size,
+          measurement_id: fieldData.measurement_id,
+          location: fieldData.location,
+          description: fieldData.description,
+        });
+      }
+    
+      return existingField;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async deleteFieldById(id: string): Promise<boolean> {
     try {
       const ParsedId = parseInt(id, 10);

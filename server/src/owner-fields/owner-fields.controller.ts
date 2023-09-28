@@ -100,35 +100,50 @@ export class OwnerFieldsController {
     }
   }
 
-  @Post('create')
-  async createField(@Body() fieldData: any, @Request() req, @Res() res) {
+
+  @Get(':id')
+  async getFieldById(@Param('id') id: string) {
     try {
-      console.log("Field data: ", fieldData);
-      const accessToken = req.user.accessToken;
-      const email = await this.googleService.getUserInfo(accessToken);
-      const result = await this.ownerFieldsService.createField(
-        email,
-        fieldData
-      );
-      res.status(200).json(result);
-    } catch (error) {
-      if (error.message === 'You already have a field with the same name.') {
-        // Если возникла ошибка с определенным сообщением, отправляем ответ с ошибкой
-        res.status(400).json({
-          message: 'You already have a field with the same name.',
-          status: 'error',
-        });
-      } else {
-        res.status(500).json({
-          message: 'An error occurred.',
-          status: 'error',
-        });
+      const field =
+        await this.ownerFieldsService.getFieldById(id);
+      console.log(field);
+      if (!field) {
+        return { message: 'Field not found' };
       }
+      return field;
+    } catch (error) {
+      console.log(error);
+      return { error: 'An error occurred' };
     }
   }
 
+  @Put(':id')
+  async updateFieldById(
+    @Param('id') id: string,
+    @Body() fieldData: any
+  ) {
+    try {
+      const updatedField =
+        await this.ownerFieldsService.updateFieldById(
+          id,
+          fieldData,
+        );
+
+      if (!updatedField) {
+        return { message: 'Field not found' };
+      }
+
+      return updatedField;
+    } catch (error) {
+      console.log(error);
+      return { error: 'An error occurred' };
+    }
+  }
+
+
+
   @Delete(':id')
-  async deletePortableDeviceById(@Param('id') id: string) {
+  async deleteFieldDeviceById(@Param('id') id: string) {
     try {
       const deleted =
         await this.ownerFieldsService.deleteFieldById(id);

@@ -8,8 +8,7 @@ import {
   useDataProvider,
   required,
 } from "react-admin";
-import { Box } from "@mui/material";
-import { HomeRedirectButton } from "../../components/HomeRedirectButton";
+
 import customDataProvider from "../../providers/dataProvider";
 export const PortableDeviceEdit = (props) => {
   const validatePositiveNumber = (value) => {
@@ -47,12 +46,7 @@ export const PortableDeviceEdit = (props) => {
           <DateInput source="created_at" label="Date" disabled />
         </SimpleForm>
       </Edit>
-      <Box
-        display="flex"
-        flexDirection="row"
-        justifyContent="center"
-        alignItems="center"
-      ></Box>
+
     </>
   );
 };
