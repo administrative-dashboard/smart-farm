@@ -11,6 +11,9 @@ import { UserRole } from 'src/database/models/users_roles';
 import { Role } from 'src/database/models/roles.model';
 import { GoogleService } from 'src/auth/google.service';
 import { UserRolesService } from './user-roles.service';
+import { Permission } from 'src/database/models/permissions.model';
+import { UserPermission } from 'src/database/models/users_permissions.model';
+import { UserPermissionsService } from './user-permissions.service';
 
 @Module({
   imports: [
@@ -20,6 +23,8 @@ import { UserRolesService } from './user-roles.service';
       Community,
       UserRole,
       Role,
+      Permission,
+      UserPermission
     ]),
   ],
   providers: [
@@ -27,6 +32,7 @@ import { UserRolesService } from './user-roles.service';
     UserCommunityService,
     GoogleService,
     UserRolesService,
+    UserPermissionsService
   ],
   controllers: [UserController],
   exports: [UserCommunityService],

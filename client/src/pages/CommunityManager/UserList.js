@@ -86,11 +86,12 @@ export const UserList = (props) => {
         <>
           <List {...props} data={data} title={communityName}>
             <Datagrid>
-              <TextField source="id" />
+              {/* <TextField source="id" /> */}
               <TextField source="name" />
               <EmailField source="email" />
               <TextField source="phone_number" />
-              <TextField label="Role" source="roles" />
+              <TextField label="Roles" source="roles" />
+              <TextField label="Permissions" source="permissions" />
                 <EditButton />
             </Datagrid>
           </List>

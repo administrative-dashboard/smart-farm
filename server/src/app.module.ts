@@ -34,6 +34,7 @@ import { CommunitiesModule } from './communities/communities.module';
 import { AuthMiddleware } from './middlewares/auth/auth.middleware';
 import { UserController } from './user/user.controller';
 import { OwnerFixedDeviceModule } from './owner-fixed-devices/owner-fixed-devices.module';
+import { UserPermission } from './database/models/users_permissions.model';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -66,7 +67,8 @@ import { OwnerFixedDeviceModule } from './owner-fixed-devices/owner-fixed-device
         DeviceUsageStatisticsFields,
         DeviceUsageStatisticsGreenhouses,
         OwnerFixedDevice,
-        OwnerPortableDevice
+        OwnerPortableDevice,
+        UserPermission
       ],
     }),
     AuthModule,

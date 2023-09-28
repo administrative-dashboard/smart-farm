@@ -41,6 +41,7 @@ export class CommunitiesController {
     @Query('email') email: string,
     @Query('phone_number') phone_number: string,
     @Query('roles') roles: string,
+    @Query('permissions') permissions: string,
     @Request() req
   ) {
     try {
@@ -78,7 +79,7 @@ export class CommunitiesController {
   @UseGuards(JwtAuthGuard)
   async getUserById(@Param('id') id: string) {
     try {
-      const data = await this.userRoleService.getUserById(id);
+      const data = await this.userService.getUserById(id);
       if (!data) {
         return { message: 'user not found' };
       }
@@ -98,7 +99,7 @@ export class CommunitiesController {
   ) {
     try {
       const updateUserById =
-        await this.userRoleService.updateUserById(
+        await this.userService.updateUserById(
           id,
           data
         );

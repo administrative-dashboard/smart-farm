@@ -7,14 +7,9 @@ import { User } from 'src/database/models/users.model';
 import { UserRole } from 'src/database/models/users_roles';
 import { Role } from 'src/database/models/roles.model';
 import { Sequelize } from 'sequelize';
-export interface UserWithRoles {
-  id: number;
-  name: string;
-  email: string;
-  phone_number: string;
-  profile_image: string;
-  roles: string;
-}
+import { UserPermission } from 'src/database/models/users_permissions.model';
+import { Permission } from 'src/database/models/permissions.model';
+
 @Injectable()
 export class UserCommunityService {
   constructor(
@@ -94,6 +89,15 @@ export class UserCommunityService {
               },
             ],
           },
+          {
+            model: UserPermission,
+            include: [
+              {
+                model: Permission,
+                attributes: ['value'],
+              },
+            ],
+          },
         ],
       });
       
@@ -103,6 +107,7 @@ export class UserCommunityService {
         email: user.email,
         phone_number: user.phone_number,
         roles: user.users_roles.map((userRole) => userRole.roles.value),
+        permissions: user.users_permissions.map((UserPerm) => UserPerm.permissions.value)
       }));
       
       const total = data.length;

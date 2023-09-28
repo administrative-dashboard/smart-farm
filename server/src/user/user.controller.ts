@@ -7,13 +7,15 @@ import { UserCommunity } from 'src/database/models/users_communities.model';
 import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
 import { GoogleService } from 'src/auth/google.service';
 import { UserRolesService } from './user-roles.service';
+import { UserPermissionsService } from './user-permissions.service';
 @Controller('user')
 export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly userCommunityService: UserCommunityService,
     private readonly googleService: GoogleService,
-    private readonly userRolesService: UserRolesService
+    private readonly userRolesService: UserRolesService,
+    private readonly userPermsService: UserPermissionsService
   ) { }
 
   @Get('info')
@@ -152,15 +154,37 @@ export class UserController {
     }
   }
 
+  @Get('perm')
+  @UseGuards(JwtAuthGuard)
+  async getPerm(@Request() req) {
+    try {
+      const accessToken = req.user.accessToken;
+      const email = await this.googleService.getUserInfo(accessToken);
+      const user = await this.userService.getUserInfoByEmail(email);
+
+      if (!user) {
+        throw new NotFoundException('User not found');
+
+      }
+
+      const userId = user.id;
+      const permsName = this.userPermsService.getPermsByUserId(userId);
+      return permsName;
+    } catch (error) {
+      // console.error('Error fetching permissons:', error);
+      throw new NotFoundException('Error fetching perms name');
+    }
+  }
+
   @Get('roles')
   @UseGuards(JwtAuthGuard)
   async getRolesInfo() {
     return await this.userRolesService.getAllRoles();
   }
+  @Get('perms')
+  @UseGuards(JwtAuthGuard)
+  async getPermsInfo() {
+    return await this.userPermsService.getAllPerms();
+  }
 
-  // @Put('roles/:id')
-  // @UseGuards(JwtAuthGuard)
-  // async editUserRoles(@Param('id') id: number, @Body() roleData: any) {
-  //   return this.userRolesService.editUserRoles(id, roleData.roles);
-  // }
 }
