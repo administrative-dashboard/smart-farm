@@ -3,6 +3,7 @@ import {
   Create,
   SimpleForm,
   TextInput,
+  DateInput,
   useNotify,
   useRedirect,
   required,
@@ -10,6 +11,7 @@ import {
 import customDataProvider from "../../providers/dataProvider";
 
 export const ProductCreate = (props) => {
+  const currentDate = new Date();
   const notify = useNotify();
   const redirect = useRedirect();
 
@@ -22,7 +24,8 @@ export const ProductCreate = (props) => {
       const productData = {
         name: values.product_name,
         type: values.product_type,
-        description: values.product_description,
+        description: values.description,
+        created_at: values.created_at.toISOString(),
       };
 
       const response = await customDataProvider.create("products/create", {
@@ -52,9 +55,10 @@ export const ProductCreate = (props) => {
           <TextInput source="product_name" validate={validateProductName} />
           <TextInput source="product_type" validate={validateProductType} />
           <TextInput
-            source="product_description"
+            source="description"
             validate={validateProductDescription}
           />
+          <DateInput source="created_at" defaultValue={currentDate} disabled />
         </SimpleForm>
       </Create>
     </>

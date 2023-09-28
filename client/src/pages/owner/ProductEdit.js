@@ -1,6 +1,6 @@
 //client//pages/admin/ProductEdit.js
 import React from "react";
-import { Edit, SimpleForm, TextInput, required } from "react-admin";
+import { Edit, SimpleForm, TextInput, required, DateInput } from "react-admin";
 import { Box } from "@mui/material";
 
 import { HomeRedirectButton } from "../../components/HomeRedirectButton";
@@ -18,6 +18,7 @@ export const ProductEdit = (props) => {
             label="Description"
             validate={[required()]}
           />
+          <DateInput source="updated_at" label="Date" disabled />
         </SimpleForm>
       </Edit>
       <Box

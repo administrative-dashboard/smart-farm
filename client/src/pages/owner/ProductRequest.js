@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Typography, Box } from "@mui/material";
 import { HomeRedirectButton } from "../../components/HomeRedirectButton";
-import { CustomProductRequestCreate } from "../../services/admin/ProductRequestService";
+import { CustomProductRequestCreate } from "../../services/owner/ProductRequestService";
 
 export const ProductRequest = () => {
   return (
@@ -26,7 +26,7 @@ export const ProductRequest = () => {
         </Typography>
         <CustomProductRequestCreate />
       </Container>
-      <HomeRedirectButton pageName="adminPage" title="home" />
+      <HomeRedirectButton pageName="ownerPage" title="home" />
     </Box>
   );
 };

@@ -1,4 +1,4 @@
-// users.model.ts
+// product_types.model.ts
 import { Column, Model, Table, BelongsToMany, HasMany } from 'sequelize-typescript';
 import { RolePermission } from './roles_perms.model';
 import { Role } from './roles.model';

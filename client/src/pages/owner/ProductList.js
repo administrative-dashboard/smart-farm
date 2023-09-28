@@ -4,10 +4,12 @@ import {
   List,
   Datagrid,
   TextField,
+  DateField,
   NumberField,
   EditButton,
   DeleteButton,
   TextInput,
+  DateInput,
   Filter,
   SearchInput,
 } from "react-admin";
@@ -23,17 +25,19 @@ export const ProductList = (props) => {
   const [searchName, setSearchName] = useState("");
   const [searchType, setSearchType] = useState("");
   const [searchDescription, setSearchDescription] = useState("");
+  const [searchDate, setSearchDate] = useState("");
 
   const fetchData = async () => {
     try {
       const response = await dataProvider.getList("products", {
         pagination: { page: 1, perPage: 5 },
-        sort: { field: "id", order: "ASC" },
+        sort: { product: "id", order: "ASC" },
         filter: {
           q: searchTerm,
           product_name: searchName,
           product_type: searchType,
           product_description: searchDescription,
+          created_at: searchDate,
         },
       });
 
@@ -44,7 +48,7 @@ export const ProductList = (props) => {
     }
   };
 
-  const DeviceFilter = (props) => (
+  const ProductFilter = (props) => (
     <Filter {...props}>
       <SearchInput source="q" alwaysOn onChange={handleSearchInputChange} />
       <TextInput
@@ -62,11 +66,16 @@ export const ProductList = (props) => {
         source="product_description"
         onChange={handleSearchDescriptionChange}
       />
+      <DateInput
+        label="Date"
+        source="created_at"
+        onChange={handleSearchDateChange}
+      />
     </Filter>
   );
   useEffect(() => {
     fetchData();
-  }, [searchTerm, searchName, searchType, searchDescription]);
+  }, [searchTerm, searchName, searchType, searchDescription, searchDate]);
 
   const handleSearchInputChange = async (e) => {
     if (e.target && e.target.value) {
@@ -96,6 +105,12 @@ export const ProductList = (props) => {
       setSearchDescription(e.target.value);
     }
   };
+  const handleSearchDateChange = async (e) => {
+    if (e.target.value) {
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      setSearchDate(e.target.value);
+    }
+  };
 
   return (
     <>
@@ -104,13 +119,14 @@ export const ProductList = (props) => {
       <List
         {...props}
         data={data}
-        filters={<DeviceFilter />}
+        filters={<ProductFilter />}
         sx={{ color: "#38A505" }}
       >
         <Datagrid rowClick="edit">
           <TextField source="product_name" label="Name" />
           <TextField source="product_type" label="Type" />
           <NumberField source="product_description" label="Description" />
+          <DateField source="created_at" label="Date" />
           <EditButton />
           <DeleteButton />
         </Datagrid>

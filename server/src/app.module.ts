@@ -37,7 +37,9 @@ import { OwnerFixedDeviceModule } from './owner-fixed-devices/owner-fixed-device
 import { OwnerFieldsModule } from './owner-fields/owner-fields.module';
 import { MeasurementUnitsModule } from './measurement-units/measurement-units.module';
 import { OwnerGreenhousesModule } from './owner-greenhouses/owner-greenhouses.module';
-import { ProductsModule } from './products/products.module';
+import { OwnerProductModule } from './owner-products/products.module';
+import { OwnerProduct } from './database/models/owners_products.model'
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -70,7 +72,8 @@ import { ProductsModule } from './products/products.module';
         DeviceUsageStatisticsFields,
         DeviceUsageStatisticsGreenhouses,
         OwnerFixedDevice,
-        OwnerPortableDevice
+        OwnerPortableDevice,
+        OwnerProduct,
       ],
     }),
     AuthModule,
@@ -81,7 +84,7 @@ import { ProductsModule } from './products/products.module';
     OwnerFieldsModule,
     MeasurementUnitsModule,
     OwnerGreenhousesModule,
-    ProductsModule,
+    OwnerProductModule,
   ],
   controllers: [AppController],
   providers: [AppService],

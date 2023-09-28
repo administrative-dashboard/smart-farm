@@ -16,10 +16,10 @@ import armenianMessages from "ra-language-armenian";
 import AbacApp from "./abac";
 import { BrowserRouter, Route } from "react-router-dom";
 
-import { ProductCreate } from "../src/pages/admin/ProductCreate";
-import { ProductList } from "../src/pages/admin/ProductList";
-import { ProductEdit } from "../src/pages/admin/ProductEdit";
-import { ProductRequest } from "./pages/admin/ProductRequest";
+import { ProductCreate } from "../src/pages/owner/ProductCreate";
+import { ProductList } from "../src/pages/owner/ProductList";
+import { ProductEdit } from "../src/pages/owner/ProductEdit";
+import { ProductRequest } from "./pages/owner/ProductRequest";
 
 import { AbacProvider } from "react-abac";
 import { checkAccess } from "./abac";
