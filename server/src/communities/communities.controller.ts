@@ -1,9 +1,11 @@
 //community.controller.ts
 import {
+  Body,
   Controller,
   Get,
   NotFoundException,
   Param,
+  Put,
   Query,
   Request,
   UseGuards,
@@ -51,7 +53,7 @@ export class CommunitiesController {
 
       const userId = user.id;
       const communityName = await this.userCommunityService.getCommunityNameByUserId(userId);
-      const {data, total} = await this.userCommunityService.getUsersInSameCommunity(communityName);
+      const { data, total } = await this.userCommunityService.getUsersInSameCommunity(communityName);
 
       // const filteredUsers = data.filter((user) => {
       //   if (
@@ -65,7 +67,7 @@ export class CommunitiesController {
       //   }
       //   return false;
       // });
-      return {data, total};
+      return { data, total };
       // return { communityName, data };
     } catch (error) {
       console.error('Error fetching community and users:', error);
@@ -74,9 +76,9 @@ export class CommunitiesController {
   }
   @Get('users/:id')
   @UseGuards(JwtAuthGuard)
-  async getUserById(@Param('id') id: number) {
+  async getUserById(@Param('id') id: string) {
     try {
-      const data = await this.userService.getUserInfoById(id);
+      const data = await this.userRoleService.getUserById(id);
       if (!data) {
         return { message: 'user not found' };
       }
@@ -87,4 +89,29 @@ export class CommunitiesController {
       return { error: 'An error occurred' };
     }
   }
+
+  @Put('users/:id')
+  @UseGuards(JwtAuthGuard)
+  async updateUserById(
+    @Param('id') id: string,
+    @Body() data: any
+  ) {
+    try {
+      const updateUserById =
+        await this.userRoleService.updateUserById(
+          id,
+          data
+        );
+
+      if (!updateUserById) {
+        return { message: 'user not found' };
+      }
+
+      return updateUserById;
+    } catch (error) {
+      console.log(error);
+      return { error: 'An error occurred' };
+    }
+  }
+
 }

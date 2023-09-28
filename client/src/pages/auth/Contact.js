@@ -21,7 +21,8 @@ import {
   useNotify,
   useRedirect
 } from "react-admin";
-
+import { PhoneInput } from 'react-international-phone';
+import 'react-international-phone/style.css';
 export const Contact = () => {
   const notify = useNotify();
   const redirect = useRedirect();
@@ -111,7 +112,7 @@ export const Contact = () => {
             <>
               <Typography
                 component="span"
-                variant="h5"
+                variant="h4"
                 sx={{ color: "#38A505", display: "inline", mb: 4 }}
               >
                 Smart Farm
@@ -122,26 +123,35 @@ export const Contact = () => {
             </>
           )}
           <Form redirect="dashboard" onSubmit={handleEdit}>
-            <TextField
-              id="filled-select-community"
-              select
-              label="Select Community"
-              variant="filled"
-              color="primary"
-              sx={{
-                width: "100%",
-                mb: 3,
-              }}
-              value={selectedCommunity}
-              onChange={(e) => setSelectedCommunity(e.target.value)}
-            >
+          <TextField
+  id="filled-select-community"
+  select
+  label="Select Community"
+  variant="filled"
+  sx={{
+    width: "100%",
+    mb: 3,
+    "& .MuiFilledInput-input": {
+      color: "green", // Set the text color to white
+    },
+    "& .MuiInputLabel-root": {
+      // color: "green", // Set the label color to white
+    },
+    "& .MuiFilledInput-root": {
+      backgroundColor: "white", // Set the background color to white
+    },
+  }}
+  value={selectedCommunity}
+  onChange={(e) => setSelectedCommunity(e.target.value)}
+>
+
               {communities.map((community) => (
                 <MenuItem key={community.id} value={community.id}>
                   {community.name}
                 </MenuItem>
               ))}
             </TextField>
-            <TextInput
+            {/* <TextInput
               label="Phone number"
               variant="filled"
               color="primary"
@@ -149,11 +159,17 @@ export const Contact = () => {
               sx={{ width: "100%", mb: 3 }}
               source="phone_number"
               onChange={(e) => setPhoneNumber(e.target.value)}
-            />
+            /> */}
+            <PhoneInput
+            
+        defaultCountry="am"
+        value={phone_number}
+        onChange={(phone) => setPhoneNumber(phone)}
+      />
             <Box
-              sx={{ width: "100%", display: "flex", justifyContent: "center" }}
+              sx={{ width: "100%", display: "flex", justifyContent: "center" , p: 4}}
             >
-              <Button type="submit" sx={{ color: 'black', fontSize: '1rem' }}>Save</Button>
+              <Button type="submit" sx={{ color: 'black', fontSize: '1rem', y: 4 }}>Save</Button>
             </Box>
           </Form>
         </Box>

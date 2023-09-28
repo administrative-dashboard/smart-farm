@@ -66,6 +66,7 @@ import customDataProvider from "./providers/dataProvider";
 /* const dataProvider = simpleRestProvider(API_URL); */
 import { authProvider } from "./providers/authPovider";
 import { API_URL } from "./consts";
+import { UserEdit } from "./pages/CommunityManager/UserEdit";
 const i18nProvider = polyglotI18nProvider(
   (locale) => (locale === "am" ? armenianMessages : englishMessages),
   "en" // Default locale
@@ -116,13 +117,13 @@ const App = () => {
   const employeeResources = [
     <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
     <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
-    <Resource name="contact" list={Contact} />,
+    <Resource name="contact" list={Contact} options={{ label: "My contacts" }}/>,
   ];
 
   const ownerResources = [
     <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
     <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
-    <Resource name="contact" list={Contact} />,
+    <Resource name="contact" list={Contact} options={{ label: "My contacts" }}/>,
     <Resource
       name="ownerPage"
       list={OwnerDesktop}
@@ -166,20 +167,22 @@ const App = () => {
     // />,
   ];
   const CMResources = [
-    <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
-    <Resource name="contact" list={Contact} />,
-    <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
-    <Resource name="usersinfo" list={DesktopInfo} />,
+    <Resource name="dashboard" list={MainDashboard} icon={HomeIcon}  options={{ label: "Home" }} />,
+    <Resource name="contact" list={Contact} options={{ label: "My contacts" }}/>,
+    <Resource name="profile" list={Profile} icon={PermIdentityIcon}  options={{ label: "Profile" }}/>,
+    <Resource name="usersinfo" list={DesktopInfo}   options={{ label: "Dashboard" }}/>,
     <Resource
       name="community/users"
       list={UserList}
+      edit={UserEdit}
       icon={ArticleIcon}
+      options={{ label: "Users" }}
     />,
   ];
   const AdminResources = [
     <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
     <Resource name="adminPage" list={AdminDesktop} />,
-    <Resource name="contact" list={Contact} />,
+    <Resource name="contact" list={Contact} options={{ label: "My contacts" }}/>,
     <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
     <Resource
       name="all_fixedDevices"
@@ -229,6 +232,7 @@ const App = () => {
     <Resource
       name="community/users"
       list={UserList}
+      edit={UserEdit}
       icon={ArticleIcon}
     />,
     //<Resource name="BasicTable" list={BasicTable} show={BasicTableShow} />,
