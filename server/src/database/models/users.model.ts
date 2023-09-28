@@ -11,6 +11,7 @@ import { FixedDevice } from './fixed_devices.model';
 import { PortableDevice } from './portable_devices.model ';
 import { OwnerFixedDevice } from './owners_fixed_devices.model';
 import { OwnerPortableDevice } from './owners_portable_devices.model ';
+import { OwnerProduct } from './owners_products.model';
 
 @Table({ tableName: 'users', timestamps: false })
 export class User extends Model<User> {
@@ -60,5 +61,8 @@ export class User extends Model<User> {
 
   @HasMany(() => OwnerFixedDevice)
   owners_fixed_devices: OwnerFixedDevice[];
+
+  @HasMany(() => OwnerProduct)
+  owners_products: OwnerProduct[];
 }
 

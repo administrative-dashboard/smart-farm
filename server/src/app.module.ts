@@ -37,6 +37,7 @@ import { OwnerFixedDeviceModule } from './owner-fixed-devices/owner-fixed-device
 import { OwnerFieldsModule } from './owner-fields/owner-fields.module';
 import { MeasurementUnitsModule } from './measurement-units/measurement-units.module';
 import { OwnerGreenhousesModule } from './owner-greenhouses/owner-greenhouses.module';
+import { ProductsModule } from './products/products.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -80,6 +81,7 @@ import { OwnerGreenhousesModule } from './owner-greenhouses/owner-greenhouses.mo
     OwnerFieldsModule,
     MeasurementUnitsModule,
     OwnerGreenhousesModule,
+    ProductsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
