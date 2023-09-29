@@ -118,7 +118,7 @@ export const PortableDeviceList = (props) => {
         data={data}
         filters={<DeviceFilter />} 
         sx={{ color: "#38A505" }}
-        title=""
+        title=" "
       >
         <ListTitle pageName="Portable Devices"/>
         <Datagrid rowClick='edit'>
