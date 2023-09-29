@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   TextField,
@@ -8,15 +8,11 @@ import {
   useMediaQuery,
   Button,
 } from "@mui/material";
-import { CustomCancelButton } from "../../components/CancelButton";
-//import { MyBar } from "../../components/Drawer";
-//import { drawer_new_data } from "../../assets/static/mockData/new_data";
 import { useTheme } from "@mui/material/styles";
-import { Link } from "react-router-dom";
 import { getJwtTokenFromCookies } from "../../providers/authUtils";
 import axios from "axios";
 import { API_URL } from "../../consts";
-import { Form, ImageInput, TextInput, useNotify, useRedirect } from "react-admin";
+import { Form,  ImageField, TextInput, useNotify, useRedirect } from "react-admin";
 import { authProvider } from "../../providers/authPovider";
 import { AllowedTo, AbacProvider} from "react-abac";
 export const Profile = () => {
@@ -26,7 +22,7 @@ export const Profile = () => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const [user, setUser] = React.useState(null);
   const [formData, setFormData] = useState({});
-
+  const [validationError, setValidationError] = useState("");
   React.useEffect(() => {
     const fetchUserInfo = async () => {
       try {
@@ -76,14 +72,12 @@ export const Profile = () => {
         {
           headers: {
             Authorization: `Bearer ${getJwtTokenFromCookies()}`,
-            // "Content-Type": "multipart/form-data",
           },
         }
       )
         .then(() => {
           notify('Edited successfully', { type: 'success' });
           redirect('list', 'dashboard');
-          console.log("hjdksf", typeof formData.profile_image);
         })
         .catch((error) => {
           notify(`Error: ${error.message}`, 'error');
@@ -102,24 +96,37 @@ export const Profile = () => {
       email: user?.email || "",
       profile_image: user?.profile_image || "",
     });
+    notify('Editing Canceled', { type: 'failure' });
+    redirect('list', 'dashboard');
   };
+  const validatePhoneNumber = (phoneNumber) => {
+    if (!phoneNumber) {
+      return true; 
+    }
+    const regex = /^\+374 \d{2} \d{6}$/; // +374 99 999999
+    return regex.test(phoneNumber);
+  };
+
+  useEffect(() => {
+    if (!validatePhoneNumber(formData.phone_number)) {
+      setValidationError("Phone number must be in the format +374 99 999999");
+    } else {
+      setValidationError("");
+    }
+  }, [formData.phone_number]);
+
+
   return (
     <AllowedTo
     >
     <Container>
       <Grid container spacing={2}>
-        {/* {!isSmallScreen && (
-          <Grid item xs={12} md={3}>
-            <MyBar drawerData={drawer_new_data} />
-          </Grid>
-        )} */}
         <Grid item xs={12} md={isSmallScreen ? 12 : 9}>
           <Box p={2}>
             <Typography variant="h4" gutterBottom>
               My Profile
             </Typography>
-            {/* <Form redirect="dashboard" onSubmit={handleEdit}></Form> */}
-            <Form redirect="dashboard" onSubmit={handleUpdateUserInfo} >
+            <Form redirect="dashboard"  >
               <TextInput
                 variant="filled"
                 label="Name"
@@ -133,28 +140,19 @@ export const Profile = () => {
                   setFormData({ ...formData, name: e.target.value })
                 }
               />
-              <ImageInput
+              <TextField
                 variant="filled"
-                label="Profile image"
+                label="Profile Image"
                 color="primary"
                 fullWidth
                 margin="normal"
-                source="profile_image"
-                defaultValue={formData.profile_image}
-                onChange={(e) => {
-                  const file = e.target.files[0];
-                  setFormData({ ...formData, profile_image: file });
-                }}
-                accept="image/*"
-                multiple={false}
-              />
-              {formData.profile_image && (
-                <img
-                  src={formData.profile_image}
-                  alt="Profile"
-                  style={{ width: "15%" }}
-                />
-              )}
+                type="text"
+                disabled={true}
+              ></TextField>
+              <ImageField source="profile_image" title="Profile Image" />
+              <div>
+                <img src={formData.profile_image} title="profile" />
+              </div>
               <TextInput
                 variant="filled"
                 label="Community"
@@ -165,10 +163,8 @@ export const Profile = () => {
                 defaultValue={formData.community}
                 disabled={true}
                 type="text"
-              // onChange={(e) =>
-              //   setFormData({ ...formData, community: e.target.value })
-              // }
               />
+
               <TextInput
                 variant="filled"
                 label="Phone"
@@ -181,6 +177,8 @@ export const Profile = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, phone_number: e.target.value })
                 }
+                error={Boolean(validationError)} 
+                helperText={validationError}
               />
               <TextInput
                 variant="filled"
@@ -192,17 +190,24 @@ export const Profile = () => {
                 type="email"
                 defaultValue={formData.email}
                 disabled={true}
-              // onChange={(e) =>
-              //   setFormData({ ...formData, email: e.target.value })
-              // }
               />
 
               <Box display="flex" justifyContent="flex-end" mt={3}>
-                <CustomCancelButton
+                <Button
+                  type="button"
+                  variant="contained"
+                  color="primary"
                   onClick={handleReset}
-                  sx={{ backgroundColor: " #1F4700" }}
-                />
-                <Button type="submit"
+                  sx={{
+                    marginLeft: "10px",
+                    backgroundColor: "#1F4700",
+                    color: "white",
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
                   variant="contained"
                   color="primary"
                   sx={{
@@ -210,10 +215,11 @@ export const Profile = () => {
                     backgroundColor: "#1F4700",
                     color: "white",
                   }}
+                  onClick={handleUpdateUserInfo} 
+                  disabled={Boolean(validationError)}
                 >
                   Save
                 </Button>
-
               </Box>
             </Form>
           </Box>
