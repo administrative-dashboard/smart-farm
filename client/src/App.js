@@ -334,12 +334,12 @@ const App = () => {
     return result.length > 0 ? result : <div>...loading</div>;
   };
   return (
-    <AbacProvider
-      // user={props.user}
-      // roles={props.user.roles}
-      // rules={rules}
-      // permissions={props.user.permissions}
-    >
+    // <AbacProvider
+    //   // user={props.user}
+    //   // roles={props.user.roles}
+    //   // rules={rules}
+    //   // permissions={props.user.permissions}
+    // >
       <BrowserRouter>
         {isLoading ? (
           <div>Loading...</div>
@@ -354,7 +354,7 @@ const App = () => {
           </Admin>
         )}
       </BrowserRouter>
-    </AbacProvider>
+    ///* </AbacProvider> */}
   );
 };
 
