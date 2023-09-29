@@ -2,7 +2,7 @@
 import { useRedirect } from "react-admin";
 import IconButton from "@mui/material/IconButton";
 
-import logo from "../assets/static/Greenhouse1.png";
+import logo from "../assets/static/LogoButton.png";
 
 export const Logo = () => {
   const redirect = useRedirect();
@@ -14,10 +14,10 @@ export const Logo = () => {
       size="small"
       edge="start"
       color="inherit"
-      sx={{ ml: 5, p: 0, my: 0 }}
+      sx={{ ml: 2, p: 0, my: 0 }}
       onClick={handleClick}
     >
-      <img src={logo} alt="Logo" style={{ width: "60px", height: "auto" }} />
+      <img src={logo} alt="Logo" style={{ width: "80px", height: "auto" }} />
     </IconButton>
   );
 };
