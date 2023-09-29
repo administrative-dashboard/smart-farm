@@ -13,10 +13,10 @@ import {
   SelectInput,
 } from "react-admin";
 import { API_URL } from "../../consts";
+import customDataProvider from "../../providers/dataProvider";
 export const FieldEdit = (props) => {
   const notify = useNotify();
   const redirect = useRedirect();
-
   const [measurementChoices, setMeasurementChoices] = useState([]); 
 
   useEffect(() => {
@@ -41,10 +41,47 @@ export const FieldEdit = (props) => {
   const validateFieldName = [required()];
   const validateFieldSize = [required(), validatePositiveNumber];
   const validateLocation =[required()];
+  const handleSave = async (values) => {
+    try {
+      
+      const fieldData = {
+        id: values.id,
+        name: values.field_name,
+        size: values.field_size,
+        measurement: values.measurement,
+        description: values.field_description,
+        location: values.field_location,
+        created_at: values.created_at,
+      };
+      console.log(fieldData.id)
+      const response = await customDataProvider.update("fields", {
+        data: fieldData,
+        id: fieldData.id
+      });
+      console.log(response)
+      if (response.status === 200) {
+        notify("Field updated successfully", "info");
+        redirect("/fields");
+      } else if (response.status === 400) {
+        const Error = await response.json();
+        const message = Error.message;
+        if (message) {
+          notify(message, { type: "error" });
+        } else {
+          notify("An error occurred", { type: "error" });
+        }
+      } else {
+        notify("An error occurred", { type: "error" });
+      }
+    } catch (error) {
+      console.error("Error updating field:", error);
+    }
+  };
   return (
     <>
       <Edit title="Edit a field" {...props} resource="fields">
-      <SimpleForm>
+      <SimpleForm onSubmit={handleSave}>
+        
           <TextInput source="field_name" validate={validateFieldName}/>
           <NumberInput source="field_size" validate={validateFieldSize}/>
           <SelectInput

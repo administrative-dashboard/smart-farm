@@ -7,7 +7,6 @@ import { Sequelize, Op } from 'sequelize';
 import { now } from 'sequelize/types/utils';
 import { User } from 'src/database/models/users.model';
 import { MeasurementUnit } from 'src/database/models/measurement_units';
-
 @Injectable()
 export class OwnerGreenhousesService {
     constructor(
@@ -276,7 +275,6 @@ export class OwnerGreenhousesService {
           if (!existingGreenhouse) {
             return false; 
           }
-    
           const associatedGreenhouse = await Greenhouse.findByPk(
             existingGreenhouse.greenhouse_id
           );

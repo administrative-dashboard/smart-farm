@@ -222,8 +222,9 @@ export class OwnerFieldsService {
     }
   }
 
-  async  createField(email:string,fieldData:any) : Promise<OwnerField> {
+  async createField(email:string,fieldData:any) : Promise<OwnerField> {
     try {
+      console.log(fieldData)
       const userId = await this.getUserIdByEmail(email);
       const existingOwnerField = await OwnerField.findOne({
         where: {
@@ -238,23 +239,21 @@ export class OwnerFieldsService {
           },
         ],
       });
-  
       if (existingOwnerField) {
         throw new Error('You already have a field with the same name.');
       }
-  
       const createdField = await Field.create({
         name: fieldData.name,
         size: fieldData.size,
         measurement_id: fieldData.measurement,
         description: fieldData.description,
         location: fieldData.location,
-        createdAt: fieldData.created_at,
       });
   
       const ownerCreatedField =   await OwnerField.create({
         user_id: userId,
         field_id: createdField.id, 
+        created_at: fieldData.created_at
       });
   
       return ownerCreatedField; 
@@ -274,7 +273,7 @@ export class OwnerFieldsService {
           'id',
           [Sequelize.col('fields.name'), 'field_name'],
           [Sequelize.col('fields.size'), 'field_size'],
-          [Sequelize.col('fields.measurement_units.value'), 'measurement'],
+          [Sequelize.col('fields.measurement_units.id'), 'measurement'],
           [Sequelize.col('fields.description'), 'field_description'],
           [Sequelize.col('fields.location'), 'field_location'],
           'created_at',
@@ -299,10 +298,32 @@ export class OwnerFieldsService {
     }
   }
 
-  async updateFieldById(id: string, fieldData: any): Promise<any> {
+  async updateFieldById(id: string, fieldData: any,email:string): Promise<any> {
     try {
       const ParsedId = parseInt(id, 10);
+      const userId = await this.getUserIdByEmail(email);
+      const repeatingField =
+        await this.ownerField.findOne({
+          where: {
+            user_id : userId,
+            id: {
+              [Op.not]: ParsedId, // Используйте Op.not для исключения записи с определенным id
+            },
+          },
+          include: [
+            {
+              model: Field,
+              where: {
+                name: fieldData.name,
+              },
+            },
+          ],
+        });
+      if (repeatingField) {
+        throw new Error('You already have a field with the same name.');
+      }
 
+      
       // First, check if the portable device with the given ID exists
       const existingField =
         await this.ownerField.findOne({
@@ -329,11 +350,11 @@ export class OwnerFieldsService {
       if (associatedField) {
         // Update the Field record
         await associatedField.update({
-          name: fieldData.name,
-          size: fieldData.size,
-          measurement_id: fieldData.measurement_id,
-          location: fieldData.location,
-          description: fieldData.description,
+          name: fieldData.field_name,
+          size: fieldData.field_size,
+          measurement_id: fieldData.measurement,
+          location: fieldData.field_location,
+          description: fieldData.field_description,
         });
       }
     

@@ -21,7 +21,6 @@ export const FieldCreate = (props) => {
   const currentDate = new Date();
   const notify = useNotify();
   const redirect = useRedirect();
-
   const [measurementChoices, setMeasurementChoices] = useState([]); // State to store measurement choices
 
   useEffect(() => {
@@ -50,6 +49,7 @@ export const FieldCreate = (props) => {
 
   const handleSave = async (values) => {
     try {
+      console.log("THIS IS ILON MASK",values.measurement)
       const fieldData = {
         name: values.name,
         size: values.size,

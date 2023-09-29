@@ -112,13 +112,13 @@ const customDataProvider = {
         headers,
         body: JSON.stringify(params.data),
       });
-      if (!response.ok) {
+      /* if (!response.ok) {
         throw new Error(response.statusText);
       }
-      const data = await response.json();
-      return {
-        data: data,
-      };
+      const data = await response.json(); */
+      return response;
+        
+      
     } catch (error) {
       throw new Error(`Error updating ${resource}: ${error.message}`);
     }
