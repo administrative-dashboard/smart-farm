@@ -14,7 +14,7 @@ export const ProductEdit = (props) => {
           <TextInput source="product_name" validate={[required()]} />
           <TextInput source="product_type" validate={[required()]} />
           <TextInput
-            source="product_description"
+            source="description"
             label="Description"
             validate={[required()]}
           />
@@ -28,7 +28,7 @@ export const ProductEdit = (props) => {
         alignItems="center"
       >
         <HomeRedirectButton pageName="products" title="Products" />
-        <HomeRedirectButton pageName="adminPage" title="Home" />
+        <HomeRedirectButton pageName="ownerPage" title="Home" />
       </Box>
     </>
   );

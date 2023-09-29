@@ -39,6 +39,8 @@ import { MeasurementUnitsModule } from './measurement-units/measurement-units.mo
 import { OwnerGreenhousesModule } from './owner-greenhouses/owner-greenhouses.module';
 import { OwnerProductModule } from './owner-products/products.module';
 import { OwnerProduct } from './database/models/owners_products.model'
+import { Product } from './database/models/product.model';
+import { ProductType } from './database/models/product_types.model';
 
 @Module({
   imports: [
@@ -74,6 +76,8 @@ import { OwnerProduct } from './database/models/owners_products.model'
         OwnerFixedDevice,
         OwnerPortableDevice,
         OwnerProduct,
+        Product,
+        ProductType
       ],
     }),
     AuthModule,

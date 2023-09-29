@@ -12,9 +12,6 @@ export class ProductType extends Model<ProductType> {
   @Column({ allowNull: false })
   type: string;
 
-  @Column({})
-  description: string;
-  
   @HasMany(() => Product)
   products: Product[];
  

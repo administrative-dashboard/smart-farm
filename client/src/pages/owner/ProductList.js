@@ -36,7 +36,7 @@ export const ProductList = (props) => {
           q: searchTerm,
           product_name: searchName,
           product_type: searchType,
-          product_description: searchDescription,
+          description: searchDescription,
           created_at: searchDate,
         },
       });
@@ -63,7 +63,7 @@ export const ProductList = (props) => {
       />
       <TextInput
         label="Description"
-        source="product_description"
+        source="description"
         onChange={handleSearchDescriptionChange}
       />
       <DateInput
@@ -125,7 +125,7 @@ export const ProductList = (props) => {
         <Datagrid rowClick="edit">
           <TextField source="product_name" label="Name" />
           <TextField source="product_type" label="Type" />
-          <NumberField source="product_description" label="Description" />
+          <NumberField source="description" label="Description" />
           <DateField source="created_at" label="Date" />
           <EditButton />
           <DeleteButton />

@@ -15,9 +15,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      description: {
-        type: Sequelize.STRING,
-      },
     };
 
     await queryInterface.createTable(tableName, columns);

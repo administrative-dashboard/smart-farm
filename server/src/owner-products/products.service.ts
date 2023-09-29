@@ -1,9 +1,13 @@
+// products.service.ts
+
 import { Injectable } from '@nestjs/common';
 import { OwnerProduct } from '../database/models/owners_products.model';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from 'src/database/models/users.model';
 import { Product } from '../database/models/product.model';
 import { Sequelize, Op } from 'sequelize';
+import { ProductType } from 'src/database/models/product_types.model';
+import { type } from 'os';
 
 @Injectable()
 export class ProductsService {
@@ -59,8 +63,8 @@ export class ProductsService {
         attributes: [
           'id',
           [Sequelize.col('products.name'), 'product_name'],
-        //   [Sequelize.col('products.type'), 'product_type'],
-        [Sequelize.col('products.description'), 'description'],
+          //   [Sequelize.col('products.type'), 'product_type'],
+          [Sequelize.col('products.description'), 'description'],
           'created_at',
         ],
         include: [
@@ -118,7 +122,7 @@ export class ProductsService {
       if (query !== '' && query !== undefined) {
         whereClause[Op.or] = [
           Sequelize.literal(`"products"."name" ILIKE :textQuery`),
-        //   Sequelize.literal(`"products"."type" ILIKE :textQuery`),
+          //   Sequelize.literal(`"products"."type" ILIKE :textQuery`),
         ];
       }
 
@@ -130,9 +134,10 @@ export class ProductsService {
       }
       if (productType !== '' && productType !== undefined) {
         console.log('productType is pushed');
-        whereClause[Op.and].push(
-        //   Sequelize.literal(`"products"."type" ILIKE :textProductType`)
-        );
+        whereClause[Op.and]
+          .push
+          //   Sequelize.literal(`"products"."type" ILIKE :textProductType`)
+          ();
       }
       if (description !== '' && description !== undefined) {
         console.log('description is pushed');
@@ -192,40 +197,75 @@ export class ProductsService {
     }
   }
 
+  async getOrCreateProductTypeId(typeName: string): Promise<number> {
+    try {
+      const existingType = await ProductType.findOne({
+        where: {
+          type: typeName,
+        },
+      });
+
+      if (existingType) {
+        return existingType.id;
+        
+      } else {
+        const newType = await ProductType.create({
+          type: typeName,
+        });
+        return newType.id;
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async createProduct(email: string, productData: any): Promise<OwnerProduct> {
     try {
       const userId = await this.getUserIdByEmail(email);
+      
+      const typeId = await this.getOrCreateProductTypeId(productData.productType);
+  
       let existingProduct = await Product.findOne({
         where: {
           name: productData.name,
           description: productData.description,
+          type_id: typeId, 
         },
       });
+  
       if (!existingProduct) {
         existingProduct = await Product.create({
           name: productData.name,
           description: productData.description,
+          type_id: typeId, 
         });
       }
+  
       const existingRecord = await this.OwnerProductModel.findOne({
         where: {
           user_id: userId,
+          product_id: existingProduct.id, 
         },
       });
+  
       if (existingRecord) {
         throw new Error('USER IS ASSOCIATED WITH THE PRODUCT');
       } else {
         const OwnerProduct = await this.OwnerProductModel.create({
           user_id: userId,
-        //   description: productData.description,
+          product_id: existingProduct.id, 
           created_at: productData.created_at,
+          updated_at: productData.created_at,
         });
+  
         return OwnerProduct;
       }
     } catch (error) {
       console.error(error);
+      throw error;
     }
   }
+  
 
   async getProductById(id: string): Promise<any | null> {
     try {
