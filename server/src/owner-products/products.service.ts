@@ -278,7 +278,7 @@ export class ProductsService {
           [Sequelize.col('products.description'), 'description'],
           'created_at',
           [Sequelize.literal(`"products"."name"`), 'product_name'],
-          //   [Sequelize.literal(`"products"."type"`), 'product_type'],
+          [Sequelize.literal(`"products"."type"`), 'product_type'],
         ],
         include: [
           {
@@ -298,7 +298,6 @@ export class ProductsService {
     try {
       const ParsedId = parseInt(id, 10);
 
-      // First, check if the Product with the given ID exists
       const existingProduct = await this.OwnerProductModel.findOne({
         where: {
           id: ParsedId,
@@ -306,30 +305,33 @@ export class ProductsService {
       });
 
       if (!existingProduct) {
-        return null; // Product not found
+        return null;
       }
 
-      // Update the Product record with the specified data
-      await existingProduct.update({
-        // name: productData.name,
-        // description: productData.description,
-        updated_at: new Date(),
-      });
-
-      // Find the associated Product record
       const associatedProduct = await Product.findByPk(
         existingProduct.product_id
       );
 
-      if (associatedProduct) {
-        // Update the Product record
+      if (!associatedProduct) {
+        return null;
+      }
+
+      await existingProduct.update({
+        updated_at: new Date(),
+      });
+
+      await associatedProduct.update({
+        name: productData.product_name,
+        description: productData.description,
+      });
+
+      if (productData.type) {
+        const typeId = await this.getOrCreateProductTypeId(productData.type);
         await associatedProduct.update({
-          description: productData.description,
-          name: productData.device_name,
+          type_id: typeId,
         });
       }
 
-      // Return the updated OwnerProduct
       return existingProduct;
     } catch (error) {
       throw error;
