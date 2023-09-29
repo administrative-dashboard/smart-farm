@@ -13,7 +13,9 @@ import {
   SelectField,
   choices,
   SelectInput,
+
 } from "react-admin";
+import { RichTextInput } from 'ra-input-rich-text';
 //import { HomeRedirectButton } from "../../components/HomeRedirectButton";
 import customDataProvider from "../../providers/dataProvider";
 import { API_URL } from "../../consts";
@@ -72,7 +74,7 @@ export const FieldCreate = (props) => {
         if (message) {
           notify(message, { type: "error" });
         } else {
-          notify("An error occurred", { type: "error" });
+          notify("You already have a field with the same name.", { type: "error" });
         }
       } else {
         notify("An error occurred", { type: "error" });
@@ -96,7 +98,7 @@ export const FieldCreate = (props) => {
             label="Measurement"
           />
           <TextInput source="location" validate={validateLocation} />
-          <TextInput source="description" multiline />
+          <RichTextInput source="description" />
           <DateInput source="created_at" defaultValue={currentDate} disabled />
         </SimpleForm>
       </Create>

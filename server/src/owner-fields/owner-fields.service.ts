@@ -350,11 +350,11 @@ export class OwnerFieldsService {
       if (associatedField) {
         // Update the Field record
         await associatedField.update({
-          name: fieldData.field_name,
-          size: fieldData.field_size,
+          name: fieldData.name,
+          size: fieldData.size,
           measurement_id: fieldData.measurement,
-          location: fieldData.field_location,
-          description: fieldData.field_description,
+          location: fieldData.location,
+          description: fieldData.description,
         });
       }
     

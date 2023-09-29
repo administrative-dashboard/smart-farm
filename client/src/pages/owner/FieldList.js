@@ -11,8 +11,11 @@ import {
   DeleteButton,
   TextInput,
   Filter,
-  SearchInput
+  SearchInput,
+  DatagridConfigurable,
+
 } from "react-admin";
+import { RichTextField } from "react-admin";
 import { HomeRedirectButton } from "../../components/HomeRedirectButton";
 import { ResetFilters } from "../../components/ResetFilters";
 import { useState, useEffect } from "react";
@@ -115,16 +118,16 @@ export const FieldList = (props) => {
     <>
       <ResetFilters />
       <List {...props} data={data} filters={<FieldFilter/>} sx={{ color: "#38A505" }}>
-        <Datagrid rowClick="edit">
+        <DatagridConfigurable rowClick="edit">
           <TextField source="field_name" label="Name"/>
           <NumberField source="field_size" label="Size" />
           <TextField source="measurement" label="Measurement"/>
-          <TextField source="field_description" label="Description" multiline fullWidth/>
+          <RichTextField source="field_description" label="Description"  />
           <TextField source="field_location" label="Location" />
           <DateField source="created_at" label="Date" />
           <EditButton />
           <DeleteButton />
-        </Datagrid>
+        </DatagridConfigurable>
       </List>
     </>
   );

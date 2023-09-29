@@ -12,6 +12,7 @@ import {
   useRedirect,
   SelectInput,
 } from "react-admin";
+import { RichTextInput } from 'ra-input-rich-text';
 import { API_URL } from "../../consts";
 import customDataProvider from "../../providers/dataProvider";
 export const FieldEdit = (props) => {
@@ -85,13 +86,14 @@ export const FieldEdit = (props) => {
           <TextInput source="field_name" validate={validateFieldName}/>
           <NumberInput source="field_size" validate={validateFieldSize}/>
           <SelectInput
+          
             choices={measurementChoices.map(choice => ({
               id: choice.id,
               name: choice.value
             }))} source="measurement" label="Measurement"
           />
           <TextInput source="field_location" validate={validateLocation}/>
-          <TextInput source="field_description" multiline fullWidth/>
+          <RichTextInput source="field_description" />
           <DateInput source="created_at" disabled />
         </SimpleForm>
       </Edit>
