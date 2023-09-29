@@ -75,6 +75,7 @@ const i18nProvider = polyglotI18nProvider(
 const App = () => {
   const isAuthenticated = getJwtTokenFromCookies() ? true : false;
   const [roles, setRoles] = React.useState([]);
+  const [perms, setPerms] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   React.useEffect(() => {
     localStorage.setItem("appLoading", "true");
@@ -96,10 +97,29 @@ const App = () => {
       }
     };
 
+    const fetchUserPerms = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/user/perm`, {
+          headers: {
+            Authorization: `Bearer ${getJwtTokenFromCookies()}`,
+          },
+        });
+        setPerms(response.data);
+      } catch (error) {
+        console.error("Error fetching user permissions:", error);
+        authProvider.logout();
+      } finally {
+        localStorage.removeItem("appLoading");
+        setIsLoading(false);
+      }
+    };
+
     if (isAuthenticated) {
       fetchUserRoles();
+      fetchUserPerms();
     } else {
       setRoles(["GUEST"]);
+      setPerms([])
       setIsLoading(false);
     }
   }, []);

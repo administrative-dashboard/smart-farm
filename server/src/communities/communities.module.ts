@@ -11,6 +11,8 @@ import { UserService } from 'src/user/user.service';
 import { UserRolesService } from 'src/user/user-roles.service';
 import { UserRole } from 'src/database/models/users_roles';
 import { Role } from 'src/database/models/roles.model';
+import { Permission } from 'src/database/models/permissions.model';
+import { UserPermission } from 'src/database/models/users_permissions.model';
 
 @Module({
   imports: [
