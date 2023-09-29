@@ -104,9 +104,7 @@ export const Profile = () => {
     });
   };
   return (
-    <AbacProvider
-    yes: Yes = () => null,
-  no: No = () => null,
+    <AllowedTo
     >
     <Container>
       <Grid container spacing={2}>
@@ -222,6 +220,6 @@ export const Profile = () => {
         </Grid>
       </Grid>
     </Container>
-    </AbacProvider>
+    </AllowedTo>
   );
 };

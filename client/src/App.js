@@ -314,20 +314,27 @@ const App = () => {
     return result.length > 0 ? result : <div>...loading</div>;
   };
   return (
-    <BrowserRouter>
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : (
-        <Admin
-          theme={myTheme}
-          layout={MyLayout}
-          dataProvider={customDataProvider}
-          i18nProvider={i18nProvider}
-        >
-          {getdrw()}
-        </Admin>
-      )}
-    </BrowserRouter>
+    <AbacProvider
+      // user={props.user}
+      // roles={props.user.roles}
+      // rules={rules}
+      // permissions={props.user.permissions}
+    >
+      <BrowserRouter>
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : (
+          <Admin
+            theme={myTheme}
+            layout={MyLayout}
+            dataProvider={customDataProvider}
+            i18nProvider={i18nProvider}
+          >
+            {getdrw()}
+          </Admin>
+        )}
+      </BrowserRouter>
+    </AbacProvider>
   );
 };
 
