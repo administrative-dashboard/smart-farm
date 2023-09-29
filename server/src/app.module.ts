@@ -35,6 +35,7 @@ import { AuthMiddleware } from './middlewares/auth/auth.middleware';
 import { UserController } from './user/user.controller';
 import { OwnerFixedDeviceModule } from './owner-fixed-devices/owner-fixed-devices.module';
 import { UserPermission } from './database/models/users_permissions.model';
+import { OwnerFieldsModule } from './owner-fields/owner-fields.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
