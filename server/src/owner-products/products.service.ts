@@ -63,7 +63,7 @@ export class ProductsService {
         attributes: [
           'id',
           [Sequelize.col('products.name'), 'product_name'],
-          //   [Sequelize.col('products.type'), 'product_type'],
+          [Sequelize.col('products.product_types.type'), 'product_type'],
           [Sequelize.col('products.description'), 'description'],
           'created_at',
         ],
@@ -71,6 +71,7 @@ export class ProductsService {
           {
             model: Product,
             attributes: [],
+            include: [{ model: ProductType, attributes: [] }],
           },
         ],
         order: sort,
@@ -169,7 +170,7 @@ export class ProductsService {
           [Sequelize.col('products.description'), 'description'],
           'created_at',
           [Sequelize.literal(`"products"."name"`), 'product_name'],
-          //[Sequelize.literal(`"products"."type"`), 'product_type'],
+          [Sequelize.literal(`"products"."type"`), 'product_type'],
         ],
         include: [
           {
@@ -207,7 +208,6 @@ export class ProductsService {
 
       if (existingType) {
         return existingType.id;
-        
       } else {
         const newType = await ProductType.create({
           type: typeName,
@@ -222,42 +222,42 @@ export class ProductsService {
   async createProduct(email: string, productData: any): Promise<OwnerProduct> {
     try {
       const userId = await this.getUserIdByEmail(email);
-      
-      const typeId = await this.getOrCreateProductTypeId(productData.productType);
-  
+
+      const typeId = await this.getOrCreateProductTypeId(productData.type);
+
       let existingProduct = await Product.findOne({
         where: {
           name: productData.name,
           description: productData.description,
-          type_id: typeId, 
+          type_id: typeId,
         },
       });
-  
+
       if (!existingProduct) {
         existingProduct = await Product.create({
           name: productData.name,
           description: productData.description,
-          type_id: typeId, 
+          type_id: typeId,
         });
       }
-  
+
       const existingRecord = await this.OwnerProductModel.findOne({
         where: {
           user_id: userId,
-          product_id: existingProduct.id, 
+          product_id: existingProduct.id,
         },
       });
-  
+
       if (existingRecord) {
         throw new Error('USER IS ASSOCIATED WITH THE PRODUCT');
       } else {
         const OwnerProduct = await this.OwnerProductModel.create({
           user_id: userId,
-          product_id: existingProduct.id, 
+          product_id: existingProduct.id,
           created_at: productData.created_at,
           updated_at: productData.created_at,
         });
-  
+
         return OwnerProduct;
       }
     } catch (error) {
@@ -265,7 +265,6 @@ export class ProductsService {
       throw error;
     }
   }
-  
 
   async getProductById(id: string): Promise<any | null> {
     try {

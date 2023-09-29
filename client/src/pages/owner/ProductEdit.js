@@ -10,7 +10,6 @@ export const ProductEdit = (props) => {
     <>
       <Edit title="Edit a product" {...props} resource="products">
         <SimpleForm>
-          {/* <NumberInput source="id" disable /> */}
           <TextInput source="product_name" validate={[required()]} />
           <TextInput source="product_type" validate={[required()]} />
           <TextInput
