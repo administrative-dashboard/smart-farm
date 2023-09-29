@@ -105,24 +105,39 @@ export class FixedDevicesController {
 
   @Put(':id')
   async updateFixedDeviceById(
+    @Request() req,
     @Param('id') id: string,
-    @Body() deviceData: any
+    @Body() deviceData: any,
+    @Res() res,
   ) {
     try {
+      console.log('Device Data: ',deviceData)
+      const accessToken = req.user.accessToken;
+      const email = await this.googleService.getUserInfo(accessToken);
       const updatedFixedDevice =
         await this.ownersFixedDevicesService.updateFixedDeviceById(
           id,
-          deviceData
+          deviceData,
+          email
         );
 
       if (!updatedFixedDevice) {
         return { message: 'Fixed device not found' };
       }
 
-      return updatedFixedDevice;
+      res.status(200).json(updatedFixedDevice);
     } catch (error) {
-      console.log(error);
-      return { error: 'An error occurred' };
+      if (error.message === 'You already have a fixed device with the same name and type.') {
+        res.status(400).json({
+          message: 'You already have a fixed device with the same name and type.',
+          status: 'error',
+        });
+      }else {
+        res.status(500).json({
+          message: 'An error occurred.',
+          status: 'error',
+        });
+      }
     }
   }
 

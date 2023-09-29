@@ -103,6 +103,55 @@ export class OwnerGreenhousesController {
       throw new NotFoundException('Greenhouses not found', 'custom-error-code');
     }
   }
+  @Get(':id')
+  async getFieldById(@Param('id') id: string) {
+    try {
+      const greenhouse = await this.ownerGreenhousesService.getGreenhouseById(id);
+      console.log(greenhouse);
+      if (!greenhouse) {
+        return { message: 'Field not found' };
+      }
+      return greenhouse;
+    } catch (error) {
+      console.log(error);
+      return { error: 'An error occurred' };
+    }
+  }
+
+  @Put(':id')
+  async updateGreenhouseById(@Request() req,@Param('id') id: string, @Body() greenhouseData: any,@Res() res) {
+    try {
+      console.log('Greenhouse data: ', greenhouseData);
+      const accessToken = req.user.accessToken;
+      const email = await this.googleService.getUserInfo(accessToken);
+      console.log(greenhouseData);
+      const updatedGreenhouse = await this.ownerGreenhousesService.updateGreenhouseById(
+        id,
+        greenhouseData,
+        email,
+      );
+      
+      if (!updatedGreenhouse) {
+        return { message: 'Field not found' };
+      }
+      res.status(200).json(updatedGreenhouse);
+    } catch (error) {
+      if (error.message === 'You already have a greenhouse with the same name.') {
+        res.status(400).json({
+          message: 'You already have a greenhouse with the same name.',
+          status: 'error',
+        });
+      }else {
+        res.status(500).json({
+          message: 'An error occurred.',
+          status: 'error',
+        });
+      }
+      
+    }
+  }
+
+
   @Post('create')
   async createGreenhouse(@Body() greenhouseData: any, @Request() req, @Res() res) {
     try {

@@ -13,7 +13,10 @@ import {
   TextInput,
   Filter,
   SearchInput,
+  DatagridConfigurable,
+  
 } from "react-admin";
+import { RichTextField } from "react-admin";
 import { useState, useEffect } from "react";
 import { HomeRedirectButton } from "../../components/HomeRedirectButton";
 import { ResetFilters } from "../../components/ResetFilters";
@@ -148,15 +151,16 @@ export const GreenhouseList = (props) => {
     <>
       <ResetFilters />
       <List {...props} filters={<GreenhouseFilter />} sx={{ color: "#38A505" }}>
-        <Datagrid rowClick="edit">
-          <TextField source="greenhouse_name" />
-          <NumberField source="greenhouse_size" />
+      <DatagridConfigurable rowClick="edit">
+          <TextField source="greenhouse_name" label="Name" />
+          <NumberField source="greenhouse_size" label="Size" />
           <TextField source="measurement" label="Measurement" />
-          <TextField source="greenhouse_description" />
-          <TextField source="greenhouse_location" />
+          <RichTextField source="greenhouse_description" label="Description"/>
+          <TextField source="greenhouse_location" label="Location"/>
+          <DateField source="created_at" label="Date" />
           <EditButton />
           <DeleteButton />
-        </Datagrid>
+          </DatagridConfigurable>
       </List>
     </>
   );

@@ -254,9 +254,112 @@ export class OwnerGreenhousesService {
           const ownerCreatedGreenhouse =   await this.ownerGreenhouse.create({
             user_id: userId,
             greenhouse_id: createdGreenhouse.id, 
+            created_at: greenhouseData.created_at,
           });
       
           return ownerCreatedGreenhouse; 
+        } catch (error) {
+          throw error;
+        }
+      }
+      async getGreenhouseById(id:string): Promise<any | null> {
+        try {
+          const ParsedId = parseInt(id, 10);
+          
+          const greenhouse = await this.ownerGreenhouse.findOne({
+            where: {
+              id: ParsedId,
+            },
+            attributes: [
+              'id',
+              [Sequelize.col('greenhouses.name'), 'greenhouse_name'],
+              [Sequelize.col('greenhouses.size'), 'greenhouse_size'],
+              [Sequelize.col('greenhouses.measurement_units.id'), 'measurement'],
+              [Sequelize.col('greenhouses.description'), 'greenhouse_description'],
+              [Sequelize.col('greenhouses.location'), 'greenhouse_location'],
+              'created_at',
+            ],
+            include: [
+              {
+                model: Greenhouse,
+                attributes: [],
+                include: [
+                {
+                  model: MeasurementUnit,
+                  attributes: [],
+                },
+            ]
+              },
+            ],
+            
+          });
+          return  greenhouse || null; 
+        } catch (error) {
+          throw error;
+        }
+      }
+
+      async updateGreenhouseById(id: string, greenhouseData: any,email:string): Promise<any> {
+        try {
+          const ParsedId = parseInt(id, 10);
+          const userId = await this.getUserIdByEmail(email);
+          const repeatingGreenhouse =
+            await this.ownerGreenhouse.findOne({
+              where: {
+                user_id : userId,
+                id: {
+                  [Op.not]: ParsedId, // Используйте Op.not для исключения записи с определенным id
+                },
+              },
+              include: [
+                {
+                  model: Greenhouse,
+                  where: {
+                    name: greenhouseData.name,
+                  },
+                },
+              ],
+            });
+          if (repeatingGreenhouse) {
+            throw new Error('You already have a greenhouse with the same name.');
+          }
+    
+          
+          // First, check if the portable device with the given ID exists
+          const existingGreenhouse =
+            await this.ownerGreenhouse.findOne({
+              where: {
+                id: ParsedId,
+              },
+            });
+    
+          if (!existingGreenhouse) {
+            return null; // Portable device not found
+          }
+    
+    
+          // Update the portable device record with the specified data
+          await existingGreenhouse.update({
+            updated_at: new Date(), // Update the updated_at timestamp
+          });
+    
+          // Find the associated Field record
+          const associatedGreenhouse = await Greenhouse.findByPk(
+            existingGreenhouse.greenhouse_id,
+          );
+    
+          if (associatedGreenhouse) {
+            // Update the Field record
+            await associatedGreenhouse.update({
+              name: greenhouseData.name,
+              size: greenhouseData.size,
+              measurement_id: greenhouseData.measurement,
+              location: greenhouseData.location,
+              description: greenhouseData.description,
+            });
+          }
+        
+          return existingGreenhouse;
         } catch (error) {
           throw error;
         }

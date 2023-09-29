@@ -86,7 +86,6 @@ export const FieldEdit = (props) => {
           <TextInput source="field_name" validate={validateFieldName}/>
           <NumberInput source="field_size" validate={validateFieldSize}/>
           <SelectInput
-          
             choices={measurementChoices.map(choice => ({
               id: choice.id,
               name: choice.value

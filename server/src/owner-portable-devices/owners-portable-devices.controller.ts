@@ -110,24 +110,39 @@ export class PortableDevicesController {
 
   @Put(':id')
   async updatePortableDeviceById(
+    @Request() req,
     @Param('id') id: string,
-    @Body() deviceData: any
+    @Body() deviceData: any,
+    @Res() res,
   ) {
     try {
+      console.log('Device Data: ',deviceData)
+      const accessToken = req.user.accessToken;
+      const email = await this.googleService.getUserInfo(accessToken);
       const updatedPortableDevice =
         await this.ownersPortableDevicesService.updatePortableDeviceById(
           id,
-          deviceData
+          deviceData,
+          email
         );
 
       if (!updatedPortableDevice) {
         return { message: 'Portable device not found' };
       }
 
-      return updatedPortableDevice;
+      res.status(200).json(updatedPortableDevice);
     } catch (error) {
-      console.log(error);
-      return { error: 'An error occurred' };
+      if (error.message === 'You already have a portable device with the same name and type.') {
+        res.status(400).json({
+          message: 'You already have a portable device with the same name and type.',
+          status: 'error',
+        });
+      }else {
+        res.status(500).json({
+          message: 'An error occurred.',
+          status: 'error',
+        });
+      }
     }
   }
 

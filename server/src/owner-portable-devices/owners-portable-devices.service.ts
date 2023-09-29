@@ -286,10 +286,34 @@ export class OwnersPortableDevicesService {
     }
   }
 
-  async updatePortableDeviceById(id: string, deviceData: any): Promise<any> {
+  async updatePortableDeviceById(id: string, deviceData: any,email:string): Promise<any> {
     try {
       const ParsedId = parseInt(id, 10);
+      const userId = await this.getUserIdByEmail(email);
+      
+      const repeatingDevice =
+        await this.OwnerPortableDeviceModel.findOne({
+          where: {
+            user_id : userId,
+            id: {
+              [Op.not]: ParsedId, // Используйте Op.not для исключения записи с определенным id
+            },
 
+          },
+          include: [
+            {
+              model: PortableDevice,
+              where: {
+                name: deviceData.device_name,
+                type: deviceData.device_type,
+              },
+            },
+          ],
+        });
+      if (repeatingDevice) {
+        throw new Error('You already have a portable device with the same name and type.');
+      }
+      
       // First, check if the portable device with the given ID exists
       const existingPortableDevice =
         await this.OwnerPortableDeviceModel.findOne({
