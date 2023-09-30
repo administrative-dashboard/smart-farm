@@ -17,7 +17,7 @@ export const ProductEdit = (props) => {
             label="Description"
             validate={[required()]}
           />
-          <DateInput source="updated_at" label="Date" disabled />
+          <DateInput source="created_at" label="Date" disabled />
         </SimpleForm>
       </Edit>
       <Box

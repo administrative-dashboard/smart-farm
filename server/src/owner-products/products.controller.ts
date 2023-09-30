@@ -30,6 +30,7 @@ export class ProductsController {
     @Query('product_name') productName: any,
     @Query('created_at') date: any,
     @Query('page') page: any,
+    @Query('product_type') productType: any,
     @Query('perPage') perPage: any,
     @Query('field') field: any,
     @Query('order') order: any,
@@ -43,19 +44,20 @@ export class ProductsController {
       console.log('perPage::::===', perPage);
       console.log('ЗАПРОС ПОЛУЧЕН!!!!!!!!!');
       console.log('searchTerm==', searchTerm);
-      // console.log('product_type==', );
+      console.log('product_type==', productType);
       console.log('product_name==', productName);
       console.log('created_at==', date);
       const accessToken = req.user.accessToken;
       const email = await this.googleService.getUserInfo(accessToken);
       console.log(email);
-      if (searchTerm || productName || date) {
+      if (searchTerm || productType || productName || date) {
         const filteredProducts = await this.ProductsService.searchProducts(
           email,
           searchTerm,
           productName,
           date,
           page,
+          productType,
           perPage,
           field,
           order
