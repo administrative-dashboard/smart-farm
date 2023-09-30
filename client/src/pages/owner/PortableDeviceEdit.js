@@ -5,7 +5,6 @@ import {
   TextInput,
   DateInput,
   NumberInput,
-  useDataProvider,
   useNotify,
   useRedirect,
   required,
@@ -17,7 +16,6 @@ export const PortableDeviceEdit = (props) => {
   const redirect = useRedirect();
   const handleSave = async (values) => {
     try {
-      
       const deviceData = {
         id: values.id,
         device_name: values.device_name,
@@ -26,12 +24,12 @@ export const PortableDeviceEdit = (props) => {
         shared_quantity: values.shared_quantity,
         created_at: values.created_at,
       };
-      console.log(deviceData.id)
+      console.log(deviceData.id);
       const response = await customDataProvider.update("portable_devices", {
         data: deviceData,
-        id: deviceData.id
+        id: deviceData.id,
       });
-      console.log(response)
+      console.log(response);
       if (response.status === 200) {
         notify("Portable device updated successfully", "info");
         redirect("/portable_devices");
@@ -50,8 +48,6 @@ export const PortableDeviceEdit = (props) => {
       console.error("Error updating portable device:", error);
     }
   };
-
-
 
   const validatePositiveNumber = (value) => {
     if (isNaN(value) || value <= 0) {
@@ -88,7 +84,6 @@ export const PortableDeviceEdit = (props) => {
           <DateInput source="created_at" label="Date" disabled />
         </SimpleForm>
       </Edit>
-
     </>
   );
 };

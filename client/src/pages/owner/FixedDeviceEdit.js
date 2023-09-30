@@ -1,4 +1,4 @@
-//client//pages/owner/DeviceList.js
+
 import React from "react";
 import {
   Edit,

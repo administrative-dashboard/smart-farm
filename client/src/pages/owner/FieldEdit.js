@@ -11,30 +11,27 @@ import {
   useNotify,
   useRedirect,
   SelectInput,
-  Toolbar, 
-  SaveButton, 
-  Button, 
-  DeleteButton,
 } from "react-admin";
-import { RichTextInput } from 'ra-input-rich-text';
+import { RichTextInput } from "ra-input-rich-text";
 import { API_URL } from "../../consts";
 import customDataProvider from "../../providers/dataProvider";
 export const FieldEdit = (props) => {
   const notify = useNotify();
   const redirect = useRedirect();
-  const [measurementChoices, setMeasurementChoices] = useState([]); 
+  const [measurementChoices, setMeasurementChoices] = useState([]);
 
   useEffect(() => {
-    axios.get(`${API_URL}/measurement_units/fields`)
-      .then(response => {
+    axios
+      .get(`${API_URL}/measurement_units/fields`)
+      .then((response) => {
         console.log(response.data);
         setMeasurementChoices(response.data);
-        console.log(response.data)
+        console.log(response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error fetching measurement choices:", error);
       });
-  }, []); 
+  }, []);
 
   const validatePositiveNumber = (value) => {
     if (isNaN(value) || value <= 0) {
@@ -45,10 +42,9 @@ export const FieldEdit = (props) => {
 
   const validateFieldName = [required()];
   const validateFieldSize = [required(), validatePositiveNumber];
-  const validateLocation =[required()];
+  const validateLocation = [required()];
   const handleSave = async (values) => {
     try {
-      
       const fieldData = {
         id: values.id,
         name: values.field_name,
@@ -58,12 +54,12 @@ export const FieldEdit = (props) => {
         location: values.field_location,
         created_at: values.created_at,
       };
-      console.log(fieldData.id)
+      console.log(fieldData.id);
       const response = await customDataProvider.update("fields", {
         data: fieldData,
-        id: fieldData.id
+        id: fieldData.id,
       });
-      console.log(response)
+      console.log(response);
       if (response.status === 200) {
         notify("Field updated successfully", "info");
         redirect("/fields");
@@ -81,39 +77,27 @@ export const FieldEdit = (props) => {
     } catch (error) {
       console.error("Error updating field:", error);
     }
-
-    
   };
-  const handleCancel = () => {
-      redirect("/fields"); 
-    };
+
   return (
     <>
       <Edit title="Edit a field" {...props} resource="fields">
-      <SimpleForm onSubmit={handleSave}
-        toolbar={
-          <Toolbar>
-            <SaveButton label="Save" submitOnEnter={true} sx={{mr: 160}}/>
-            <Button label="Cancel" onClick={handleCancel} />
-            <DeleteButton sx={{ml: 5}}/>
-          </Toolbar>
-        }
-      >
-        
-          <TextInput source="field_name" validate={validateFieldName}/>
-          <NumberInput source="field_size" validate={validateFieldSize}/>
+        <SimpleForm onSubmit={handleSave}>
+          <TextInput source="field_name" validate={validateFieldName} />
+          <NumberInput source="field_size" validate={validateFieldSize} />
           <SelectInput
-            choices={measurementChoices.map(choice => ({
+            choices={measurementChoices.map((choice) => ({
               id: choice.id,
-              name: choice.value
-            }))} source="measurement" label="Measurement"
+              name: choice.value,
+            }))}
+            source="measurement"
+            label="Measurement"
           />
-          <TextInput source="field_location" validate={validateLocation}/>
+          <TextInput source="field_location" validate={validateLocation} />
           <RichTextInput source="field_description" />
           <DateInput source="created_at" disabled />
         </SimpleForm>
       </Edit>
-
     </>
   );
 };

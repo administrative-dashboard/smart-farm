@@ -1,8 +1,8 @@
-//client//pages/owner/DeviceList.js
 import React from "react";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { Edit,
+import {
+  Edit,
   SimpleForm,
   TextInput,
   DateInput,
@@ -10,26 +10,31 @@ import { Edit,
   required,
   useNotify,
   useRedirect,
-  SelectInput, } from "react-admin";
-import { HomeRedirectButton } from "../../components/HomeRedirectButton";
-import { RichTextInput } from 'ra-input-rich-text';
+  SelectInput,
+  Toolbar,
+  SaveButton,
+  Button,
+  DeleteButton,
+} from "react-admin";
+import { RichTextInput } from "ra-input-rich-text";
 import { API_URL } from "../../consts";
 import customDataProvider from "../../providers/dataProvider";
 export const GreenhouseEdit = (props) => {
   const notify = useNotify();
   const redirect = useRedirect();
-  const [measurementChoices, setMeasurementChoices] = useState([]); 
+  const [measurementChoices, setMeasurementChoices] = useState([]);
   useEffect(() => {
-    axios.get(`${API_URL}/measurement_units/fields`)
-      .then(response => {
+    axios
+      .get(`${API_URL}/measurement_units/fields`)
+      .then((response) => {
         console.log(response.data);
         setMeasurementChoices(response.data);
-        console.log(response.data)
+        console.log(response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error fetching measurement choices:", error);
       });
-  }, []); 
+  }, []);
   const validatePositiveNumber = (value) => {
     if (isNaN(value) || value <= 0) {
       return "Value must be a positive number";
@@ -38,12 +43,11 @@ export const GreenhouseEdit = (props) => {
   };
   const validateGreenhouseName = [required()];
   const validateGreenhouseSize = [required(), validatePositiveNumber];
-  const validateLocation =[required()];
-  const validateMeasurement=[required()];
+  const validateLocation = [required()];
+  const validateMeasurement = [required()];
 
   const handleSave = async (values) => {
     try {
-      
       const greenhouseData = {
         id: values.id,
         name: values.greenhouse_name,
@@ -53,12 +57,12 @@ export const GreenhouseEdit = (props) => {
         location: values.greenhouse_location,
         created_at: values.created_at,
       };
-      console.log(greenhouseData.id)
+      console.log(greenhouseData.id);
       const response = await customDataProvider.update("greenhouses", {
         data: greenhouseData,
-        id: greenhouseData.id
+        id: greenhouseData.id,
       });
-      console.log(response)
+      console.log(response);
       if (response.status === 200) {
         notify("Greenhouse updated successfully", "info");
         redirect("/greenhouses");
@@ -77,19 +81,45 @@ export const GreenhouseEdit = (props) => {
       console.error("Error updating greenhouse:", error);
     }
   };
+  const handleCancel = () => {
+    redirect("/greenhouses");
+  };
   return (
     <>
       <Edit title="Edit a greenhouse" {...props} resource="greenhouses">
-        <SimpleForm onSubmit={handleSave}>
-          <TextInput source="greenhouse_name" validate={validateGreenhouseName}/>
-          <NumberInput source="greenhouse_size" validate={validateGreenhouseSize}/>
-          <SelectInput
-            choices={measurementChoices.map(choice => ({
-              id: choice.id,
-              name: choice.value
-            }))} source="measurement" label="Measurement" validate={validateMeasurement}
+        <SimpleForm
+          onSubmit={handleSave}
+          toolbar={
+            <Toolbar>
+              <SaveButton
+                label="Save"
+                submitOnEnter={true}
+                sx={{ mr: "80%" }}
+              />
+
+              <Button label="Cancel" onClick={handleCancel} sx={{ mr: "3%" }} />
+              <DeleteButton />
+            </Toolbar>
+          }
+        >
+          <TextInput
+            source="greenhouse_name"
+            validate={validateGreenhouseName}
           />
-          <TextInput source="greenhouse_location" validate={validateLocation}/>
+          <NumberInput
+            source="greenhouse_size"
+            validate={validateGreenhouseSize}
+          />
+          <SelectInput
+            choices={measurementChoices.map((choice) => ({
+              id: choice.id,
+              name: choice.value,
+            }))}
+            source="measurement"
+            label="Measurement"
+            validate={validateMeasurement}
+          />
+          <TextInput source="greenhouse_location" validate={validateLocation} />
           <RichTextInput source="greenhouse_description" />
           <DateInput source="created_at" disabled />
         </SimpleForm>

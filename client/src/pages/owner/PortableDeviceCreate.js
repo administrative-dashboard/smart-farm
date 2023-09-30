@@ -8,12 +8,13 @@ import {
   useNotify,
   useRedirect,
   required,
+  Toolbar,
+  SaveButton,
+  Button,
 } from "react-admin";
 import customDataProvider from "../../providers/dataProvider";
 
-import { HomeRedirectButton } from "../../components/HomeRedirectButton";
 export const PortableDeviceCreate = (props) => {
-  
   const currentDate = new Date();
   const notify = useNotify();
   const redirect = useRedirect();
@@ -46,40 +47,49 @@ export const PortableDeviceCreate = (props) => {
         shared_quantity: values.shared_quantity,
         created_at: values.created_at.toISOString(),
       };
-      
+
       // Make a POST request to create the device
-      const response = await customDataProvider.create("portable_devices/create", {
-        data: deviceData,
-      });
-      
+      const response = await customDataProvider.create(
+        "portable_devices/create",
+        {
+          data: deviceData,
+        }
+      );
+
       if (response.status === 200) {
         notify("Device created successfully", "info");
         redirect("/portable_devices");
       } else if (response.status === 400) {
         const Error = await response.json();
-        const message=Error.message
+        const message = Error.message;
         if (message) {
-          notify(message, { type: 'error' });
+          notify(message, { type: "error" });
         } else {
-          notify('An error occurred', { type: 'error' });
+          notify("An error occurred", { type: "error" });
         }
       } else {
-        notify('An error occurred', { type: 'error' });
+        notify("An error occurred", { type: "error" });
       }
     } catch (error) {
       console.error("Error creating device:", error);
-     
     }
   };
-  
+  const handleCancel = () => {
+    redirect("/portable_devices");
+  };
+
   return (
     <>
-      <Create
-        title="Create a portable device"
-        {...props}
-
-      >
-        <SimpleForm onSubmit={handleSave}>
+      <Create title="Create a portable device" {...props}>
+        <SimpleForm
+          onSubmit={handleSave}
+          toolbar={
+            <Toolbar>
+              <SaveButton label="Save" submitOnEnter={true} sx={{ mr: '90%' }} />
+              <Button label="Cancel" onClick={handleCancel} />
+            </Toolbar>
+          }
+        >
           <TextInput source="name" validate={validateDeviceName} />
           <TextInput source="type" validate={validateDeviceType} />
           <NumberInput source="quantity" validate={validateQuantity} />

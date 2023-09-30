@@ -8,10 +8,12 @@ import {
   useNotify,
   useRedirect,
   required,
+  Toolbar,
+  SaveButton,
+  Button,
 } from "react-admin";
 import customDataProvider from "../../providers/dataProvider";
 
-import { HomeRedirectButton } from "../../components/HomeRedirectButton";
 export const FixedDeviceCreate = (props) => {
   const currentDate = new Date();
   const notify = useNotify();
@@ -61,11 +63,25 @@ export const FixedDeviceCreate = (props) => {
       notify("Device already is existing", { type: "error" });
     }
   };
-
+  const handleCancel = () => {
+    redirect("/fixed_devices");
+  };
   return (
     <>
       <Create title="Create a fixed device" {...props}>
-        <SimpleForm onSubmit={handleSave}>
+        <SimpleForm
+          onSubmit={handleSave}
+          toolbar={
+            <Toolbar>
+              <SaveButton
+                label="Save"
+                submitOnEnter={true}
+                sx={{ mr: "90%" }}
+              />
+              <Button label="Cancel" onClick={handleCancel} />
+            </Toolbar>
+          }
+        >
           <TextInput source="device_name" validate={validateDeviceName} />
           <TextInput source="device_type" validate={validateDeviceType} />
           <NumberInput source="quantity" validate={validateQuantity} />
