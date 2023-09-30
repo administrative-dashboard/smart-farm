@@ -39,6 +39,8 @@ export const GreenhouseEdit = (props) => {
   const validateGreenhouseName = [required()];
   const validateGreenhouseSize = [required(), validatePositiveNumber];
   const validateLocation =[required()];
+  const validateMeasurement=[required()];
+
   const handleSave = async (values) => {
     try {
       
@@ -85,7 +87,7 @@ export const GreenhouseEdit = (props) => {
             choices={measurementChoices.map(choice => ({
               id: choice.id,
               name: choice.value
-            }))} source="measurement" label="Measurement"
+            }))} source="measurement" label="Measurement" validate={validateMeasurement}
           />
           <TextInput source="greenhouse_location" validate={validateLocation}/>
           <RichTextInput source="greenhouse_description" />

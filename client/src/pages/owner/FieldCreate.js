@@ -1,4 +1,3 @@
-//client//pages/owner/DeviceList.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
@@ -10,20 +9,20 @@ import {
   useNotify,
   useRedirect,
   required,
-  SelectField,
-  choices,
   SelectInput,
-
+  Toolbar, 
+  SaveButton, 
+  Button, 
 } from "react-admin";
 import { RichTextInput } from 'ra-input-rich-text';
-//import { HomeRedirectButton } from "../../components/HomeRedirectButton";
 import customDataProvider from "../../providers/dataProvider";
 import { API_URL } from "../../consts";
+
 export const FieldCreate = (props) => {
   const currentDate = new Date();
   const notify = useNotify();
   const redirect = useRedirect();
-  const [measurementChoices, setMeasurementChoices] = useState([]); // State to store measurement choices
+  const [measurementChoices, setMeasurementChoices] = useState([]);
 
   useEffect(() => {
     axios
@@ -48,10 +47,11 @@ export const FieldCreate = (props) => {
   const validateFieldName = [required()];
   const validateFieldSize = [required(), validatePositiveNumber];
   const validateLocation = [required()];
+  const validateMeasurement = [required()];
 
   const handleSave = async (values) => {
     try {
-      console.log("THIS IS ILON MASK",values.measurement)
+      console.log("THIS IS ILON MASK", values.measurement);
       const fieldData = {
         name: values.name,
         size: values.size,
@@ -74,7 +74,9 @@ export const FieldCreate = (props) => {
         if (message) {
           notify(message, { type: "error" });
         } else {
-          notify("You already have a field with the same name.", { type: "error" });
+          notify("You already have a field with the same name.", {
+            type: "error",
+          });
         }
       } else {
         notify("An error occurred", { type: "error" });
@@ -83,10 +85,23 @@ export const FieldCreate = (props) => {
       console.error("Error creating field:", error);
     }
   };
+
+  const handleCancel = () => {
+    redirect("/fields"); 
+  };
+
   return (
     <>
       <Create title="Create a field" {...props}>
-        <SimpleForm onSubmit={handleSave}>
+        <SimpleForm
+          toolbar={
+            <Toolbar>
+              <SaveButton label="Save" submitOnEnter={true} sx={{mr: 170}}/>
+              <Button label="Cancel" onClick={handleCancel} />
+            </Toolbar>
+          }
+          onSubmit={handleSave}
+        >
           <TextInput source="name" validate={validateFieldName} />
           <NumberInput source="size" validate={validateFieldSize} />
           <SelectInput
@@ -96,13 +111,13 @@ export const FieldCreate = (props) => {
             }))}
             source="measurement"
             label="Measurement"
+            validate={validateMeasurement}
           />
           <TextInput source="location" validate={validateLocation} />
           <RichTextInput source="description" />
           <DateInput source="created_at" defaultValue={currentDate} disabled />
         </SimpleForm>
       </Create>
-      {/* <HomeRedirectButton pageName="ownerPage" title="Home" /> */}
     </>
   );
 };

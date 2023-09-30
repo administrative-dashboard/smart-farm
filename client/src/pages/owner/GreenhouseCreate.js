@@ -14,6 +14,7 @@ import {
   choices,
   SelectInput,
 } from "react-admin";
+import { RichTextInput } from 'ra-input-rich-text';
 import { HomeRedirectButton } from "../../components/HomeRedirectButton";
 import customDataProvider from "../../providers/dataProvider";
 import { API_URL } from "../../consts";
@@ -40,8 +41,9 @@ export const GreenhouseCreate = (props) => {
     return undefined;
   };
   const validateGreenhouseName = [required()];
-  const validateGreenhouseSize = [required()];
+  const validateGreenhouseSize = [required(), validatePositiveNumber];
   const validateLocation =[required()];
+  const validateMeasurement =[required()];
   const handleSave = async (values) => {
     try {
   const greenhouseData = {
@@ -89,10 +91,10 @@ export const GreenhouseCreate = (props) => {
             choices={measurementChoices.map(choice => ({
               id: choice.id,
               name: choice.value
-            }))} source="measurement" label="Measurement"
+            }))} source="measurement" label="Measurement" validate={validateMeasurement}
           />
           <TextInput source="location" validate={validateLocation}/>
-          <TextInput source="description" multiline/>
+          <RichTextInput source="description" />
           <DateInput source="created_at" defaultValue={currentDate} disabled />
         </SimpleForm>
       </Create>
