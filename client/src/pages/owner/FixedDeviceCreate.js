@@ -13,11 +13,9 @@ import customDataProvider from "../../providers/dataProvider";
 
 import { HomeRedirectButton } from "../../components/HomeRedirectButton";
 export const FixedDeviceCreate = (props) => {
-  
   const currentDate = new Date();
   const notify = useNotify();
   const redirect = useRedirect();
-  const [quantity, setQuantity] = useState("");
   const validatePositiveNumber = (value) => {
     if (isNaN(value) || value <= 0) {
       return "Value must be a positive number";
@@ -33,11 +31,6 @@ export const FixedDeviceCreate = (props) => {
   const validateDeviceName = [required()];
   const validateDeviceType = [required()];
   const validateQuantity = [required(), validatePositiveNumber];
-  const validateSharedQuantity = [
-    required(),
-    validatePositiveNumber,
-    validationSharedQuantity,
-  ];
   const handleSave = async (values) => {
     try {
       const deviceData = {
@@ -54,29 +47,24 @@ export const FixedDeviceCreate = (props) => {
         redirect("/fixed_devices");
       } else if (response.status === 400) {
         const Error = await response.json();
-        const message=Error.message
+        const message = Error.message;
         if (message) {
-          notify(message, { type: 'error' });
+          notify(message, { type: "error" });
         } else {
-          notify('An error occurred', { type: 'error' });
+          notify("An error occurred", { type: "error" });
         }
       } else {
-        notify('An error occurred', { type: 'error' });
+        notify("An error occurred", { type: "error" });
       }
-     
     } catch (error) {
       console.error("Error creating device:", error);
-      notify('Device already is existing', { type: 'error' });
+      notify("Device already is existing", { type: "error" });
     }
   };
-  
+
   return (
     <>
-      <Create
-        title="Create a fixed device"
-        {...props}
-        // save={handleSave}
-      >
+      <Create title="Create a fixed device" {...props}>
         <SimpleForm onSubmit={handleSave}>
           <TextInput source="device_name" validate={validateDeviceName} />
           <TextInput source="device_type" validate={validateDeviceType} />
@@ -84,7 +72,6 @@ export const FixedDeviceCreate = (props) => {
           <DateInput source="created_at" defaultValue={currentDate} disabled />
         </SimpleForm>
       </Create>
-      
     </>
   );
 };

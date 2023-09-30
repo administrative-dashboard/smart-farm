@@ -54,7 +54,6 @@ export const FixedDeviceEdit = (props) => {
     <>
       <Edit title="Edit a fixed device" {...props} resource="fixed_devices">
         <SimpleForm onSubmit={handleSave}>
-          {/* <NumberInput source="id" disable /> */}
           <TextInput source="device_name" validate={[required()]}/>
           <TextInput source="device_type" validate={[required()]}/>
           <NumberInput source="quantity" validate={[required(), minValue(1, "Quantity must be positive.")]}/>

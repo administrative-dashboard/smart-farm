@@ -96,7 +96,7 @@ export const FieldCreate = (props) => {
         <SimpleForm
           toolbar={
             <Toolbar>
-              <SaveButton label="Save" submitOnEnter={true} sx={{mr: 170}}/>
+              <SaveButton label="Save" submitOnEnter={true} sx={{mr: '20%'}}/>
               <Button label="Cancel" onClick={handleCancel} />
             </Toolbar>
           }

@@ -8,7 +8,6 @@ import {
   EditButton,
   DeleteButton,
   RichTextField,
-  Title
 } from "react-admin";
 import { useState, useEffect } from "react";
 import customDataProvider from "../../providers/dataProvider";
@@ -57,7 +56,6 @@ export const FieldList = (props) => {
   }, []);
   return (
     <>
-    <Title title={"My fields"}/>
       <List {...props} data={data} sx={{ color: "#38A505" }} actions={<ListActions />}>
         <Datagrid rowClick="edit">
           <TextField source="field_name" label="Name"/>
