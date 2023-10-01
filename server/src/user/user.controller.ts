@@ -69,7 +69,6 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   async updateUserPhoneNumber(@Request() req, @Body() userData: any) {
     try {
-      // const userId = req.user.user_id;
       const accessToken = req.user.accessToken;
       const email = await this.googleService.getUserInfo(accessToken);
       const existingUser = await this.userService.getUserInfoByEmail(email);
@@ -87,7 +86,7 @@ export class UserController {
     }
   }
 
-  @Post('community')
+  @Put('community')
   @UseGuards(JwtAuthGuard)
   async addCommunity(@Request() req, @Body() userData: any) {
     try {

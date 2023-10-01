@@ -61,7 +61,7 @@ export const Contact = () => {
     });
 
   axios
-  .post(
+  .put(
     `${API_URL}/user/community`,
     { community_id: selectedCommunity },
     {
