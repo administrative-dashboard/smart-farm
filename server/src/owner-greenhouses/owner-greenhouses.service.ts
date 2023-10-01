@@ -4,7 +4,6 @@ import { OwnerGreenhouse } from 'src/database/models/owners_greenhouses.model';
 import { Model } from 'sequelize-typescript';
 import { Greenhouse } from 'src/database/models/greenhouses.model';
 import { Sequelize, Op } from 'sequelize';
-import { now } from 'sequelize/types/utils';
 import { User } from 'src/database/models/users.model';
 import { MeasurementUnit } from 'src/database/models/measurement_units';
 @Injectable()
@@ -137,7 +136,7 @@ export class OwnerGreenhousesService {
           if (greenhouseName !== '' && greenhouseName !== undefined) {
             console.log('greenhouse_name is pushed');
             whereClause[Op.and].push(
-              Sequelize.literal(`"fields"."name" ILIKE :textFieldName`)
+              Sequelize.literal(`"greenhouses"."name" ILIKE :textGreenhouseName`)
             );
           }
           if (greenhouseSize !== '' && greenhouseSize !== undefined) {
@@ -203,7 +202,7 @@ export class OwnerGreenhousesService {
             ],
             replacements: {
               textQuery: `%${query}%`,
-              textFieldName: `%${greenhouseName}%`,
+              textGreenhouseName: `%${greenhouseName}%`,
               textSizeMeasurement:`%${greenhouseSizeMeasurement}%`,
               textDescription: `%${greenhouseDescription}%`,
               textLocation:`%${greenhouseLocation}%`,

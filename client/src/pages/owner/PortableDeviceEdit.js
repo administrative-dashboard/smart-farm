@@ -8,6 +8,10 @@ import {
   useNotify,
   useRedirect,
   required,
+  Toolbar,
+  SaveButton,
+  Button,
+  DeleteButton,
 } from "react-admin";
 
 import customDataProvider from "../../providers/dataProvider";
@@ -61,6 +65,11 @@ export const PortableDeviceEdit = (props) => {
     }
     return undefined;
   };
+
+  const handleCancel = () => {
+    redirect("/portable_devices");
+  };
+
   return (
     <>
       <Edit
@@ -68,7 +77,21 @@ export const PortableDeviceEdit = (props) => {
         {...props}
         resource="portable_devices"
       >
-        <SimpleForm onSubmit={handleSave}>
+        <SimpleForm
+          onSubmit={handleSave}
+          toolbar={
+            <Toolbar>
+              <SaveButton
+                label="Save"
+                submitOnEnter={true}
+                sx={{ mr: "80%" }}
+              />
+
+              <Button label="Cancel" onClick={handleCancel} sx={{ mr: "3%" }} />
+              <DeleteButton />
+            </Toolbar>
+          }
+        >
           <TextInput source="device_name" label="Name" validate={required()} />
           <TextInput source="device_type" label="Type" validate={required()} />
           <NumberInput

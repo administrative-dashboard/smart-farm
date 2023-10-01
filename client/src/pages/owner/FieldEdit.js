@@ -11,6 +11,10 @@ import {
   useNotify,
   useRedirect,
   SelectInput,
+  Toolbar,
+  SaveButton,
+  Button,
+  DeleteButton,
 } from "react-admin";
 import { RichTextInput } from "ra-input-rich-text";
 import { API_URL } from "../../consts";
@@ -79,10 +83,28 @@ export const FieldEdit = (props) => {
     }
   };
 
+  const handleCancel = () => {
+    redirect("/fields");
+  };
+
   return (
     <>
       <Edit title="Edit a field" {...props} resource="fields">
-        <SimpleForm onSubmit={handleSave}>
+      <SimpleForm
+          onSubmit={handleSave}
+          toolbar={
+            <Toolbar>
+              <SaveButton
+                label="Save"
+                submitOnEnter={true}
+                sx={{ mr: "80%" }}
+              />
+
+              <Button label="Cancel" onClick={handleCancel} sx={{ mr: "3%" }} />
+              <DeleteButton />
+            </Toolbar>
+          }
+        >
           <TextInput source="field_name" validate={validateFieldName} />
           <NumberInput source="field_size" validate={validateFieldSize} />
           <SelectInput
