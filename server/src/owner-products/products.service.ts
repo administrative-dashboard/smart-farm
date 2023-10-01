@@ -7,7 +7,6 @@ import { User } from 'src/database/models/users.model';
 import { Product } from '../database/models/product.model';
 import { Sequelize, Op } from 'sequelize';
 import { ProductType } from 'src/database/models/product_types.model';
-import { type } from 'os';
 
 @Injectable()
 export class ProductsService {
@@ -123,7 +122,7 @@ export class ProductsService {
       if (query !== '' && query !== undefined) {
         whereClause[Op.or] = [
           Sequelize.col(`"products"."name" ILIKE :textQuery`),
-          //   Sequelize.col(`"products"."type" ILIKE :textQuery`),
+          Sequelize.col(`"products"."product_types"."type" ILIKE :textQuery`),
         ];
       }
 
@@ -135,10 +134,9 @@ export class ProductsService {
       }
       if (productType !== '' && productType !== undefined) {
         console.log('productType is pushed');
-        whereClause[Op.and]
-          .push
-          //   Sequelize.col(`"products"."type" ILIKE :textProductType`)
-          ();
+        whereClause[Op.and].push(
+          Sequelize.col(`"products"."product_types"."type" ILIKE :textQuery`)
+        );
       }
       if (description !== '' && description !== undefined) {
         console.log('description is pushed');
@@ -169,14 +167,15 @@ export class ProductsService {
           'name',
           [Sequelize.col('products.description'), 'description'],
           'created_at',
-          [Sequelize.col(`"products"."name"`), 'product_name'],
-          [Sequelize.col(`"products"."type"`), 'product_type'],
+          [Sequelize.col(`products.name`), 'product_name'],
+          [Sequelize.col(`products.product_types.type`), 'product_type'],
         ],
         include: [
           {
             model: Product,
             as: 'products',
             attributes: [],
+            include: [{ model: ProductType, attributes: [] }],
           },
         ],
         replacements: {
@@ -255,7 +254,7 @@ export class ProductsService {
           user_id: userId,
           product_id: existingProduct.id,
           created_at: productData.created_at,
-          updated_at: productData.created_at,
+          updated_at: productData.updated_at,
         });
 
         return OwnerProduct;
@@ -298,7 +297,7 @@ export class ProductsService {
     try {
       const ParsedId = parseInt(id, 10);
 
-      // Поиск существующего OwnerProduct по ID
+      // Find existing OwnerProduct by ID
       const existingProduct = await this.OwnerProductModel.findOne({
         where: {
           id: ParsedId,
@@ -306,32 +305,34 @@ export class ProductsService {
       });
 
       if (!existingProduct) {
-        return null; // Продукт не найден
+        return null; // Product not found
       }
 
-      // Получение связанного с OwnerProduct продукта
+      // Get the associated product related to OwnerProduct
       const associatedProduct = await Product.findByPk(
         existingProduct.product_id
       );
 
       if (!associatedProduct) {
-        return null; // Продукт не найден
+        return null; // Product not found
       }
 
-      // Обновление данных OwnerProduct
+      // Update OwnerProduct data
       await existingProduct.update({
         updated_at: new Date(),
       });
 
-      // Обновление данных связанного продукта
+      // Update associated product data
       await associatedProduct.update({
         name: productData.product_name,
         description: productData.description,
       });
 
-      // Проверка и обновление типа продукта, если указан новый тип
-      if (productData.type) {
-        const typeId = await this.getOrCreateProductTypeId(productData.type);
+      // Check and update the product type if a new type is specified
+      if (productData.product_type) {
+        const typeId = await this.getOrCreateProductTypeId(
+          productData.product_type
+        );
         await associatedProduct.update({
           type_id: typeId,
         });
