@@ -3,7 +3,7 @@ import { Injectable, Query } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { OwnerPortableDevice } from '../database/models/owners_portable_devices.model '; // Подставьте путь к модели вашего портативного устройства
 import { Model } from 'sequelize-typescript';
-import { PortableDevice } from '../database/models/portable_devices.model '; // Подставьте путь к модели ваших портативных устройств
+import { PortableDevice } from '../database/models/portable_devices.model'; // Подставьте путь к модели ваших портативных устройств
 import { Sequelize, Op } from 'sequelize';
 import { now } from 'sequelize/types/utils';
 import { User } from 'src/database/models/users.model';

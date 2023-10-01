@@ -8,7 +8,7 @@ import { OwnerField } from './owners_fields.model';
 import { OwnerGreenhouse } from './owners_greenhouses.model';
 import { DeviceRequestHistory } from './device_requests_history.model';
 import { FixedDevice } from './fixed_devices.model';
-import { PortableDevice } from './portable_devices.model ';
+import { PortableDevice } from './portable_devices.model';
 import { OwnerFixedDevice } from './owners_fixed_devices.model';
 import { OwnerPortableDevice } from './owners_portable_devices.model ';
 

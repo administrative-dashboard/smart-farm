@@ -1,7 +1,7 @@
 //roles.model.ts
 import { Column, Model, Table, DataType, ForeignKey, HasOne } from 'sequelize-typescript';
 import { Community } from './communities.model'
-import { PortableDevice } from './portable_devices.model ';
+import { PortableDevice } from './portable_devices.model';
 
 @Table({ tableName: 'device_usage_statistics_communities', timestamps: false  })
 export class DeviceUsageStatisticsCommunities extends Model<DeviceUsageStatisticsCommunities> {

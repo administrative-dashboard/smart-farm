@@ -5,7 +5,7 @@ import { DeviceRequestHistory } from './device_requests_history.model';
 import { DeviceUsageStatisticsCommunities } from './device_usage_statistics_communities.model';
 import { DeviceUsageStatisticsFields } from './device_usage_statistics_fields.model';
 import { DeviceUsageStatisticsGreenhouses } from './device_usage_statistics_greenhouses.model';
-import { PortableDevice } from './portable_devices.model ';
+import { PortableDevice } from './portable_devices.model';
 
 @Table({ tableName: 'owners_portable_devices', timestamps: false })
 export class OwnerPortableDevice extends Model<OwnerPortableDevice> {

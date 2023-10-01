@@ -1,7 +1,7 @@
 //roles.model.ts
 import { Column, Model, Table, DataType, ForeignKey, HasOne } from 'sequelize-typescript';
 import { Field } from './fields.model'
-import { PortableDevice } from './portable_devices.model ';
+import { PortableDevice } from './portable_devices.model';
 
 @Table({ tableName: 'device_usage_statistics_fields', timestamps: false  })
 export class DeviceUsageStatisticsFields extends Model<DeviceUsageStatisticsFields> {

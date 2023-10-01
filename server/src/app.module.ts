@@ -19,7 +19,7 @@ import { OwnerField } from './database/models/owners_fields.model';
 import { OwnerGreenhouse } from './database/models/owners_greenhouses.model';
 import { OwnerFixedDevice } from './database/models/owners_fixed_devices.model';
 import { OwnerPortableDevice } from './database/models/owners_portable_devices.model ';
-import { PortableDevice } from './database/models/portable_devices.model ';
+import { PortableDevice } from './database/models/portable_devices.model';
 import { Community } from './database/models/communities.model';
 import { ScheduleDevice } from './database/models/schedules_devices.model';
 import { AuthModule } from './auth/auth.module';
