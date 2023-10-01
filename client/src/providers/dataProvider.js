@@ -4,6 +4,7 @@ import { API_URL } from "../consts";
 
 const apiUrl = API_URL;
 const dataProvider = simpleRestProvider(apiUrl);
+
 const customDataProvider = {
   ...dataProvider,
   async getList(resource, params) {

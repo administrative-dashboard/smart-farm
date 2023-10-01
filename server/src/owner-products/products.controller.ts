@@ -15,6 +15,7 @@ import {
 import { ProductsService } from './products.service';
 import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
 import { GoogleService } from 'src/auth/google.service';
+import { query } from 'express';
 
 @Controller('products')
 @UseGuards(JwtAuthGuard)
@@ -30,6 +31,7 @@ export class ProductsController {
     @Query('product_name') productName: any,
     @Query('created_at') date: any,
     @Query('page') page: any,
+    @Query('description') description: any,
     @Query('product_type') productType: any,
     @Query('perPage') perPage: any,
     @Query('field') field: any,
@@ -45,19 +47,21 @@ export class ProductsController {
       console.log('ЗАПРОС ПОЛУЧЕН!!!!!!!!!');
       console.log('searchTerm==', searchTerm);
       console.log('product_type==', productType);
+      console.log('description==', description);
       console.log('product_name==', productName);
       console.log('created_at==', date);
       const accessToken = req.user.accessToken;
       const email = await this.googleService.getUserInfo(accessToken);
       console.log(email);
-      if (searchTerm || productType || productName || date) {
+      if (searchTerm || productType || productName || date || description) {
         const filteredProducts = await this.ProductsService.searchProducts(
           email,
           searchTerm,
           productName,
+          productType,
+          description,
           date,
           page,
-          productType,
           perPage,
           field,
           order

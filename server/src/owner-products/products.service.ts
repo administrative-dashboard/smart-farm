@@ -121,27 +121,31 @@ export class ProductsService {
 
       if (query !== '' && query !== undefined) {
         whereClause[Op.or] = [
-          Sequelize.col(`"products"."name" ILIKE :textQuery`),
-          Sequelize.col(`"products"."product_types"."type" ILIKE :textQuery`),
+          Sequelize.literal(`"products"."name" ILIKE :textQuery`),
+          Sequelize.literal(
+            `"products->product_types"."type" ILIKE :textQuery`
+          ),
         ];
       }
 
       if (productName !== '' && productName !== undefined) {
         console.log('productName is pushed');
         whereClause[Op.and].push(
-          Sequelize.col(`"products"."name" ILIKE :textProductName`)
+          Sequelize.literal(`"products"."name" ILIKE :textProductName`)
         );
       }
       if (productType !== '' && productType !== undefined) {
         console.log('productType is pushed');
         whereClause[Op.and].push(
-          Sequelize.col(`"products"."product_types"."type" ILIKE :textQuery`)
+          Sequelize.literal(
+            `"products->product_types"."type" ILIKE :textProductType`
+          )
         );
       }
       if (description !== '' && description !== undefined) {
         console.log('description is pushed');
         whereClause[Op.and].push(
-          Sequelize.col(
+          Sequelize.literal(
             `"products"."description" ILIKE :textProductDescription`
           )
         );
@@ -164,7 +168,6 @@ export class ProductsService {
         where: whereClause,
         attributes: [
           'id',
-          'name',
           [Sequelize.col('products.description'), 'description'],
           'created_at',
           [Sequelize.col(`products.name`), 'product_name'],
@@ -175,16 +178,14 @@ export class ProductsService {
             model: Product,
             as: 'products',
             attributes: [],
-            include: [{ model: ProductType, attributes: [] }],
+            include: [{ model: ProductType, attributes: ['type'] }],
           },
         ],
         replacements: {
           textQuery: `%${query}%`,
           textProductName: `%${productName}%`,
           textProductType: `%${productType}%`,
-          textDeviceDate: `%${created_at}%`,
-          textDeviceDescription: `%${description}%`,
-          numQuery: query,
+          textProductDescription: `%${description}%`,
         },
         order: sort,
         offset: (page - 1) * perPage,
