@@ -1,6 +1,6 @@
 //portable device list
 import Axios from "axios";
-import { Pagination } from 'react-admin';
+import { Empty, Pagination } from 'react-admin';
 import {
   List,
   Datagrid,
@@ -14,15 +14,13 @@ import {
   DateInput,
   Filter,
   SearchInput, 
+
 } from "react-admin";
-import { Box } from "@mui/material";
-import { owner_drawer } from "../../assets/static/mockData/owner_drawer";
-import { useDataProvider } from "react-admin";
-import { HomeRedirectButton } from "../../components/HomeRedirectButton";
+import { ListTitle } from "../../components/ListTitle";
+import { Box, Typography } from "@mui/material";
 import { ResetFilters } from "../../components/ResetFilters";
 import { useState, useEffect } from "react";
 import customDataProvider from "../../providers/dataProvider";
-import { MyBar } from "../../components/Drawer";
 export const PortableDeviceList = (props) => {
   const dataProvider = customDataProvider;
   const [data, setData] = useState([]);
@@ -115,13 +113,14 @@ export const PortableDeviceList = (props) => {
   return (
     <>
       <ResetFilters />
-      
       <List
         {...props}
         data={data}
         filters={<DeviceFilter />} 
         sx={{ color: "#38A505" }}
+        title=" "
       >
+        <ListTitle pageName="Portable Devices"/>
         <Datagrid rowClick='edit'>
           <TextField source="device_name" label="Name" />
           <TextField source="device_type" label="Type" />
@@ -132,15 +131,6 @@ export const PortableDeviceList = (props) => {
           <DeleteButton />
         </Datagrid>
       </List>
-      <Box
-        display="flex"
-        flexDirection="row"
-        justifyContent="center"
-        alignItems="center"
-      >
-        
-       
-      </Box>
     </>
   );
 };

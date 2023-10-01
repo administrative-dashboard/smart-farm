@@ -75,6 +75,7 @@ const i18nProvider = polyglotI18nProvider(
 const App = () => {
   const isAuthenticated = getJwtTokenFromCookies() ? true : false;
   const [roles, setRoles] = React.useState([]);
+  const [perms, setPerms] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   React.useEffect(() => {
     localStorage.setItem("appLoading", "true");
@@ -96,16 +97,35 @@ const App = () => {
       }
     };
 
+    const fetchUserPerms = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/user/perm`, {
+          headers: {
+            Authorization: `Bearer ${getJwtTokenFromCookies()}`,
+          },
+        });
+        setPerms(response.data);
+      } catch (error) {
+        console.error("Error fetching user permissions:", error);
+        authProvider.logout();
+      } finally {
+        localStorage.removeItem("appLoading");
+        setIsLoading(false);
+      }
+    };
+
     if (isAuthenticated) {
       fetchUserRoles();
+      fetchUserPerms();
     } else {
       setRoles(["GUEST"]);
+      setPerms([])
       setIsLoading(false);
     }
   }, []);
 
-  // console.log(roles[0]);
-  const role = roles[0];
+  // console.log(roles);
+  const role = roles;
 
   const commonResources = [
     <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
@@ -117,13 +137,21 @@ const App = () => {
   const employeeResources = [
     <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
     <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
-    <Resource name="contact" list={Contact} />,
+    <Resource
+      name="contact"
+      list={Contact}
+      options={{ label: "My contacts" }}
+    />,
   ];
 
   const ownerResources = [
     <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
     <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
-    <Resource name="contact" list={Contact} />,
+    <Resource
+      name="contact"
+      list={Contact}
+      options={{ label: "My contacts" }}
+    />,
     <Resource
       name="ownerPage"
       list={OwnerDesktop}
@@ -167,21 +195,45 @@ const App = () => {
     // />,
   ];
   const CMResources = [
-    <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
-    <Resource name="contact" list={Contact} />,
-    <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
-    <Resource name="usersinfo" list={DesktopInfo} />,
+    <Resource
+      name="dashboard"
+      list={MainDashboard}
+      icon={HomeIcon}
+      options={{ label: "Home" }}
+    />,
+    <Resource
+      name="contact"
+      list={Contact}
+      options={{ label: "My contacts" }}
+    />,
+    <Resource
+      name="profile"
+      list={Profile}
+      icon={PermIdentityIcon}
+      options={{ label: "Profile" }}
+    />,
+    <Resource
+      name="usersinfo"
+      list={DesktopInfo}
+      options={{ label: "Dashboard" }}
+    />,
     <Resource
       name="community/users"
       list={UserList}
       edit={UserEdit}
       icon={ArticleIcon}
+      options={{ label: "Users" }}
     />,
   ];
   const AdminResources = [
+    ...CMResources,
     <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
     <Resource name="adminPage" list={AdminDesktop} />,
-    <Resource name="contact" list={Contact} />,
+    <Resource
+      name="contact"
+      list={Contact}
+      options={{ label: "My contacts" }}
+    />,
     <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
     <Resource
       name="all_fixedDevices"
@@ -227,13 +279,13 @@ const App = () => {
     <Resource name="Product" list={ProductListAdm} show={ProductShow} />,
     <Resource name="Statistic" list={DeviceStatisticPage} />,
     //<Resource name="community_manager" list={CommunityManager} />,
-    <Resource name="usersinfo" list={DesktopInfo} />,
-    <Resource
-      name="community/users"
-      list={UserList}
-      edit={UserEdit}
-      icon={ArticleIcon}
-    />,
+    // <Resource name="usersinfo" list={DesktopInfo} />,
+    // <Resource
+    //   name="community/users"
+    //   list={UserList}
+    //   edit={UserEdit}
+    //   icon={ArticleIcon}
+    // />,
     //<Resource name="BasicTable" list={BasicTable} show={BasicTableShow} />,
   ];
   const myTheme = {
@@ -258,33 +310,51 @@ const App = () => {
       ].join(","),
     },
   };
+  const getdrw = () => {
+    const array = ["EMPLOYEE", "ADMIN", "OWNER", "GUEST", "COMMUNITY_MANAGER"];
+    const array2 = [
+      [...employeeResources],
+      [...AdminResources],
+      [...ownerResources],
+      [...commonResources],
+      [...CMResources],
+    ];
+
+    const result = [];
+
+    for (let index = 0; index < role.length; index++) {
+      console.log(role[index]);
+      for (let j = 0; j < array.length; j++) {
+        if (role[index] === array[j]) {
+          result[index] = array2[j];
+          break;
+        }
+      }
+    }
+    return result.length > 0 ? result : <div>...loading</div>;
+  };
   return (
-    <BrowserRouter>
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : (
-        <Admin
-          theme={myTheme}
-          layout={MyLayout}
-          dataProvider={customDataProvider}
-          i18nProvider={i18nProvider}
-        >
-          {role === "EMPLOYEE" ? (
-            [...employeeResources]
-          ) : role === "ADMIN" ? (
-            [...AdminResources]
-          ) : role === "OWNER" ? (
-            [...ownerResources]
-          ) : role === "GUEST" ? (
-            [...commonResources]
-          ) : role === "COMMUNITY_MANAGER" ? (
-            [...CMResources]
-          ): (
-            <div>...loading</div>
-          )}
-        </Admin>
-      )}
-    </BrowserRouter>
+    // <AbacProvider
+    //   // user={props.user}
+    //   // roles={props.user.roles}
+    //   // rules={rules}
+    //   // permissions={props.user.permissions}
+    // >
+      <BrowserRouter>
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : (
+          <Admin
+            theme={myTheme}
+            layout={MyLayout}
+            dataProvider={customDataProvider}
+            i18nProvider={i18nProvider}
+          >
+            {getdrw()}
+          </Admin>
+        )}
+      </BrowserRouter>
+    ///* </AbacProvider> */}
   );
 };
 

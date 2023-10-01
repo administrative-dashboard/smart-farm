@@ -7,14 +7,9 @@ import { User } from 'src/database/models/users.model';
 import { UserRole } from 'src/database/models/users_roles';
 import { Role } from 'src/database/models/roles.model';
 import { Sequelize } from 'sequelize';
-export interface UserWithRoles {
-  id: number;
-  name: string;
-  email: string;
-  phone_number: string;
-  profile_image: string;
-  roles: string;
-}
+import { UserPermission } from 'src/database/models/users_permissions.model';
+import { Permission } from 'src/database/models/permissions.model';
+
 @Injectable()
 export class UserCommunityService {
   constructor(
@@ -81,53 +76,125 @@ export class UserCommunityService {
   }
 
   async getUsersInSameCommunity(communityName: string): Promise<{
-    data: any[],
-    total: number
+    data: any[];
+    total: number;
   }> {
-    const community = await Community.findOne({
-      where: {
-        name: communityName,
-      },
-      include: [
-        {
-          model: UserCommunity,
-          attributes: ['user_id'],
+    try {
+      const community = await Community.findOne({
+        where: {
+          name: communityName,
         },
-      ],
-    });
-
-    if (!community || !community.user_communities) {
-      return { data: [], total: 0 };
+        include: [
+          {
+            model: UserCommunity,
+            attributes: ['user_id'],
+          },
+        ],
+      });
+  
+      if (!community || !community.user_communities) {
+        console.log('Community or user_communities is undefined:', community);
+        return { data: [], total: 0 };
+      }
+  
+      const userIDsInCommunity = community.user_communities.map((uc) => uc.user_id);
+  
+      if (!community || !community.user_communities || community.user_communities.length === 0) {
+        console.log('Community or user_communities is undefined or empty:', community);
+        return { data: [], total: 0 };
+      }
+      const users = await User.findAll({
+        where: {
+          id: userIDsInCommunity,
+        },
+        include: [
+          {
+            model: UserRole,
+            include: [
+              {
+                model: Role,
+                attributes: ['value'],
+              },
+            ],
+          },
+          {
+            model: UserPermission,
+            include: [
+              {
+                model: Permission,
+                attributes: ['value'],
+              },
+            ],
+          },
+        ],
+      });
+      
+      const data = users.map((user) => ({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        phone_number: user.phone_number,
+        roles: user.users_roles.map((userRole) => userRole.roles.value),
+        permissions: user.users_permissions.map((UserPerm) => UserPerm.permissions.value)
+      }));
+      
+      const total = data.length;
+      return { data, total };
+    } catch (error) {
+         
     }
-    const userIDsInCommunity = community.user_communities.map(
-      (uc) => uc.user_id
-    );
-    const data = await User.findAll({
-      where: {
-        id: userIDsInCommunity,
-      },
-      attributes: [
-        'id',
-        'name',
-        'email',
-        'phone_number',
-        [Sequelize.col('users_roles.roles.value'), 'roles'],
-      ],
-      include: [
-        {
-          model: UserRole,
-          attributes: [],
-          include: [
-            {
-              model: Role,
-              attributes: ['value'],
-            },
-          ],
-        },
-      ],
-    });
-
-    const total = data.length;
-    return { data, total };
   }
+  
 }
+
+
+  // async getUsersInSameCommunity(communityName: string): Promise<{
+  //   data: any[],
+  //   total: number
+  // }> {
+  //   const community = await Community.findOne({
+  //     where: {
+  //       name: communityName,
+  //     },
+  //     include: [
+  //       {
+  //         model: UserCommunity,
+  //         attributes: ['user_id'],
+  //       },
+  //     ],
+  //   });
+
+  //   if (!community || !community.user_communities) {
+  //     return { data: [], total: 0 };
+  //   }
+  //   const userIDsInCommunity = community.user_communities.map(
+  //     (uc) => uc.user_id
+  //   );
+  //   const data = await User.findAll({
+  //     where: {
+  //       id: userIDsInCommunity,
+  //     },
+  //     attributes: [
+  //       'id',
+  //       'name',
+  //       'email',
+  //       'phone_number',
+  //       [Sequelize.col('users_roles.roles.value'), 'roles'],
+  //     ],
+  //     include: [
+  //       {
+  //         model: UserRole,
+  //         attributes: [],
+  //         include: [
+  //           {
+  //             model: Role,
+  //             attributes: ['value'],
+  //           },
+  //         ],
+  //       },
+  //     ],
+  //   });
+
+  //   const total = data.length;
+  //   return { data, total };
+  // }
