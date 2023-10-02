@@ -117,8 +117,6 @@ export const Profile = () => {
 
 
   return (
-    <AllowedTo
-    >
     <Container>
       <Grid container spacing={2}>
         <Grid item xs={12} md={isSmallScreen ? 12 : 9}>
@@ -226,6 +224,5 @@ export const Profile = () => {
         </Grid>
       </Grid>
     </Container>
-    </AllowedTo>
   );
 };
