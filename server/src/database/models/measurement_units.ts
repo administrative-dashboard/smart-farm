@@ -1,6 +1,7 @@
 // measurement.model.ts
 import { Column, HasMany, Model, Table } from 'sequelize-typescript';
 import { Field } from './fields.model';
+import { Greenhouse } from './greenhouses.model';
 
 @Table({ tableName: 'measurement_units', timestamps: false })
 export class MeasurementUnit extends Model<MeasurementUnit> {
@@ -15,4 +16,7 @@ export class MeasurementUnit extends Model<MeasurementUnit> {
 
   @HasMany(() => Field)
   fields: Field[];
+
+  @HasMany(() => Greenhouse)
+  greenhouses: Greenhouse[];
 }

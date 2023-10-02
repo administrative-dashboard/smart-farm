@@ -10,11 +10,7 @@ import ArticleIcon from "@mui/icons-material/Article";
 import polyglotI18nProvider from "ra-i18n-polyglot";
 import englishMessages from "ra-language-english";
 import armenianMessages from "ra-language-armenian";
-import AbacApp from "./abac";
 import { BrowserRouter, Route } from "react-router-dom";
-
-import { AbacProvider } from "react-abac";
-import { checkAccess } from "./abac";
 import { MainDashboard } from "./pages/MainDashboard";
 import { Signin } from "./pages/auth/Signin";
 import { Signup } from "./pages/auth/Signup";
@@ -119,23 +115,24 @@ const App = () => {
       fetchUserPerms();
     } else {
       setRoles(["GUEST"]);
-      setPerms([])
+      setPerms([]);
       setIsLoading(false);
     }
   }, []);
 
   // console.log(roles);
+  const permission = perms;
   const role = roles;
 
   const commonResources = [
-    <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
+    <Resource name="Main Dashboard" list={MainDashboard} icon={HomeIcon} />,
     <Resource name="signin" list={Signin} icon={VpnKeyIcon} />,
     <Route exact path="/signup" element={Signup} />,
     <Resource name="signup" list={Signup} />,
   ];
 
   const employeeResources = [
-    <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
+    <Resource name="Main Dashboard" list={MainDashboard} icon={HomeIcon} />,
     <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
     <Resource
       name="contact"
@@ -323,7 +320,6 @@ const App = () => {
     const result = [];
 
     for (let index = 0; index < role.length; index++) {
-      console.log(role[index]);
       for (let j = 0; j < array.length; j++) {
         if (role[index] === array[j]) {
           result[index] = array2[j];
@@ -333,28 +329,93 @@ const App = () => {
     }
     return result.length > 0 ? result : <div>...loading</div>;
   };
+  const getprm = () => {
+    console.log(perms);
+    const permissions = [
+      <Resource
+        name="greenhouses"
+        list={GreenhouseList}
+        create={GreenhouseCreate}
+        edit={GreenhouseEdit}
+      />,
+      <Resource
+        name="fields"
+        list={FieldList}
+        create={FieldCreate}
+        edit={FieldEdit}
+      />,
+      <Resource
+        name="fixed_devices"
+        list={FixedDeviceList}
+        create={FixedDeviceCreate}
+        edit={FixedDeviceEdit}
+      />,
+      <Resource
+        name="portable_devices"
+        list={PortableDeviceList}
+        create={PortableDeviceCreate}
+        edit={PortableDeviceEdit}
+      />,
+      <Resource name="Product" list={ProductListAdm} show={ProductShow} />,
+    ];
+
+    const answer = [];
+    let b = 0;
+    const all_permissions = [
+      "GREENHOUSE",
+      "FIELD",
+      "FIXED",
+      "PORTABLE",
+      "ROLE",
+      "PRODUCT",
+    ];
+    let a = 0;
+    for (let index = 0; index < perms.length; index++) {
+      for (let j = 0; j < all_permissions.length; j++) {
+        if (perms[index].includes(all_permissions[j])) {
+          if (all_permissions[j]== "ROLE") {
+              answer[b] = <Resource
+              name="usersinfo"
+              list={DesktopInfo}
+              options={{ label: "Dashboard" }}
+            />;
+              b++;
+              answer[b] = 
+                <Resource
+                  name="community/users"
+                  list={UserList}
+                  edit={UserEdit}
+                  icon={ArticleIcon}
+                  options={{ label: "Users" }}
+                />
+                b++;
+            }
+            else{
+              answer[b] = permissions[a];
+              b++;
+            }
+          }
+        }
+      }
+    
+    return answer.length > 0 ? answer : <div>...loading</div>;
+  };
   return (
-    // <AbacProvider
-    //   // user={props.user}
-    //   // roles={props.user.roles}
-    //   // rules={rules}
-    //   // permissions={props.user.permissions}
-    // >
-      <BrowserRouter>
-        {isLoading ? (
-          <div>Loading...</div>
-        ) : (
-          <Admin
-            theme={myTheme}
-            layout={MyLayout}
-            dataProvider={customDataProvider}
-            i18nProvider={i18nProvider}
-          >
-            {getdrw()}
-          </Admin>
-        )}
-      </BrowserRouter>
-    ///* </AbacProvider> */}
+    <BrowserRouter>
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : (
+        <Admin
+          theme={myTheme}
+          layout={MyLayout}
+          dataProvider={customDataProvider}
+          i18nProvider={i18nProvider}
+        >
+          {getdrw()}
+          {getprm()}
+        </Admin>
+      )}
+    </BrowserRouter>
   );
 };
 

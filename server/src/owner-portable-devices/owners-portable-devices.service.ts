@@ -98,7 +98,7 @@ export class OwnersPortableDevicesService {
     perPage?:number,
     field?:any,
     order?:any,
-  ): Promise<{ devices: any[], total: number }>{
+  ): Promise<{ data: any[], total: number }>{
 
     console.log(created_at);
     try {
@@ -172,7 +172,7 @@ export class OwnersPortableDevicesService {
         });
       }
 
-      const devices = await this.OwnerPortableDeviceModel.findAll({
+      const data = await this.OwnerPortableDeviceModel.findAll({
         where: whereClause,
         attributes: [
           'id',
@@ -204,7 +204,7 @@ export class OwnersPortableDevicesService {
         limit : perPage,
         subQuery:false, 
       });
-      return  {devices, total};
+      return  {data, total};
     } catch (error) {
       throw error;
     }
@@ -248,6 +248,9 @@ export class OwnersPortableDevicesService {
         return ownerPortableDevice;
       }
     } catch (error) {
+      if(error.message='USER IS ASSOCIATED WITH THE DEVICE') {
+        throw error;
+      }
       console.error(error); 
     }
   }
@@ -283,10 +286,34 @@ export class OwnersPortableDevicesService {
     }
   }
 
-  async updatePortableDeviceById(id: string, deviceData: any): Promise<any> {
+  async updatePortableDeviceById(id: string, deviceData: any,email:string): Promise<any> {
     try {
       const ParsedId = parseInt(id, 10);
+      const userId = await this.getUserIdByEmail(email);
+      
+      const repeatingDevice =
+        await this.OwnerPortableDeviceModel.findOne({
+          where: {
+            user_id : userId,
+            id: {
+              [Op.not]: ParsedId, // Используйте Op.not для исключения записи с определенным id
+            },
 
+          },
+          include: [
+            {
+              model: PortableDevice,
+              where: {
+                name: deviceData.device_name,
+                type: deviceData.device_type,
+              },
+            },
+          ],
+        });
+      if (repeatingDevice) {
+        throw new Error('You already have a portable device with the same name and type.');
+      }
+      
       // First, check if the portable device with the given ID exists
       const existingPortableDevice =
         await this.OwnerPortableDeviceModel.findOne({
