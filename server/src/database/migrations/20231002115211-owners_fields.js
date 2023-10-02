@@ -1,6 +1,4 @@
-// require('dotenv').config();
-
-'use strict';
+// require('dotenv').config();'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     const tableName = 'owners_fields';
@@ -23,11 +21,9 @@ module.exports = {
       updated_at: {
         type: Sequelize.DATE,
       },
-    };
-
-    await queryInterface.createTable(tableName, columns);
+    };    await queryInterface.createTable(tableName, columns);
   },
   down: async (queryInterface) => {
     await queryInterface.dropTable('owners_fields');
   }
-};
+}; 

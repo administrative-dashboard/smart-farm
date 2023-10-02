@@ -90,7 +90,7 @@ export class OwnersFixedDevicesService {
     perPage?:number,
     field?:any,
     order?:any,
-  ): Promise<{ devices: any[], total: number }> {
+  ): Promise<{ data: any[], total: number }> {
     console.log(created_at);
     try {
       //console.log("searchdevice");
@@ -155,7 +155,7 @@ export class OwnersFixedDevicesService {
         });
       }
 
-      const devices = await this.OwnerFixedDeviceModel.findAll({
+      const data = await this.OwnerFixedDeviceModel.findAll({
         where: whereClause,
         attributes: [
           'id',
@@ -184,7 +184,7 @@ export class OwnersFixedDevicesService {
         limit : perPage,
         subQuery:false, 
       });
-      return {devices, total};
+      return {data, total};
     } catch (error) {
       throw error;
     }
@@ -227,6 +227,9 @@ export class OwnersFixedDevicesService {
       }
       
     } catch (error) {
+      if(error.message="USER IS ASSOCIATED WITH THE DEVICE"){
+        throw(error);
+      }
       console.error(error);
 
     }
@@ -262,10 +265,35 @@ export class OwnersFixedDevicesService {
     }
   }
 
-  async updateFixedDeviceById(id: string, deviceData: any): Promise<any> {
+  async updateFixedDeviceById(id: string, deviceData: any,email:string): Promise<any> {
     try {
       const ParsedId = parseInt(id, 10);
+      const userId = await this.getUserIdByEmail(email);
+      const repeatingDevice =
+      await this.OwnerFixedDeviceModel.findOne({
+        where: {
+          user_id : userId,
+          id: {
+            [Op.not]: ParsedId, // Используйте Op.not для исключения записи с определенным id
+          },
 
+        },
+        include: [
+          {
+            model: FixedDevice,
+            where: {
+              name: deviceData.device_name,
+              type: deviceData.device_type,
+            },
+          },
+        ],
+      });
+      if (repeatingDevice) {
+        throw new Error('You already have a fixed device with the same name and type.');
+      }
+    
+    
+    
       // First, check if the fixed device with the given ID exists
       const existingFixedDevice = await this.OwnerFixedDeviceModel.findOne({
         where: {

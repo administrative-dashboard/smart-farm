@@ -1,5 +1,4 @@
 // require('dotenv').config();
-
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -19,6 +18,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      measurement_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       description: {
         type: Sequelize.STRING,
       },
@@ -26,7 +29,6 @@ module.exports = {
         type: Sequelize.STRING,
       },
     };
-
     await queryInterface.createTable(tableName, columns);
   },
   down: async (queryInterface) => {
