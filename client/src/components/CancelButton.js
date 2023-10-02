@@ -4,7 +4,7 @@ export const CustomCancelButton = () => {
   const redirect = useRedirect();
 
   const handleClick = () => {
-    redirect("/posts");
+    redirect("/dashboard");
   };
 
   return <Button label="Cancel" onClick={handleClick} />;

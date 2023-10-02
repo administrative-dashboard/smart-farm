@@ -11,17 +11,10 @@ import { FixedDevice } from './fixed_devices.model';
 import { PortableDevice } from './portable_devices.model ';
 import { OwnerFixedDevice } from './owners_fixed_devices.model';
 import { OwnerPortableDevice } from './owners_portable_devices.model ';
+import { UserPermission } from './users_permissions.model';
 
 @Table({ tableName: 'users', timestamps: false })
 export class User extends Model<User> {
-    @BeforeCreate
-    static async setDefaultRole(instance: User) {
-      const defaultRole = await Role.findOne({ where: { value: 'EMPLOYEE' } });
-      if (defaultRole) {
-        instance.roles = [defaultRole];
-      }
-    }
-
   @Column({ primaryKey: true, autoIncrement: true, allowNull: false })
   id: number;
 
@@ -40,8 +33,10 @@ export class User extends Model<User> {
   @HasOne(() => UserCommunity)
   users_communities: UserCommunity;
 
-  @BelongsToMany(() => Role, () => UserRole)
-  roles: Role[];
+  // @BelongsToMany(() => Role, () => UserRole)
+  // roles: Role[];
+  @HasMany(() => UserRole)
+  users_roles: UserRole[];
 
   @HasMany(() => OwnerField)
   owners_fields: OwnerField;
@@ -52,9 +47,14 @@ export class User extends Model<User> {
   @HasMany(() => DeviceRequestHistory)
   device_requests_history: DeviceRequestHistory;
 
-  @BelongsToMany(() => FixedDevice, () => OwnerFixedDevice)
-  fixed_devices: FixedDevice[];
 
   @HasMany(() => OwnerPortableDevice)
   owners_portable_devices: OwnerPortableDevice[];
+
+  @HasMany(() => OwnerFixedDevice)
+  owners_fixed_devices: OwnerFixedDevice[];
+
+  @HasMany(() => UserPermission)
+  users_permissions: UserPermission[];
 }
+

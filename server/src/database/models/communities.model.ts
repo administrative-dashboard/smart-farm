@@ -1,3 +1,4 @@
+//communities.model.ts
 import { Column, Model, Table, DataType, HasMany } from 'sequelize-typescript';
 import { UserCommunity } from './users_communities.model';
 import { DeviceUsageStatisticsCommunities } from './device_usage_statistics_communities.model';

@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, useRedirect } from "react-admin";
-import { useMediaQuery, useTheme } from "@mui/material";
+import { Typography, useMediaQuery, useTheme } from "@mui/material";
 
 export const SigninButton = () => {
   const theme = useTheme();
@@ -11,20 +11,22 @@ export const SigninButton = () => {
   };
 
   return (
-    <Button
-      variant={isMediumScreen ? "contained" : "text"}
-      sx={{
-        backgroundColor: "#1F4700",
-        color: "white",
-        mr: 5,
-        px: isMediumScreen ? 4 : 2,
-        "&:hover": {
-          backgroundColor: "lightgreen",
-        },
-      }}
-      onClick={handleClick}
-    >
-      Signin
-    </Button>
+    <>
+      <Button
+        variant={isMediumScreen ? "contained" : "text"}
+        sx={{
+          backgroundColor: "#1F4700",
+          color: "white",
+          mr: 5,
+          px: isMediumScreen ? 4 : 2,
+          "&:hover": {
+            backgroundColor: "lightgreen",
+          },
+        }}
+        onClick={handleClick}
+      >
+          Signin
+      </Button>
+    </>
   );
 };

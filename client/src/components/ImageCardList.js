@@ -1,5 +1,6 @@
 import React from "react";
 import { Card, CardContent, Typography } from "@mui/material";
+import { Link } from "react-admin";
 
 const ImageCardList = ({ data }) => (
   <div
@@ -26,7 +27,9 @@ const ImageCardList = ({ data }) => (
         />
         <CardContent>
           <Typography variant="h6" component="div">
-            {item.title}
+            <Link key={item.link} to={`/${item.link}`}>
+              {item.title}
+            </Link>
           </Typography>
         </CardContent>
       </Card>

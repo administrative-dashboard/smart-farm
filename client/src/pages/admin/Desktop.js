@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Grid, Typography } from "@mui/material";
-import { MyBar } from "../../components/Drawer";
+//import { MyBar } from "../../components/Drawer";
 import ImageCardList from "../../components/ImageCardList";
 import users from "../../assets/static/users-svgrepo-com.svg";
 import greenhouse from "../../assets/static/greenhouse(1).png";
@@ -8,46 +8,46 @@ import field from "../../assets/static/plantation.png";
 import product from "../../assets/static/healthy-food.png";
 import device from "../../assets/static/hammer.png";
 import Statistics from "../../assets/static/analytics.png";
-import { drawer_new_data } from "../../assets/static/mockData/new_data";
+//import { drawer_new_data } from "../../assets/static/mockData/new_data";
 const imageCardData = [
   {
     img: users,
     title: "Users",
-    link: "#admin/usersInfo",
+    link: "/User",
   },
   {
     img: greenhouse,
     title: "Greenhouse",
-    link: "#admin/greenhousesInfo",
+    link: "/Greenhouse",
   },
   {
     img: field,
     title: "Fields",
-    link: "#admin/fieldsInfo",
+    link: "/fieldsInfo",
   },
   {
     img: product,
     title: "Products",
-    link: "#admin/productsInfo",
+    link: "/productsInfo",
   },
   {
     img: device,
     title: "Devices",
-    link: "#/ChooseCommunity",
+    link: "/chooseDevice",
   },
   {
     img: Statistics,
     title: "Statistics",
-    link: "#admin/statisticsInfo",
+    link: "/statisticsInfo",
   },
 ];
 
 export const AdminDesktop = () => {
   return (
     <Grid container>
-      <Grid item xs={12} md={2}>
+      {/* <Grid item xs={12} md={2}>
         <MyBar drawerData={drawer_new_data} />
-      </Grid>
+      </Grid> */}
       <Grid item xs={12} md={10}>
         <Container>
           <Typography

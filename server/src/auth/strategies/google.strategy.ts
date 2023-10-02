@@ -5,6 +5,7 @@ import { Strategy } from 'passport-google-oauth20';
 import { config } from 'dotenv';
 import { User } from 'src/database/models/users.model';
 import { Role } from 'src/database/models/roles.model';
+import { UserRole } from 'src/database/models/users_roles';
 
 config();
 
@@ -32,22 +33,18 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         phone_number: '',
         profile_image: photos[0].value,
       },
-      include: [Role],
     });
 
     if (created) {
       const defaultRole = await Role.findOne({ where: { value: 'EMPLOYEE' } });
       if (defaultRole) {
-        await user.$add('roles', defaultRole);
+        await UserRole.create({ role_id: defaultRole.id, user_id: user.id });
       }
     }
-
     const payload = {
       provider: 'google',
-      email: emails[0].value,
-      user_id: user.id, // Include user_id
-      role: user.roles[0]?.value || 'EMPLOYEE',
       accessToken,
+      created,
     };
 
     return payload;
