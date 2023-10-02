@@ -125,14 +125,14 @@ const App = () => {
   const role = roles;
 
   const commonResources = [
-    <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
+    <Resource name="Main Dashboard" list={MainDashboard} icon={HomeIcon} />,
     <Resource name="signin" list={Signin} icon={VpnKeyIcon} />,
     <Route exact path="/signup" element={Signup} />,
     <Resource name="signup" list={Signup} />,
   ];
 
   const employeeResources = [
-    <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
+    <Resource name="Main Dashboard" list={MainDashboard} icon={HomeIcon} />,
     <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
     <Resource
       name="contact"
@@ -330,6 +330,7 @@ const App = () => {
     return result.length > 0 ? result : <div>...loading</div>;
   };
   const getprm = () => {
+    console.log(perms);
     const permissions = [
       <Resource
         name="greenhouses"
@@ -344,21 +345,16 @@ const App = () => {
         edit={FieldEdit}
       />,
       <Resource
-        name="portable_devices"
-        list={PortableDeviceList}
-        create={PortableDeviceCreate}
-        edit={PortableDeviceEdit}
-      />,
-      <Resource
         name="fixed_devices"
         list={FixedDeviceList}
         create={FixedDeviceCreate}
         edit={FixedDeviceEdit}
       />,
       <Resource
-        name="usersinfo"
-        list={DesktopInfo}
-        options={{ label: "Dashboard" }}
+        name="portable_devices"
+        list={PortableDeviceList}
+        create={PortableDeviceCreate}
+        edit={PortableDeviceEdit}
       />,
       <Resource name="Product" list={ProductListAdm} show={ProductShow} />,
     ];
@@ -373,21 +369,16 @@ const App = () => {
       "ROLE",
       "PRODUCT",
     ];
-    const case_permissions = [
-      "greenhouses",
-      "fields",
-      "portable_devices",
-      "portable_devices",
-      "usersinfo",
-      "Product",
-    ];
     let a = 0;
     for (let index = 0; index < perms.length; index++) {
       for (let j = 0; j < all_permissions.length; j++) {
         if (perms[index].includes(all_permissions[j])) {
-          if (permissions[a].name == case_permissions[j]) {
-              answer[b] = permissions[a];
-              console.log(answer[b]);
+          if (all_permissions[j]== "ROLE") {
+              answer[b] = <Resource
+              name="usersinfo"
+              list={DesktopInfo}
+              options={{ label: "Dashboard" }}
+            />;
               b++;
               answer[b] = 
                 <Resource
@@ -397,15 +388,12 @@ const App = () => {
                   icon={ArticleIcon}
                   options={{ label: "Users" }}
                 />
-                console.log(answer[b]);
                 b++;
             }
             else{
               answer[b] = permissions[a];
-              console.log(answer[b]);
               b++;
             }
-            a++;
           }
         }
       }
