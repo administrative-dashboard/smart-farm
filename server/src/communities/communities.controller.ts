@@ -3,11 +3,14 @@ import {
   Body,
   Controller,
   Get,
+  HttpException,
+  HttpStatus,
   NotFoundException,
   Param,
   Put,
   Query,
   Request,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { CommunitiesService } from './communities.service';
@@ -95,24 +98,24 @@ export class CommunitiesController {
   @UseGuards(JwtAuthGuard)
   async updateUserById(
     @Param('id') id: string,
-    @Body() data: any
+    @Body() data: any,
+    @Request() req,
+    @Res() res
   ) {
     try {
-      const updateUserById =
-        await this.userService.updateUserById(
-          id,
-          data
-        );
+      const updatedUser = await this.userService.updateUserById(id, data);
 
-      if (!updateUserById) {
-        return { message: 'user not found' };
+      if (!updatedUser) {
+        return res.status(404).json({
+          message: 'User not found',
+          status: 'error',
+        });
       }
 
-      return updateUserById;
+      return res.status(200).json({ data: updatedUser });
     } catch (error) {
-      console.log(error);
-      return { error: 'An error occurred' };
+      console.error(error);
+      throw new HttpException('An error occurred', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
-
 }
