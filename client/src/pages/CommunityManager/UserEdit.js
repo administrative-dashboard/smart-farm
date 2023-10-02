@@ -58,7 +58,7 @@ export const UserEdit = (props) => {
       <Edit title="Edit a user" {...props} resource="community/users">
         <SimpleForm>
           <TextInput source="name" label="Name" />
-          <TextInput source="phone_number" label="Phone_number" />
+          <TextInput source="phone_number" label="Phone_number" disabled/>
           <SelectArrayInput
             source="roles"
             label="Roles"
