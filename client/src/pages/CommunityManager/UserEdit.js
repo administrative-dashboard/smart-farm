@@ -9,11 +9,18 @@ import {
   Error,
   useNotify,
   useRedirect,
+  SaveButton,
+  Toolbar,
 } from "react-admin";
 import axios from "axios";
 import { API_URL } from "../../consts";
 import { getJwtTokenFromCookies } from "../../providers/authUtils";
 import customDataProvider from "../../providers/dataProvider";
+const UserEditToolbar = props => (
+  <Toolbar {...props} >
+      <SaveButton />
+  </Toolbar>
+);
 
 export const UserEdit = (props) => {
   const notify = useNotify();
@@ -92,9 +99,9 @@ export const UserEdit = (props) => {
 
   return (
     <Edit title="Edit a user" {...props} resource="community/users">
-      <SimpleForm onSubmit={handleSave}>
-        <TextInput source="name" label="Name" />
-        <TextInput source="phone_number" label="Phone_number" />
+      <SimpleForm onSubmit={handleSave} toolbar={<UserEditToolbar />}>
+        <TextInput source="name" label="Name" disabled/>
+        <TextInput source="phone_number" label="Phone_number" disabled />
         <SelectArrayInput
           source="roles"
           label="Roles"
