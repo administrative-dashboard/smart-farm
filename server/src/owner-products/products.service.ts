@@ -72,9 +72,9 @@ export class ProductsService {
             attributes: [],
             include: [
               {
-                model: ProductType, 
-                attributes: [] 
-              }
+                model: ProductType,
+                attributes: [],
+              },
             ],
           },
         ],

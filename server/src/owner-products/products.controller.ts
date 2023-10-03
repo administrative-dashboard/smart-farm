@@ -77,7 +77,6 @@ export class ProductsController {
           field,
           order
         );
-        console.log('sadasdsad');
         return { data, total };
       }
     } catch (error) {
@@ -108,6 +107,7 @@ export class ProductsController {
     @Body() productData: any,
     @Res() res
   ) {
+    console.log('Product Data: ', productData);
     try {
       console.log('Product Data: ', productData);
       const updatedProduct = await this.ProductsService.updateProductById(
