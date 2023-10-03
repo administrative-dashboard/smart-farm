@@ -79,7 +79,7 @@ export const UserEdit = (props) => {
         data: userData,
         id: userData.id,
       });
-      if (response.data) {
+      if (response.status===200) {
         notify("User updated successfully", "info");
         redirect("/community/users");
       } else {
@@ -92,7 +92,7 @@ export const UserEdit = (props) => {
 
   return (
     <Edit title="Edit a user" {...props} resource="community/users">
-      <SimpleForm save={handleSave}>
+      <SimpleForm onSubmit={handleSave}>
         <TextInput source="name" label="Name" />
         <TextInput source="phone_number" label="Phone_number" />
         <SelectArrayInput
