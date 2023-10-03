@@ -19,6 +19,8 @@ import { UserCommunityService } from 'src/user/user-community.service';
 import { GoogleService } from 'src/auth/google.service';
 import { UserService } from 'src/user/user.service';
 import { UserRolesService } from 'src/user/user-roles.service';
+import { RolesPermsGuard } from 'src/auth/guards/roles_perms.guard';
+import { RolesPerms } from 'src/auth/guards/roles_perms.decorator';
 
 @Controller('community')
 export class CommunitiesController {
@@ -37,7 +39,8 @@ export class CommunitiesController {
   }
 
   @Get('users')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesPermsGuard)
+  @RolesPerms('ADMIN', 'COMMUNITY_MANAGER', 'EDIT_ROLE')
   async getUsersFromCommunity(
     @Query('q') searchTerm: string,
     @Query('name') name: string,
@@ -59,27 +62,16 @@ export class CommunitiesController {
       const communityName = await this.userCommunityService.getCommunityNameByUserId(userId);
       const { data, total } = await this.userCommunityService.getUsersInSameCommunity(communityName);
 
-      // const filteredUsers = data.filter((user) => {
-      //   if (
-      //     (searchTerm && user.user.name.includes(searchTerm)) || // Filter based on user name
-      //     (name && user.user.name === name) ||
-      //     (email && user.user.email === email) ||
-      //     (phone_number && user.user.phone_number === phone_number) ||
-      //     (role && user.roles.includes(role))
-      //   ) {
-      //     return true;
-      //   }
-      //   return false;
-      // });
       return { data, total };
-      // return { communityName, data };
     } catch (error) {
       console.error('Error fetching community and users:', error);
       return null;
     }
   }
+
   @Get('users/:id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesPermsGuard)
+  @RolesPerms('ADMIN', 'COMMUNITY_MANAGER', 'EDIT_ROLE')
   async getUserById(@Param('id') id: string) {
     try {
       const data = await this.userService.getUserById(id);
@@ -95,7 +87,8 @@ export class CommunitiesController {
   }
 
   @Put('users/:id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesPermsGuard)
+  @RolesPerms('ADMIN', 'COMMUNITY_MANAGER', 'EDIT_ROLE')
   async updateUserById(
     @Param('id') id: string,
     @Body() data: any,

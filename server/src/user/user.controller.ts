@@ -1,13 +1,23 @@
 //User.controller.ts
-import { Controller, Get, Request, UseGuards, NotFoundException, Param, Post, Body, Put, UseInterceptors, UnauthorizedException } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import {
+  Controller,
+  Get,
+  Request,
+  UseGuards,
+  NotFoundException,
+  Post,
+  Body,
+  Put,
+  UnauthorizedException
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserCommunityService } from './user-community.service';
-import { UserCommunity } from 'src/database/models/users_communities.model';
 import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
 import { GoogleService } from 'src/auth/google.service';
 import { UserRolesService } from './user-roles.service';
 import { UserPermissionsService } from './user-permissions.service';
+import { RolesPerms } from 'src/auth/guards/roles_perms.decorator';
+import { RolesPermsGuard } from 'src/auth/guards/roles_perms.guard';
 @Controller('user')
 export class UserController {
   constructor(
@@ -28,10 +38,8 @@ export class UserController {
       return userInfo;
     } catch (error) {
       if (error instanceof UnauthorizedException) {
-        // Handle unauthorized (401) error here
         return { message: 'Unauthorized access' };
       } else {
-        // Handle other errors as needed
         throw error;
       }
     }
@@ -41,7 +49,6 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   async updateUserInfo(@Request() req, @Body() userData: any) {
     try {
-      // const userId = req.user.user_id;
       const accessToken = req.user.accessToken;
       const email = await this.googleService.getUserInfo(accessToken);
       const existingUser = await this.userService.getUserInfoByEmail(email);
@@ -111,7 +118,8 @@ export class UserController {
   }
 
   @Get('community')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesPermsGuard)
+  @RolesPerms('ADMIN', 'COMMUNITY_MANAGER', 'EDIT_ROLE')
   async getCommunityName(@Request() req) {
     try {
       const accessToken = req.user.accessToken;
@@ -132,7 +140,8 @@ export class UserController {
   }
 
   @Get('role')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesPermsGuard)
+  @RolesPerms('ADMIN', 'COMMUNITY_MANAGER', 'EDIT_ROLE')
   async getRole(@Request() req) {
     try {
       const accessToken = req.user.accessToken;
@@ -154,7 +163,8 @@ export class UserController {
   }
 
   @Get('perm')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesPermsGuard)
+  @RolesPerms('ADMIN', 'COMMUNITY_MANAGER', 'EDIT_ROLE')
   async getPerm(@Request() req) {
     try {
       const accessToken = req.user.accessToken;
@@ -170,7 +180,6 @@ export class UserController {
       const permsName = this.userPermsService.getPermsByUserId(userId);
       return permsName;
     } catch (error) {
-      // console.error('Error fetching permissons:', error);
       throw new NotFoundException('Error fetching perms name');
     }
   }
