@@ -70,7 +70,12 @@ export class ProductsService {
           {
             model: Product,
             attributes: [],
-            include: [{ model: ProductType, attributes: [] }],
+            include: [
+              {
+                model: ProductType, 
+                attributes: [] 
+              }
+            ],
           },
         ],
         order: sort,
@@ -318,25 +323,19 @@ export class ProductsService {
         return null; // Product not found
       }
 
-      // Update OwnerProduct data
-      await existingProduct.update({
-        updated_at: new Date(),
+      // Check if a product with the same data already exists
+      const existingProductWithSameData = await Product.findOne({
+        where: {
+          name: productData.product_name,
+          description: productData.description,
+          type_id: associatedProduct.type_id, // Consider the type identifier
+        },
       });
 
-      // Update associated product data
-      await associatedProduct.update({
-        name: productData.product_name,
-        description: productData.description,
-      });
-
-      // Check and update the product type if a new type is specified
-      if (productData.product_type) {
-        const typeId = await this.getOrCreateProductTypeId(
-          productData.product_type
+      if (existingProductWithSameData) {
+        throw new Error(
+          'A product with the same name, description, and type already exists'
         );
-        await associatedProduct.update({
-          type_id: typeId,
-        });
       }
 
       return existingProduct;

@@ -1,4 +1,4 @@
-//owner-Products.controller.ts
+// Products.controller.ts
 import {
   Controller,
   Get,
@@ -6,6 +6,7 @@ import {
   Request,
   Delete,
   Post,
+  Res,
   Body,
   Param,
   Query,
@@ -76,6 +77,7 @@ export class ProductsController {
           field,
           order
         );
+        console.log('sadasdsad');
         return { data, total };
       }
     } catch (error) {
@@ -100,8 +102,14 @@ export class ProductsController {
   }
 
   @Put(':id')
-  async updateProductById(@Param('id') id: string, @Body() productData: any) {
+  async updateProductById(
+    @Request() req,
+    @Param('id') id: string,
+    @Body() productData: any,
+    @Res() res
+  ) {
     try {
+      console.log('Product Data: ', productData);
       const updatedProduct = await this.ProductsService.updateProductById(
         id,
         productData
@@ -111,15 +119,28 @@ export class ProductsController {
         return { message: 'Product not found' };
       }
 
-      return updatedProduct;
+      res.status(200).json(updatedProduct);
     } catch (error) {
-      console.log(error);
-      return { error: 'An error occurred' };
+      if (
+        error.message ===
+        'A product with the same name, description, and type already exists'
+      ) {
+        res.status(400).json({
+          message:
+            'A product with the same name, description, and type already exists',
+          status: 'error',
+        });
+      } else {
+        res.status(500).json({
+          message: 'An error occurred.',
+          status: 'error',
+        });
+      }
     }
   }
 
   @Post('create')
-  async createProduct(@Body() productData: any, @Request() req) {
+  async createProduct(@Body() productData: any, @Request() req, @Res() res) {
     try {
       console.log(productData);
       const accessToken = req.user.accessToken;
@@ -130,18 +151,20 @@ export class ProductsController {
         productData
       );
 
-      return result; // If successful, return the created product
+      res.status(200).json(result);
     } catch (error) {
-      if (error.message === 'User has already associated with this product.') {
+      if (error.message === 'USER IS ASSOCIATED WITH THE PRODUCT') {
         // Return a specific response when the error message matches
-        return {
-          message: 'User has already associated with this product.',
+        res.status(400).json({
+          message: 'USER IS ASSOCIATED WITH THE PRODUCT',
           status: 'error',
-        };
+        });
       } else {
+        res.status(500).json({
+          message: 'An error occurred.',
+          status: 'error',
+        });
         console.log(error);
-        // Handle other errors or rethrow if needed
-        throw error;
       }
     }
   }

@@ -70,7 +70,7 @@ export const ProductList = (props) => {
         <Datagrid rowClick="edit">
           <TextField source="product_name" label="Name" />
           <TextField source="product_type" label="Type" />
-          <NumberField source="description" label="Description" />
+          <TextField source="description" label="Description" />
           <DateField source="created_at" label="Date" />
           <EditButton />
           <DeleteButton />

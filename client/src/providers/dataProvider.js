@@ -1,10 +1,11 @@
+// dataProvider
+
 import simpleRestProvider from "ra-data-simple-rest";
 import { getJwtTokenFromCookies } from "./authUtils";
 import { API_URL } from "../consts";
 
 const apiUrl = API_URL;
 const dataProvider = simpleRestProvider(apiUrl);
-
 const customDataProvider = {
   ...dataProvider,
   async getList(resource, params) {
@@ -59,13 +60,15 @@ const customDataProvider = {
         headers,
         body: JSON.stringify(params.data),
       });
-      if (!response.ok) {
+     /*  if (!response.ok) {
         throw new Error(response.statusText);
-      }
-      const data = await response.json();
+      } */
+      /* const data = await response.json();
+      console.log(data);
       return {
         data: data,
-      };
+      }; */
+      return response;
     } catch (error) {
       throw new Error(`Error creating ${resource}: ${error.message}`);
     }
@@ -83,10 +86,12 @@ const customDataProvider = {
         method: "GET",
         headers,
       });
+     
       if (!response.ok) {
         throw new Error(response.statusText);
       }
       const data = await response.json();
+      console.log(data);
       if (!data.id) {
         throw new Error('API response is missing the "id" attribute');
       }
@@ -109,13 +114,13 @@ const customDataProvider = {
         headers,
         body: JSON.stringify(params.data),
       });
-      if (!response.ok) {
+      /* if (!response.ok) {
         throw new Error(response.statusText);
       }
-      const data = await response.json();
-      return {
-        data: data,
-      };
+      const data = await response.json(); */
+      return response;
+        
+      
     } catch (error) {
       throw new Error(`Error updating ${resource}: ${error.message}`);
     }
