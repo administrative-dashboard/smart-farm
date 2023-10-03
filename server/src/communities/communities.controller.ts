@@ -16,6 +16,8 @@ import { UserCommunityService } from 'src/user/user-community.service';
 import { GoogleService } from 'src/auth/google.service';
 import { UserService } from 'src/user/user.service';
 import { UserRolesService } from 'src/user/user-roles.service';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from 'src/auth/guards/roles.decorator';
 
 @Controller('community')
 export class CommunitiesController {
@@ -32,9 +34,10 @@ export class CommunitiesController {
   async getCommunityInfo() {
     return await this.communitiesService.getAllCommunities();
   }
-
+  
   @Get('users')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN', 'COMMUNITY_MANAGER')
   async getUsersFromCommunity(
     @Query('q') searchTerm: string,
     @Query('name') name: string,
