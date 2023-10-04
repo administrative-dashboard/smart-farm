@@ -301,7 +301,7 @@ const App = () => {
     // />,
     //<Resource name="BasicTable" list={BasicTable} show={BasicTableShow} />,
   ];
-  ];
+
   const myTheme = {
     palette: {
       primary: {
