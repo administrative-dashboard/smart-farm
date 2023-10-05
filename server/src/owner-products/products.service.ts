@@ -338,9 +338,6 @@ export class ProductsService {
         );
       }
 
-      const typeid = this.getOrCreateProductTypeId(productData.product_type);
-
-
       await existingOwnerProduct.update({
         updated_at: new Date(), // Update the updated_at timestamp
       });
@@ -348,7 +345,7 @@ export class ProductsService {
       await associatedProduct.update({
         name: productData.product_name,
         description: productData.description,
-        type_id: 1,
+        type_id: await this.getOrCreateProductTypeId(productData.product_type),
       });
 
 
