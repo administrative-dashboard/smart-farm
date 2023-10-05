@@ -26,7 +26,7 @@ export const DeviceStatisticPage = () => {
     }
   };
 
-  // Call the function to get the community name when your component mounts or as needed
+  
   useEffect(() => {
     getCommunityName();
   }, []);
