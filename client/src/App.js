@@ -40,7 +40,7 @@ import { GreenhouseEdit } from "./pages/owner/GreenhouseEdit";
 import { FieldCreate } from "./pages/owner/FieldCreate";
 import { FieldList } from "./pages/owner/FieldList";
 import { FieldEdit } from "./pages/owner/FieldEdit";
-import { DeviceRequest } from "./pages/owner/DeviceRequest";
+//import { DeviceRequest } from "./pages/owner/DeviceRequest";
 import { GreenhouseShow } from "./pages/admin/GreenhouseShow";
 import { GreenhouseListAdm } from "./pages/admin/GreenhouseList";
 import { ProductListAdm } from "./pages/admin/ProductList";
@@ -49,8 +49,6 @@ import { DeviceStatisticPage } from "./pages/admin/DeviceStatistic";
 import { Contact } from "./pages/auth/Contact";
 import { CommunityManager } from "./pages/CommunityManager/Desktop";
 import { UserList } from "./pages/CommunityManager/UserList";
-import { BasicTableShow } from "./components/BasicTableShow";
-import { BasicTable } from "./components/BasicTable";
 import { DesktopInfo } from "./pages/CommunityManager/DesktopInfo";
 import axios from "axios";
 import { getJwtTokenFromCookies } from "./providers/authUtils";
@@ -124,16 +122,37 @@ const App = () => {
   const permission = perms;
   const role = roles;
 
+  
   const commonResources = [
-    <Resource name="Main Dashboard" list={MainDashboard} icon={HomeIcon} />,
-    <Resource name="signin" list={Signin} icon={VpnKeyIcon} />,
+    <Resource
+      name="dashboard"
+      list={MainDashboard}
+      icon={HomeIcon}
+      options={{ label: "Home" }}
+    />,
+    <Resource
+      name="signin"
+      list={Signin}
+      icon={VpnKeyIcon}
+      options={{ label: "Sign In" }}
+    />,
     <Route exact path="/signup" element={Signup} />,
-    <Resource name="signup" list={Signup} />,
+    <Resource name="signup" list={Signup} options={{ label: "Sign Up" }} />,
   ];
 
   const employeeResources = [
-    <Resource name="Main Dashboard" list={MainDashboard} icon={HomeIcon} />,
-    <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
+    <Resource
+      name="dashboard"
+      list={MainDashboard}
+      icon={HomeIcon}
+      options={{ label: "Home" }}
+    />,
+    <Resource
+      name="profile"
+      list={Profile}
+      icon={PermIdentityIcon}
+      options={{ label: "Profile" }}
+    />,
     <Resource
       name="contact"
       list={Contact}
@@ -142,8 +161,18 @@ const App = () => {
   ];
 
   const ownerResources = [
-    <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
-    <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
+    <Resource
+      name="dashboard"
+      list={MainDashboard}
+      icon={HomeIcon}
+      options={{ label: "Home" }}
+    />,
+    <Resource
+      name="profile"
+      list={Profile}
+      icon={PermIdentityIcon}
+      options={{ label: "Profile" }}
+    />,
     <Resource
       name="contact"
       list={Contact}
@@ -153,38 +182,45 @@ const App = () => {
       name="ownerPage"
       list={OwnerDesktop}
       icon={FaceRetouchingNaturalIcon}
+      options={{ label: "Owner desktop" }}
     />,
     <Resource
       name="greenhouses"
       list={GreenhouseList}
       create={GreenhouseCreate}
       edit={GreenhouseEdit}
+      options={{label: "Greenhouse"}}
+      
     />,
     <Resource
       name="fields"
       list={FieldList}
       create={FieldCreate}
       edit={FieldEdit}
+      options={{label: "Field"}}
     />,
-    <Resource name="devices" list={DeviceDesktop} />,
+    <Resource name="devices" list={DeviceDesktop} 
+    options={{label: "Device"}}/>,
     <Resource
       name="portable_devices"
       list={PortableDeviceList}
       create={PortableDeviceCreate}
       edit={PortableDeviceEdit}
+      options={{label: "Portable device"}}      
     />,
     <Resource
       name="fixed_devices"
       list={FixedDeviceList}
       create={FixedDeviceCreate}
       edit={FixedDeviceEdit}
+      options={{label: "Fixed device"}}    
     />,
-    <Resource
-      name="fields"
-      list={FieldList}
-      create={FieldCreate}
-      edit={FieldEdit}
-    />,
+    // <Resource
+    //   name="fields"
+    //   list={FieldList}
+    //   create={FieldCreate}
+    //   edit={FieldEdit}
+    // />,
     // <Resource
     //   name="device_requests_history"
     //   create={DeviceRequest}
@@ -224,49 +260,29 @@ const App = () => {
   ];
   const AdminResources = [
     ...CMResources,
-    <Resource name="dashboard" list={MainDashboard} icon={HomeIcon} />,
-    <Resource name="adminPage" list={AdminDesktop} />,
-    <Resource
-      name="contact"
-      list={Contact}
-      options={{ label: "My contacts" }}
-    />,
-    <Resource name="profile" list={Profile} icon={PermIdentityIcon} />,
     <Resource
       name="all_fixedDevices"
       list={FixedDeviceListAdm}
       show={FixedDeviceShow}
+      options={{label: "Fixed device"}}    
     />,
     <Resource
       name="all_portableDevices"
       list={PortableDeviceListAdm}
       show={PortableDeviceShow}
+      options={{label: "Portable device"}}    
     />,
-    <Resource name="User" list={UserListAdm} show={UserShowAdm} />,
-    <Resource
-      name="all_portableDevices"
-      list={PortableDeviceListAdm}
-      show={PortableDeviceShow}
-    />,
-    <Resource name="User" list={UserListAdm} show={UserShowAdm} />,
+    // <Resource name="User" list={UserListAdm} show={UserShowAdm} />,
+    
+    // <Resource name="User" list={UserListAdm} show={UserShowAdm} />,
     <Resource
       name="Greenhouse"
       list={GreenhouseListAdm}
       show={GreenhouseShow}
     />,
-    <Resource name="chooseCommunity" list={ChooseCommunity} />,
-    <Resource name="chooseDevice" list={ChooseDevice} />,
-    <Resource
-      name="all_fixedDevices"
-      list={FixedDeviceListAdm}
-      show={FixedDeviceShow}
-    />,
-    <Resource
-      name="all_portableDevices"
-      list={PortableDeviceListAdm}
-      show={PortableDeviceShow}
-    />,
-    <Resource name="User" list={UserListAdm} show={UserShowAdm} />,
+    //<Resource name="chooseCommunity" list={ChooseCommunity} />,
+    <Resource name="chooseDevice" list={ChooseDevice} options={{label: "Choose device"}}    />,
+    //<Resource name="User" list={UserListAdm} show={UserShowAdm} />,
     <Resource
       name="Greenhouse"
       list={GreenhouseListAdm}
