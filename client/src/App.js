@@ -62,12 +62,12 @@ import customDataProvider from "./providers/dataProvider";
 /* const dataProvider = simpleRestProvider(API_URL); */
 import { authProvider } from "./providers/authPovider";
 import { API_URL } from "./consts";
+import myTheme from "./themes/general_theme";
 import { UserEdit } from "./pages/CommunityManager/UserEdit";
 const i18nProvider = polyglotI18nProvider(
   (locale) => (locale === "am" ? armenianMessages : englishMessages),
   "en" // Default locale
 );
-
 const App = () => {
   const isAuthenticated = getJwtTokenFromCookies() ? true : false;
   const [roles, setRoles] = React.useState([]);
@@ -285,28 +285,7 @@ const App = () => {
     // />,
     //<Resource name="BasicTable" list={BasicTable} show={BasicTableShow} />,
   ];
-  const myTheme = {
-    palette: {
-      primary: {
-        main: "#357A38",
-      },
-      secondary: {
-        main: "#4CAF50",
-      },
-      error: {
-        main: "#BA000D",
-      },
-    },
-    typography: {
-      fontFamily: [
-        "-apple-system",
-        "BlinkMacSystemFont",
-        '"Segoe UI"',
-        "Arial",
-        "sans-serif",
-      ].join(","),
-    },
-  };
+
   const getdrw = () => {
     const array = ["EMPLOYEE", "ADMIN", "OWNER", "GUEST", "COMMUNITY_MANAGER"];
     const array2 = [
