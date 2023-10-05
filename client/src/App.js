@@ -357,18 +357,17 @@ const App = () => {
     const answer = [];
     let b = 0;
     const all_permissions = [
-      "GREENHOUSE",
-      "FIELD",
-      "FIXED",
-      "PORTABLE",
-      "ROLE",
-      "PRODUCT",
+      'EDIT_GREENHOUSE' ,
+      'EDIT_FIELD' ,
+      'EDIT_FIXED_DEVICE', 
+      'EDIT_PORTABLE_DEVICE' ,
+      'EDIT_ROLE' ,
+      'EDIT_PRODUCT' 
     ];
-    let a = 0;
     for (let index = 0; index < perms.length; index++) {
       for (let j = 0; j < all_permissions.length; j++) {
-        if (perms[index].includes(all_permissions[j])) {
-          if (all_permissions[j]== "ROLE") {
+        if (perms[index] == (all_permissions[j])) {
+          if (all_permissions[j]== "EDIT_ROLE") {
               answer[b] = <Resource
               name="usersinfo"
               list={DesktopInfo}
@@ -386,7 +385,7 @@ const App = () => {
                 b++;
             }
             else{
-              answer[b] = permissions[a];
+              answer[b] = permissions[j];
               b++;
             }
           }
