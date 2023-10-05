@@ -230,7 +230,7 @@ export class ProductsService {
 
       const typeId = await this.getOrCreateProductTypeId(productData.type);
 
-      let existingProduct = await Product.findOne({
+      let existingOwnerProduct = await Product.findOne({
         where: {
           name: productData.name,
           description: productData.description,
@@ -238,8 +238,8 @@ export class ProductsService {
         },
       });
 
-      if (!existingProduct) {
-        existingProduct = await Product.create({
+      if (!existingOwnerProduct) {
+        existingOwnerProduct = await Product.create({
           name: productData.name,
           description: productData.description,
           type_id: typeId,
@@ -249,7 +249,7 @@ export class ProductsService {
       const existingRecord = await this.OwnerProductModel.findOne({
         where: {
           user_id: userId,
-          product_id: existingProduct.id,
+          product_id: existingOwnerProduct.id,
         },
       });
 
@@ -258,7 +258,7 @@ export class ProductsService {
       } else {
         const OwnerProduct = await this.OwnerProductModel.create({
           user_id: userId,
-          product_id: existingProduct.id,
+          product_id: existingOwnerProduct.id,
           created_at: productData.created_at,
           updated_at: productData.updated_at,
         });
@@ -304,19 +304,19 @@ export class ProductsService {
       const ParsedId = parseInt(id, 10);
 
       // Find existing OwnerProduct by ID
-      const existingProduct = await this.OwnerProductModel.findOne({
+      const existingOwnerProduct = await this.OwnerProductModel.findOne({
         where: {
           id: ParsedId,
         },
       });
 
-      if (!existingProduct) {
+      if (!existingOwnerProduct) {
         return null; // Product not found
       }
 
       // Get the associated product related to OwnerProduct
       const associatedProduct = await Product.findByPk(
-        existingProduct.product_id
+        existingOwnerProduct.product_id
       );
 
       if (!associatedProduct) {
@@ -324,7 +324,7 @@ export class ProductsService {
       }
 
       // Check if a product with the same data already exists
-      const existingProductWithSameData = await Product.findOne({
+      const existingOwnerProductWithSameData = await Product.findOne({
         where: {
           name: productData.product_name,
           description: productData.description,
@@ -332,13 +332,27 @@ export class ProductsService {
         },
       });
 
-      if (existingProductWithSameData) {
+      if (existingOwnerProductWithSameData) {
         throw new Error(
           'A product with the same name, description, and type already exists'
         );
       }
 
-      return existingProduct;
+      const typeid = this.getOrCreateProductTypeId(productData.product_type);
+
+
+      await existingOwnerProduct.update({
+        updated_at: new Date(), // Update the updated_at timestamp
+      });
+
+      await associatedProduct.update({
+        name: productData.product_name,
+        description: productData.description,
+        type_id: 1,
+      });
+
+
+      return existingOwnerProduct;
     } catch (error) {
       throw error;
     }
@@ -349,19 +363,19 @@ export class ProductsService {
       const ParsedId = parseInt(id, 10);
 
       // Find the OwnerProduct record with the given ID
-      const existingProduct = await this.OwnerProductModel.findOne({
+      const existingOwnerProduct = await this.OwnerProductModel.findOne({
         where: {
           id: ParsedId,
         },
       });
 
-      if (!existingProduct) {
+      if (!existingOwnerProduct) {
         return false; // Product not found
       }
 
       // Find the associated Product record
       const associatedProduct = await Product.findByPk(
-        existingProduct.product_id
+        existingOwnerProduct.product_id
       );
 
       if (associatedProduct) {
@@ -370,7 +384,7 @@ export class ProductsService {
       }
 
       // Delete the OwnerProduct record
-      await existingProduct.destroy();
+      await existingOwnerProduct.destroy();
 
       return true; // Deletion successful
     } catch (error) {
