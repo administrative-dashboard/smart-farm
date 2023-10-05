@@ -45,7 +45,7 @@ import { GreenhouseShow } from "./pages/admin/GreenhouseShow";
 import { GreenhouseListAdm } from "./pages/admin/GreenhouseList";
 import { ProductListAdm } from "./pages/admin/ProductList";
 import { ProductShow } from "./pages/admin/ProductListAdm";
-import { DeviceStatisticPage } from "./pages/admin/DeviceStatistic";
+import { DeviceStatisticPage } from "./pages/CommunityManager/DeviceStatistic";
 import { Contact } from "./pages/auth/Contact";
 import { CommunityManager } from "./pages/CommunityManager/Desktop";
 import { UserList } from "./pages/CommunityManager/UserList";
@@ -257,6 +257,7 @@ const App = () => {
       icon={ArticleIcon}
       options={{ label: "Users" }}
     />,
+    <Resource name="Statistic" list={DeviceStatisticPage} />,
   ];
   const AdminResources = [
     ...CMResources,
