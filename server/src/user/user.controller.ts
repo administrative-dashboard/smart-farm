@@ -118,8 +118,7 @@ export class UserController {
   }
 
   @Get('community')
-  @UseGuards(JwtAuthGuard, RolesPermsGuard)
-  @RolesPerms('ADMIN', 'COMMUNITY_MANAGER', 'EDIT_ROLE')
+  @UseGuards(JwtAuthGuard)
   async getCommunityName(@Request() req) {
     try {
       const accessToken = req.user.accessToken;
@@ -140,8 +139,7 @@ export class UserController {
   }
 
   @Get('role')
-  @UseGuards(JwtAuthGuard, RolesPermsGuard)
-  @RolesPerms('ADMIN', 'COMMUNITY_MANAGER', 'EDIT_ROLE')
+  @UseGuards(JwtAuthGuard)
   async getRole(@Request() req) {
     try {
       const accessToken = req.user.accessToken;
@@ -163,8 +161,7 @@ export class UserController {
   }
 
   @Get('perm')
-  @UseGuards(JwtAuthGuard, RolesPermsGuard)
-  @RolesPerms('ADMIN', 'COMMUNITY_MANAGER', 'EDIT_ROLE')
+  @UseGuards(JwtAuthGuard)
   async getPerm(@Request() req) {
     try {
       const accessToken = req.user.accessToken;
