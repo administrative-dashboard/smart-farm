@@ -1,24 +1,33 @@
+/* global BigInt */
 import React, { useEffect, useState } from "react";
-import { Box, Container, useMediaQuery } from "@mui/material";
-import { MyBar } from "../../components/Drawer";
-import { SelectsGroup } from "../../components/SelectsGroup";
+import { Box, Container, Grid, Select, MenuItem } from "@mui/material";
 import villager from "../../assets/static/StatisticBackground.jpg";
-import { drawer_new_data } from "../../assets/static/mockData/new_data";
 import { API_URL } from "../../consts";
 import { getJwtTokenFromCookies } from "../../providers/authUtils";
 import axios from "axios";
-
+import { DatePicker } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { GRAFANA_URL } from "../../consts";
 export const DeviceStatisticPage = () => {
-  const isLgScreen = useMediaQuery((theme) => theme.breakpoints.down("lg"));
   const [communityName, setCommunityName] = useState("");
+  const [startValue, setStartValue] = useState(dayjs());
+  const [endValue, setEndValue] = useState(dayjs());
+  const [chartType, setChartType] = useState("pie");
+
+  const handleChartTypeChange = (event) => {
+    setChartType(event.target.value);
+  };
 
   const getCommunityName = async () => {
     try {
       const response = await axios.get(`${API_URL}/user/community`, {
         headers: {
-          Authorization: `Bearer ${getJwtTokenFromCookies()}`, 
+          Authorization: `Bearer ${getJwtTokenFromCookies()}`,
         },
-      });      
+      });
       setCommunityName(response.data);
       console.log("Community name", response.data);
     } catch (error) {
@@ -26,30 +35,76 @@ export const DeviceStatisticPage = () => {
     }
   };
 
-  
   useEffect(() => {
     getCommunityName();
   }, []);
+
+  const startValueBigInt = BigInt(startValue.valueOf());
+  const endValueBigInt = BigInt(endValue.valueOf());
+
   console.log("Community name", communityName);
+  console.log(startValueBigInt, "ghyuh87");
+  console.log(endValueBigInt);
+
+  let iframeSrc = "";
+  switch (chartType) {
+    case "pie":
+      iframeSrc = `${GRAFANA_URL}/d-solo/b7519d35-952b-4d17-b0b5-55b5dd46a56a/new-dashboard?orgId=1&var-community=${communityName}&var-start_date=${startValueBigInt}&var-end_date=${endValueBigInt}&panelId=1`;
+      break;
+    case "bar":
+      iframeSrc=`${GRAFANA_URL}/d-solo/b7519d35-952b-4d17-b0b5-55b5dd46a56a/new-dashboard?orgId=1&var-community=${communityName}&var-start_date=${startValueBigInt}&var-end_date=${endValueBigInt}&panelId=1` 
+      break;
+
+    default:
+      iframeSrc = "";
+  }
+
   return (
     <Box
       style={{
         display: "flex",
-        backgroundImage: `url(${villager})`, // Replace with the actual path to your image
-        backgroundSize: "cover",
-        backgroundPosition: "right",
-        minHeight: "95.1vh",
       }}
     >
-      {!isLgScreen && <MyBar drawerData={drawer_new_data} />}
       <Container>
-        <iframe
-          src={`http://localhost:7000/d-solo/b7519d35-952b-4d17-b0b5-55b5dd46a56a/new-dashboard?orgId=1&var-community=${communityName}&from=1696427711668&to=1696449311668&panelId=1`}
-          width="700"
-          height="700"
-          frameborder="0"
-        ></iframe>
-        <SelectsGroup showCommunityPicker={true} />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DemoContainer
+            components={["DatePicker", "DatePicker"]}
+            sx={{ mb: 5, justifyContent: "center" }}
+          >
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={4}>
+                <DatePicker
+                  label="Start"
+                  value={startValue}
+                  onChange={(newValue) => setStartValue(newValue)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <DatePicker
+                  label="End"
+                  value={endValue}
+                  onChange={(newValue) => setEndValue(newValue)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <Select value={chartType} onChange={handleChartTypeChange}>
+                  <MenuItem value="pie">Pie Chart</MenuItem>
+                  <MenuItem value="bar">Bar Chart</MenuItem>
+                </Select>
+              </Grid>
+            </Grid>
+          </DemoContainer>
+        </LocalizationProvider>
+
+        {iframeSrc ? (
+          <iframe
+            src={iframeSrc}
+            width="100%"
+            height="400"
+          ></iframe>
+        ) : (
+          <div>No iframe for this chart type.</div>
+        )}
       </Container>
     </Box>
   );
