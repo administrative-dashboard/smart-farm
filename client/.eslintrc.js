@@ -1,3 +1,3 @@
-// 'globals':{
-//     'BigInt':true
-//   },
+'globals':{
+    'BigInt':true
+  },
