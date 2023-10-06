@@ -1,7 +1,10 @@
 // product_types.model.ts
-import { Column, Model, Table, BelongsToMany, HasMany } from 'sequelize-typescript';
-import { RolePermission } from './roles_perms.model';
-import { Role } from './roles.model';
+import {
+  Column,
+  Model,
+  Table,
+  HasMany,
+} from 'sequelize-typescript';
 import { Product } from './product.model';
 
 @Table({ tableName: 'product_types', timestamps: false })
@@ -14,5 +17,4 @@ export class ProductType extends Model<ProductType> {
 
   @HasMany(() => Product)
   products: Product[];
- 
 }
