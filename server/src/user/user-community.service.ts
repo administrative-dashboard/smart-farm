@@ -6,7 +6,7 @@ import { Community } from 'src/database/models/communities.model';
 import { User } from 'src/database/models/users.model';
 import { UserRole } from 'src/database/models/users_roles';
 import { Role } from 'src/database/models/roles.model';
-import { Sequelize } from 'sequelize';
+import { Sequelize, Op } from 'sequelize';
 import { UserPermission } from 'src/database/models/users_permissions.model';
 import { Permission } from 'src/database/models/permissions.model';
 
@@ -146,11 +146,12 @@ export class UserCommunityService {
 
   async searchUsersInSameCommunity(
     communityName: string,
-    query?: any,
-    page?:number,
-    perPage?:number,
-    field?:any,
-    order?:any): Promise<{
+    query?: string, // Change the type to string for the search query
+    page?: number,
+    perPage?: number,
+    field?: any,
+    order?: any
+  ): Promise<{
     data: any[];
     total: number;
   }> {
@@ -166,27 +167,34 @@ export class UserCommunityService {
           },
         ],
       });
-console.log("community", community.id)
+  
       if (!community || !community.user_communities) {
         console.log('Community or user_communities is undefined:', community);
         return { data: [], total: 0 };
       }
-
+  
       const userIDsInCommunity = community.user_communities.map((uc) => uc.user_id);
-
+  
       if (!community || !community.user_communities || community.user_communities.length === 0) {
         console.log('Community or user_communities is undefined or empty:', community);
         return { data: [], total: 0 };
       }
+  
       const sort = [];
       if (field && order) {
-        sort.push([field, order]); 
+        sort.push([field, order]);
       } else {
         sort.push(['id', 'ASC']);
-      } 
+      }
+  
       const users = await User.findAll({
         where: {
           id: userIDsInCommunity,
+          [Op.or]: [
+            { name: { [Op.iLike]: `%${query}%` } }, // Case-insensitive search for name
+            { email: { [Op.iLike]: `%${query}%` } }, // Case-insensitive search for email
+            { phone_number: { [Op.iLike]: `%${query}%` } }, // Case-insensitive search for phone_number
+          ],
         },
         include: [
           {
@@ -209,21 +217,25 @@ console.log("community", community.id)
           },
         ],
       });
-
+  
       const data = users.map((user) => ({
         id: user.id,
         name: user.name,
         email: user.email,
         phone_number: user.phone_number,
         roles: user.users_roles.map((userRole) => userRole.roles.value),
-        permissions: user.users_permissions.map((UserPerm) => UserPerm.permissions.value)
+        permissions: user.users_permissions.map((UserPerm) => UserPerm.permissions.value),
       }));
-
+  
       const total = data.length;
       return { data, total };
     } catch (error) {
+      // Handle the error here
+      console.error('Error:', error);
+      throw error; // Rethrow the error for further handling in your application
     }
   }
+  
 }
 
 

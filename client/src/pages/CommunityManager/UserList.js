@@ -15,7 +15,7 @@ import customDataProvider from "../../providers/dataProvider";
 import axios from "axios";
 import { API_URL } from "../../consts";
 import { getJwtTokenFromCookies } from "../../providers/authUtils";
-import { EditRolesButton } from "./EditRolesButton";
+
 
 const UserFilter = (props) => (
   <Filter {...props}>
