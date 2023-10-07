@@ -15,12 +15,12 @@ import { MainDashboard } from "./pages/MainDashboard";
 import { Signin } from "./pages/auth/Signin";
 import { Signup } from "./pages/auth/Signup";
 import { Profile } from "./pages/auth/Profile";
-import { AdminDesktop } from "./pages/admin/Desktop";
+// import { AdminDesktop } from "./pages/admin/Desktop";
 import { ChooseDevice } from "./pages/admin/ChooseDevice";
-import { ChooseCommunity } from "./pages/admin/ChooseCommunity";
+//import { ChooseCommunity } from "./pages/admin/ChooseCommunity";
 import { FixedDeviceShow } from "./pages/admin/FixedDeviceShow";
-import { UserShowAdm } from "./pages/admin/UserShow";
-import { UserListAdm } from "./pages/admin/UserList";
+//import { UserShowAdm } from "./pages/admin/UserShow";
+//import { UserListAdm } from "./pages/admin/UserList";
 import { FixedDeviceListAdm } from "./pages/admin/FixedDeviceListAdm";
 import { PortableDeviceListAdm } from "./pages/admin/PortableDeviceListAdm";
 import { PortableDeviceShow } from "./pages/admin/PortableDeviceShow";
@@ -45,9 +45,9 @@ import { GreenhouseShow } from "./pages/admin/GreenhouseShow";
 import { GreenhouseListAdm } from "./pages/admin/GreenhouseList";
 import { ProductListAdm } from "./pages/admin/ProductList";
 import { ProductShow } from "./pages/admin/ProductListAdm";
-import { DeviceStatisticPage } from "./pages/CommunityManager/DeviceStatistic";
+import { DeviceStatisticPage } from "./pages/CommunityManager/DeviceStatistics";
 import { Contact } from "./pages/auth/Contact";
-import { CommunityManager } from "./pages/CommunityManager/Desktop";
+//import { CommunityManager } from "./pages/CommunityManager/Desktop";
 import { UserList } from "./pages/CommunityManager/UserList";
 import { DesktopInfo } from "./pages/CommunityManager/DesktopInfo";
 import axios from "axios";
@@ -119,7 +119,7 @@ const App = () => {
   }, []);
 
   // console.log(roles);
-  const permission = perms;
+  //const permission = perms;
   const role = roles;
 
   

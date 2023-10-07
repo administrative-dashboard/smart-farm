@@ -49,10 +49,10 @@ export const DeviceStatisticPage = () => {
   let iframeSrc = "";
   switch (chartType) {
     case "pie":
-      iframeSrc = `${GRAFANA_URL}/d-solo/b7519d35-952b-4d17-b0b5-55b5dd46a56a/new-dashboard?orgId=1&var-community=${communityName}&var-start_date=${startValueBigInt}&var-end_date=${endValueBigInt}&panelId=1`;
+      iframeSrc = `${GRAFANA_URL}/d-solo/b7519d35-952b-4d17-b0b5-55b5dd46a56a/new-dashboard?orgId=1&var-community=${communityName}&var-start_date=${startValueBigInt}&var-end_date=${endValueBigInt}&theme=light&panelId=1`;
       break;
     case "bar":
-      iframeSrc=`${GRAFANA_URL}/d-solo/b7519d35-952b-4d17-b0b5-55b5dd46a56a/new-dashboard?orgId=1&var-community=${communityName}&var-start_date=${startValueBigInt}&var-end_date=${endValueBigInt}&panelId=1` 
+      iframeSrc=`${GRAFANA_URL}/d-solo/b7519d35-952b-4d17-b0b5-55b5dd46a56a/new-dashboard?orgId=1&var-community=${communityName}&var-start_date=${startValueBigInt}&var-end_date=${endValueBigInt}&theme=light&panelId=2` 
       break;
 
     default:
@@ -99,8 +99,8 @@ export const DeviceStatisticPage = () => {
         {iframeSrc ? (
           <iframe
             src={iframeSrc}
-            width="100%"
-            height="400"
+            width="95%"
+            height="500"
           ></iframe>
         ) : (
           <div>No iframe for this chart type.</div>

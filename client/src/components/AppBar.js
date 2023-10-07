@@ -17,7 +17,7 @@ import axios from "axios";
 import { API_URL } from "../consts";
 import { 
   getJwtTokenFromCookies, 
-  getUserInfoFromCookies 
+  // getUserInfoFromCookies 
 } from "../providers/authUtils";
 import { authProvider } from "../providers/authPovider";
 
