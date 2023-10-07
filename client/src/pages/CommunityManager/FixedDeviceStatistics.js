@@ -11,7 +11,7 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { GRAFANA_URL } from "../../consts";
-export const DeviceStatisticPage = () => {
+export const FixedDeviceStatisticsPage = () => {
   const [communityName, setCommunityName] = useState("");
   const [startValue, setStartValue] = useState(dayjs());
   const [endValue, setEndValue] = useState(dayjs());
@@ -42,17 +42,17 @@ export const DeviceStatisticPage = () => {
   const startValueBigInt = BigInt(startValue.valueOf());
   const endValueBigInt = BigInt(endValue.valueOf());
 
-  console.log("Community name", communityName);
-  console.log(startValueBigInt, "ghyuh87");
-  console.log(endValueBigInt);
+  console.log("Community name: ", communityName);
+  console.log("Start value: ", startValueBigInt);
+  console.log("End value: ", endValueBigInt);
 
   let iframeSrc = "";
   switch (chartType) {
     case "pie":
-      iframeSrc = `${GRAFANA_URL}/d-solo/b7519d35-952b-4d17-b0b5-55b5dd46a56a/new-dashboard?orgId=1&var-community=${communityName}&var-start_date=${startValueBigInt}&var-end_date=${endValueBigInt}&theme=light&panelId=1`;
+      iframeSrc = `${GRAFANA_URL}/d-solo/b7519d35-952b-4d17-b0b5-55b5dd46a56a/statistics?orgId=1&var-community=${communityName}&var-start_date=${startValueBigInt}&var-end_date=${endValueBigInt}&theme=light&panelId=3`;
       break;
     case "bar":
-      iframeSrc=`${GRAFANA_URL}/d-solo/b7519d35-952b-4d17-b0b5-55b5dd46a56a/new-dashboard?orgId=1&var-community=${communityName}&var-start_date=${startValueBigInt}&var-end_date=${endValueBigInt}&theme=light&panelId=2` 
+      iframeSrc=`${GRAFANA_URL}/d-solo/b7519d35-952b-4d17-b0b5-55b5dd46a56a/statistics?orgId=1&var-community=${communityName}&var-start_date=${startValueBigInt}&var-end_date=${endValueBigInt}&theme=light&panelId=4` 
       break;
 
     default:
