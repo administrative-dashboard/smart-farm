@@ -224,6 +224,23 @@ export class ProductsService {
     }
   }
 
+  async getProductTypeId(typeName: string): Promise<number> {
+    try {
+      const existingType = await ProductType.findOne({
+        where: {
+          type: typeName,
+        },
+      });
+
+      if (existingType) {
+        return existingType.id;
+      }
+      return null;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async createProduct(email: string, productData: any): Promise<OwnerProduct> {
     try {
       const userId = await this.getUserIdByEmail(email);
@@ -323,19 +340,23 @@ export class ProductsService {
         return null; // Product not found
       }
 
-      // Check if a product with the same data already exists
-      const existingOwnerProductWithSameData = await Product.findOne({
-        where: {
-          name: productData.product_name,
-          description: productData.description,
-          type_id: associatedProduct.type_id, // Consider the type identifier
-        },
-      });
+      const getedtype = await this.getProductTypeId(productData.product_type);
 
-      if (existingOwnerProductWithSameData) {
-        throw new Error(
-          'A product with the same name, description, and type already exists'
-        );
+      if (getedtype) {
+        // Check if a product with the same data already exists
+        const existingProductWithSameData = await Product.findOne({
+          where: {
+            name: productData.product_name,
+            description: productData.description,
+            type_id: getedtype,
+          },
+        });
+
+        if (existingProductWithSameData) {
+          throw new Error(
+            'A product with the same name, description, and type already exists'
+          );
+        }
       }
 
       await existingOwnerProduct.update({
@@ -347,7 +368,6 @@ export class ProductsService {
         description: productData.description,
         type_id: await this.getOrCreateProductTypeId(productData.product_type),
       });
-
 
       return existingOwnerProduct;
     } catch (error) {
