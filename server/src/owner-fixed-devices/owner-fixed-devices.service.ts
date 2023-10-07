@@ -5,7 +5,6 @@ import { OwnerFixedDevice } from 'src/database/models/owners_fixed_devices.model
 import { Model } from 'sequelize-typescript';
 import { FixedDevice } from 'src/database/models/fixed_devices.model';
 import { Sequelize, Op } from 'sequelize';
-import { now } from 'sequelize/types/utils';
 import { User } from 'src/database/models/users.model';
 @Injectable()
 export class OwnersFixedDevicesService {
