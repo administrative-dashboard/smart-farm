@@ -16,9 +16,10 @@ import axios from "axios";
 import { API_URL } from "../../consts";
 import { getJwtTokenFromCookies } from "../../providers/authUtils";
 import customDataProvider from "../../providers/dataProvider";
+
 const UserEditToolbar = props => (
   <Toolbar {...props} >
-      <SaveButton />
+    <SaveButton />
   </Toolbar>
 );
 
@@ -33,7 +34,6 @@ export const UserEdit = (props) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch roles and permissions
     const fetchRolesAndPermissions = async () => {
       try {
         const rolesResponse = await axios.get(`${API_URL}/user/roles`, {
@@ -81,12 +81,12 @@ export const UserEdit = (props) => {
         roles: values.roles,
         permissions: values.permissions,
       };
-  
+
       const response = await customDataProvider.update("community/users", {
         data: userData,
         id: userData.id,
       });
-      if (response.status===200) {
+      if (response.status === 200) {
         notify("User updated successfully", "info");
         redirect("/community/users");
       } else {
@@ -98,9 +98,9 @@ export const UserEdit = (props) => {
   };
 
   return (
-    <Edit title="Edit a user" {...props} resource="community/users">
+    <Edit title=" " {...props} resource="community/users" >
       <SimpleForm onSubmit={handleSave} toolbar={<UserEditToolbar />}>
-        <TextInput source="name" label="Name" disabled/>
+        <TextInput source="name" label="Name" disabled />
         <TextInput source="phone_number" label="Phone_number" disabled />
         <SelectArrayInput
           source="roles"
