@@ -1,8 +1,19 @@
 import * as React from "react";
+import { LocalFlorist } from "@mui/icons-material";
 import "./App.css";
 import { Admin, Resource } from "react-admin";
 import { MyLayout } from "./layouts/Layout";
 import HomeIcon from "@mui/icons-material/Home";
+import ContactsIcon from "@mui/icons-material/Contacts";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import GrassIcon from "@mui/icons-material/Grass";
+import SpaIcon from "@mui/icons-material/Spa";
+import ConstructionIcon from '@mui/icons-material/Construction';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
+import BuildIcon from '@mui/icons-material/Build';
+import TireRepairIcon from '@mui/icons-material/TireRepair';
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import FaceRetouchingNaturalIcon from "@mui/icons-material/FaceRetouchingNatural";
@@ -62,6 +73,11 @@ import { authProvider } from "./providers/authPovider";
 import { API_URL } from "./consts";
 import myTheme from "./themes/general_theme";
 import { UserEdit } from "./pages/CommunityManager/UserEdit";
+
+// const customIconStyle = {
+//   color: '#00ff00', // Replace with your desired color code
+// };
+
 const i18nProvider = polyglotI18nProvider(
   (locale) => (locale === "am" ? armenianMessages : englishMessages),
   "en" // Default locale
@@ -122,7 +138,6 @@ const App = () => {
   const permission = perms;
   const role = roles;
 
-  
   const commonResources = [
     <Resource
       name="dashboard"
@@ -136,8 +151,14 @@ const App = () => {
       icon={VpnKeyIcon}
       options={{ label: "Sign In" }}
     />,
-    <Route exact path="/signup" element={Signup} />,
-    <Resource name="signup" list={Signup} options={{ label: "Sign Up" }} />,
+    <Route 
+    exact path="/signup" 
+    element={Signup} />,
+    <Resource 
+    name="signup" 
+    list={Signup} 
+    options={{ label: "Sign Up" }} 
+    />,
   ];
 
   const employeeResources = [
@@ -156,6 +177,7 @@ const App = () => {
     <Resource
       name="contact"
       list={Contact}
+      icon={ContactsIcon}
       options={{ label: "My contacts" }}
     />,
   ];
@@ -177,6 +199,7 @@ const App = () => {
       name="contact"
       list={Contact}
       options={{ label: "My contacts" }}
+      icon={ContactsIcon}
     />,
     <Resource
       name="ownerPage"
@@ -184,36 +207,54 @@ const App = () => {
       icon={FaceRetouchingNaturalIcon}
       options={{ label: "Owner desktop" }}
     />,
+    // <Resource
+    //   name="greenhouses"
+    //   list={GreenhouseList}
+    //   create={GreenhouseCreate}
+    //   edit={GreenhouseEdit}
+    //   icon={Greenhouse}
+    //   options={{label: "Greenhouse"}}
+
+    // />,
+
     <Resource
       name="greenhouses"
       list={GreenhouseList}
       create={GreenhouseCreate}
       edit={GreenhouseEdit}
-      options={{label: "Greenhouse"}}
-      
+      icon={GrassIcon} // Use Material-UI's LocalFlorist icon
+      options={{ label: "Greenhouse" }}
     />,
+
     <Resource
       name="fields"
       list={FieldList}
       create={FieldCreate}
       edit={FieldEdit}
-      options={{label: "Field"}}
+      icon={SpaIcon}
+      options={{ label: "Field" }}
     />,
-    <Resource name="devices" list={DeviceDesktop} 
-    options={{label: "Device"}}/>,
+    <Resource
+      name="devices"
+      list={DeviceDesktop}
+      icon={ConstructionIcon}
+      options={{ label: "Device" }}
+    />,
     <Resource
       name="portable_devices"
       list={PortableDeviceList}
       create={PortableDeviceCreate}
       edit={PortableDeviceEdit}
-      options={{label: "Portable device"}}      
+      icon={BuildIcon}
+      options={{ label: "Portable device" }}
     />,
     <Resource
       name="fixed_devices"
       list={FixedDeviceList}
       create={FixedDeviceCreate}
       edit={FixedDeviceEdit}
-      options={{label: "Fixed device"}}    
+      icon={TireRepairIcon}
+      options={{ label: "Fixed device" }}
     />,
     // <Resource
     //   name="fields"
@@ -238,6 +279,7 @@ const App = () => {
       name="contact"
       list={Contact}
       options={{ label: "My contacts" }}
+      icon={ContactsIcon}
     />,
     <Resource
       name="profile"
@@ -248,13 +290,15 @@ const App = () => {
     <Resource
       name="usersinfo"
       list={DesktopInfo}
+      icon={DashboardIcon}
       options={{ label: "Dashboard" }}
     />,
     <Resource
       name="community/users"
       list={UserList}
       edit={UserEdit}
-      icon={ArticleIcon}
+      // icon={ArticleIcon}
+      icon={PeopleAltIcon}
       options={{ label: "Users" }}
     />,
   ];
@@ -264,33 +308,53 @@ const App = () => {
       name="all_fixedDevices"
       list={FixedDeviceListAdm}
       show={FixedDeviceShow}
-      options={{label: "Fixed device"}}    
+      icon={TireRepairIcon}
+      options={{ label: "Fixed device" }}
     />,
     <Resource
       name="all_portableDevices"
       list={PortableDeviceListAdm}
       show={PortableDeviceShow}
-      options={{label: "Portable device"}}    
+      icon={BuildIcon}
+      options={{ label: "Portable device" }}
     />,
     // <Resource name="User" list={UserListAdm} show={UserShowAdm} />,
-    
+
     // <Resource name="User" list={UserListAdm} show={UserShowAdm} />,
     <Resource
       name="Greenhouse"
       list={GreenhouseListAdm}
+      icon={GrassIcon}
       show={GreenhouseShow}
     />,
     //<Resource name="chooseCommunity" list={ChooseCommunity} />,
-    <Resource name="chooseDevice" list={ChooseDevice} options={{label: "Choose device"}}    />,
+    <Resource
+      name="chooseDevice"
+      list={ChooseDevice}
+      icon={ConstructionIcon}
+      options={{ label: "Choose device" }}
+    />,
     //<Resource name="User" list={UserListAdm} show={UserShowAdm} />,
     <Resource
       name="Greenhouse"
       list={GreenhouseListAdm}
+      icon={GrassIcon}
       show={GreenhouseShow}
     />,
 
-    <Resource name="Product" list={ProductListAdm} show={ProductShow} />,
-    <Resource name="Statistic" list={DeviceStatisticPage} />,
+    <Resource 
+    name="Product" 
+    list={ProductListAdm} 
+    // icon={<ProductionQuantityLimitsIcon style={{ fill: '#0072ea' }} />}
+    icon={ProductionQuantityLimitsIcon}
+    show={ProductShow} 
+    />,
+
+    <Resource 
+    name="Statistic"
+    icon={BarChartIcon}
+    list={DeviceStatisticPage} 
+    />,
     //<Resource name="community_manager" list={CommunityManager} />,
     // <Resource name="usersinfo" list={DesktopInfo} />,
     // <Resource
@@ -331,67 +395,79 @@ const App = () => {
         name="greenhouses"
         list={GreenhouseList}
         create={GreenhouseCreate}
+        icon={GrassIcon}
         edit={GreenhouseEdit}
       />,
       <Resource
         name="fields"
         list={FieldList}
         create={FieldCreate}
+        icon={SpaIcon}
         edit={FieldEdit}
       />,
       <Resource
         name="fixed_devices"
         list={FixedDeviceList}
         create={FixedDeviceCreate}
+        icon={TireRepairIcon}
         edit={FixedDeviceEdit}
       />,
       <Resource
         name="portable_devices"
         list={PortableDeviceList}
         create={PortableDeviceCreate}
+        icon={BuildIcon}
         edit={PortableDeviceEdit}
       />,
-      <Resource name="Product" list={ProductListAdm} show={ProductShow} />,
+      <Resource 
+      name="Product" 
+      list={ProductListAdm} 
+      icon={ProductionQuantityLimitsIcon}
+      show={ProductShow} 
+      />,
     ];
 
     const answer = [];
     let b = 0;
     const all_permissions = [
-      'EDIT_GREENHOUSE' ,
-      'EDIT_FIELD' ,
-      'EDIT_FIXED_DEVICE', 
-      'EDIT_PORTABLE_DEVICE' ,
-      'EDIT_ROLE' ,
-      'EDIT_PRODUCT' 
+      "EDIT_GREENHOUSE",
+      "EDIT_FIELD",
+      "EDIT_FIXED_DEVICE",
+      "EDIT_PORTABLE_DEVICE",
+      "EDIT_ROLE",
+      "EDIT_PRODUCT",
     ];
     for (let index = 0; index < perms.length; index++) {
       for (let j = 0; j < all_permissions.length; j++) {
-        if (perms[index] == (all_permissions[j])) {
-          if (all_permissions[j]== "EDIT_ROLE") {
-              answer[b] = <Resource
-              name="usersinfo"
-              list={DesktopInfo}
-              options={{ label: "Dashboard" }}
-            />;
-              b++;
-              answer[b] = 
-                <Resource
-                  name="community/users"
-                  list={UserList}
-                  edit={UserEdit}
-                  icon={ArticleIcon}
-                  options={{ label: "Users" }}
-                />
-                b++;
-            }
-            else{
-              answer[b] = permissions[j];
-              b++;
-            }
+        if (perms[index] == all_permissions[j]) {
+          if (all_permissions[j] == "EDIT_ROLE") {
+            answer[b] = (
+              <Resource
+                name="usersinfo"
+                list={DesktopInfo}
+                icon={DashboardIcon}
+                options={{ label: "Dashboard" }}
+              />
+            );
+            b++;
+            answer[b] = (
+              <Resource
+                name="community/users"
+                list={UserList}
+                edit={UserEdit}
+                icon={PeopleAltIcon}
+                options={{ label: "Users" }}
+              />
+            );
+            b++;
+          } else {
+            answer[b] = permissions[j];
+            b++;
           }
         }
       }
-    
+    }
+
     return answer.length > 0 ? answer : <div>...loading</div>;
   };
   return (
