@@ -5,6 +5,9 @@ import {
   Datagrid,
   TextField,
   EmailField,
+  TextInput, // Add TextInput for search input
+  Filter,   // Add Filter component
+  useListContext,
   Loading,
   EditButton,
 } from "react-admin";
@@ -12,7 +15,13 @@ import customDataProvider from "../../providers/dataProvider";
 import axios from "axios";
 import { API_URL } from "../../consts";
 import { getJwtTokenFromCookies } from "../../providers/authUtils";
+import { EditRolesButton } from "./EditRolesButton";
 
+const UserFilter = (props) => (
+  <Filter {...props}>
+    <TextInput label="Search" source="q" alwaysOn />
+  </Filter>
+);
 export const UserList = (props) => {
   const dataProvider = customDataProvider;
   const [data, setData] = useState([]);
@@ -54,7 +63,7 @@ export const UserList = (props) => {
         <Loading />
       ) : (
         <>
-          <List {...props} data={data} title={communityName}>
+          <List {...props} data={data} title={communityName}   filters={<UserFilter />} >
             <Datagrid>
               {/* <TextField source="id" /> */}
               <TextField source="name" />
@@ -62,7 +71,7 @@ export const UserList = (props) => {
               <TextField source="phone_number" />
               <TextField label="Roles" source="roles" />
               <TextField label="Permissions" source="permissions" />
-                <EditButton />
+              <EditButton />
             </Datagrid>
           </List>
         </>
@@ -70,4 +79,3 @@ export const UserList = (props) => {
     </>
   );
 };
-
