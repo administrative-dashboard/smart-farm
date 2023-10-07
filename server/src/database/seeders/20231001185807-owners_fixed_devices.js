@@ -11,8 +11,8 @@ module.exports = {
     for (let i = 1; i <= 20; i++) {
       let user_id, fixed_device_id;
       do {
-        user_id = faker.number.int({ min: 4, max: 10 });
-        fixed_device_id = faker.number.int({ min: 14, max: 23 });
+        user_id = faker.number.int({ min: 1, max: 3 });
+        fixed_device_id = faker.number.int({ min: 1, max: 10 });
       } while (existingDevices.has(`${user_id}-${fixed_device_id}`));
 
       existingDevices.add(`${user_id}-${fixed_device_id}`);

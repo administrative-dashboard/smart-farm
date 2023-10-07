@@ -8,14 +8,14 @@ module.exports = {
     const ownersPortableDevicesData = [];
     const existingDevices = new Set();
 
-    for (let i = 1; i <= 70; i++) {
+    for (let i = 1; i <= 20; i++) {
       const isShared = faker.datatype.boolean();
       const sharedQuantity = isShared ? faker.number.int({ min: 1, max: 5 }) : 0;
 
       let user_id, portable_device_id;
       do {
-        user_id = faker.number.int({ min: 4, max: 10 });
-        portable_device_id = faker.number.int({ min: 14, max: 23 });
+        user_id = faker.number.int({ min: 1, max: 3 });
+        portable_device_id = faker.number.int({ min: 1, max: 10 });
       } while (existingDevices.has(`${user_id}-${portable_device_id}`));
 
       existingDevices.add(`${user_id}-${portable_device_id}`);
