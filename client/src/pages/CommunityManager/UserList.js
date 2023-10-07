@@ -5,6 +5,8 @@ import {
   Datagrid,
   TextField,
   EmailField,
+  TextInput, // Add TextInput for search input
+  Filter,   // Add Filter component
   useListContext,
   Loading,
   Button,
@@ -15,16 +17,15 @@ import axios from "axios";
 import { API_URL } from "../../consts";
 import { getJwtTokenFromCookies } from "../../providers/authUtils";
 import { EditRolesButton } from "./EditRolesButton";
-/// UserList.js
-// ...
 
+const UserFilter = (props) => (
+  <Filter {...props}>
+    <TextInput label="Search" source="q" alwaysOn />
+  </Filter>
+);
 export const UserList = (props) => {
   const dataProvider = customDataProvider;
   const [data, setData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchName, setSearchName] = useState("");
-  const [searchEmail, setSearchEmail] = useState("");
-  const [searchPhone, setSearchPhone] = useState("");
   const [communityName, setCommunityName] = useState("");
   const [loading, setLoading] = useState(true);
   const [selectedUserId, setSelectedUserId] = useState(null);
@@ -36,10 +37,7 @@ export const UserList = (props) => {
         pagination: { page: 1, perPage: 10 },
         sort: { field: "id", order: "ASC" },
         filter: {
-          q: searchTerm,
-          name: searchName,
-          email: searchEmail,
-          phone_number: searchPhone,
+          
         },
       });
 
@@ -60,7 +58,7 @@ export const UserList = (props) => {
     }).then((response) => {
       setCommunityName(response.data)
     });
-  }, [searchTerm, searchName, searchEmail, searchPhone]);
+  }, []);
 
   const handleEditRoles = async (user) => {
     try {
@@ -84,7 +82,7 @@ export const UserList = (props) => {
         <Loading />
       ) : (
         <>
-          <List {...props} data={data} title={communityName}>
+          <List {...props} data={data} title={communityName}   filters={<UserFilter />} >
             <Datagrid>
               {/* <TextField source="id" /> */}
               <TextField source="name" />
@@ -92,7 +90,7 @@ export const UserList = (props) => {
               <TextField source="phone_number" />
               <TextField label="Roles" source="roles" />
               <TextField label="Permissions" source="permissions" />
-                <EditButton />
+              <EditButton />
             </Datagrid>
           </List>
         </>
@@ -100,4 +98,3 @@ export const UserList = (props) => {
     </>
   );
 };
-
