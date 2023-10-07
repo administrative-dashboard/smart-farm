@@ -20,8 +20,11 @@ import { Headers } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
 import { NotFoundError } from 'rxjs';
 import { GoogleService } from 'src/auth/google.service';
+import { RolesPermsGuard } from 'src/auth/guards/roles_perms.guard';
+import { RolesPerms } from 'src/auth/guards/roles_perms.decorator';
 @Controller('fields')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesPermsGuard)
+@RolesPerms('OWNER', 'EDIT_FIELD')
 export class OwnerFieldsController {
   constructor(
     private readonly ownerFieldsService: OwnerFieldsService,
