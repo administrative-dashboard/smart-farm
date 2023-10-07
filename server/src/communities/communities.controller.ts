@@ -42,15 +42,16 @@ export class CommunitiesController {
   @UseGuards(JwtAuthGuard, RolesPermsGuard)
   @RolesPerms('ADMIN', 'COMMUNITY_MANAGER', 'EDIT_ROLE')
   async getUsersFromCommunity(
-    @Query('q') searchTerm: string,
-    @Query('name') name: string,
-    @Query('email') email: string,
-    @Query('phone_number') phone_number: string,
-    @Query('roles') roles: string,
-    @Query('permissions') permissions: string,
+    @Query('q') searchTerm: any,
+    @Query('page') page: any,
+    @Query('perPage') perPage: any,
+    @Query('field') field: any,
+    @Query('order') order: any,
     @Request() req
   ) {
     try {
+      page = parseInt(page);
+      perPage = parseInt(perPage);
       const accessToken = req.user.accessToken;
       const email = await this.googleService.getUserInfo(accessToken);
       const user = await this.userService.getUserInfoByEmail(email);
@@ -60,9 +61,22 @@ export class CommunitiesController {
 
       const userId = user.id;
       const communityName = await this.userCommunityService.getCommunityNameByUserId(userId);
-      const { data, total } = await this.userCommunityService.getUsersInSameCommunity(communityName);
+      if (searchTerm) {
+        const users =
+          await this.userCommunityService.searchUsersInSameCommunity(
+            communityName,
+            searchTerm,
+            page,
+            perPage,
+            field,
+            order,
+          );
+        return users;
+      } else {
+        const { data, total } = await this.userCommunityService.getUsersInSameCommunity(communityName);
 
-      return { data, total };
+        return { data, total };
+      }
     } catch (error) {
       console.error('Error fetching community and users:', error);
       return null;
