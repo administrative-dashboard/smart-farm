@@ -1,14 +1,11 @@
 /* global BigInt */
 import React, { useEffect, useState } from "react";
 import { Box, Container, Grid, Select, MenuItem } from "@mui/material";
-// import { API_URL } from "../../consts";
+import { API_URL } from "../../consts";
 import { getJwtTokenFromCookies } from "../../providers/authUtils";
 import axios from "axios";
-// import { GRAFANA_URL } from "../../consts";
-const API_URL=process.env.REACT_APP_API_URL;
-const GRAFANA_URL = process.env.REACT_APP_GRAFANA_URL;
-
-export const FieldStatisticsPage = () => {
+import { GRAFANA_URL } from "../../consts";
+export const GreenhouseStatisticsPage = () => {
   const [communityName, setCommunityName] = useState("");
   const [chartType, setChartType] = useState("pie");
 
@@ -39,10 +36,10 @@ export const FieldStatisticsPage = () => {
   let iframeSrc = "";
   switch (chartType) {
     case "pie":
-      iframeSrc = `${GRAFANA_URL}/d-solo/d1107e1c-40f7-4abe-abc5-3fea3afe010f/statistics-for-fields-and-greenhouses?orgId=1&var-community=${communityName}&theme=light&panelId=1`;
+      iframeSrc = `${GRAFANA_URL}/d-solo/d1107e1c-40f7-4abe-abc5-3fea3afe010f/statistics-for-fields-and-greenhouses?orgId=1&var-community=${communityName}&theme=light&panelId=5`;
       break;
     case "bar":
-      iframeSrc = `${GRAFANA_URL}/d-solo/d1107e1c-40f7-4abe-abc5-3fea3afe010f/statistics-for-fields-and-greenhouses?orgId=1&var-community=${communityName}&theme=light&panelId=3`;
+      iframeSrc = `${GRAFANA_URL}/d-solo/d1107e1c-40f7-4abe-abc5-3fea3afe010f/statistics-for-fields-and-greenhouses?orgId=1&var-community=${communityName}&theme=light&panelId=4`;
       break;
 
     default:

@@ -47,6 +47,8 @@ import { ProductListAdm } from "./pages/admin/ProductList";
 import { ProductShow } from "./pages/admin/ProductListAdm";
 import { PortableDeviceStatisticsPage } from "./pages/CommunityManager/PortableDeviceStatistics";
 import { FixedDeviceStatisticsPage } from "./pages/CommunityManager/FixedDeviceStatistics";
+import { FieldStatisticsPage } from "./pages/CommunityManager/FieldStatistics";
+import { GreenhouseStatisticsPage } from "./pages/CommunityManager/GreenhouseStatistics";
 import { Contact } from "./pages/auth/Contact";
 //import { CommunityManager } from "./pages/CommunityManager/Desktop";
 import { UserList } from "./pages/CommunityManager/UserList";
@@ -266,10 +268,20 @@ const App = () => {
       options={{ label: "Portable Device Statistics" }}
     />,
     <Resource
-    name="fixed_device_statistics"
-    list={FixedDeviceStatisticsPage}
-    options={{ label: "Fixed Device Statistics" }}
-  />,
+      name="fixed_device_statistics"
+      list={FixedDeviceStatisticsPage}
+      options={{ label: "Fixed Device Statistics" }}
+    />,
+    <Resource
+      name="fields_statistics"
+      list={FieldStatisticsPage}
+      options={{ label: "Field Statistics" }}
+    />,
+    <Resource
+      name="greenhouse_statistics"
+      list={GreenhouseStatisticsPage}
+      options={{ label: "Greenhouse statistics" }}
+    />
   ];
   const AdminResources = [
     ...CMResources,
