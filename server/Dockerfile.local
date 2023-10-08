@@ -1,0 +1,24 @@
+# Use an official Node.js runtime as the base image
+FROM node:16
+# Set the working directory in the container
+WORKDIR /app
+RUN npm i -g @nestjs/cli --silent
+COPY package.json .
+COPY package-lock.json .
+RUN npm install --silent
+COPY . .
+# Value set in .env file.
+EXPOSE $PORT
+
+ENV PG_HOST=db
+ENV PG_PORT=5432
+ENV PG_USERNAME=your_postgres_username
+ENV PG_PASSWORD=your_postgres_password
+ENV PG_DATABASE=your_postgres_database
+
+
+CMD ["npx", "sequelize", "db:migrate"] 
+
+CMD ["npx", "sequelize", "db:seed:all"] 
+
+CMD ["npm", "run", "start:dev"]
