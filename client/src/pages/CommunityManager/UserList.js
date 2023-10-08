@@ -1,4 +1,3 @@
-// UserList.js
 import React, { useEffect, useState } from "react";
 import {
   List,
@@ -18,6 +17,7 @@ export const UserList = (props) => {
   const [data, setData] = useState([]);
   const [communityName, setCommunityName] = useState("");
   const [loading, setLoading] = useState(true);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
   const fetchData = async () => {
     try {
@@ -35,18 +35,50 @@ export const UserList = (props) => {
     }
   };
 
+  const getFontSize = () => {
+    if (screenWidth <= 800) {
+      return "8px";
+    } else if (screenWidth <= 1300) {
+      return "16px";
+    } else {
+      return "20px";
+    }
+  };
+
+  const getColumns = () => {
+    if (screenWidth <= 800) {
+      return 2; // Display 2 columns on small screens
+    } else if (screenWidth <= 1300) {
+      return 4; // Display 4 columns on medium screens
+    } else {
+      return 6; // Display 6 columns on larger screens
+    }
+  };
+
   useEffect(() => {
     fetchData();
-    axios.get(`${API_URL}/user/community`, {
-      headers: {
-        Authorization: `Bearer ${getJwtTokenFromCookies()}`,
-      },
-    }).then((response) => {
-      setCommunityName(response.data)
-    });
-  }, []);
+    axios
+      .get(`${API_URL}/user/community`, {
+        headers: {
+          Authorization: `Bearer ${getJwtTokenFromCookies()}`,
+        },
+      })
+      .then((response) => {
+        setCommunityName(response.data);
+      });
 
-  
+    // Update screen width when the window is resized
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Clean up event listener
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <>
@@ -54,20 +86,48 @@ export const UserList = (props) => {
         <Loading />
       ) : (
         <>
-          <List {...props} data={data} title={communityName}>
-            <Datagrid>
-              {/* <TextField source="id" /> */}
-              <TextField source="name" />
-              <EmailField source="email" />
-              <TextField source="phone_number" />
-              <TextField label="Roles" source="roles" />
-              <TextField label="Permissions" source="permissions" />
-                <EditButton />
+          <List
+            {...props}
+            data={data}
+            title={communityName}
+            sx={{ width: "100%" }}
+          >
+            <Datagrid
+              sx={{
+                fontSize: getFontSize(),
+                gridTemplateColumns: `repeat(${getColumns()}, 1fr)`, // Adjust the number of columns based on screen width
+              }}
+            >
+              <TextField source="name" sx={{
+                fontSize: getFontSize(),
+                gridTemplateColumns: `repeat(${getColumns()}, 1fr)`, // Adjust the number of columns based on screen width
+              }}/>
+              <EmailField source="email" sx={{
+                fontSize: getFontSize(),
+                gridTemplateColumns: `repeat(${getColumns()}, 1fr)`, // Adjust the number of columns based on screen width
+              }}/>
+              <TextField source="phone_number"sx={{
+                fontSize: getFontSize(),
+                gridTemplateColumns: `repeat(${getColumns()}, 1fr)`, // Adjust the number of columns based on screen width
+              }} />
+              <TextField label="Roles" source="roles"sx={{
+                fontSize: getFontSize(),
+                gridTemplateColumns: `repeat(${getColumns()}, 1fr)`, // Adjust the number of columns based on screen width
+              }} />
+              <TextField label="Permissions" source="permissions"sx={{
+                fontSize: getFontSize(),
+                gridTemplateColumns: `repeat(${getColumns()}, 1fr)`, // Adjust the number of columns based on screen width
+              }} />
+              <EditButton />
             </Datagrid>
           </List>
+          {
+            console.log("Screen Width:", screenWidth)}
+            
+            {console.log("Number of Columns:", getColumns())}
+            {console.log("Font Size:", getFontSize())}
         </>
       )}
     </>
   );
 };
-
