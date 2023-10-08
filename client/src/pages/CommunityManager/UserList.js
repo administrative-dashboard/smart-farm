@@ -15,6 +15,7 @@ import customDataProvider from "../../providers/dataProvider";
 import axios from "axios";
 import { API_URL } from "../../consts";
 import { getJwtTokenFromCookies } from "../../providers/authUtils";
+import { Box, Typography } from "@mui/material";
 
 
 const UserFilter = (props) => (
@@ -55,7 +56,7 @@ export const UserList = (props) => {
     });
   }, []);
 
-  
+
 
   return (
     <>
@@ -63,7 +64,10 @@ export const UserList = (props) => {
         <Loading />
       ) : (
         <>
-          <List {...props} data={data} title={communityName}   filters={<UserFilter />} >
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+            <Typography sx={{ m: "auto", fontWeight: "bold" }} variant="h5" id="react-admin-title">{communityName}</Typography>
+          </Box>
+          <List {...props} data={data} title=" " filters={<UserFilter />} >
             <Datagrid>
               {/* <TextField source="id" /> */}
               <TextField source="name" />
