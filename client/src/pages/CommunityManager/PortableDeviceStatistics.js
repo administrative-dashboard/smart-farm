@@ -19,7 +19,7 @@ export const PortableDeviceStatisticsPage = () => {
   const [startValue, setStartValue] = useState(dayjs());
   const [endValue, setEndValue] = useState(dayjs());
   const [chartType, setChartType] = useState("pie");
-
+  const uid_devices="b7519d35-952b-4d17-b0b5-55b5dd46a56a";
   const handleChartTypeChange = (event) => {
     setChartType(event.target.value);
   };
@@ -52,10 +52,10 @@ export const PortableDeviceStatisticsPage = () => {
   let iframeSrc = "";
   switch (chartType) {
     case "pie":
-      iframeSrc = `${GRAFANA_URL}/d-solo/b7519d35-952b-4d17-b0b5-55b5dd46a56a/device-statistics?orgId=1&var-community=${communityName}&var-start_date=${startValueBigInt}&var-end_date=${endValueBigInt}&from=1696717025992&to=1696738625992&theme=light&panelId=1`;
+      iframeSrc = `${GRAFANA_URL}/d-solo/${uid_devices}/statistic?orgId=1&var-community=${communityName}&var-start_date=${startValueBigInt}&var-end_date=${endValueBigInt}&from=1696717025992&to=1696738625992&theme=light&panelId=2`;
       break;
     case "bar":
-      iframeSrc=`${GRAFANA_URL}/d-solo/b7519d35-952b-4d17-b0b5-55b5dd46a56a/device-statistics?orgId=1&var-community=${communityName}&var-start_date=${startValueBigInt}&var-end_date=${endValueBigInt}&from=1696717709242&to=1696739309242&theme=light&panelId=2` 
+      iframeSrc=`${GRAFANA_URL}/d-solo/${uid_devices}/statistic?orgId=1&var-community=${communityName}&var-start_date=${startValueBigInt}&var-end_date=${endValueBigInt}&from=1696717709242&to=1696739309242&theme=light&panelId=1` 
       break;
 
     default:

@@ -319,7 +319,6 @@ const App = () => {
     />,
 
     <Resource name="Product" list={ProductListAdm} show={ProductShow} />,
-    <Resource name="Statistics" list={PortableDeviceStatisticsPage} />,
     //<Resource name="community_manager" list={CommunityManager} />,
     // <Resource name="usersinfo" list={DesktopInfo} />,
     // <Resource
