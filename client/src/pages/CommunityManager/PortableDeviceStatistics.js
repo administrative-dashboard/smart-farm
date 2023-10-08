@@ -49,10 +49,10 @@ export const PortableDeviceStatisticsPage = () => {
   let iframeSrc = "";
   switch (chartType) {
     case "pie":
-      iframeSrc = `${GRAFANA_URL}/d-solo/b91a01ce-5eef-4d47-ab7d-1ff8f5108d0e/statistic?orgId=1&var-community=${communityName}&var-start_date=${startValueBigInt}&var-end_date=${endValueBigInt}&panelId=3`;
+      iframeSrc = `${GRAFANA_URL}/d-solo/b7519d35-952b-4d17-b0b5-55b5dd46a56a/device-statistics?orgId=1&var-community=${communityName}&var-start_date=${startValueBigInt}&var-end_date=${endValueBigInt}&from=1696717025992&to=1696738625992&theme=light&panelId=1`;
       break;
     case "bar":
-      iframeSrc=`${GRAFANA_URL}/d-solo/b91a01ce-5eef-4d47-ab7d-1ff8f5108d0e/statistic?orgId=1&var-community=${communityName}&var-start_date=${startValueBigInt}&var-end_date=${endValueBigInt}&panelId=1` 
+      iframeSrc=`${GRAFANA_URL}/d-solo/b7519d35-952b-4d17-b0b5-55b5dd46a56a/device-statistics?orgId=1&var-community=${communityName}&var-start_date=${startValueBigInt}&var-end_date=${endValueBigInt}&from=1696717709242&to=1696739309242&theme=light&panelId=2` 
       break;
 
     default:
