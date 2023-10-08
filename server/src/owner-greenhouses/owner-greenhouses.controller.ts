@@ -21,8 +21,11 @@ import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
 import { NotFoundError } from 'rxjs';
 import { GoogleService } from 'src/auth/google.service';
 import { OwnerGreenhousesService } from './owner-greenhouses.service';
+import { RolesPermsGuard } from 'src/auth/guards/roles_perms.guard';
+import { RolesPerms } from 'src/auth/guards/roles_perms.decorator';
 @Controller('greenhouses')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesPermsGuard)
+@RolesPerms('OWNER', 'EDIT_GREENHOUSE')
 export class OwnerGreenhousesController {
   constructor(
     private readonly ownerGreenhousesService: OwnerGreenhousesService,

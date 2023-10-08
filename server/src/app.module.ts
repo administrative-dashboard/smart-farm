@@ -40,7 +40,9 @@ import { MeasurementUnitsModule } from './measurement-units/measurement-units.mo
 import { OwnerGreenhousesModule } from './owner-greenhouses/owner-greenhouses.module';
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      envFilePath: `.${process.env.NODE_ENV}.env`
+    }),
     SequelizeModule.forRoot({
       dialect: 'postgres',
       host: process.env.PG_HOST,

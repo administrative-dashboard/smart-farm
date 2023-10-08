@@ -15,10 +15,10 @@ export const deviceItemData = [
         value: 'portable_devices',
         link: 'portableDevices'
     },
-    // {
-    //     img: sensor,
-    //     title: 'SENSORS',
-    //     value: 'sensors',
-    //     link: 'sensors'
-    // },
+    {
+        img: sensor,
+        title: 'SENSORS',
+        value: 'sensors',
+        link: 'sensors'
+    },
 ];

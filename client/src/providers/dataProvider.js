@@ -1,8 +1,8 @@
 import simpleRestProvider from "ra-data-simple-rest";
 import { getJwtTokenFromCookies } from "./authUtils";
-import { API_URL } from "../consts";
+// import { API_URL } from "../consts";
 
-const apiUrl = API_URL;
+const apiUrl = process.env.REACT_APP_API_URL;;
 const dataProvider = simpleRestProvider(apiUrl);
 const customDataProvider = {
   ...dataProvider,
