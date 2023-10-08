@@ -37,7 +37,16 @@ export const UserList = (props) => {
 
   const getFontSize = () => {
     if (screenWidth <= 800) {
-      return "8px";
+      return "12px";
+    } else if (screenWidth <= 1300) {
+      return "16px";
+    } else {
+      return "20px";
+    }
+  };
+  const getpadding = () => {
+    if (screenWidth <= 800) {
+      return "12px";
     } else if (screenWidth <= 1300) {
       return "16px";
     } else {
@@ -95,28 +104,34 @@ export const UserList = (props) => {
             <Datagrid
               sx={{
                 fontSize: getFontSize(),
-                gridTemplateColumns: `repeat(${getColumns()}, 1fr)`, // Adjust the number of columns based on screen width
+                gridTemplateColumns: `repeat(${getColumns()}, 1fr)`,
+                padding: getpadding(),
               }}
             >
               <TextField source="name" sx={{
                 fontSize: getFontSize(),
-                gridTemplateColumns: `repeat(${getColumns()}, 1fr)`, // Adjust the number of columns based on screen width
+                gridTemplateColumns: `repeat(${getColumns()}, 1fr)`,
+                padding: getpadding(),
               }}/>
               <EmailField source="email" sx={{
                 fontSize: getFontSize(),
-                gridTemplateColumns: `repeat(${getColumns()}, 1fr)`, // Adjust the number of columns based on screen width
+                gridTemplateColumns: `repeat(${getColumns()}, 1fr)`,
+                padding: getpadding(),
               }}/>
               <TextField source="phone_number"sx={{
                 fontSize: getFontSize(),
-                gridTemplateColumns: `repeat(${getColumns()}, 1fr)`, // Adjust the number of columns based on screen width
+                gridTemplateColumns: `repeat(${getColumns()}, 1fr)`,
+                padding: getpadding(),
               }} />
               <TextField label="Roles" source="roles"sx={{
                 fontSize: getFontSize(),
-                gridTemplateColumns: `repeat(${getColumns()}, 1fr)`, // Adjust the number of columns based on screen width
+                gridTemplateColumns: `repeat(${getColumns()}, 1fr)`,
+                padding: getpadding(),
               }} />
               <TextField label="Permissions" source="permissions"sx={{
                 fontSize: getFontSize(),
-                gridTemplateColumns: `repeat(${getColumns()}, 1fr)`, // Adjust the number of columns based on screen width
+                gridTemplateColumns: `repeat(${getColumns()}, 1fr)`,
+                padding: getpadding(),
               }} />
               <EditButton />
             </Datagrid>
