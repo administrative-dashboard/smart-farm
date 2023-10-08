@@ -13,10 +13,10 @@ import {
   Toolbar,
 } from "react-admin";
 import axios from "axios";
-import { API_URL } from "../../consts";
+// import { API_URL } from "../../consts";
 import { getJwtTokenFromCookies } from "../../providers/authUtils";
 import customDataProvider from "../../providers/dataProvider";
-
+const API_URL=process.env.REACT_APP_API_URL;
 const UserEditToolbar = props => (
   <Toolbar {...props} >
     <SaveButton />

@@ -14,13 +14,14 @@ import { SigninButton } from "./SigninButton";
 import { LogoutButton } from "./LogoutButton";
 import { ProfileButton } from "./ProfileButton";
 import axios from "axios";
-import { API_URL } from "../consts";
+// import { API_URL } from "../consts";
 import { 
   getJwtTokenFromCookies, 
   // getUserInfoFromCookies 
 } from "../providers/authUtils";
 import { authProvider } from "../providers/authPovider";
 
+const API_URL=process.env.REACT_APP_API_URL;
 const MyCustomIcon = ({ profileImage }) => (
   <Avatar
     sx={{

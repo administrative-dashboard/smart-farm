@@ -60,13 +60,14 @@ import customDataProvider from "./providers/dataProvider";
 //const dataProvider = jsonServerProvider(API_URL);
 /* const dataProvider = simpleRestProvider(API_URL); */
 import { authProvider } from "./providers/authPovider";
-import { API_URL } from "./consts";
+// import { API_URL } from "./consts";
 import myTheme from "./themes/general_theme";
 import { UserEdit } from "./pages/CommunityManager/UserEdit";
 const i18nProvider = polyglotI18nProvider(
   (locale) => (locale === "am" ? armenianMessages : englishMessages),
   "en" // Default locale
 );
+const API_URL=process.env.REACT_APP_API_URL;
 const App = () => {
   const isAuthenticated = getJwtTokenFromCookies() ? true : false;
   const [roles, setRoles] = React.useState([]);
@@ -119,7 +120,7 @@ const App = () => {
     }
   }, []);
 
-  // console.log(roles);
+ console.log("sf",process.env.REACT_APP_API_URL)
   //const permission = perms;
   const role = roles;
 

@@ -1,12 +1,12 @@
 // authProvider.js
 import Cookies from 'js-cookie';
 import axios from 'axios';
-import { API_URL } from '../consts';
+// import { API_URL } from '../consts';
 import { getJwtTokenFromCookies } from './authUtils';
 
 
 
-
+const API_URL=process.env.REACT_APP_API_URL;
 export const authProvider = {
   async login() {
     window.location.href = `${API_URL}/google/redirect`;

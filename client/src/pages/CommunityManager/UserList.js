@@ -13,11 +13,11 @@ import {
 } from "react-admin";
 import customDataProvider from "../../providers/dataProvider";
 import axios from "axios";
-import { API_URL } from "../../consts";
+// import { API_URL } from "../../consts";
 import { getJwtTokenFromCookies } from "../../providers/authUtils";
 import { Box, Typography } from "@mui/material";
 
-
+const API_URL=process.env.REACT_APP_API_URL;
 const UserFilter = (props) => (
   <Filter {...props}>
     <TextInput label="Search" source="q" alwaysOn />
