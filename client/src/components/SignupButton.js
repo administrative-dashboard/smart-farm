@@ -24,9 +24,7 @@ export const SignupButton = () => {
       }}
       onClick={handleClick}
     >
-      <Typography>
-        Signup
-      </Typography>
+      <Typography>Signup</Typography>
     </Button>
   );
 };

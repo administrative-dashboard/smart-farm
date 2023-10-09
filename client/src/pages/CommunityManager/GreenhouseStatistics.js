@@ -1,6 +1,5 @@
-/* global BigInt */
 import React, { useEffect, useState } from "react";
-import { Box, Container, Grid, Select, MenuItem } from "@mui/material";
+import { Box, Container, Select, MenuItem } from "@mui/material";
 import { API_URL } from "../../consts";
 import { getJwtTokenFromCookies } from "../../providers/authUtils";
 import axios from "axios";
@@ -9,7 +8,7 @@ import { GRAFANA_URL } from "../../consts";
 export const GreenhouseStatisticsPage = () => {
   const [communityName, setCommunityName] = useState("");
   const [chartType, setChartType] = useState("pie");
-  const uid_fields_greenhouses="d1107e1c-40f7-4abe-abc5-3fea3afe010f";
+  const uid_fields_greenhouses = "d1107e1c-40f7-4abe-abc5-3fea3afe010f";
   const handleChartTypeChange = (event) => {
     setChartType(event.target.value);
   };
@@ -52,8 +51,12 @@ export const GreenhouseStatisticsPage = () => {
         display: "flex",
       }}
     >
-      <Container >
-        <Select value={chartType} onChange={handleChartTypeChange} sx={{mb: 5, mt: 5}}>
+      <Container>
+        <Select
+          value={chartType}
+          onChange={handleChartTypeChange}
+          sx={{ mb: 5, mt: 5 }}
+        >
           <MenuItem value="pie">Pie Chart</MenuItem>
           <MenuItem value="bar">Bar Chart</MenuItem>
         </Select>

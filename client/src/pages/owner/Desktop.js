@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Container, useMediaQuery, Box, Typography } from "@mui/material";
+import { Container, Box, Typography } from "@mui/material";
 import { ownerItemData } from "../../assets/static/mockData/owner.mockData";
 import { CustomImageList } from "../../components/ImageList";
 

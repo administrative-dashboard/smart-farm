@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   Create,
   SimpleForm,
@@ -24,12 +24,13 @@ export const FixedDeviceCreate = (props) => {
     }
     return undefined;
   };
-  const validationSharedQuantity = (value, allValues) => {
-    if (value > allValues.quantity) {
-      return "Shared quantity must be less than quantity";
-    }
-    return undefined;
-  };
+  // const validationSharedQuantity = (value, allValues) => {
+  //   if (value > allValues.quantity) {
+  //     return "Shared quantity must be less than quantity";
+  //   }
+  //   return undefined;
+  // };
+  
   const validateDeviceName = [required()];
   const validateDeviceType = [required()];
   const validateQuantity = [required(), validatePositiveNumber];

@@ -16,9 +16,9 @@ import axios from "axios";
 // import { API_URL } from "../../consts";
 import { getJwtTokenFromCookies } from "../../providers/authUtils";
 import customDataProvider from "../../providers/dataProvider";
-const API_URL=process.env.REACT_APP_API_URL;
-const UserEditToolbar = props => (
-  <Toolbar {...props} >
+const API_URL = process.env.REACT_APP_API_URL;
+const UserEditToolbar = (props) => (
+  <Toolbar {...props}>
     <SaveButton />
   </Toolbar>
 );
@@ -98,7 +98,7 @@ export const UserEdit = (props) => {
   };
 
   return (
-    <Edit title=" " {...props} resource="community/users" >
+    <Edit title=" " {...props} resource="community/users">
       <SimpleForm onSubmit={handleSave} toolbar={<UserEditToolbar />}>
         <TextInput source="name" label="Name" disabled />
         <TextInput source="phone_number" label="Phone_number" disabled />

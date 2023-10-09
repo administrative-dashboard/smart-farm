@@ -1,7 +1,6 @@
 /* global BigInt */
 import React, { useEffect, useState } from "react";
 import { Box, Container, Grid, Select, MenuItem } from "@mui/material";
-import villager from "../../assets/static/StatisticBackground.jpg";
 // import { API_URL } from "../../consts";
 import { getJwtTokenFromCookies } from "../../providers/authUtils";
 import axios from "axios";
@@ -12,14 +11,14 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 // import { GRAFANA_URL } from "../../consts";
 
-const API_URL=process.env.REACT_APP_API_URL;
+const API_URL = process.env.REACT_APP_API_URL;
 const GRAFANA_URL = process.env.REACT_APP_GRAFANA_URL;
 export const FixedDeviceStatisticsPage = () => {
   const [communityName, setCommunityName] = useState("");
   const [startValue, setStartValue] = useState(dayjs());
   const [endValue, setEndValue] = useState(dayjs());
   const [chartType, setChartType] = useState("pie");
-  const uid_devices="b7519d35-952b-4d17-b0b5-55b5dd46a56a";
+  const uid_devices = "b7519d35-952b-4d17-b0b5-55b5dd46a56a";
   const handleChartTypeChange = (event) => {
     setChartType(event.target.value);
   };
@@ -55,7 +54,7 @@ export const FixedDeviceStatisticsPage = () => {
       iframeSrc = `${GRAFANA_URL}/d-solo/${uid_devices}/statistic?orgId=1&var-community=${communityName}&var-start_date=${startValueBigInt}&var-end_date=${endValueBigInt}&from=1696717878879&to=1696739478880&theme=light&panelId=3`;
       break;
     case "bar":
-      iframeSrc=`${GRAFANA_URL}/d-solo/${uid_devices}/statistic?orgId=1&var-community=${communityName}&var-start_date=${startValueBigInt}&var-end_date=${endValueBigInt}&from=1696717952536&to=1696739552537&theme=light&panelId=4` 
+      iframeSrc = `${GRAFANA_URL}/d-solo/${uid_devices}/statistic?orgId=1&var-community=${communityName}&var-start_date=${startValueBigInt}&var-end_date=${endValueBigInt}&from=1696717952536&to=1696739552537&theme=light&panelId=4`;
       break;
 
     default:
@@ -100,11 +99,7 @@ export const FixedDeviceStatisticsPage = () => {
         </LocalizationProvider>
 
         {iframeSrc ? (
-          <iframe
-            src={iframeSrc}
-            width="95%"
-            height="500"
-          ></iframe>
+          <iframe src={iframeSrc} width="95%" height="500"></iframe>
         ) : (
           <div>No iframe for this chart type.</div>
         )}

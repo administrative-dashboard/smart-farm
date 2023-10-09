@@ -1,7 +1,6 @@
 import React from "react";
 import { Button, useRedirect } from "react-admin";
 // import { Link } from 'react-router-dom';
-import { Profile } from "../pages/auth/Profile";
 import { Typography } from "@mui/material";
 
 export const ProfileButton = () => {

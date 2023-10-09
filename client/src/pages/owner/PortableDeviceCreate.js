@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   Create,
   SimpleForm,
@@ -18,7 +18,7 @@ export const PortableDeviceCreate = (props) => {
   const currentDate = new Date();
   const notify = useNotify();
   const redirect = useRedirect();
-  const [quantity, setQuantity] = useState("");
+  // const [quantity, setQuantity] = useState("");
   const validatePositiveNumber = (value) => {
     if (isNaN(value) || value <= 0) {
       return "Value must be a positive number";

@@ -4,9 +4,6 @@ import {
   Datagrid,
   TextField,
   EmailField,
-  TextInput, // Add TextInput for search input
-  Filter,   // Add Filter component
-  useListContext,
   Loading,
   EditButton,
 } from "react-admin";
@@ -14,14 +11,9 @@ import customDataProvider from "../../providers/dataProvider";
 import axios from "axios";
 // import { API_URL } from "../../consts";
 import { getJwtTokenFromCookies } from "../../providers/authUtils";
-import { Box, Typography } from "@mui/material";
 
-const API_URL=process.env.REACT_APP_API_URL;
-const UserFilter = (props) => (
-  <Filter {...props}>
-    <TextInput label="Search" source="q" alwaysOn />
-  </Filter>
-);
+const API_URL = process.env.REACT_APP_API_URL;
+
 export const UserList = (props) => {
   const dataProvider = customDataProvider;
   const [data, setData] = useState([]);
@@ -88,7 +80,6 @@ export const UserList = (props) => {
   //   xl: 150,
   // };
 
-
   // const padding = {
   //   xs: 0,
   //   sm: 0,
@@ -151,8 +142,6 @@ export const UserList = (props) => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
-
 
   return (
     <>
@@ -226,7 +215,7 @@ export const UserList = (props) => {
                 source="permissions"
                 sx={{
                   fontSize: fontSizes[screenSize],
-                  // whiteSpace: wrap[screenSize], 
+                  // whiteSpace: wrap[screenSize],
                   // overflowWrap: 'break-word',
                   // padding: padding[screenSize],
                   gridTemplateColumns: `repeat(${getColumns()}, 1fr)`,
@@ -240,7 +229,6 @@ export const UserList = (props) => {
 
           {console.log("Number of Columns:", getColumns())}
           {console.log("Font Size:", fontSizes[screenSize])}
-          
         </>
       )}
     </>

@@ -1,14 +1,6 @@
 //FixedDeviceListAdm.js
 import React from "react";
-import {
-  List,
-  Datagrid,
-  TextField,
-  TextInput,
-  DateField,
-  NumberField,
-  ShowButton,
-} from "react-admin";
+import { List, Datagrid, TextField, TextInput, ShowButton } from "react-admin";
 import { ResetFilters } from "../../components/ResetFilters";
 /*const StyledItem = styled.div`
   margin-bottom: 10px;

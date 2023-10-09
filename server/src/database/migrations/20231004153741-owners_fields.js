@@ -1,5 +1,4 @@
 // require('dotenv').config();
-
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -29,5 +28,5 @@ module.exports = {
   },
   down: async (queryInterface) => {
     await queryInterface.dropTable('owners_fields');
-  }
+  },
 };

@@ -1,7 +1,6 @@
 /* global BigInt */
 import React, { useEffect, useState } from "react";
 import { Box, Container, Grid, Select, MenuItem } from "@mui/material";
-import villager from "../../assets/static/StatisticBackground.jpg";
 // import { API_URL } from "../../consts";
 import { getJwtTokenFromCookies } from "../../providers/authUtils";
 import axios from "axios";

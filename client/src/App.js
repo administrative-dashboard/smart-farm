@@ -1,5 +1,4 @@
 import * as React from "react";
-import { LocalFlorist } from "@mui/icons-material";
 import "./App.css";
 import { Admin, Resource } from "react-admin";
 import { MyLayout } from "./layouts/Layout";
@@ -11,13 +10,11 @@ import SpaIcon from "@mui/icons-material/Spa";
 import ConstructionIcon from "@mui/icons-material/Construction";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import BarChartIcon from "@mui/icons-material/BarChart";
-import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantityLimits";
 import BuildIcon from "@mui/icons-material/Build";
 import TireRepairIcon from "@mui/icons-material/TireRepair";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import FaceRetouchingNaturalIcon from "@mui/icons-material/FaceRetouchingNatural";
-import ArticleIcon from "@mui/icons-material/Article";
 import polyglotI18nProvider from "ra-i18n-polyglot";
 import englishMessages from "ra-language-english";
 import armenianMessages from "ra-language-armenian";
@@ -465,8 +462,8 @@ const App = () => {
     ];
     for (let index = 0; index < perms.length; index++) {
       for (let j = 0; j < all_permissions.length; j++) {
-        if (perms[index] == all_permissions[j]) {
-          if (all_permissions[j] == "EDIT_ROLE") {
+        if (perms[index] === all_permissions[j]) {
+          if (all_permissions[j] === "EDIT_ROLE") {
             answer[b] = (
               <Resource
                 name="usersinfo"

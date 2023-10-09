@@ -12,11 +12,16 @@ import { useTheme } from "@mui/material/styles";
 import { getJwtTokenFromCookies } from "../../providers/authUtils";
 import axios from "axios";
 // import { API_URL } from "../../consts";
-import { Form,  ImageField, TextInput, useNotify, useRedirect } from "react-admin";
+import {
+  Form,
+  ImageField,
+  TextInput,
+  useNotify,
+  useRedirect,
+} from "react-admin";
 import { authProvider } from "../../providers/authPovider";
-import { AllowedTo, AbacProvider} from "react-abac";
 
-const API_URL=process.env.REACT_APP_API_URL;
+const API_URL = process.env.REACT_APP_API_URL;
 export const Profile = () => {
   const notify = useNotify();
   const redirect = useRedirect();
@@ -28,14 +33,11 @@ export const Profile = () => {
   React.useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get(
-          `${API_URL}/user/info`,
-          {
-            headers: {
-              Authorization: `Bearer ${getJwtTokenFromCookies()}`
-            }
-          }
-        );
+        const response = await axios.get(`${API_URL}/user/info`, {
+          headers: {
+            Authorization: `Bearer ${getJwtTokenFromCookies()}`,
+          },
+        });
         setUser(response.data);
         setFormData({
           name: response.data.name,
@@ -44,14 +46,11 @@ export const Profile = () => {
           profile_image: response.data.profile_image,
         });
 
-        const response2 = await axios.get(
-          `${API_URL}/user/community`,
-          {
-            headers: {
-              Authorization: `Bearer ${getJwtTokenFromCookies()}`
-            }
-          }
-        );
+        const response2 = await axios.get(`${API_URL}/user/community`, {
+          headers: {
+            Authorization: `Bearer ${getJwtTokenFromCookies()}`,
+          },
+        });
         console.log(response2.data);
         setFormData((prevFormData) => ({
           ...prevFormData,
@@ -68,21 +67,18 @@ export const Profile = () => {
 
   const handleUpdateUserInfo = async () => {
     try {
-      const response = await axios.put(
-        `${API_URL}/user/info`,
-        formData,
-        {
+      const response = await axios
+        .put(`${API_URL}/user/info`, formData, {
           headers: {
             Authorization: `Bearer ${getJwtTokenFromCookies()}`,
           },
-        }
-      )
+        })
         .then(() => {
-          notify('Edited successfully', { type: 'success' });
-          redirect('list', 'dashboard');
+          notify("Edited successfully", { type: "success" });
+          redirect("list", "dashboard");
         })
         .catch((error) => {
-          notify(`Error: ${error.message}`, 'error');
+          notify(`Error: ${error.message}`, "error");
         });
       setUser(response.data);
     } catch (error) {
@@ -98,12 +94,12 @@ export const Profile = () => {
       email: user?.email || "",
       profile_image: user?.profile_image || "",
     });
-    notify('Editing Canceled', { type: 'failure' });
-    redirect('list', 'dashboard');
+    notify("Editing Canceled", { type: "failure" });
+    redirect("list", "dashboard");
   };
   const validatePhoneNumber = (phoneNumber) => {
     if (!phoneNumber) {
-      return true; 
+      return true;
     }
     const regex = /^\+374 \d{2} \d{6}$/; // +374 99 999999
     return regex.test(phoneNumber);
@@ -117,7 +113,6 @@ export const Profile = () => {
     }
   }, [formData.phone_number]);
 
-
   return (
     <Container>
       <Grid container spacing={2}>
@@ -126,7 +121,7 @@ export const Profile = () => {
             <Typography variant="h4" gutterBottom>
               My Profile
             </Typography>
-            <Form redirect="dashboard"  >
+            <Form redirect="dashboard">
               <TextInput
                 variant="filled"
                 label="Name"
@@ -177,7 +172,7 @@ export const Profile = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, phone_number: e.target.value })
                 }
-                error={Boolean(validationError)} 
+                error={Boolean(validationError)}
                 helperText={validationError}
               />
               <TextInput
@@ -215,7 +210,7 @@ export const Profile = () => {
                     backgroundColor: "#1F4700",
                     color: "white",
                   }}
-                  onClick={handleUpdateUserInfo} 
+                  onClick={handleUpdateUserInfo}
                   disabled={Boolean(validationError)}
                 >
                   Save

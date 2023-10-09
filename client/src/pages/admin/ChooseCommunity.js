@@ -11,7 +11,7 @@ import {
   MenuItem,
 } from "@mui/material";
 
-// import { MyBar } from "../../components/Drawer";
+
 import villager from "../../assets/static/villager.jpg";
 import { Button } from "react-admin";
 // import { drawer_new_data } from "../../assets/static/mockData/new_data";
@@ -47,7 +47,6 @@ export const ChooseCommunity = () => {
         ...containerStyle,
       }}
     >
-      {/* {!isLgScreen && <MyBar drawerData={drawer_new_data} />} */}
       <Container
         sx={{
           m: "auto",
