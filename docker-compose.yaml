@@ -1,3 +1,4 @@
+
 version: '3.9'
 services:
   client:
@@ -6,8 +7,11 @@ services:
       context: ./client
       dockerfile: Dockerfile.local
     restart: always
+    env_file: .env
     ports:
       - "3000:3000"
+    # volumes:
+    #   - "./packages/client/src:/usr/src/app/src"
     depends_on:
       - server
     command: "npm start"
@@ -18,19 +22,18 @@ services:
       dockerfile: Dockerfile.local
     restart: always
     env_file: .env
-    environment:
-      - PG_HOST=db
-      - PG_PORT=5432
-      - PG_USERNAME=your_postgres_username
-      - PG_PASSWORD=your_postgres_password
-      - PG_DATABASE=your_postgres_database
     ports:
       - "${PORT}:${PORT}"
-    volumes:
-      - ./server:/app
+    # environment:
+    #   - POSTGRES_HOST=localhost
+    #   - POSTGRES_PORT=5432
+    #   - POSTGRES_USER=farm
+    #   - POSTGRES_PASSWORD=123
+    #   - POSTGRES_DB=smart_farm
+    # volumes:
+    #   - ./server:/app
     depends_on:
       - db
-    # Remove the CMD instruction from here; it's already defined in the Dockerfile
   db:
     image: postgres:latest
     restart: always
@@ -39,7 +42,10 @@ services:
       - .env
     environment:
       POSTGRES_PASSWORD: ${PG_PASSWORD}
+      # PGDATA: /var/lib/postgresql/data
       POSTGRES_USER: ${PG_USERNAME}
       POSTGRES_DB: ${PG_DATABASE}
     ports:
-      - "${PG_PORT}:${PG_PORT}"
+      - "5432:5432"
+    # volumes:
+    #   - ./server/database:/var/lib/postgresql/data
