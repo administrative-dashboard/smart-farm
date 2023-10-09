@@ -8,12 +8,12 @@ import ContactsIcon from "@mui/icons-material/Contacts";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import GrassIcon from "@mui/icons-material/Grass";
 import SpaIcon from "@mui/icons-material/Spa";
-import ConstructionIcon from '@mui/icons-material/Construction';
-import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
-import BuildIcon from '@mui/icons-material/Build';
-import TireRepairIcon from '@mui/icons-material/TireRepair';
+import ConstructionIcon from "@mui/icons-material/Construction";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import BarChartIcon from "@mui/icons-material/BarChart";
+import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantityLimits";
+import BuildIcon from "@mui/icons-material/Build";
+import TireRepairIcon from "@mui/icons-material/TireRepair";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import FaceRetouchingNaturalIcon from "@mui/icons-material/FaceRetouchingNatural";
@@ -54,11 +54,13 @@ import { FieldEdit } from "./pages/owner/FieldEdit";
 //import { DeviceRequest } from "./pages/owner/DeviceRequest";
 import { GreenhouseShow } from "./pages/admin/GreenhouseShow";
 import { GreenhouseListAdm } from "./pages/admin/GreenhouseList";
-import { ProductListAdm } from "./pages/admin/ProductList";
-import { ProductShow } from "./pages/admin/ProductListAdm";
+import { ProductList } from "./pages/owner/ProductList";
+import { ProductEdit } from "./pages/owner/ProductEdit";
+import { ProductCreate } from "./pages/owner/ProductCreate";
 import { PortableDeviceStatisticsPage } from "./pages/CommunityManager/PortableDeviceStatistics";
 import { FixedDeviceStatisticsPage } from "./pages/CommunityManager/FixedDeviceStatistics";
 import { FieldStatisticsPage } from "./pages/CommunityManager/FieldStatistics";
+import { DeviceStatisticPage } from "./pages/owner/DeviceStatistics";
 import { GreenhouseStatisticsPage } from "./pages/CommunityManager/GreenhouseStatistics";
 import { Contact } from "./pages/auth/Contact";
 //import { CommunityManager } from "./pages/CommunityManager/Desktop";
@@ -85,7 +87,7 @@ const i18nProvider = polyglotI18nProvider(
   (locale) => (locale === "am" ? armenianMessages : englishMessages),
   "en" // Default locale
 );
-const API_URL=process.env.REACT_APP_API_URL;
+const API_URL = process.env.REACT_APP_API_URL;
 const App = () => {
   const isAuthenticated = getJwtTokenFromCookies() ? true : false;
   const [roles, setRoles] = React.useState([]);
@@ -138,7 +140,7 @@ const App = () => {
     }
   }, []);
 
- console.log("sf",process.env.REACT_APP_API_URL)
+  console.log("sf", process.env.REACT_APP_API_URL);
   //const permission = perms;
   const role = roles;
 
@@ -155,14 +157,8 @@ const App = () => {
       icon={VpnKeyIcon}
       options={{ label: "Sign In" }}
     />,
-    <Route 
-    exact path="/signup" 
-    element={Signup} />,
-    <Resource 
-    name="signup" 
-    list={Signup} 
-    options={{ label: "Sign Up" }} 
-    />,
+    <Route exact path="/signup" element={Signup} />,
+    <Resource name="signup" list={Signup} options={{ label: "Sign Up" }} />,
   ];
 
   const employeeResources = [
@@ -260,7 +256,14 @@ const App = () => {
       icon={TireRepairIcon}
       options={{ label: "Fixed device" }}
     />,
-    {/* //<Resource
+    <Resource
+      name="products"
+      list={ProductList}
+      create={ProductCreate}
+      edit={ProductEdit}
+    />,
+    {
+      /* //<Resource
     //   name="fields"
     //   list={FieldList}
     //   create={FieldCreate}
@@ -270,7 +273,8 @@ const App = () => {
     //   name="device_requests_history"
     //   create={DeviceRequest}
     //   list={DeviceRequest}
-    // />, */}
+    // />, */
+    },
   ];
   const CMResources = [
     <Resource
@@ -324,7 +328,7 @@ const App = () => {
       name="greenhouse_statistics"
       list={GreenhouseStatisticsPage}
       options={{ label: "Greenhouse statistics" }}
-    />
+    />,
   ];
   const AdminResources = [
     ...CMResources,
@@ -365,19 +369,17 @@ const App = () => {
       icon={GrassIcon}
       show={GreenhouseShow}
     />,
-
-    <Resource 
-    name="Product" 
-    list={ProductListAdm} 
-    // icon={<ProductionQuantityLimitsIcon style={{ fill: '#0072ea' }} />}
-    icon={ProductionQuantityLimitsIcon}
-    show={ProductShow} 
+    <Resource
+      name="products"
+      list={ProductList}
+      create={ProductCreate}
+      edit={ProductEdit}
     />,
 
-    <Resource 
-    name="Statistic"
-    icon={BarChartIcon}
-    list={DeviceStatisticPage} 
+    <Resource
+      name="Statistic"
+      icon={BarChartIcon}
+      list={DeviceStatisticPage}
     />,
     //<Resource name="community_manager" list={CommunityManager} />,
     // <Resource name="usersinfo" list={DesktopInfo} />,
@@ -443,11 +445,11 @@ const App = () => {
         icon={BuildIcon}
         edit={PortableDeviceEdit}
       />,
-      <Resource 
-      name="Product" 
-      list={ProductListAdm} 
-      icon={ProductionQuantityLimitsIcon}
-      show={ProductShow} 
+      <Resource
+        name="products"
+        list={ProductList}
+        create={ProductCreate}
+        edit={ProductEdit}
       />,
     ];
 

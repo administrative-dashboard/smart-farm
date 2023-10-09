@@ -26,8 +26,6 @@ import { AuthModule } from './auth/auth.module';
 import { DeviceUsageStatisticsCommunities } from './database/models/device_usage_statistics_communities.model';
 import { DeviceUsageStatisticsFields } from './database/models/device_usage_statistics_fields.model';
 import { DeviceUsageStatisticsGreenhouses } from './database/models/device_usage_statistics_greenhouses.model';
-import { PortableDevicesController } from './owner-portable-devices/owners-portable-devices.controller';
-import { OwnersPortableDevicesService } from './owner-portable-devices/owners-portable-devices.service';
 import { OwnerPortableDeviceModule } from './owner-portable-devices/owner-portable-devices.module';
 import { UserModule } from './user/user.module';
 import { CommunitiesModule } from './communities/communities.module';
@@ -38,6 +36,12 @@ import { UserPermission } from './database/models/users_permissions.model';
 import { OwnerFieldsModule } from './owner-fields/owner-fields.module';
 import { MeasurementUnitsModule } from './measurement-units/measurement-units.module';
 import { OwnerGreenhousesModule } from './owner-greenhouses/owner-greenhouses.module';
+
+import { OwnerProductModule } from './owner-products/products.module';
+import { OwnerProduct } from './database/models/owners_products.model'
+import { Product } from './database/models/product.model';
+import { ProductType } from './database/models/product_types.model';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -66,14 +70,16 @@ import { OwnerGreenhousesModule } from './owner-greenhouses/owner-greenhouses.mo
         OwnerField,
         OwnerGreenhouse,
         PortableDevice,
-        DeviceRequestHistory,
         ScheduleDevice,
         DeviceUsageStatisticsCommunities,
         DeviceUsageStatisticsFields,
         DeviceUsageStatisticsGreenhouses,
         OwnerFixedDevice,
         OwnerPortableDevice,
-        UserPermission
+        UserPermission,
+        Product,
+        ProductType,
+        OwnerProduct
       ],
     }),
     AuthModule,
@@ -84,6 +90,7 @@ import { OwnerGreenhousesModule } from './owner-greenhouses/owner-greenhouses.mo
     OwnerFieldsModule,
     MeasurementUnitsModule,
     OwnerGreenhousesModule,
+    OwnerProductModule
   ],
   controllers: [AppController],
   providers: [AppService],

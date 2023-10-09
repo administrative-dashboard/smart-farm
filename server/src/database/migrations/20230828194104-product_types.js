@@ -15,14 +15,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      description: {
-        type: Sequelize.STRING,
-      },
     };
 
     await queryInterface.createTable(tableName, columns);
   },
   down: async (queryInterface) => {
     await queryInterface.dropTable('product_types');
-  }
+  },
 };
