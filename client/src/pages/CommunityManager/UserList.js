@@ -35,24 +35,77 @@ export const UserList = (props) => {
     }
   };
 
-  const getFontSize = () => {
-    if (screenWidth <= 800) {
-      return "12px";
-    } else if (screenWidth <= 1300) {
-      return "16px";
-    } else {
-      return "20px";
-    }
+  const breakpoints = {
+    xs: 0,
+    sm: 600,
+    md: 960,
+    lg: 1280,
+    xl: 1920,
   };
-  const getpadding = () => {
-    if (screenWidth <= 800) {
-      return "12px";
-    } else if (screenWidth <= 1300) {
-      return "16px";
-    } else {
-      return "20px";
-    }
+
+  const screenSize =
+    window.innerWidth < breakpoints.sm
+      ? "xs"
+      : window.innerWidth < breakpoints.md
+      ? "sm"
+      : window.innerWidth < breakpoints.lg
+      ? "md"
+      : window.innerWidth < breakpoints.xl
+      ? "lg"
+      : "xl";
+
+  const fontSizes = {
+    xs: 9,
+    sm: 10,
+    md: 11,
+    lg: 14,
+    xl: 24,
   };
+
+  // const wrap = {
+  //   xs: 'wrap',
+  //   sm: 'wrap',
+  //   md: 'wrap',
+  //   lg: 'wrap',
+  //   xl: 'nowrap',
+  // };
+
+  // const maxCharCount = {
+  //   xs: 50, // Adjust the character count based on your preference
+  //   sm: 75,
+  //   md: 100,
+  //   lg: 125,
+  //   xl: 150,
+  // };
+
+
+  // const padding = {
+  //   xs: 0,
+  //   sm: 0,
+  //   md: 0,
+  //   lg: 0,
+  //   xl: 0,
+  // }
+
+  // const getFontSize = () => {
+  //   if (screenWidth <= 800) {
+  //     return "12px";
+  //   } else if (screenWidth <= 1300) {
+  //     return "16px";
+  //   } else {
+  //     return "20px";
+  //   }
+  // };
+
+  // const getpadding = () => {
+  //   if (screenWidth <= 800) {
+  //     return "12px";
+  //   } else if (screenWidth <= 1300) {
+  //     return "16px";
+  //   } else {
+  //     return "20px";
+  //   }
+  // };
 
   const getColumns = () => {
     if (screenWidth <= 800) {
@@ -89,6 +142,7 @@ export const UserList = (props) => {
     };
   }, []);
 
+  // ...
   return (
     <>
       {loading ? (
@@ -103,44 +157,79 @@ export const UserList = (props) => {
           >
             <Datagrid
               sx={{
-                fontSize: getFontSize(),
+                fontSize: fontSizes[screenSize],
+                // whiteSpace: wrap[screenSize],
+                // overflowWrap: 'break-word',
+                // padding: padding[screenSize],
                 gridTemplateColumns: `repeat(${getColumns()}, 1fr)`,
-                padding: getpadding(),
+                // padding: getpadding(),
               }}
             >
-              <TextField source="name" sx={{
-                fontSize: getFontSize(),
-                gridTemplateColumns: `repeat(${getColumns()}, 1fr)`,
-                padding: getpadding(),
-              }}/>
-              <EmailField source="email" sx={{
-                fontSize: getFontSize(),
-                gridTemplateColumns: `repeat(${getColumns()}, 1fr)`,
-                padding: getpadding(),
-              }}/>
-              <TextField source="phone_number"sx={{
-                fontSize: getFontSize(),
-                gridTemplateColumns: `repeat(${getColumns()}, 1fr)`,
-                padding: getpadding(),
-              }} />
-              <TextField label="Roles" source="roles"sx={{
-                fontSize: getFontSize(),
-                gridTemplateColumns: `repeat(${getColumns()}, 1fr)`,
-                padding: getpadding(),
-              }} />
-              <TextField label="Permissions" source="permissions"sx={{
-                fontSize: getFontSize(),
-                gridTemplateColumns: `repeat(${getColumns()}, 1fr)`,
-                padding: getpadding(),
-              }} />
+              <TextField
+                source="name"
+                sx={{
+                  fontSize: fontSizes[screenSize],
+                  // whiteSpace: wrap[screenSize],
+                  // overflowWrap: 'break-word',
+                  // padding: padding[screenSize],
+                  gridTemplateColumns: `repeat(${getColumns()}, 1fr)`,
+                  // padding: getpadding(),
+                }}
+              />
+              <EmailField
+                source="email"
+                sx={{
+                  fontSize: fontSizes[screenSize],
+                  // whiteSpace: wrap[screenSize],
+                  // overflowWrap: 'break-word',
+                  // padding: padding[screenSize],
+                  gridTemplateColumns: `repeat(${getColumns()}, 1fr)`,
+                  // padding: getpadding(),
+                }}
+              />
+              <TextField
+                source="phone_number"
+                sx={{
+                  fontSize: fontSizes[screenSize],
+                  // whiteSpace: wrap[screenSize],
+                  // overflowWrap: 'break-word',
+                  // padding: padding[screenSize],
+                  gridTemplateColumns: `repeat(${getColumns()}, 1fr)`,
+                  // padding: getpadding(),
+                }}
+              />
+              <TextField
+                label="Roles"
+                source="roles"
+                sx={{
+                  fontSize: fontSizes[screenSize],
+                  // whiteSpace: wrap[screenSize],
+                  // overflowWrap: 'break-word',
+                  // padding: padding[screenSize],
+                  gridTemplateColumns: `repeat(${getColumns()}, 1fr)`,
+                  // padding: getpadding(),
+                }}
+              />
+              <TextField
+                label="Permissions"
+                source="permissions"
+                sx={{
+                  fontSize: fontSizes[screenSize],
+                  // whiteSpace: wrap[screenSize], 
+                  // overflowWrap: 'break-word',
+                  // padding: padding[screenSize],
+                  gridTemplateColumns: `repeat(${getColumns()}, 1fr)`,
+                  // padding: getpadding(),
+                }}
+              />
               <EditButton />
             </Datagrid>
           </List>
-          {
-            console.log("Screen Width:", screenWidth)}
-            
-            {console.log("Number of Columns:", getColumns())}
-            {console.log("Font Size:", getFontSize())}
+          {console.log("Screen Width:", screenWidth)}
+
+          {console.log("Number of Columns:", getColumns())}
+          {console.log("Font Size:", fontSizes[screenSize])}
+          
         </>
       )}
     </>
