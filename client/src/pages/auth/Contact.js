@@ -13,7 +13,7 @@ import { theme } from "../../themes/theme";
 import signBack from "../../assets/static/signBack.png";
 import axios from "axios";
 import { getJwtTokenFromCookies } from "../../providers/authUtils";
-import { API_URL } from "../../consts";
+// import { API_URL } from "../../consts";
 import {
   Button,
   Form,
@@ -23,6 +23,9 @@ import {
 } from "react-admin";
 import { PhoneInput } from 'react-international-phone';
 import 'react-international-phone/style.css';
+
+const API_URL=process.env.REACT_APP_API_URL;
+
 export const Contact = () => {
   const notify = useNotify();
   const redirect = useRedirect();

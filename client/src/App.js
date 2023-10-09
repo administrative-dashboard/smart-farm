@@ -26,12 +26,12 @@ import { MainDashboard } from "./pages/MainDashboard";
 import { Signin } from "./pages/auth/Signin";
 import { Signup } from "./pages/auth/Signup";
 import { Profile } from "./pages/auth/Profile";
-import { AdminDesktop } from "./pages/admin/Desktop";
+// import { AdminDesktop } from "./pages/admin/Desktop";
 import { ChooseDevice } from "./pages/admin/ChooseDevice";
-import { ChooseCommunity } from "./pages/admin/ChooseCommunity";
+//import { ChooseCommunity } from "./pages/admin/ChooseCommunity";
 import { FixedDeviceShow } from "./pages/admin/FixedDeviceShow";
-import { UserShowAdm } from "./pages/admin/UserShow";
-import { UserListAdm } from "./pages/admin/UserList";
+//import { UserShowAdm } from "./pages/admin/UserShow";
+//import { UserListAdm } from "./pages/admin/UserList";
 import { FixedDeviceListAdm } from "./pages/admin/FixedDeviceListAdm";
 import { PortableDeviceListAdm } from "./pages/admin/PortableDeviceListAdm";
 import { PortableDeviceShow } from "./pages/admin/PortableDeviceShow";
@@ -56,9 +56,12 @@ import { GreenhouseShow } from "./pages/admin/GreenhouseShow";
 import { GreenhouseListAdm } from "./pages/admin/GreenhouseList";
 import { ProductListAdm } from "./pages/admin/ProductList";
 import { ProductShow } from "./pages/admin/ProductListAdm";
-import { DeviceStatisticPage } from "./pages/admin/DeviceStatistic";
+import { PortableDeviceStatisticsPage } from "./pages/CommunityManager/PortableDeviceStatistics";
+import { FixedDeviceStatisticsPage } from "./pages/CommunityManager/FixedDeviceStatistics";
+import { FieldStatisticsPage } from "./pages/CommunityManager/FieldStatistics";
+import { GreenhouseStatisticsPage } from "./pages/CommunityManager/GreenhouseStatistics";
 import { Contact } from "./pages/auth/Contact";
-import { CommunityManager } from "./pages/CommunityManager/Desktop";
+//import { CommunityManager } from "./pages/CommunityManager/Desktop";
 import { UserList } from "./pages/CommunityManager/UserList";
 import { DesktopInfo } from "./pages/CommunityManager/DesktopInfo";
 import axios from "axios";
@@ -70,7 +73,7 @@ import customDataProvider from "./providers/dataProvider";
 //const dataProvider = jsonServerProvider(API_URL);
 /* const dataProvider = simpleRestProvider(API_URL); */
 import { authProvider } from "./providers/authPovider";
-import { API_URL } from "./consts";
+// import { API_URL } from "./consts";
 import myTheme from "./themes/general_theme";
 import { UserEdit } from "./pages/CommunityManager/UserEdit";
 
@@ -82,6 +85,7 @@ const i18nProvider = polyglotI18nProvider(
   (locale) => (locale === "am" ? armenianMessages : englishMessages),
   "en" // Default locale
 );
+const API_URL=process.env.REACT_APP_API_URL;
 const App = () => {
   const isAuthenticated = getJwtTokenFromCookies() ? true : false;
   const [roles, setRoles] = React.useState([]);
@@ -134,8 +138,8 @@ const App = () => {
     }
   }, []);
 
-  // console.log(roles);
-  const permission = perms;
+ console.log("sf",process.env.REACT_APP_API_URL)
+  //const permission = perms;
   const role = roles;
 
   const commonResources = [
@@ -256,7 +260,7 @@ const App = () => {
       icon={TireRepairIcon}
       options={{ label: "Fixed device" }}
     />,
-    // <Resource
+    {/* //<Resource
     //   name="fields"
     //   list={FieldList}
     //   create={FieldCreate}
@@ -266,7 +270,7 @@ const App = () => {
     //   name="device_requests_history"
     //   create={DeviceRequest}
     //   list={DeviceRequest}
-    // />,
+    // />, */}
   ];
   const CMResources = [
     <Resource
@@ -301,6 +305,26 @@ const App = () => {
       icon={PeopleAltIcon}
       options={{ label: "Users" }}
     />,
+    <Resource
+      name="portable_device_statistics"
+      list={PortableDeviceStatisticsPage}
+      options={{ label: "Portable Device Statistics" }}
+    />,
+    <Resource
+      name="fixed_device_statistics"
+      list={FixedDeviceStatisticsPage}
+      options={{ label: "Fixed Device Statistics" }}
+    />,
+    <Resource
+      name="fields_statistics"
+      list={FieldStatisticsPage}
+      options={{ label: "Field Statistics" }}
+    />,
+    <Resource
+      name="greenhouse_statistics"
+      list={GreenhouseStatisticsPage}
+      options={{ label: "Greenhouse statistics" }}
+    />
   ];
   const AdminResources = [
     ...CMResources,

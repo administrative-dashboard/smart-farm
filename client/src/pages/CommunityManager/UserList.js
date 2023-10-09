@@ -4,14 +4,24 @@ import {
   Datagrid,
   TextField,
   EmailField,
+  TextInput, // Add TextInput for search input
+  Filter,   // Add Filter component
+  useListContext,
   Loading,
   EditButton,
 } from "react-admin";
 import customDataProvider from "../../providers/dataProvider";
 import axios from "axios";
-import { API_URL } from "../../consts";
+// import { API_URL } from "../../consts";
 import { getJwtTokenFromCookies } from "../../providers/authUtils";
+import { Box, Typography } from "@mui/material";
 
+const API_URL=process.env.REACT_APP_API_URL;
+const UserFilter = (props) => (
+  <Filter {...props}>
+    <TextInput label="Search" source="q" alwaysOn />
+  </Filter>
+);
 export const UserList = (props) => {
   const dataProvider = customDataProvider;
   const [data, setData] = useState([]);
@@ -142,7 +152,8 @@ export const UserList = (props) => {
     };
   }, []);
 
-  // ...
+
+
   return (
     <>
       {loading ? (

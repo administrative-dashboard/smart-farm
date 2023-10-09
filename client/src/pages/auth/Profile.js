@@ -11,10 +11,12 @@ import {
 import { useTheme } from "@mui/material/styles";
 import { getJwtTokenFromCookies } from "../../providers/authUtils";
 import axios from "axios";
-import { API_URL } from "../../consts";
+// import { API_URL } from "../../consts";
 import { Form,  ImageField, TextInput, useNotify, useRedirect } from "react-admin";
 import { authProvider } from "../../providers/authPovider";
 import { AllowedTo, AbacProvider} from "react-abac";
+
+const API_URL=process.env.REACT_APP_API_URL;
 export const Profile = () => {
   const notify = useNotify();
   const redirect = useRedirect();
