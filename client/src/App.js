@@ -378,7 +378,7 @@ const App = () => {
     return answer.length > 0 ? answer : <div>...loading</div>;
   };
   return (
-    <BrowserRouter>
+    <>
       {isLoading ? (
         <div>loading ...</div>
       ) : (
@@ -392,7 +392,7 @@ const App = () => {
           {getprm()}
         </Admin>
       )}
-    </BrowserRouter>
+      </>
   );
 };
 
