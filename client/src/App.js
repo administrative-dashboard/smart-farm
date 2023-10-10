@@ -161,7 +161,6 @@ const App = () => {
     <Resource 
       name="signup" 
       list={Signup} 
-      icon={ExitToAppIcon}
       options={{ label: "Sign Up" }} 
     />,
   ];
@@ -265,7 +264,6 @@ const App = () => {
       name="products"
       list={ProductList}
       create={ProductCreate}
-      icon={ProductionQuantityLimitsIcon}
       edit={ProductEdit}
     />,
     {
@@ -318,25 +316,21 @@ const App = () => {
     <Resource
       name="portable_device_statistics"
       list={PortableDeviceStatisticsPage}
-      icon={BuildIcon}
       options={{ label: "Portable Device Statistics" }}
     />,
     <Resource
       name="fixed_device_statistics"
       list={FixedDeviceStatisticsPage}
-      icon={TireRepairIcon}
       options={{ label: "Fixed Device Statistics" }}
     />,
     <Resource
       name="fields_statistics"
       list={FieldStatisticsPage}
-      icon={SpaIcon}
       options={{ label: "Field Statistics" }}
     />,
     <Resource
       name="greenhouse_statistics"
       list={GreenhouseStatisticsPage}
-      icon={GrassIcon}
       options={{ label: "Greenhouse statistics" }}
     />,
   ];
@@ -383,7 +377,6 @@ const App = () => {
       name="products"
       list={ProductList}
       create={ProductCreate}
-      icon={ProductionQuantityLimitsIcon}
       edit={ProductEdit}
     />,
 
@@ -460,7 +453,6 @@ const App = () => {
         name="products"
         list={ProductList}
         create={ProductCreate}
-        icon={ProductionQuantityLimitsIcon}
         edit={ProductEdit}
       />,
     ];
