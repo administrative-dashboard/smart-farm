@@ -375,6 +375,7 @@ const App = () => {
 
       return answer.length > 0 ? answer : <div>...loading</div>;
     };
+  }
     return (
       <>
         {isLoading ? (
@@ -393,24 +394,7 @@ const App = () => {
         )}
       </>
     );
-  };
-  return (
-    <>
-      {isLoading ? (
-        <div>loading ...</div>
-      ) : (
-        <Admin
-          theme={myTheme}
-          layout={MyLayout}
-          dataProvider={customDataProvider}
-          i18nProvider={i18nProvider}
-        >
-          {getdrw()}
-          {getprm()}
-        </Admin>
-      )}
-      </>
-  );
+  
 };
 
 export default App;
