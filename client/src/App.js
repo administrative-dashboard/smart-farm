@@ -12,6 +12,7 @@ import englishMessages from "ra-language-english";
 import armenianMessages from "ra-language-armenian";
 import { BrowserRouter, Route } from "react-router-dom";
 import { MainDashboard } from "./pages/MainDashboard";
+import { ImageField } from 'react-admin';
 import { Signin } from "./pages/auth/Signin";
 import { Signup } from "./pages/auth/Signup";
 import { Profile } from "./pages/auth/Profile";
@@ -33,6 +34,7 @@ import { GreenhouseCreate } from "./pages/owner/GreenhouseCreate";
 import { GreenhouseEdit } from "./pages/owner/GreenhouseEdit";
 import { FieldCreate } from "./pages/owner/FieldCreate";
 import { FieldList } from "./pages/owner/FieldList";
+import loadGif from "./assets/static/load.gif";
 import { FieldEdit } from "./pages/owner/FieldEdit";
 import { GreenhouseShow } from "./pages/admin/GreenhouseShow";
 import { GreenhouseListAdm } from "./pages/admin/GreenhouseList";
@@ -347,12 +349,12 @@ const App = () => {
         edit={PortableDeviceEdit}
       />,
       <Resource
-                  name="community/users"
-                  list={UserList}
-                  edit={UserEdit}
-                  icon={ArticleIcon}
-                  options={{ label: "Users" }}
-                />,
+        name="community/users"
+        list={UserList}
+        edit={UserEdit}
+        icon={ArticleIcon}
+        options={{ label: "Users" }}
+      />,
       <Resource name="Product" list={ProductListAdm} show={ProductShow} />,
     ];
 
@@ -369,8 +371,8 @@ const App = () => {
     for (let index = 0; index < perms.length; index++) {
       for (let j = 0; j < all_permissions.length; j++) {
         if (perms[index] == (all_permissions[j])) {
-            answer[b] = permissions[j];
-            b++;
+          answer[b] = permissions[j];
+          b++;
         }
       }
     }
@@ -380,8 +382,9 @@ const App = () => {
   return (
     <BrowserRouter>
       {isLoading ? (
-        <div>loading ...</div>
-      ) : (
+        <div className="loading-indicator" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <img src={loadGif} alt="Loading" />
+      </div>) : (
         <Admin
           theme={myTheme}
           layout={MyLayout}
