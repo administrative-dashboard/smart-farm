@@ -45,7 +45,6 @@ import axios from "axios";
 import { getJwtTokenFromCookies } from "./providers/authUtils";
 import customDataProvider from "./providers/dataProvider";
 import { authProvider } from "./providers/authPovider";
-import { API_URL } from "./consts";
 import myTheme from "./themes/general_theme";
 import { UserEdit } from "./pages/CommunityManager/UserEdit";
 import {PortableDeviceStatisticsPage} from "./pages/CommunityManager/PortableDeviceStatistics"
@@ -53,6 +52,7 @@ import {FixedDeviceStatisticsPage} from "./pages/CommunityManager/FixedDeviceSta
 import {GreenhouseStatisticsPage} from "./pages/CommunityManager/GreenhouseStatistics"
 import {FieldStatisticsPage} from "./pages/CommunityManager/FieldStatistics"
 
+const API_URL=process.env.REACT_APP_API_URL
 const i18nProvider = polyglotI18nProvider(
   (locale) => (locale === "am" ? armenianMessages : englishMessages),
   "en"
@@ -119,8 +119,9 @@ const App = () => {
       <p>Loading...</p>
     </div>
   );
-  
+
   const role = roles;
+  console.log(role)
 
   const commonResources = [
     <Resource

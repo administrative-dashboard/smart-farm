@@ -35,6 +35,7 @@ export class UserRolesService {
     return null;
   }
 
+
   async getAllRoles() {
     return await this.rolesModel.findAll();
   }

@@ -152,6 +152,7 @@ export class UserController {
       const userId = user.id;
       const rolesName = this.userRolesService.getRolesByUserId(userId);
       return rolesName;
+      console.log("email", email, "role", rolesName)
     } catch (error) {
       console.error('Error fetching roles name:', error);
       throw new NotFoundException('Error fetching roles name');
