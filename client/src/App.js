@@ -113,7 +113,13 @@ const App = () => {
       setIsLoading(false);
     }
   }, []);
-
+  
+  const LoadingIndicator = () => (
+    <div className="loading-indicator">
+      <p>Loading...</p>
+    </div>
+  );
+  
   const role = roles;
 
   const commonResources = [
@@ -384,8 +390,8 @@ const App = () => {
   };
   return (
     <BrowserRouter>
-      {isLoading ? (
-        <div>Loading...</div>
+    {isLoading ? (
+        <LoadingIndicator />
       ) : (
         <Admin
           theme={myTheme}
