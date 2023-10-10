@@ -38,7 +38,13 @@ export const FixedDeviceStatisticsPage = () => {
   useEffect(() => {
     getCommunityName();
   }, []);
-
+  useEffect(() => {
+    // Calculate the defaultStartValue as 1 year ago from the endValue
+    const defaultStartValue = dayjs(endValue).subtract(1, 'year');
+    
+    // Set the startValue state with the calculated default value
+    setStartValue(defaultStartValue);
+  }, []);
   const startValueBigInt = BigInt(startValue.valueOf());
   const endValueBigInt = BigInt(endValue.valueOf());
 

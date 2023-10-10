@@ -1,17 +1,18 @@
-
-version: '3.3'
+#docker-compose.yaml
+version: '3.0'
 services:
   client:
     container_name: client
     build:
       context: ./client
       dockerfile: Dockerfile.local
+    env_file:
+      - .development.env
+    volumes:
+      - ./client:/usr/app
     restart: always
-    # env_file: .env
     ports:
-      - "3000:3000"
-    # volumes:
-    #   - "./packages/client/src:/usr/src/app/src"
+      - 3000:3000
     depends_on:
       - server
     command: "npm start"
@@ -20,31 +21,28 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile.local
-    restart: always
-    env_file: .env
-    ports:
-      - "${PORT}:${PORT}"
-    environment:
-      - POSTGRES_HOST=localhost
-      - POSTGRES_PORT=5432
-      - POSTGRES_USER=farm
-      - POSTGRES_PASSWORD=123
-      - POSTGRES_DB=smart_farm
     volumes:
-      - ./server:/app
-    # depends_on:
-    #   - db
-  # db:
-  #   image: postgres:latest
-  #   restart: always
-  #   container_name: db
-  #   env_file: .env
-  #   environment:
-  #     POSTGRES_PASSWORD: 123
-  #     # PGDATA: /var/lib/postgresql/data
-  #     POSTGRES_USER: farm
-  #     POSTGRES_DB: smart_farm
-  #   ports:
-  #     - "5433:5432"
-    # volumes:
-    #   - ./server/database:/var/lib/postgresql/data
+      - ./server:/srv/app
+      # - /app/node_modules
+    restart: always
+    env_file:
+      - .development.env
+    ports:
+      - 5000:5000
+    command: npm run start:dev
+    depends_on:
+      - postgres
+  postgres:
+    container_name: postgres
+    image: postgres:12
+    restart: always
+    env_file:
+      - .development.env
+    environment:
+      PG_DATA: /var/lib/postgresql/data
+    ports:
+      - 3030:5432  # Port mapping to resolve conflicts
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:

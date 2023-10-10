@@ -38,7 +38,13 @@ export const PortableDeviceStatisticsPage = () => {
   useEffect(() => {
     getCommunityName();
   }, []);
-
+  useEffect(() => {
+    // Calculate the defaultStartValue as 1 year ago from the endValue
+    const defaultStartValue = dayjs(endValue).subtract(1, 'year');
+    
+    // Set the startValue state with the calculated default value
+    setStartValue(defaultStartValue);
+  }, []);
   const startValueBigInt = BigInt(startValue.valueOf());
   const endValueBigInt = BigInt(endValue.valueOf());
 
@@ -49,10 +55,11 @@ export const PortableDeviceStatisticsPage = () => {
   let iframeSrc = "";
   switch (chartType) {
     case "pie":
-      iframeSrc = `${GRAFANA_URL}/d-solo/${uid_devices}/statistic?orgId=1&var-community=${communityName}&var-start_date=${startValueBigInt}&var-end_date=${endValueBigInt}&from=1696717025992&to=1696738625992&theme=light&panelId=2`;
+      iframeSrc = `${GRAFANA_URL}/d-solo/${uid_devices}/statistic?orgId=1&var-community=${communityName}&var-start_date=${startValueBigInt}&var-end_date=${endValueBigInt}&from=1696717709242&to=1696739309242&theme=light&panelId=1`
       break;
     case "bar":
-      iframeSrc = `${GRAFANA_URL}/d-solo/${uid_devices}/statistic?orgId=1&var-community=${communityName}&var-start_date=${startValueBigInt}&var-end_date=${endValueBigInt}&from=1696717709242&to=1696739309242&theme=light&panelId=1`
+   
+      iframeSrc = `${GRAFANA_URL}/d-solo/${uid_devices}/statistic?orgId=1&var-community=${communityName}&var-start_date=${startValueBigInt}&var-end_date=${endValueBigInt}&from=1696717025992&to=1696738625992&theme=light&panelId=2`;
       break;
 
     default:
