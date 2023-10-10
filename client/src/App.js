@@ -47,18 +47,18 @@ import customDataProvider from "./providers/dataProvider";
 import { authProvider } from "./providers/authPovider";
 import myTheme from "./themes/general_theme";
 import { UserEdit } from "./pages/CommunityManager/UserEdit";
-import {PortableDeviceStatisticsPage} from "./pages/CommunityManager/PortableDeviceStatistics"
-import {FixedDeviceStatisticsPage} from "./pages/CommunityManager/FixedDeviceStatistics"
-import {GreenhouseStatisticsPage} from "./pages/CommunityManager/GreenhouseStatistics"
-import {FieldStatisticsPage} from "./pages/CommunityManager/FieldStatistics"
+import { PortableDeviceStatisticsPage } from "./pages/CommunityManager/PortableDeviceStatistics"
+import { FixedDeviceStatisticsPage } from "./pages/CommunityManager/FixedDeviceStatistics"
+import { GreenhouseStatisticsPage } from "./pages/CommunityManager/GreenhouseStatistics"
+import { FieldStatisticsPage } from "./pages/CommunityManager/FieldStatistics"
 
-const API_URL=process.env.REACT_APP_API_URL
+const API_URL = process.env.REACT_APP_API_URL
 const i18nProvider = polyglotI18nProvider(
   (locale) => (locale === "am" ? armenianMessages : englishMessages),
   "en"
 );
 
-window.onerror = function() {
+window.onerror = function () {
   return true;
 };
 
@@ -113,7 +113,7 @@ const App = () => {
       setIsLoading(false);
     }
   }, []);
-  
+
   const LoadingIndicator = () => (
     <div className="loading-indicator">
       <p>Loading...</p>
@@ -189,31 +189,31 @@ const App = () => {
       list={GreenhouseList}
       create={GreenhouseCreate}
       edit={GreenhouseEdit}
-      options={{label: "Greenhouse"}}
-      
+      options={{ label: "Greenhouse" }}
+
     />,
     <Resource
       name="fields"
       list={FieldList}
       create={FieldCreate}
       edit={FieldEdit}
-      options={{label: "Field"}}
+      options={{ label: "Field" }}
     />,
-    <Resource name="devices" list={DeviceDesktop} 
-    options={{label: "Device"}}/>,
+    <Resource name="devices" list={DeviceDesktop}
+      options={{ label: "Device" }} />,
     <Resource
       name="portable_devices"
       list={PortableDeviceList}
       create={PortableDeviceCreate}
       edit={PortableDeviceEdit}
-      options={{label: "Portable device"}}      
+      options={{ label: "Portable device" }}
     />,
     <Resource
       name="fixed_devices"
       list={FixedDeviceList}
       create={FixedDeviceCreate}
       edit={FixedDeviceEdit}
-      options={{label: "Fixed device"}}    
+      options={{ label: "Fixed device" }}
     />,
   ];
   const CMResources = [
@@ -247,24 +247,24 @@ const App = () => {
       options={{ label: "Users" }}
     />,
     <Resource
-    name="portable_device_statistics"
-    list={PortableDeviceStatisticsPage}
-    options={{label: "Portable Device Statistics"}}
+      name="portable_device_statistics"
+      list={PortableDeviceStatisticsPage}
+      options={{ label: "Portable Device Statistics" }}
     />,
     <Resource
-    name="fixed_device_statistics"
-    list={FixedDeviceStatisticsPage}
-    options={{label: "Fixed Device Statistics"}}
+      name="fixed_device_statistics"
+      list={FixedDeviceStatisticsPage}
+      options={{ label: "Fixed Device Statistics" }}
     />,
     <Resource
-    name="field_statistics"
-    list={FieldStatisticsPage}
-    options={{label: "Field Statistics"}}
+      name="field_statistics"
+      list={FieldStatisticsPage}
+      options={{ label: "Field Statistics" }}
     />,
     <Resource
-    name="greenhouse_statistics"
-    list={GreenhouseStatisticsPage}
-    options={{label: "Greenhouse Statistics"}}
+      name="greenhouse_statistics"
+      list={GreenhouseStatisticsPage}
+      options={{ label: "Greenhouse Statistics" }}
     />
   ];
   const AdminResources = [
@@ -273,20 +273,20 @@ const App = () => {
       name="all_fixedDevices"
       list={FixedDeviceListAdm}
       show={FixedDeviceShow}
-      options={{label: "Fixed device"}}    
+      options={{ label: "Fixed device" }}
     />,
     <Resource
       name="all_portableDevices"
       list={PortableDeviceListAdm}
       show={PortableDeviceShow}
-      options={{label: "Portable device"}}    
+      options={{ label: "Portable device" }}
     />,
     <Resource
       name="Greenhouse"
       list={GreenhouseListAdm}
       show={GreenhouseShow}
     />,
-    <Resource name="chooseDevice" list={ChooseDevice} options={{label: "Choose device"}}    />,
+    <Resource name="chooseDevice" list={ChooseDevice} options={{ label: "Choose device" }} />,
     <Resource
       name="Greenhouse"
       list={GreenhouseListAdm}
@@ -346,53 +346,41 @@ const App = () => {
         create={PortableDeviceCreate}
         edit={PortableDeviceEdit}
       />,
+      <Resource
+                  name="community/users"
+                  list={UserList}
+                  edit={UserEdit}
+                  icon={ArticleIcon}
+                  options={{ label: "Users" }}
+                />,
       <Resource name="Product" list={ProductListAdm} show={ProductShow} />,
     ];
 
     const answer = [];
     let b = 0;
     const all_permissions = [
-      'EDIT_GREENHOUSE' ,
-      'EDIT_FIELD' ,
-      'EDIT_FIXED_DEVICE', 
-      'EDIT_PORTABLE_DEVICE' ,
-      'EDIT_ROLE' ,
-      'EDIT_PRODUCT' 
+      'EDIT_GREENHOUSE',
+      'EDIT_FIELD',
+      'EDIT_FIXED_DEVICE',
+      'EDIT_PORTABLE_DEVICE',
+      'EDIT_ROLE',
+      'EDIT_PRODUCT'
     ];
     for (let index = 0; index < perms.length; index++) {
       for (let j = 0; j < all_permissions.length; j++) {
         if (perms[index] == (all_permissions[j])) {
-          if (all_permissions[j]=== "EDIT_ROLE") {
-              answer[b] = <Resource
-              name="usersinfo"
-              list={DesktopInfo}
-              options={{ label: "Dashboard" }}
-            />;
-              b++;
-              answer[b] = 
-                <Resource
-                  name="community/users"
-                  list={UserList}
-                  edit={UserEdit}
-                  icon={ArticleIcon}
-                  options={{ label: "Users" }}
-                />
-                b++;
-            }
-            else{
-              answer[b] = permissions[j];
-              b++;
-            }
-          }
+            answer[b] = permissions[j];
+            b++;
         }
       }
-    
+    }
+
     return answer.length > 0 ? answer : <div>...loading</div>;
   };
   return (
     <BrowserRouter>
-    {isLoading ? (
-        <LoadingIndicator />
+      {isLoading ? (
+        <div>loading ...</div>
       ) : (
         <Admin
           theme={myTheme}
