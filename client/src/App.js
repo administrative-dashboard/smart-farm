@@ -12,6 +12,7 @@ import englishMessages from "ra-language-english";
 import armenianMessages from "ra-language-armenian";
 import { BrowserRouter, Route } from "react-router-dom";
 import { MainDashboard } from "./pages/MainDashboard";
+import { ImageField } from 'react-admin';
 import { Signin } from "./pages/auth/Signin";
 import { Signup } from "./pages/auth/Signup";
 import { Profile } from "./pages/auth/Profile";
@@ -24,8 +25,6 @@ import { UserListAdm } from "./pages/admin/UserList";
 import { FixedDeviceListAdm } from "./pages/admin/FixedDeviceListAdm";
 import { PortableDeviceListAdm } from "./pages/admin/PortableDeviceListAdm";
 import { PortableDeviceShow } from "./pages/admin/PortableDeviceShow";
-//import { SensorsShow } from "./pages/admin/SensorsShow";
-//import { SensorsListAdm } from "./pages/admin/SensorsListAdm";
 import { OwnerDesktop } from "./pages/owner/Desktop";
 import { PortableDeviceList } from "./pages/owner/PortableDeviceList";
 import { GreenhouseList } from "./pages/owner/GreenhouseList";
@@ -39,37 +38,36 @@ import { GreenhouseCreate } from "./pages/owner/GreenhouseCreate";
 import { GreenhouseEdit } from "./pages/owner/GreenhouseEdit";
 import { FieldCreate } from "./pages/owner/FieldCreate";
 import { FieldList } from "./pages/owner/FieldList";
+import loadGif from "./assets/static/load.gif";
 import { FieldEdit } from "./pages/owner/FieldEdit";
-//import { DeviceRequest } from "./pages/owner/DeviceRequest";
 import { GreenhouseShow } from "./pages/admin/GreenhouseShow";
 import { GreenhouseListAdm } from "./pages/admin/GreenhouseList";
 import { ProductListAdm } from "./pages/admin/ProductList";
 import { ProductShow } from "./pages/admin/ProductListAdm";
-// import { DeviceStatisticPage } from "./pages/admin/DeviceStatistic";
 import { Contact } from "./pages/auth/Contact";
-import { CommunityManager } from "./pages/CommunityManager/Desktop";
 import { UserList } from "./pages/CommunityManager/UserList";
 import { DesktopInfo } from "./pages/CommunityManager/DesktopInfo";
 import axios from "axios";
 import { getJwtTokenFromCookies } from "./providers/authUtils";
-// import dataProvider from "./providers/dataProvider";
-// const dataProvider = simpleRestProvider(API_URL);
-// import customDataProvider from "./providers/dataProvider";
 import customDataProvider from "./providers/dataProvider";
-//const dataProvider = jsonServerProvider(API_URL);
-/* const dataProvider = simpleRestProvider(API_URL); */
 import { authProvider } from "./providers/authPovider";
 import { API_URL } from "./consts";
 import myTheme from "./themes/general_theme";
 import { UserEdit } from "./pages/CommunityManager/UserEdit";
-import {PortableDeviceStatisticsPage} from "./pages/CommunityManager/PortableDeviceStatistics"
-import {FixedDeviceStatisticsPage} from "./pages/CommunityManager/FixedDeviceStatistics"
-import {GreenhouseStatisticsPage} from "./pages/CommunityManager/GreenhouseStatistics"
-import {FieldStatisticsPage} from "./pages/CommunityManager/FieldStatistics"
+import { PortableDeviceStatisticsPage } from "./pages/CommunityManager/PortableDeviceStatistics"
+import { FixedDeviceStatisticsPage } from "./pages/CommunityManager/FixedDeviceStatistics"
+import { GreenhouseStatisticsPage } from "./pages/CommunityManager/GreenhouseStatistics"
+import { FieldStatisticsPage } from "./pages/CommunityManager/FieldStatistics"
+
 const i18nProvider = polyglotI18nProvider(
   (locale) => (locale === "am" ? armenianMessages : englishMessages),
-  "en" // Default locale
+  "en"
 );
+
+window.onerror = function () {
+  return true;
+};
+
 const App = () => {
   const isAuthenticated = getJwtTokenFromCookies() ? true : false;
   const [roles, setRoles] = React.useState([]);
@@ -122,11 +120,9 @@ const App = () => {
     }
   }, []);
 
-  // console.log(roles);
-  const permission = perms;
   const role = roles;
 
-  
+
   const commonResources = [
     <Resource
       name="dashboard"
@@ -193,43 +189,32 @@ const App = () => {
       list={GreenhouseList}
       create={GreenhouseCreate}
       edit={GreenhouseEdit}
-      options={{label: "Greenhouse"}}
-      
+      options={{ label: "Greenhouse" }}
+
     />,
     <Resource
       name="fields"
       list={FieldList}
       create={FieldCreate}
       edit={FieldEdit}
-      options={{label: "Field"}}
+      options={{ label: "Field" }}
     />,
-    <Resource name="devices" list={DeviceDesktop} 
-    options={{label: "Device"}}/>,
+    <Resource name="devices" list={DeviceDesktop}
+      options={{ label: "Device" }} />,
     <Resource
       name="portable_devices"
       list={PortableDeviceList}
       create={PortableDeviceCreate}
       edit={PortableDeviceEdit}
-      options={{label: "Portable device"}}      
+      options={{ label: "Portable device" }}
     />,
     <Resource
       name="fixed_devices"
       list={FixedDeviceList}
       create={FixedDeviceCreate}
       edit={FixedDeviceEdit}
-      options={{label: "Fixed device"}}    
+      options={{ label: "Fixed device" }}
     />,
-    // <Resource
-    //   name="fields"
-    //   list={FieldList}
-    //   create={FieldCreate}
-    //   edit={FieldEdit}
-    // />,
-    // <Resource
-    //   name="device_requests_history"
-    //   create={DeviceRequest}
-    //   list={DeviceRequest}
-    // />,
   ];
   const CMResources = [
     <Resource
@@ -262,24 +247,24 @@ const App = () => {
       options={{ label: "Users" }}
     />,
     <Resource
-    name="portable_device_statistics"
-    list={PortableDeviceStatisticsPage}
-    options={{label: "Portable Device Statistics"}}
+      name="portable_device_statistics"
+      list={PortableDeviceStatisticsPage}
+      options={{ label: "Portable Device Statistics" }}
     />,
     <Resource
-    name="fixed_device_statistics"
-    list={FixedDeviceStatisticsPage}
-    options={{label: "Fixed Device Statistics"}}
+      name="fixed_device_statistics"
+      list={FixedDeviceStatisticsPage}
+      options={{ label: "Fixed Device Statistics" }}
     />,
     <Resource
-    name="field_statistics"
-    list={FieldStatisticsPage}
-    options={{label: "Field Statistics"}}
+      name="field_statistics"
+      list={FieldStatisticsPage}
+      options={{ label: "Field Statistics" }}
     />,
     <Resource
-    name="greenhouse_statistics"
-    list={GreenhouseStatisticsPage}
-    options={{label: "Greenhouse Statistics"}}
+      name="greenhouse_statistics"
+      list={GreenhouseStatisticsPage}
+      options={{ label: "Greenhouse Statistics" }}
     />
   ];
   const AdminResources = [
@@ -288,25 +273,20 @@ const App = () => {
       name="all_fixedDevices"
       list={FixedDeviceListAdm}
       show={FixedDeviceShow}
-      options={{label: "Fixed device"}}    
+      options={{ label: "Fixed device" }}
     />,
     <Resource
       name="all_portableDevices"
       list={PortableDeviceListAdm}
       show={PortableDeviceShow}
-      options={{label: "Portable device"}}    
+      options={{ label: "Portable device" }}
     />,
-    // <Resource name="User" list={UserListAdm} show={UserShowAdm} />,
-    
-    // <Resource name="User" list={UserListAdm} show={UserShowAdm} />,
     <Resource
       name="Greenhouse"
       list={GreenhouseListAdm}
       show={GreenhouseShow}
     />,
-    //<Resource name="chooseCommunity" list={ChooseCommunity} />,
-    <Resource name="chooseDevice" list={ChooseDevice} options={{label: "Choose device"}}    />,
-    //<Resource name="User" list={UserListAdm} show={UserShowAdm} />,
+    <Resource name="chooseDevice" list={ChooseDevice} options={{ label: "Choose device" }} />,
     <Resource
       name="Greenhouse"
       list={GreenhouseListAdm}
@@ -314,16 +294,6 @@ const App = () => {
     />,
 
     <Resource name="Product" list={ProductListAdm} show={ProductShow} />,
-    // <Resource name="Statistic" list={DeviceStatisticPage} />,
-    //<Resource name="community_manager" list={CommunityManager} />,
-    // <Resource name="usersinfo" list={DesktopInfo} />,
-    // <Resource
-    //   name="community/users"
-    //   list={UserList}
-    //   edit={UserEdit}
-    //   icon={ArticleIcon}
-    // />,
-    //<Resource name="BasicTable" list={BasicTable} show={BasicTableShow} />,
   ];
 
   const getdrw = () => {
@@ -375,66 +345,55 @@ const App = () => {
         create={PortableDeviceCreate}
         edit={PortableDeviceEdit}
       />,
+      <Resource
+        name="community/users"
+        list={UserList}
+        edit={UserEdit}
+        icon={ArticleIcon}
+        options={{ label: "Users" }}
+      />,
       <Resource name="Product" list={ProductListAdm} show={ProductShow} />,
     ];
 
     const answer = [];
     let b = 0;
     const all_permissions = [
-      'EDIT_GREENHOUSE' ,
-      'EDIT_FIELD' ,
-      'EDIT_FIXED_DEVICE', 
-      'EDIT_PORTABLE_DEVICE' ,
-      'EDIT_ROLE' ,
-      'EDIT_PRODUCT' 
+      'EDIT_GREENHOUSE',
+      'EDIT_FIELD',
+      'EDIT_FIXED_DEVICE',
+      'EDIT_PORTABLE_DEVICE',
+      'EDIT_ROLE',
+      'EDIT_PRODUCT'
     ];
     for (let index = 0; index < perms.length; index++) {
       for (let j = 0; j < all_permissions.length; j++) {
         if (perms[index] == (all_permissions[j])) {
-          if (all_permissions[j]== "EDIT_ROLE") {
-              answer[b] = <Resource
-              name="usersinfo"
-              list={DesktopInfo}
-              options={{ label: "Dashboard" }}
-            />;
-              b++;
-              answer[b] = 
-                <Resource
-                  name="community/users"
-                  list={UserList}
-                  edit={UserEdit}
-                  icon={ArticleIcon}
-                  options={{ label: "Users" }}
-                />
-                b++;
-            }
-            else{
-              answer[b] = permissions[j];
-              b++;
-            }
-          }
+          answer[b] = permissions[j];
+          b++;
         }
       }
-    
-    return answer.length > 0 ? answer : <div>...loading</div>;
+
+      return answer.length > 0 ? answer : <div>...loading</div>;
+    };
+    return (
+      <BrowserRouter>
+        {isLoading ? (
+          <div className="loading-indicator" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+            <img src={loadGif} alt="Loading" />
+          </div>) : (
+          <Admin
+            theme={myTheme}
+            layout={MyLayout}
+            dataProvider={customDataProvider}
+            i18nProvider={i18nProvider}
+          >
+            {getdrw()}
+            {getprm()}
+          </Admin>
+        )}
+      </BrowserRouter>
+    );
   };
-  return (
-    <BrowserRouter>
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : (
-        <Admin
-          theme={myTheme}
-          layout={MyLayout}
-          dataProvider={customDataProvider}
-          i18nProvider={i18nProvider}
-        >
-          {getdrw()}
-          {getprm()}
-        </Admin>
-      )}
-    </BrowserRouter>
-  );
-};
+}
 
 export default App;
