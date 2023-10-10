@@ -7,18 +7,13 @@ import {
   Res,
   Post,
   Body,
-  Logger,
   Param,
   Query,
   UseGuards,
   NotFoundException,
 } from '@nestjs/common';
-import { Response, query, response } from 'express';
 import { OwnerFieldsService } from './owner-fields.service';
-import { HttpCode } from '@nestjs/common';
-import { Headers } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
-import { NotFoundError } from 'rxjs';
 import { GoogleService } from 'src/auth/google.service';
 import { RolesPermsGuard } from 'src/auth/guards/roles_perms.guard';
 import { RolesPerms } from 'src/auth/guards/roles_perms.decorator';
@@ -29,7 +24,7 @@ export class OwnerFieldsController {
   constructor(
     private readonly ownerFieldsService: OwnerFieldsService,
     private readonly googleService: GoogleService
-  ) {}
+  ) { }
   @Get()
   async getFields(
     @Query('q') searchTerm: any,
@@ -118,7 +113,7 @@ export class OwnerFieldsController {
   }
 
   @Put(':id')
-  async updateFieldById(@Request() req,@Param('id') id: string, @Body() fieldData: any,@Res() res) {
+  async updateFieldById(@Request() req, @Param('id') id: string, @Body() fieldData: any, @Res() res) {
     try {
       console.log('Field data: ', fieldData);
       const accessToken = req.user.accessToken;
@@ -129,7 +124,7 @@ export class OwnerFieldsController {
         fieldData,
         email,
       );
-      
+
       if (!updatedField) {
         return { message: 'Field not found' };
       }
@@ -140,13 +135,13 @@ export class OwnerFieldsController {
           message: 'You already have a field with the same name.',
           status: 'error',
         });
-      }else {
+      } else {
         res.status(500).json({
           message: 'An error occurred.',
           status: 'error',
         });
       }
-      
+
     }
   }
 

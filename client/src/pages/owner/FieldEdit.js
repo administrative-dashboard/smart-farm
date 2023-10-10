@@ -17,7 +17,6 @@ import {
   DeleteButton,
 } from "react-admin";
 import { RichTextInput } from "ra-input-rich-text";
-// import { API_URL } from "../../consts";
 import customDataProvider from "../../providers/dataProvider";
 const API_URL=process.env.REACT_APP_API_URL;
 export const FieldEdit = (props) => {

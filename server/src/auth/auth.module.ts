@@ -7,7 +7,6 @@ import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { GoogleAuthService } from './google-auth.service';
 import { GoogleService } from './google.service';
-// import { UserModule } from 'src/user/user.module';
 
 @Module({
   imports: [
@@ -16,7 +15,6 @@ import { GoogleService } from './google.service';
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '7d' },
     }),
-    // UserModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, GoogleStrategy, JwtStrategy, GoogleAuthService, GoogleService],

@@ -10,11 +10,8 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
-
-
 import villager from "../../assets/static/villager.jpg";
 import { Button } from "react-admin";
-// import { drawer_new_data } from "../../assets/static/mockData/new_data";
 
 export const ChooseCommunity = () => {
   const isLgScreen = useMediaQuery((theme) => theme.breakpoints.down("lg"));

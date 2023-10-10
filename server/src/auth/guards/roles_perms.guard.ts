@@ -21,7 +21,7 @@ export class RolesPermsGuard implements CanActivate {
       context.getHandler()
     );
     if (!requiredRolesPerms) {
-      return true; // No roles or permissions are required, so allow access.
+      return true;
     }
 
     const request = context.switchToHttp().getRequest();
@@ -40,13 +40,10 @@ export class RolesPermsGuard implements CanActivate {
       return false;
     }
 
-    // Check if the user has at least one of the required roles.
     const hasRequiredRole = requiredRolesPerms.some(role => userRoles.includes(role));
 
-    // Check if the user has at least one of the required permissions.
     const hasRequiredPermission = requiredRolesPerms.some(perm => userPermissions.includes(perm));
 
-    // Allow access if either required role or required permission is satisfied.
     return hasRequiredRole || hasRequiredPermission;
   }
 

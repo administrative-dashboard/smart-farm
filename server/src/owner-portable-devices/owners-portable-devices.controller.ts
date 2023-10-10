@@ -13,24 +13,20 @@ import {
   Query,
   UseGuards,
   NotFoundException,
-} from '@nestjs/common'; // Import Logger
-import { Response, query, response } from 'express';
+} from '@nestjs/common';
 import { OwnersPortableDevicesService } from './owners-portable-devices.service';
-import { HttpCode } from '@nestjs/common';
-import { Headers } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
-import { NotFoundError } from 'rxjs';
 import { GoogleService } from 'src/auth/google.service';
 import { RolesPermsGuard } from 'src/auth/guards/roles_perms.guard';
 import { RolesPerms } from 'src/auth/guards/roles_perms.decorator';
 @Controller('portable_devices')
 @UseGuards(JwtAuthGuard, RolesPermsGuard)
-@RolesPerms('OWNER','EDIT_PORTABLE_DEVICE' )
+@RolesPerms('OWNER', 'EDIT_PORTABLE_DEVICE')
 export class PortableDevicesController {
   constructor(
     private readonly ownersPortableDevicesService: OwnersPortableDevicesService,
     private readonly googleService: GoogleService,
-  ) {}
+  ) { }
 
   @Get()
   async getPortableDevices(
@@ -40,18 +36,18 @@ export class PortableDevicesController {
     @Query('quantity') quantity: any,
     @Query('shared_quantity') sharedQuantity: any,
     @Query('created_at') date: any,
-    @Query('page') page:any,
-    @Query('perPage') perPage:any,
-    @Query('field') field:any,
-    @Query('order') order:any,
+    @Query('page') page: any,
+    @Query('perPage') perPage: any,
+    @Query('field') field: any,
+    @Query('order') order: any,
     @Request() req
   ) {
     try {
-      console.log(typeof(page));
-      page=parseInt(page);
-      perPage=parseInt(perPage);
-      console.log('page::::===',page);
-      console.log('perPage::::===',perPage);
+      console.log(typeof (page));
+      page = parseInt(page);
+      perPage = parseInt(perPage);
+      console.log('page::::===', page);
+      console.log('perPage::::===', perPage);
       console.log('ЗАПРОС ПОЛУЧЕН!!!!!!!!!');
       console.log('searchTerm==', searchTerm);
       console.log('device_name==', deviceName);
@@ -62,7 +58,7 @@ export class PortableDevicesController {
       const accessToken = req.user.accessToken;
       const email = await this.googleService.getUserInfo(accessToken);
       console.log(email);
-       if (searchTerm || deviceName || deviceType || quantity || sharedQuantity || date) {
+      if (searchTerm || deviceName || deviceType || quantity || sharedQuantity || date) {
         const filteredDevices =
           await this.ownersPortableDevicesService.searchDevices(
             email,
@@ -79,11 +75,11 @@ export class PortableDevicesController {
           );
         console.log(filteredDevices);
         return filteredDevices;
-      } else if(page && perPage){
-        const {data,total} =
-        await this.ownersPortableDevicesService.getDevicesByEmail(email,page,perPage,field,order,);
-        return {data,total};
-      } 
+      } else if (page && perPage) {
+        const { data, total } =
+          await this.ownersPortableDevicesService.getDevicesByEmail(email, page, perPage, field, order,);
+        return { data, total };
+      }
     } catch (error) {
       throw new NotFoundException(
         'Portable devices not found',
@@ -91,7 +87,7 @@ export class PortableDevicesController {
       );
     }
   }
-  
+
 
   @Get(':id')
   async getPortableDeviceById(@Param('id') id: string) {
@@ -118,7 +114,7 @@ export class PortableDevicesController {
     @Res() res,
   ) {
     try {
-      console.log('Device Data: ',deviceData)
+      console.log('Device Data: ', deviceData)
       const accessToken = req.user.accessToken;
       const email = await this.googleService.getUserInfo(accessToken);
       const updatedPortableDevice =
@@ -139,7 +135,7 @@ export class PortableDevicesController {
           message: 'You already have a portable device with the same name and type.',
           status: 'error',
         });
-      }else {
+      } else {
         res.status(500).json({
           message: 'An error occurred.',
           status: 'error',
@@ -150,32 +146,32 @@ export class PortableDevicesController {
 
   @Post('create')
   async createPortableDevice(@Body() deviceData: any, @Request() req, @Res() res) {
-  try {
-    console.log(deviceData);
-    const accessToken = req.user.accessToken;
-    const email = await this.googleService.getUserInfo(accessToken);
-    
-    const result = await this.ownersPortableDevicesService.createDevice(
-      email,
-      deviceData
-    );
+    try {
+      console.log(deviceData);
+      const accessToken = req.user.accessToken;
+      const email = await this.googleService.getUserInfo(accessToken);
 
-    res.status(200).json(result);
-  } catch (error) {
-    if (error.message === 'USER IS ASSOCIATED WITH THE DEVICE') {
-      res.status(400).json({
-        message: 'You already have a device with the same name and type.',
-        status: 'error',
-      });
-    } else {
-      res.status(500).json({
-        message: 'An error occurred.',
-        status: 'error',
-      });
-      console.log(error);
+      const result = await this.ownersPortableDevicesService.createDevice(
+        email,
+        deviceData
+      );
+
+      res.status(200).json(result);
+    } catch (error) {
+      if (error.message === 'USER IS ASSOCIATED WITH THE DEVICE') {
+        res.status(400).json({
+          message: 'You already have a device with the same name and type.',
+          status: 'error',
+        });
+      } else {
+        res.status(500).json({
+          message: 'An error occurred.',
+          status: 'error',
+        });
+        console.log(error);
+      }
     }
   }
-}
 
 
   @Delete(':id')

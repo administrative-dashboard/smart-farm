@@ -9,7 +9,6 @@ import {
   RichTextField,
   DateField,
 } from "react-admin";
-// import { useMediaQuery } from "@mui/material";
 import customDataProvider from "../../providers/dataProvider";
 import { TopToolbar, ExportButton, CreateButton } from "react-admin";
 import { Box } from "@mui/material";
@@ -17,7 +16,6 @@ import { PostFilterButton } from "../../components/PostFilterButton";
 import { PostFilterForm } from "../../components/PostFilterForm";
 
 export const FieldList = (props) => {
-  // const isLgScreen = useMediaQuery((theme) => theme.breakpoints.down("lg"));
   const dataProvider = customDataProvider;
   const [data, setData] = useState([]);
   const customFilters = [
@@ -63,7 +61,6 @@ export const FieldList = (props) => {
 
   return (
     <>
-      {/* {isLgScreen && ( */}
       <List
         {...props}
         data={data}
@@ -81,7 +78,6 @@ export const FieldList = (props) => {
           <DeleteButton />
         </Datagrid>
       </List>
-      {/* )} */}
     </>
   );
 };

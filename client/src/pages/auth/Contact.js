@@ -13,7 +13,6 @@ import { theme } from "../../themes/theme";
 import signBack from "../../assets/static/signBack.png";
 import axios from "axios";
 import { getJwtTokenFromCookies } from "../../providers/authUtils";
-// import { API_URL } from "../../consts";
 import { Button, Form, useNotify, useRedirect } from "react-admin";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
@@ -129,13 +128,12 @@ export const Contact = () => {
                 width: "100%",
                 mb: 3,
                 "& .MuiFilledInput-input": {
-                  color: "green", // Set the text color to white
+                  color: "green",
                 },
                 "& .MuiInputLabel-root": {
-                  // color: "green", // Set the label color to white
                 },
                 "& .MuiFilledInput-root": {
-                  backgroundColor: "white", // Set the background color to white
+                  backgroundColor: "white",
                 },
               }}
               value={selectedCommunity}
@@ -147,15 +145,6 @@ export const Contact = () => {
                 </MenuItem>
               ))}
             </TextField>
-            {/* <TextInput
-              label="Phone number"
-              variant="filled"
-              color="primary"
-              placeholder="+374 XXXXXXXX"
-              sx={{ width: "100%", mb: 3 }}
-              source="phone_number"
-              onChange={(e) => setPhoneNumber(e.target.value)}
-            /> */}
             <PhoneInput
               defaultCountry="am"
               value={phone_number}

@@ -16,7 +16,6 @@ import {
 } from "react-admin";
 import { RichTextInput } from 'ra-input-rich-text';
 import customDataProvider from "../../providers/dataProvider";
-// import { API_URL } from "../../consts";
 
 const API_URL=process.env.REACT_APP_API_URL;
 export const FieldCreate = (props) => {

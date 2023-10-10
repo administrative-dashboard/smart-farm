@@ -1,5 +1,5 @@
 // permissions.model.ts
-import { Column, Model, Table, BelongsToMany, HasMany } from 'sequelize-typescript';
+import { Column, Model, Table, HasMany } from 'sequelize-typescript';
 import { RolePermission } from './roles_perms.model';
 import { Role } from './roles.model';
 import { UserPermission } from './users_permissions.model';
@@ -17,7 +17,4 @@ export class Permission extends Model<Permission> {
 
   @HasMany(() => UserPermission)
   users_permissions: UserPermission[];
-
-  // @HasMany(() => RolePermission)
-  // rols_perms: RolePermission[];
 }

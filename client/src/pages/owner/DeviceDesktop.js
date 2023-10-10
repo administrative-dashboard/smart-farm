@@ -15,7 +15,7 @@ export const DeviceDesktop = () => {
         height: "90vh",
       }}
     >
-      
+
       <Container sx={{ m: "auto" }}>
         <Typography
           variant="h3"
@@ -30,7 +30,7 @@ export const DeviceDesktop = () => {
         </Typography>
         <CustomImageList data={deviceItemData} />
       </Container>
-      
+
     </Box>
   );
 };

@@ -1,7 +1,6 @@
 /* global BigInt */
 import React, { useEffect, useState } from "react";
 import { Box, Container, Grid, Select, MenuItem } from "@mui/material";
-// import { API_URL } from "../../consts";
 import { getJwtTokenFromCookies } from "../../providers/authUtils";
 import axios from "axios";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -9,7 +8,6 @@ import dayjs from "dayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-// import { GRAFANA_URL } from "../../consts";
 
 const API_URL = process.env.REACT_APP_API_URL;
 const GRAFANA_URL = process.env.REACT_APP_GRAFANA_URL;

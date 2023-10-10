@@ -1,5 +1,4 @@
 // DeviceInfo.js
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import React from "react";
@@ -9,11 +8,9 @@ import {
   Typography,
   Button,
 } from "@mui/material";
-
-
 import MultiCardList from "../../components/MultiCardList";
 import { deviceItemData } from "../../assets/static/mockData/device.mockData";
-// import { drawer_new_data } from "../../assets/static/mockData/new_data";
+
 export const ChooseDevice = () => {
 
   const [selectedCard, setSelectedCard] = useState(null);
@@ -30,7 +27,6 @@ export const ChooseDevice = () => {
   // ստուգում ենք card-ը selected է թե ոչ
   const nextButtonEnabled = selectedCard !== null;
 
-  // Access selectedCard properties using optional chaining
   const selectedDeviceType = selectedCard ? selectedCard.link : "";
   console.log(selectedCard);
   console.log(selectedDeviceType);

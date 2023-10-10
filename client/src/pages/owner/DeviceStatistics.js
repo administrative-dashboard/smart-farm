@@ -9,7 +9,7 @@ export const DeviceStatisticPage = () => {
     <Box
       style={{
         display: "flex",
-        backgroundImage: `url(${villager})`, // Replace with the actual path to your image
+        backgroundImage: `url(${villager})`,
         backgroundSize: "cover",
         backgroundPosition: "right",
         minHeight: "95.1vh",

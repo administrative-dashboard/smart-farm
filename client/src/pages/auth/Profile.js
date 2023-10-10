@@ -11,7 +11,6 @@ import {
 import { useTheme } from "@mui/material/styles";
 import { getJwtTokenFromCookies } from "../../providers/authUtils";
 import axios from "axios";
-// import { API_URL } from "../../consts";
 import {
   Form,
   ImageField,

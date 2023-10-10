@@ -7,7 +7,7 @@ import field from "../../assets/static/plantation.png";
 import product from "../../assets/static/healthy-food.png";
 import device from "../../assets/static/hammer.png";
 import Statistics from "../../assets/static/analytics.png";
-//import { drawer_new_data } from "../../assets/static/mockData/new_data";
+
 const imageCardData = [
   {
     img: users,

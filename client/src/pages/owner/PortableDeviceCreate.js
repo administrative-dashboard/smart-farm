@@ -18,7 +18,6 @@ export const PortableDeviceCreate = (props) => {
   const currentDate = new Date();
   const notify = useNotify();
   const redirect = useRedirect();
-  // const [quantity, setQuantity] = useState("");
   const validatePositiveNumber = (value) => {
     if (isNaN(value) || value <= 0) {
       return "Value must be a positive number";
@@ -48,7 +47,6 @@ export const PortableDeviceCreate = (props) => {
         created_at: values.created_at.toISOString(),
       };
 
-      // Make a POST request to create the device
       const response = await customDataProvider.create(
         "portable_devices/create",
         {
@@ -96,7 +94,6 @@ export const PortableDeviceCreate = (props) => {
           <NumberInput
             source="shared_quantity"
             validate={validateSharedQuantity}
-            //minValue={quantity}
           />
           <DateInput source="created_at" defaultValue={currentDate} disabled />
         </SimpleForm>

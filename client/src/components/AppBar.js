@@ -9,10 +9,8 @@ import { SigninButton } from "./SigninButton";
 import { LogoutButton } from "./LogoutButton";
 import { ProfileButton } from "./ProfileButton";
 import axios from "axios";
-// import { API_URL } from "../consts";
 import {
   getJwtTokenFromCookies,
-  // getUserInfoFromCookies
 } from "../providers/authUtils";
 import { authProvider } from "../providers/authPovider";
 

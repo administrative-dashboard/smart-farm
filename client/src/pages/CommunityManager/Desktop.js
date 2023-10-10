@@ -1,8 +1,6 @@
 import React from "react";
 import { Container, Grid, Typography } from "@mui/material";
 import ImageCardList from "../../components/ImageCardList";
-// import schedule from "../../assets/static/sticky-note.png";
-//import { drawer_data } from "../../assets/static/mockData/community_owner";
 import { communityManagerData } from "../../assets/static/mockData/community_manager.mockData";
 
 export const CommunityManager = () => {

@@ -1,13 +1,9 @@
 // user-permissions.service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { UserRole } from 'src/database/models/users_roles';
-import { Role } from 'src/database/models/roles.model';
 import { User } from 'src/database/models/users.model';
-import { Sequelize } from 'sequelize';
 import { UserPermission } from 'src/database/models/users_permissions.model';
 import { Permission } from 'src/database/models/permissions.model';
-
 
 @Injectable()
 export class UserPermissionsService {
@@ -39,9 +35,8 @@ export class UserPermissionsService {
     return null;
   }
 
-
   async getAllPerms() {
     return await this.permsModel.findAll();
   }
-} 
+}
 

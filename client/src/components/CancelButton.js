@@ -1,4 +1,4 @@
-import { Button, Toolbar, useRedirect } from "react-admin";
+import { Button, useRedirect } from "react-admin";
 
 export const CustomCancelButton = () => {
   const redirect = useRedirect();

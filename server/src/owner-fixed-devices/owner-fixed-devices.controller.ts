@@ -8,18 +8,13 @@ import {
   Res,
   Post,
   Body,
-  Logger,
   Param,
   Query,
   UseGuards,
   NotFoundException,
-} from '@nestjs/common'; // Import Logger
-import { Response, query, response } from 'express';
+} from '@nestjs/common';
 import { OwnersFixedDevicesService } from './owner-fixed-devices.service';
-import { HttpCode } from '@nestjs/common';
-import { Headers } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
-import { NotFoundError } from 'rxjs';
 import { GoogleService } from 'src/auth/google.service';
 import { RolesPermsGuard } from 'src/auth/guards/roles_perms.guard';
 import { RolesPerms } from 'src/auth/guards/roles_perms.decorator';
@@ -30,7 +25,7 @@ export class FixedDevicesController {
   constructor(
     private readonly ownersFixedDevicesService: OwnersFixedDevicesService,
     private readonly googleService: GoogleService
-  ) {}
+  ) { }
 
   @Get()
   async getFixedDevices(
@@ -39,15 +34,15 @@ export class FixedDevicesController {
     @Query('device_type') deviceType: any,
     @Query('quantity') quantity: any,
     @Query('created_at') date: any,
-    @Query('page') page:any,
-    @Query('perPage') perPage:any,
-    @Query('field') field:any,
-    @Query('order') order:any,
+    @Query('page') page: any,
+    @Query('perPage') perPage: any,
+    @Query('field') field: any,
+    @Query('order') order: any,
     @Request() req
   ) {
     try {
-      page=parseInt(page);
-      perPage=parseInt(perPage);
+      page = parseInt(page);
+      perPage = parseInt(perPage);
       console.log('ЗАПРОС ПОЛУЧЕН!!!!!!!!!');
       console.log('searchTerm==', searchTerm);
       console.log('device_name==', deviceName);
@@ -75,9 +70,9 @@ export class FixedDevicesController {
         return filteredDevices;
       } else {
         console.log('else');
-        const {data,total} = await this.ownersFixedDevicesService.getDevicesByEmail(email,page,perPage,field,order,);
-        return {data,total};
-      } 
+        const { data, total } = await this.ownersFixedDevicesService.getDevicesByEmail(email, page, perPage, field, order,);
+        return { data, total };
+      }
 
       // console.log('Filtered Devices:', FixedDevices);
       // return FixedDevices;
@@ -114,7 +109,7 @@ export class FixedDevicesController {
     @Res() res,
   ) {
     try {
-      console.log('Device Data: ',deviceData)
+      console.log('Device Data: ', deviceData)
       const accessToken = req.user.accessToken;
       const email = await this.googleService.getUserInfo(accessToken);
       const updatedFixedDevice =
@@ -135,7 +130,7 @@ export class FixedDevicesController {
           message: 'You already have a fixed device with the same name and type.',
           status: 'error',
         });
-      }else {
+      } else {
         res.status(500).json({
           message: 'An error occurred.',
           status: 'error',
@@ -159,7 +154,6 @@ export class FixedDevicesController {
       res.status(200).json(result);
     } catch (error) {
       if (error.message === 'USER IS ASSOCIATED WITH THE DEVICE') {
-        // Return a specific response when the error message matches
         res.status(400).json({
           message: 'You already have a device with the same name and type.',
           status: 'error',
