@@ -376,7 +376,7 @@ const App = () => {
       return answer.length > 0 ? answer : <div>...loading</div>;
     };
     return (
-      <BrowserRouter>
+      <>
         {isLoading ? (
           <div className="loading-indicator" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <img src={loadGif} alt="Loading" />
@@ -391,7 +391,7 @@ const App = () => {
             {getprm()}
           </Admin>
         )}
-      </BrowserRouter>
+      </>
     );
   };
 }
