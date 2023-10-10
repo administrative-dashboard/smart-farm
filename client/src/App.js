@@ -12,11 +12,16 @@ import englishMessages from "ra-language-english";
 import armenianMessages from "ra-language-armenian";
 import { BrowserRouter, Route } from "react-router-dom";
 import { MainDashboard } from "./pages/MainDashboard";
+import { ImageField } from 'react-admin';
 import { Signin } from "./pages/auth/Signin";
 import { Signup } from "./pages/auth/Signup";
 import { Profile } from "./pages/auth/Profile";
+import { AdminDesktop } from "./pages/admin/Desktop";
 import { ChooseDevice } from "./pages/admin/ChooseDevice";
+import { ChooseCommunity } from "./pages/admin/ChooseCommunity";
 import { FixedDeviceShow } from "./pages/admin/FixedDeviceShow";
+import { UserShowAdm } from "./pages/admin/UserShow";
+import { UserListAdm } from "./pages/admin/UserList";
 import { FixedDeviceListAdm } from "./pages/admin/FixedDeviceListAdm";
 import { PortableDeviceListAdm } from "./pages/admin/PortableDeviceListAdm";
 import { PortableDeviceShow } from "./pages/admin/PortableDeviceShow";
@@ -33,6 +38,7 @@ import { GreenhouseCreate } from "./pages/owner/GreenhouseCreate";
 import { GreenhouseEdit } from "./pages/owner/GreenhouseEdit";
 import { FieldCreate } from "./pages/owner/FieldCreate";
 import { FieldList } from "./pages/owner/FieldList";
+import loadGif from "./assets/static/load.gif";
 import { FieldEdit } from "./pages/owner/FieldEdit";
 import { GreenhouseShow } from "./pages/admin/GreenhouseShow";
 import { GreenhouseListAdm } from "./pages/admin/GreenhouseList";
@@ -45,6 +51,7 @@ import axios from "axios";
 import { getJwtTokenFromCookies } from "./providers/authUtils";
 import customDataProvider from "./providers/dataProvider";
 import { authProvider } from "./providers/authPovider";
+import { API_URL } from "./consts";
 import myTheme from "./themes/general_theme";
 import { UserEdit } from "./pages/CommunityManager/UserEdit";
 import { PortableDeviceStatisticsPage } from "./pages/CommunityManager/PortableDeviceStatistics"
@@ -52,7 +59,6 @@ import { FixedDeviceStatisticsPage } from "./pages/CommunityManager/FixedDeviceS
 import { GreenhouseStatisticsPage } from "./pages/CommunityManager/GreenhouseStatistics"
 import { FieldStatisticsPage } from "./pages/CommunityManager/FieldStatistics"
 
-const API_URL = process.env.REACT_APP_API_URL
 const i18nProvider = polyglotI18nProvider(
   (locale) => (locale === "am" ? armenianMessages : englishMessages),
   "en"
@@ -114,14 +120,8 @@ const App = () => {
     }
   }, []);
 
-  const LoadingIndicator = () => (
-    <div className="loading-indicator">
-      <p>Loading...</p>
-    </div>
-  );
-
   const role = roles;
-  console.log(role)
+
 
   const commonResources = [
     <Resource
@@ -294,7 +294,6 @@ const App = () => {
     />,
 
     <Resource name="Product" list={ProductListAdm} show={ProductShow} />,
-
   ];
 
   const getdrw = () => {
@@ -347,12 +346,12 @@ const App = () => {
         edit={PortableDeviceEdit}
       />,
       <Resource
-                  name="community/users"
-                  list={UserList}
-                  edit={UserEdit}
-                  icon={ArticleIcon}
-                  options={{ label: "Users" }}
-                />,
+        name="community/users"
+        list={UserList}
+        edit={UserEdit}
+        icon={ArticleIcon}
+        options={{ label: "Users" }}
+      />,
       <Resource name="Product" list={ProductListAdm} show={ProductShow} />,
     ];
 
@@ -369,13 +368,31 @@ const App = () => {
     for (let index = 0; index < perms.length; index++) {
       for (let j = 0; j < all_permissions.length; j++) {
         if (perms[index] == (all_permissions[j])) {
-            answer[b] = permissions[j];
-            b++;
+          answer[b] = permissions[j];
+          b++;
         }
       }
-    }
 
-    return answer.length > 0 ? answer : <div>...loading</div>;
+      return answer.length > 0 ? answer : <div>...loading</div>;
+    };
+    return (
+      <>
+        {isLoading ? (
+          <div className="loading-indicator" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+            <img src={loadGif} alt="Loading" />
+          </div>) : (
+          <Admin
+            theme={myTheme}
+            layout={MyLayout}
+            dataProvider={customDataProvider}
+            i18nProvider={i18nProvider}
+          >
+            {getdrw()}
+            {getprm()}
+          </Admin>
+        )}
+      </>
+    );
   };
   return (
     <>
