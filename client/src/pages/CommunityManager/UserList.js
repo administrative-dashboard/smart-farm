@@ -247,11 +247,15 @@ import {
   TextInput,
   Filter,
 } from "react-admin";
+
 import customDataProvider from "../../providers/dataProvider";
 import axios from "axios";
 import { API_URL } from "../../consts";
 import { getJwtTokenFromCookies } from "../../providers/authUtils";
 import { UserEdit } from "./UserEdit";
+import { Box } from "@mui/material";
+import Typography from "@mui/material/Typography"; // Import Typography from Material-UI
+
 
 const UserFilter = (props) => (
   <Filter {...props}>
@@ -325,6 +329,9 @@ export const UserList = (props) => {
         <Loading />
       ) : (
         <>
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+        <Typography sx={{ m: "auto", fontWeight: "bold" }} variant="h5" id="react-admin-title">{communityName}</Typography>
+        </Box>
           <List {...props} data={data} title={communityName} filters={<UserFilter />}>
             <Datagrid>
               <TextField source="name" />
