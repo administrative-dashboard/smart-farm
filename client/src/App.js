@@ -62,6 +62,10 @@ import { authProvider } from "./providers/authPovider";
 import { API_URL } from "./consts";
 import myTheme from "./themes/general_theme";
 import { UserEdit } from "./pages/CommunityManager/UserEdit";
+import {PortableDeviceStatisticsPage} from "./pages/CommunityManager/PortableDeviceStatistics"
+import {FixedDeviceStatisticsPage} from "./pages/CommunityManager/FixedDeviceStatistics"
+import {GreenhouseStatisticsPage} from "./pages/CommunityManager/GreenhouseStatistics"
+import {FieldStatisticsPage} from "./pages/CommunityManager/FieldStatistics"
 const i18nProvider = polyglotI18nProvider(
   (locale) => (locale === "am" ? armenianMessages : englishMessages),
   "en" // Default locale
@@ -257,6 +261,26 @@ const App = () => {
       icon={ArticleIcon}
       options={{ label: "Users" }}
     />,
+    <Resource
+    name="portable_device_statistics"
+    list={PortableDeviceStatisticsPage}
+    options={{label: "Portable Device Statistics"}}
+    />,
+    <Resource
+    name="fixed_device_statistics"
+    list={FixedDeviceStatisticsPage}
+    options={{label: "Fixed Device Statistics"}}
+    />,
+    <Resource
+    name="field_statistics"
+    list={FieldStatisticsPage}
+    options={{label: "Field Statistics"}}
+    />,
+    <Resource
+    name="greenhouse_statistics"
+    list={GreenhouseStatisticsPage}
+    options={{label: "Greenhouse Statistics"}}
+    />
   ];
   const AdminResources = [
     ...CMResources,
