@@ -154,8 +154,15 @@ const App = () => {
       icon={VpnKeyIcon}
       options={{ label: "Sign In" }}
     />,
-    <Route exact path="/signup" element={Signup} />,
-    <Resource name="signup" list={Signup} options={{ label: "Sign Up" }} />,
+    <Route 
+      exact path="/signup" 
+      element={Signup} 
+    />,
+    <Resource 
+      name="signup" 
+      list={Signup} 
+      options={{ label: "Sign Up" }} 
+    />,
   ];
 
   const employeeResources = [
