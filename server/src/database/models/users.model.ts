@@ -1,14 +1,11 @@
 // users.model.ts
-import { Column, Model, Table, HasOne, BelongsToMany, HasMany, BeforeCreate } from 'sequelize-typescript';
+import { Column, Model, Table, HasOne, HasMany } from 'sequelize-typescript';
 
 import { UserCommunity } from './users_communities.model';
 import { UserRole } from './users_roles';
-import { Role } from './roles.model';
 import { OwnerField } from './owners_fields.model';
 import { OwnerGreenhouse } from './owners_greenhouses.model';
 import { DeviceRequestHistory } from './device_requests_history.model';
-import { FixedDevice } from './fixed_devices.model';
-import { PortableDevice } from './portable_devices.model ';
 import { OwnerFixedDevice } from './owners_fixed_devices.model';
 import { OwnerPortableDevice } from './owners_portable_devices.model ';
 import { UserPermission } from './users_permissions.model';
@@ -33,8 +30,6 @@ export class User extends Model<User> {
   @HasOne(() => UserCommunity)
   users_communities: UserCommunity;
 
-  // @BelongsToMany(() => Role, () => UserRole)
-  // roles: Role[];
   @HasMany(() => UserRole)
   users_roles: UserRole[];
 
@@ -47,7 +42,6 @@ export class User extends Model<User> {
   @HasMany(() => DeviceRequestHistory)
   device_requests_history: DeviceRequestHistory;
 
-
   @HasMany(() => OwnerPortableDevice)
   owners_portable_devices: OwnerPortableDevice[];
 
@@ -57,4 +51,3 @@ export class User extends Model<User> {
   @HasMany(() => UserPermission)
   users_permissions: UserPermission[];
 }
-

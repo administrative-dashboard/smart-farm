@@ -2,7 +2,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Community } from 'src/database/models/communities.model';
-import { Role } from 'src/database/models/roles.model';
+
 @Injectable()
 export class CommunitiesService {
   constructor(

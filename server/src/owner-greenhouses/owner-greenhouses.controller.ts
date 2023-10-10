@@ -3,22 +3,15 @@ import {
   Get,
   Put,
   Request,
-  Delete,
   Res,
   Post,
   Body,
-  Logger,
   Param,
   Query,
   UseGuards,
   NotFoundException,
 } from '@nestjs/common';
-import { Response, query, response } from 'express';
-import { OwnerGreenhousesModule } from './owner-greenhouses.module';
-import { HttpCode } from '@nestjs/common';
-import { Headers } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
-import { NotFoundError } from 'rxjs';
 import { GoogleService } from 'src/auth/google.service';
 import { OwnerGreenhousesService } from './owner-greenhouses.service';
 import { RolesPermsGuard } from 'src/auth/guards/roles_perms.guard';
@@ -30,7 +23,7 @@ export class OwnerGreenhousesController {
   constructor(
     private readonly ownerGreenhousesService: OwnerGreenhousesService,
     private readonly googleService: GoogleService
-  ) {}
+  ) { }
   @Get()
   async getGreenhouses(
     @Query('q') searchTerm: any,
@@ -69,7 +62,7 @@ export class OwnerGreenhousesController {
         greenhouseSize ||
         greenhouseSizeMeasurement ||
         greenhouseDescription ||
-        greenhouseLocation || 
+        greenhouseLocation ||
         date
       ) {
         const filteredGreenhouses = await this.ownerGreenhousesService.searchGreenhouses(
@@ -99,7 +92,7 @@ export class OwnerGreenhousesController {
             order
           );
         console.log('hello');
-        console.log("data",data);
+        console.log("data", data);
         return { data, total };
       }
     } catch (error) {
@@ -122,7 +115,7 @@ export class OwnerGreenhousesController {
   }
 
   @Put(':id')
-  async updateGreenhouseById(@Request() req,@Param('id') id: string, @Body() greenhouseData: any,@Res() res) {
+  async updateGreenhouseById(@Request() req, @Param('id') id: string, @Body() greenhouseData: any, @Res() res) {
     try {
       console.log('Greenhouse data: ', greenhouseData);
       const accessToken = req.user.accessToken;
@@ -133,7 +126,7 @@ export class OwnerGreenhousesController {
         greenhouseData,
         email,
       );
-      
+
       if (!updatedGreenhouse) {
         return { message: 'Field not found' };
       }
@@ -144,13 +137,13 @@ export class OwnerGreenhousesController {
           message: 'You already have a greenhouse with the same name.',
           status: 'error',
         });
-      }else {
+      } else {
         res.status(500).json({
           message: 'An error occurred.',
           status: 'error',
         });
       }
-      
+
     }
   }
 
@@ -168,7 +161,6 @@ export class OwnerGreenhousesController {
       res.status(200).json(result);
     } catch (error) {
       if (error.message === 'You already have a greenhouse with the same name.') {
-        // Если возникла ошибка с определенным сообщением, отправляем ответ с ошибкой
         res.status(400).json({
           message: 'You already have a greenhouse with the same name.',
           status: 'error',
@@ -181,9 +173,4 @@ export class OwnerGreenhousesController {
       }
     }
   }
-
-
-
-
-
 }

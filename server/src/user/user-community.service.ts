@@ -21,32 +21,19 @@ export class UserCommunityService {
     private readonly userModel: typeof User,
   ) { }
 
-  // async addUserToCommunity(
-  //   userId: number,
-  //   communityId: number
-  // ): Promise<UserCommunity> {
-  //   return await UserCommunity.create({
-  //     user_id: userId,
-  //     community_id: communityId,
-  //   });
-  // }
   async addUserToCommunity(userId: number, communityId: number): Promise<UserCommunity> {
-    // Check if communityId is a valid integer
     if (Number.isInteger(communityId) && communityId > 0) {
-      // Check if the record already exists
       const existingUserCommunity = await UserCommunity.findOne({
         where: {
           user_id: userId,
         },
       });
-  
+
       if (existingUserCommunity) {
-        // If it exists, update the community_id
         existingUserCommunity.community_id = communityId;
         await existingUserCommunity.save();
         return existingUserCommunity;
       } else {
-        // If it doesn't exist, create a new record
         const newUserCommunity = await UserCommunity.create({
           user_id: userId,
           community_id: communityId,
@@ -54,11 +41,10 @@ export class UserCommunityService {
         return newUserCommunity;
       }
     } else {
-      // Handle the case where communityId is not a valid integer
       throw new BadRequestException('Invalid community_id');
     }
   }
-  
+
   async getCommunityNameByUserId(userId: number): Promise<string | null> {
     const userCommunity = await this.userCommunityModel.findOne({
       where: { user_id: userId },
@@ -146,7 +132,7 @@ export class UserCommunityService {
 
   async searchUsersInSameCommunity(
     communityName: string,
-    query?: string, // Change the type to string for the search query
+    query?: string,
     page?: number,
     perPage?: number,
     field?: any,
@@ -167,33 +153,33 @@ export class UserCommunityService {
           },
         ],
       });
-  
+
       if (!community || !community.user_communities) {
         console.log('Community or user_communities is undefined:', community);
         return { data: [], total: 0 };
       }
-  
+
       const userIDsInCommunity = community.user_communities.map((uc) => uc.user_id);
-  
+
       if (!community || !community.user_communities || community.user_communities.length === 0) {
         console.log('Community or user_communities is undefined or empty:', community);
         return { data: [], total: 0 };
       }
-  
+
       const sort = [];
       if (field && order) {
         sort.push([field, order]);
       } else {
         sort.push(['id', 'ASC']);
       }
-  
+
       const users = await User.findAll({
         where: {
           id: userIDsInCommunity,
           [Op.or]: [
-            { name: { [Op.iLike]: `%${query}%` } }, // Case-insensitive search for name
-            { email: { [Op.iLike]: `%${query}%` } }, // Case-insensitive search for email
-            { phone_number: { [Op.iLike]: `%${query}%` } }, // Case-insensitive search for phone_number
+            { name: { [Op.iLike]: `%${query}%` } },
+            { email: { [Op.iLike]: `%${query}%` } },
+            { phone_number: { [Op.iLike]: `%${query}%` } },
           ],
         },
         include: [
@@ -217,7 +203,7 @@ export class UserCommunityService {
           },
         ],
       });
-  
+
       const data = users.map((user) => ({
         id: user.id,
         name: user.name,
@@ -226,66 +212,13 @@ export class UserCommunityService {
         roles: user.users_roles.map((userRole) => userRole.roles.value),
         permissions: user.users_permissions.map((UserPerm) => UserPerm.permissions.value),
       }));
-  
+
       const total = data.length;
       return { data, total };
     } catch (error) {
-      // Handle the error here
       console.error('Error:', error);
-      throw error; // Rethrow the error for further handling in your application
+      throw error;
     }
   }
-  
 }
 
-
-// async getUsersInSameCommunity(communityName: string): Promise<{
-//   data: any[],
-//   total: number
-// }> {
-//   const community = await Community.findOne({
-//     where: {
-//       name: communityName,
-//     },
-//     include: [
-//       {
-//         model: UserCommunity,
-//         attributes: ['user_id'],
-//       },
-//     ],
-//   });
-
-//   if (!community || !community.user_communities) {
-//     return { data: [], total: 0 };
-//   }
-//   const userIDsInCommunity = community.user_communities.map(
-//     (uc) => uc.user_id
-//   );
-//   const data = await User.findAll({
-//     where: {
-//       id: userIDsInCommunity,
-//     },
-//     attributes: [
-//       'id',
-//       'name',
-//       'email',
-//       'phone_number',
-//       [Sequelize.col('users_roles.roles.value'), 'roles'],
-//     ],
-//     include: [
-//       {
-//         model: UserRole,
-//         attributes: [],
-//         include: [
-//           {
-//             model: Role,
-//             attributes: ['value'],
-//           },
-//         ],
-//       },
-//     ],
-//   });
-
-//   const total = data.length;
-//   return { data, total };
-// }

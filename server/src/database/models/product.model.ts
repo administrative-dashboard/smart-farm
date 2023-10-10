@@ -20,8 +20,6 @@ export class Product extends Model<Product> {
 
   @Column({})
   description: string;
-  // @HasMany(() => OwnerPortableDevice)
-  // users: User[];
 
   @ForeignKey(() => ProductType)
   @Column

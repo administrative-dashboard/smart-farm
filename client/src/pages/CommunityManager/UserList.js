@@ -4,9 +4,7 @@ import {
   Datagrid,
   TextField,
   EmailField,
-  useListContext,
   Loading,
-  Button,
   EditButton,
   TextInput,
   Filter,
@@ -16,11 +14,9 @@ import customDataProvider from "../../providers/dataProvider";
 import axios from "axios";
 import { API_URL } from "../../consts";
 import { getJwtTokenFromCookies } from "../../providers/authUtils";
-import { UserEdit } from "./UserEdit";
 import { Box } from "@mui/material";
-import Typography from "@mui/material/Typography"; // Import Typography from Material-UI
+import Typography from "@mui/material/Typography";
 
-// Define a filter for the UserList
 const UserFilter = (props) => (
   <Filter {...props}>
     <TextInput label="Search" source="q" alwaysOn />
@@ -46,7 +42,6 @@ export const UserList = (props) => {
     xl: 1920,
   };
 
-  // Define CSS styles for different screen sizes
   const wrap = {
     xs: 'wrap',
     sm: 'wrap',
@@ -55,43 +50,29 @@ export const UserList = (props) => {
     xl: 'nowrap',
   };
 
-  // Declare screenWidth and setScreenWidth here
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
   const screenSize =
     screenWidth < breakpoints.sm
       ? "xs"
       : screenWidth < breakpoints.md
-      ? "sm"
-      : screenWidth < breakpoints.lg
-      ? "md"
-      : screenWidth < breakpoints.xl
-      ? "lg"
-      : "xl";
+        ? "sm"
+        : screenWidth < breakpoints.lg
+          ? "md"
+          : screenWidth < breakpoints.xl
+            ? "lg"
+            : "xl";
 
-  // Define padding based on screen size
-  const getpadding = () => {
-    if (screenWidth <= 800) {
-      return "12px";
-    } else if (screenWidth <= 1300) {
-      return "16px";
-    } else {
-      return "20px";
-    }
-  };
-
-  // Define the number of columns based on screen size
   const getColumns = () => {
     if (screenWidth <= 800) {
-      return 2; // Display 2 columns on small screens
+      return 2;
     } else if (screenWidth <= 1300) {
-      return 4; // Display 4 columns on medium screens
+      return 4;
     } else {
-      return 6; // Display 6 columns on larger screens
+      return 6;
     }
   };
 
-  // Define font sizes for different screen sizes
   const fontSizes = {
     xs: 9,
     sm: 10,
@@ -100,7 +81,7 @@ export const UserList = (props) => {
     xl: 24,
   };
 
-  // Fetch data from the data provider
+
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -123,15 +104,12 @@ export const UserList = (props) => {
     }
   };
 
-  // Handle editing roles when the "Edit" button is clicked
   const handleEditRoles = async (user) => {
     try {
       setLoading(true);
       const response = await dataProvider.getOne("community/users", {
         id: user.id,
       });
-
-      // Pass the user data to the EditRolesButton component
       setSelectedUserId(user.id);
       setLoading(false);
     } catch (error) {
@@ -140,7 +118,6 @@ export const UserList = (props) => {
     }
   };
 
-  // Fetch initial data and community name
   useEffect(() => {
     fetchData();
     axios
@@ -153,14 +130,13 @@ export const UserList = (props) => {
         setCommunityName(response.data);
       });
 
-    // Update screen width when the window is resized
+
     const handleResize = () => {
       setScreenWidth(window.innerWidth);
     };
 
     window.addEventListener("resize", handleResize);
 
-    // Clean up event listener
     return () => {
       window.removeEventListener("resize", handleResize);
     };

@@ -2,17 +2,7 @@
 import React from "react";
 import { List, Datagrid, TextField, TextInput, ShowButton } from "react-admin";
 import { ResetFilters } from "../../components/ResetFilters";
-/*const StyledItem = styled.div`
-  margin-bottom: 10px;
-  padding: 10px;
-  background-color: #f0f0f0;
-`;
 
-const StyledLabel = styled.span`
-  font-size: ${(props) => (props.isName ? '19px' : '14px')};
-  font-weight: ${(props) => (props.isName ? 'bold' : 'normal')};
-`;
-*/
 export const ProductListAdm = (props) => {
   return (
     <>

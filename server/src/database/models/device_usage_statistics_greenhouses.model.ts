@@ -1,5 +1,5 @@
 //roles.model.ts
-import { Column, Model, Table, DataType, ForeignKey, HasOne } from 'sequelize-typescript';
+import { Column, Model, Table, ForeignKey } from 'sequelize-typescript';
 import { Greenhouse } from './greenhouses.model'
 import { PortableDevice } from './portable_devices.model ';
 
@@ -25,6 +25,4 @@ export class DeviceUsageStatisticsGreenhouses extends Model<DeviceUsageStatistic
   @Column
   device_id: number;
 
-  // @HasOne(() => ScheduleDevice)
-  // schedules_devices: ScheduleDevice;
 }

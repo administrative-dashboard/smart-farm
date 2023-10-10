@@ -1,8 +1,7 @@
 //owners-fixed-devices.service.ts
-import { Injectable, Query } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { OwnerFixedDevice } from 'src/database/models/owners_fixed_devices.model';
-import { Model } from 'sequelize-typescript';
 import { FixedDevice } from 'src/database/models/fixed_devices.model';
 import { Sequelize, Op } from 'sequelize';
 import { User } from 'src/database/models/users.model';
@@ -273,7 +272,7 @@ export class OwnersFixedDevicesService {
         where: {
           user_id : userId,
           id: {
-            [Op.not]: ParsedId, // Используйте Op.not для исключения записи с определенным id
+            [Op.not]: ParsedId,
           },
 
         },
@@ -290,10 +289,7 @@ export class OwnersFixedDevicesService {
       if (repeatingDevice) {
         throw new Error('You already have a fixed device with the same name and type.');
       }
-    
-    
-    
-      // First, check if the fixed device with the given ID exists
+
       const existingFixedDevice = await this.OwnerFixedDeviceModel.findOne({
         where: {
           id: ParsedId,
@@ -301,7 +297,7 @@ export class OwnersFixedDevicesService {
       });
 
       if (!existingFixedDevice) {
-        return null; // Fixed device not found
+        return null;
       }
 
       await existingFixedDevice.update({
@@ -309,20 +305,17 @@ export class OwnersFixedDevicesService {
         updated_at: new Date(),
       });
 
-      // Find the associated FixedDevice record
       const associatedFixedDevice = await FixedDevice.findByPk(
         existingFixedDevice.fixed_device_id
       );
 
       if (associatedFixedDevice) {
-        // Update the FixedDevice record
         await associatedFixedDevice.update({
           type: deviceData.device_type,
           name: deviceData.device_name,
         });
       }
 
-      // Return the updated OwnerFixedDevice
       return existingFixedDevice;
     } catch (error) {
       throw error;
@@ -332,7 +325,6 @@ export class OwnersFixedDevicesService {
     try {
       const ParsedId = parseInt(id, 10);
 
-      // Find the OwnerFixedDevice record with the given ID
       const existingFixedDevice = await this.OwnerFixedDeviceModel.findOne({
         where: {
           id: ParsedId,
@@ -340,23 +332,20 @@ export class OwnersFixedDevicesService {
       });
 
       if (!existingFixedDevice) {
-        return false; // Fixed device not found
+        return false;
       }
 
-      // Find the associated FixedDevice record
       const associatedFixedDevice = await FixedDevice.findByPk(
         existingFixedDevice.fixed_device_id
       );
 
       if (associatedFixedDevice) {
-        // Delete the associated FixedDevice record
         await associatedFixedDevice.destroy();
       }
 
-      // Delete the OwnerFixedDevice record
       await existingFixedDevice.destroy();
 
-      return true; // Deletion successful
+      return true;
     } catch (error) {
       throw error;
     }

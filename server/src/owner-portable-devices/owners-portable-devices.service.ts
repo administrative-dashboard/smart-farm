@@ -1,18 +1,16 @@
 //owners-portable-devices.service.ts
-import { Injectable, Query } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { OwnerPortableDevice } from '../database/models/owners_portable_devices.model '; // Подставьте путь к модели вашего портативного устройства
-import { Model } from 'sequelize-typescript';
-import { PortableDevice } from '../database/models/portable_devices.model '; // Подставьте путь к модели ваших портативных устройств
+import { OwnerPortableDevice } from '../database/models/owners_portable_devices.model ';
+import { PortableDevice } from '../database/models/portable_devices.model ';
 import { Sequelize, Op } from 'sequelize';
-import { now } from 'sequelize/types/utils';
 import { User } from 'src/database/models/users.model';
 @Injectable()
 export class OwnersPortableDevicesService {
   constructor(
     @InjectModel(OwnerPortableDevice)
     private readonly OwnerPortableDeviceModel: typeof OwnerPortableDevice
-  ) {}
+  ) { }
 
   async getUserIdByEmail(email: string): Promise<number | null> {
     try {
@@ -26,7 +24,7 @@ export class OwnersPortableDevicesService {
       if (user) {
         return user.id;
       } else {
-        return null; // Return null if the user with the specified email does not exist
+        return null;
       }
     } catch (error) {
       console.error('Error retrieving user ID by email:', error);
@@ -45,10 +43,10 @@ export class OwnersPortableDevicesService {
       const userId = await this.getUserIdByEmail(email);
       const sort = [];
       if (field && order) {
-        sort.push([field, order]); 
+        sort.push([field, order]);
       } else {
         sort.push(['id', 'ASC']);
-      }  
+      }
       const total = await this.OwnerPortableDeviceModel.count({
         where: {
           user_id: userId,
@@ -73,7 +71,7 @@ export class OwnersPortableDevicesService {
             attributes: [],
           },
         ],
-        order: sort, 
+        order: sort,
         offset: ((page - 1) * perPage),
         limit: perPage,
         subQuery: false,
@@ -84,8 +82,8 @@ export class OwnersPortableDevicesService {
       throw error;
     }
   }
-  
-  
+
+
   async searchDevices(
     email: string,
     query?: any,
@@ -94,22 +92,22 @@ export class OwnersPortableDevicesService {
     quantity?: any,
     sharedQuantity?: any,
     created_at?: any,
-    page?:number,
-    perPage?:number,
-    field?:any,
-    order?:any,
-  ): Promise<{ data: any[], total: number }>{
+    page?: number,
+    perPage?: number,
+    field?: any,
+    order?: any,
+  ): Promise<{ data: any[], total: number }> {
 
     console.log(created_at);
     try {
-      
+
       const userId = await this.getUserIdByEmail(email);
       const sort = [];
       if (field && order) {
-        sort.push([field, order]); 
+        sort.push([field, order]);
       } else {
         sort.push(['id', 'ASC']);
-      } 
+      }
       const total = await this.OwnerPortableDeviceModel.count({
         where: {
           user_id: userId,
@@ -199,12 +197,12 @@ export class OwnersPortableDevicesService {
           numSharedQuantity: sharedQuantity,
           numQuery: query,
         },
-        order:sort,
-        offset:((page-1)*perPage), 
-        limit : perPage,
-        subQuery:false, 
+        order: sort,
+        offset: ((page - 1) * perPage),
+        limit: perPage,
+        subQuery: false,
       });
-      return  {data, total};
+      return { data, total };
     } catch (error) {
       throw error;
     }
@@ -248,17 +246,16 @@ export class OwnersPortableDevicesService {
         return ownerPortableDevice;
       }
     } catch (error) {
-      if(error.message='USER IS ASSOCIATED WITH THE DEVICE') {
+      if (error.message = 'USER IS ASSOCIATED WITH THE DEVICE') {
         throw error;
       }
-      console.error(error); 
+      console.error(error);
     }
   }
 
   async getPortableDeviceById(id: string): Promise<any | null> {
     try {
       const ParsedId = parseInt(id, 10);
-      /* const portableDevices = await this.getDevicesByUserId(userId); */
       const portableDevice = await this.OwnerPortableDeviceModel.findOne({
         where: {
           id: ParsedId,
@@ -286,17 +283,17 @@ export class OwnersPortableDevicesService {
     }
   }
 
-  async updatePortableDeviceById(id: string, deviceData: any,email:string): Promise<any> {
+  async updatePortableDeviceById(id: string, deviceData: any, email: string): Promise<any> {
     try {
       const ParsedId = parseInt(id, 10);
       const userId = await this.getUserIdByEmail(email);
-      
+
       const repeatingDevice =
         await this.OwnerPortableDeviceModel.findOne({
           where: {
-            user_id : userId,
+            user_id: userId,
             id: {
-              [Op.not]: ParsedId, // Используйте Op.not для исключения записи с определенным id
+              [Op.not]: ParsedId,
             },
 
           },
@@ -313,8 +310,6 @@ export class OwnersPortableDevicesService {
       if (repeatingDevice) {
         throw new Error('You already have a portable device with the same name and type.');
       }
-      
-      // First, check if the portable device with the given ID exists
       const existingPortableDevice =
         await this.OwnerPortableDeviceModel.findOne({
           where: {
@@ -323,34 +318,28 @@ export class OwnersPortableDevicesService {
         });
 
       if (!existingPortableDevice) {
-        return null; // Portable device not found
+        return null;
       }
-
-      // Determine the value of is_shared based on shared_quantity
       const isShared = deviceData.shared_quantity > 0;
 
-      // Update the portable device record with the specified data
       await existingPortableDevice.update({
         quantity: deviceData.quantity,
         is_shared: isShared,
         shared_quantity: deviceData.shared_quantity,
-        updated_at: new Date(), // Update the updated_at timestamp
+        updated_at: new Date(),
       });
 
-      // Find the associated PortableDevice record
       const associatedPortableDevice = await PortableDevice.findByPk(
         existingPortableDevice.portable_device_id
       );
 
       if (associatedPortableDevice) {
-        // Update the PortableDevice record
         await associatedPortableDevice.update({
           type: deviceData.device_type,
           name: deviceData.device_name,
         });
       }
 
-      // Return the updated OwnerPortableDevice
       return existingPortableDevice;
     } catch (error) {
       throw error;
@@ -360,7 +349,6 @@ export class OwnersPortableDevicesService {
     try {
       const ParsedId = parseInt(id, 10);
 
-      // Find the OwnerPortableDevice record with the given ID
       const existingPortableDevice =
         await this.OwnerPortableDeviceModel.findOne({
           where: {
@@ -369,23 +357,20 @@ export class OwnersPortableDevicesService {
         });
 
       if (!existingPortableDevice) {
-        return false; // Portable device not found
+        return false;
       }
 
-      // Find the associated PortableDevice record
       const associatedPortableDevice = await PortableDevice.findByPk(
         existingPortableDevice.portable_device_id
       );
 
       if (associatedPortableDevice) {
-        // Delete the associated PortableDevice record
         await associatedPortableDevice.destroy();
       }
 
-      // Delete the OwnerPortableDevice record
       await existingPortableDevice.destroy();
 
-      return true; // Deletion successful
+      return true;
     } catch (error) {
       throw error;
     }

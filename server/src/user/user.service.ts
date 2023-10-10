@@ -80,7 +80,6 @@ export class UserService {
     }
   }
 
-  // service
   async updateUserById(id: string, data: any): Promise<any> {
     try {
       const ParsedId = parseInt(id, 10);
@@ -102,7 +101,7 @@ export class UserService {
       });
 
       if (!user) {
-        return null; // or an appropriate response object
+        return null;
       }
 
       await user.update({
@@ -180,7 +179,6 @@ export class UserService {
 
       await Promise.all(allPromises);
 
-      // Return the updated user directly
       return user;
     } catch (error) {
       throw error;

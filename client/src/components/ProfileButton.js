@@ -1,6 +1,5 @@
 import React from "react";
 import { Button, useRedirect } from "react-admin";
-// import { Link } from 'react-router-dom';
 import { Typography } from "@mui/material";
 
 export const ProfileButton = () => {
@@ -9,10 +8,8 @@ export const ProfileButton = () => {
     redirect("/profile");
   };
   return (
-    // <Link to="/signup" style={{ textDecoration: 'none', color: 'white' }}>
     <Button onClick={handleClick}>
       <Typography color="#1F4700">Profile</Typography>
     </Button>
-    // </Link>
   );
 };

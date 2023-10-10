@@ -27,7 +27,7 @@ export class ProductsService {
       if (user) {
         return user.id;
       } else {
-        return null; // Return null if the user with the specified email does not exist
+        return null;
       }
     } catch (error) {
       console.error('Error retrieving user ID by email:', error);
@@ -320,7 +320,6 @@ export class ProductsService {
     try {
       const ParsedId = parseInt(id, 10);
 
-      // Find existing OwnerProduct by ID
       const existingOwnerProduct = await this.OwnerProductModel.findOne({
         where: {
           id: ParsedId,
@@ -328,22 +327,20 @@ export class ProductsService {
       });
 
       if (!existingOwnerProduct) {
-        return null; // Product not found
+        return null;
       }
 
-      // Get the associated product related to OwnerProduct
       const associatedProduct = await Product.findByPk(
         existingOwnerProduct.product_id
       );
 
       if (!associatedProduct) {
-        return null; // Product not found
+        return null;
       }
 
       const getedtype = await this.getProductTypeId(productData.product_type);
 
       if (getedtype) {
-        // Check if a product with the same data already exists
         const existingProductWithSameData = await Product.findOne({
           where: {
             name: productData.product_name,
@@ -360,7 +357,7 @@ export class ProductsService {
       }
 
       await existingOwnerProduct.update({
-        updated_at: new Date(), // Update the updated_at timestamp
+        updated_at: new Date(),
       });
 
       await associatedProduct.update({
@@ -379,7 +376,6 @@ export class ProductsService {
     try {
       const ParsedId = parseInt(id, 10);
 
-      // Find the OwnerProduct record with the given ID
       const existingOwnerProduct = await this.OwnerProductModel.findOne({
         where: {
           id: ParsedId,
@@ -387,23 +383,20 @@ export class ProductsService {
       });
 
       if (!existingOwnerProduct) {
-        return false; // Product not found
+        return false; 
       }
 
-      // Find the associated Product record
       const associatedProduct = await Product.findByPk(
         existingOwnerProduct.product_id
       );
 
       if (associatedProduct) {
-        // Delete the associated Product record
         await associatedProduct.destroy();
       }
 
-      // Delete the OwnerProduct record
       await existingOwnerProduct.destroy();
 
-      return true; // Deletion successful
+      return true;
     } catch (error) {
       throw error;
     }

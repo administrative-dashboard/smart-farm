@@ -1,6 +1,5 @@
 import simpleRestProvider from "ra-data-simple-rest";
 import { getJwtTokenFromCookies } from "./authUtils";
-// import { API_URL } from "../consts";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const dataProvider = simpleRestProvider(apiUrl);
@@ -57,14 +56,6 @@ const customDataProvider = {
         headers,
         body: JSON.stringify(params.data),
       });
-      /*  if (!response.ok) {
-        throw new Error(response.statusText);
-      } */
-      /* const data = await response.json();
-      console.log(data);
-      return {
-        data: data,
-      }; */
       return response;
     } catch (error) {
       throw new Error(`Error creating ${resource}: ${error.message}`);
@@ -111,10 +102,6 @@ const customDataProvider = {
         headers,
         body: JSON.stringify(params.data),
       });
-      /* if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      const data = await response.json(); */
       return response;
     } catch (error) {
       throw new Error(`Error updating ${resource}: ${error.message}`);

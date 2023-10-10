@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Box, Container, Select, MenuItem } from "@mui/material";
-import { API_URL } from "../../consts";
 import { getJwtTokenFromCookies } from "../../providers/authUtils";
 import axios from "axios";
-import { GRAFANA_URL } from "../../consts";
+
+const API_URL = process.env.REACT_APP_API_URL;
+const GRAFANA_URL = process.env.REACT_APP_GRAFANA_URL;
 
 export const GreenhouseStatisticsPage = () => {
   const [communityName, setCommunityName] = useState("");

@@ -15,17 +15,11 @@ import { MainDashboard } from "./pages/MainDashboard";
 import { Signin } from "./pages/auth/Signin";
 import { Signup } from "./pages/auth/Signup";
 import { Profile } from "./pages/auth/Profile";
-import { AdminDesktop } from "./pages/admin/Desktop";
 import { ChooseDevice } from "./pages/admin/ChooseDevice";
-import { ChooseCommunity } from "./pages/admin/ChooseCommunity";
 import { FixedDeviceShow } from "./pages/admin/FixedDeviceShow";
-import { UserShowAdm } from "./pages/admin/UserShow";
-import { UserListAdm } from "./pages/admin/UserList";
 import { FixedDeviceListAdm } from "./pages/admin/FixedDeviceListAdm";
 import { PortableDeviceListAdm } from "./pages/admin/PortableDeviceListAdm";
 import { PortableDeviceShow } from "./pages/admin/PortableDeviceShow";
-//import { SensorsShow } from "./pages/admin/SensorsShow";
-//import { SensorsListAdm } from "./pages/admin/SensorsListAdm";
 import { OwnerDesktop } from "./pages/owner/Desktop";
 import { PortableDeviceList } from "./pages/owner/PortableDeviceList";
 import { GreenhouseList } from "./pages/owner/GreenhouseList";
@@ -40,36 +34,34 @@ import { GreenhouseEdit } from "./pages/owner/GreenhouseEdit";
 import { FieldCreate } from "./pages/owner/FieldCreate";
 import { FieldList } from "./pages/owner/FieldList";
 import { FieldEdit } from "./pages/owner/FieldEdit";
-//import { DeviceRequest } from "./pages/owner/DeviceRequest";
 import { GreenhouseShow } from "./pages/admin/GreenhouseShow";
 import { GreenhouseListAdm } from "./pages/admin/GreenhouseList";
 import { ProductListAdm } from "./pages/admin/ProductList";
 import { ProductShow } from "./pages/admin/ProductListAdm";
-// import { DeviceStatisticPage } from "./pages/admin/DeviceStatistic";
 import { Contact } from "./pages/auth/Contact";
-import { CommunityManager } from "./pages/CommunityManager/Desktop";
 import { UserList } from "./pages/CommunityManager/UserList";
 import { DesktopInfo } from "./pages/CommunityManager/DesktopInfo";
 import axios from "axios";
 import { getJwtTokenFromCookies } from "./providers/authUtils";
-// import dataProvider from "./providers/dataProvider";
-// const dataProvider = simpleRestProvider(API_URL);
-// import customDataProvider from "./providers/dataProvider";
 import customDataProvider from "./providers/dataProvider";
-//const dataProvider = jsonServerProvider(API_URL);
-/* const dataProvider = simpleRestProvider(API_URL); */
 import { authProvider } from "./providers/authPovider";
-import { API_URL } from "./consts";
 import myTheme from "./themes/general_theme";
 import { UserEdit } from "./pages/CommunityManager/UserEdit";
 import {PortableDeviceStatisticsPage} from "./pages/CommunityManager/PortableDeviceStatistics"
 import {FixedDeviceStatisticsPage} from "./pages/CommunityManager/FixedDeviceStatistics"
 import {GreenhouseStatisticsPage} from "./pages/CommunityManager/GreenhouseStatistics"
 import {FieldStatisticsPage} from "./pages/CommunityManager/FieldStatistics"
+
+const API_URL=process.env.REACT_APP_API_URL
 const i18nProvider = polyglotI18nProvider(
   (locale) => (locale === "am" ? armenianMessages : englishMessages),
-  "en" // Default locale
+  "en"
 );
+
+window.onerror = function() {
+  return true;
+};
+
 const App = () => {
   const isAuthenticated = getJwtTokenFromCookies() ? true : false;
   const [roles, setRoles] = React.useState([]);
@@ -121,12 +113,16 @@ const App = () => {
       setIsLoading(false);
     }
   }, []);
-
-  // console.log(roles);
-  const permission = perms;
-  const role = roles;
-
   
+  const LoadingIndicator = () => (
+    <div className="loading-indicator">
+      <p>Loading...</p>
+    </div>
+  );
+
+  const role = roles;
+  console.log(role)
+
   const commonResources = [
     <Resource
       name="dashboard"
@@ -219,17 +215,6 @@ const App = () => {
       edit={FixedDeviceEdit}
       options={{label: "Fixed device"}}    
     />,
-    // <Resource
-    //   name="fields"
-    //   list={FieldList}
-    //   create={FieldCreate}
-    //   edit={FieldEdit}
-    // />,
-    // <Resource
-    //   name="device_requests_history"
-    //   create={DeviceRequest}
-    //   list={DeviceRequest}
-    // />,
   ];
   const CMResources = [
     <Resource
@@ -296,17 +281,12 @@ const App = () => {
       show={PortableDeviceShow}
       options={{label: "Portable device"}}    
     />,
-    // <Resource name="User" list={UserListAdm} show={UserShowAdm} />,
-    
-    // <Resource name="User" list={UserListAdm} show={UserShowAdm} />,
     <Resource
       name="Greenhouse"
       list={GreenhouseListAdm}
       show={GreenhouseShow}
     />,
-    //<Resource name="chooseCommunity" list={ChooseCommunity} />,
     <Resource name="chooseDevice" list={ChooseDevice} options={{label: "Choose device"}}    />,
-    //<Resource name="User" list={UserListAdm} show={UserShowAdm} />,
     <Resource
       name="Greenhouse"
       list={GreenhouseListAdm}
@@ -314,16 +294,7 @@ const App = () => {
     />,
 
     <Resource name="Product" list={ProductListAdm} show={ProductShow} />,
-    // <Resource name="Statistic" list={DeviceStatisticPage} />,
-    //<Resource name="community_manager" list={CommunityManager} />,
-    // <Resource name="usersinfo" list={DesktopInfo} />,
-    // <Resource
-    //   name="community/users"
-    //   list={UserList}
-    //   edit={UserEdit}
-    //   icon={ArticleIcon}
-    // />,
-    //<Resource name="BasicTable" list={BasicTable} show={BasicTableShow} />,
+
   ];
 
   const getdrw = () => {
@@ -391,7 +362,7 @@ const App = () => {
     for (let index = 0; index < perms.length; index++) {
       for (let j = 0; j < all_permissions.length; j++) {
         if (perms[index] == (all_permissions[j])) {
-          if (all_permissions[j]== "EDIT_ROLE") {
+          if (all_permissions[j]=== "EDIT_ROLE") {
               answer[b] = <Resource
               name="usersinfo"
               list={DesktopInfo}
@@ -420,8 +391,8 @@ const App = () => {
   };
   return (
     <BrowserRouter>
-      {isLoading ? (
-        <div>Loading...</div>
+    {isLoading ? (
+        <LoadingIndicator />
       ) : (
         <Admin
           theme={myTheme}

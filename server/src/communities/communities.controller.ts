@@ -119,7 +119,7 @@ export class CommunitiesController {
         });
       }
 
-      return res.status(200).json(updatedUser );
+      return res.status(200).json(updatedUser);
     } catch (error) {
       console.error(error);
       throw new HttpException('An error occurred', HttpStatus.INTERNAL_SERVER_ERROR);

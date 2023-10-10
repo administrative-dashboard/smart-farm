@@ -9,12 +9,9 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 		return super.canActivate(context);
 	}
 
-	handleRequest(err, user, info, context: ExecutionContext) {
+	handleRequest(err, user) {
 		if (err || !user) {
-			const httpContext = context.switchToHttp();
-			const response = httpContext.getResponse();
 			throw new UnauthorizedException();
-			//  response.redirect(`google/logout`);
 			return false;
 		}
 		return user;

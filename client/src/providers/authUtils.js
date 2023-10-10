@@ -9,10 +9,5 @@ function getJwtTokenFromCookies() {
     return cookieValue.split("=")[1];
   }
 
-  // const jwtToken = getJwtTokenFromCookies();
-
-  // if (jwtToken) {
-  //   localStorage.setItem('jwtToken', jwtToken);
-  // }
 }
 export { getJwtTokenFromCookies };

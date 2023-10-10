@@ -4,7 +4,7 @@ import { Typography } from "@mui/material";
 import { authProvider } from "../providers/authPovider";
 export const LogoutButton = () => {
   const handleClick = () => {
-    authProvider.logout(); // Remove the empty object argument
+    authProvider.logout();
   };
   return (
     <Button onClick={handleClick}>

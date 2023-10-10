@@ -5,7 +5,6 @@ import {
   Request,
   UseGuards,
   NotFoundException,
-  Post,
   Body,
   Put,
   UnauthorizedException
@@ -16,8 +15,7 @@ import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
 import { GoogleService } from 'src/auth/google.service';
 import { UserRolesService } from './user-roles.service';
 import { UserPermissionsService } from './user-permissions.service';
-import { RolesPerms } from 'src/auth/guards/roles_perms.decorator';
-import { RolesPermsGuard } from 'src/auth/guards/roles_perms.guard';
+
 @Controller('user')
 export class UserController {
   constructor(
@@ -154,6 +152,7 @@ export class UserController {
       const userId = user.id;
       const rolesName = this.userRolesService.getRolesByUserId(userId);
       return rolesName;
+      console.log("email", email, "role", rolesName)
     } catch (error) {
       console.error('Error fetching roles name:', error);
       throw new NotFoundException('Error fetching roles name');

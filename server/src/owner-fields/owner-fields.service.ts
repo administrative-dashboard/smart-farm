@@ -1,10 +1,8 @@
-import { Injectable, Query } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { OwnerField } from 'src/database/models/owners_fields.model';
-import { Model } from 'sequelize-typescript';
 import { Field } from 'src/database/models/fields.model';
 import { Sequelize, Op } from 'sequelize';
-import { now } from 'sequelize/types/utils';
 import { User } from 'src/database/models/users.model';
 import { MeasurementUnit } from 'src/database/models/measurement_units';
 @Injectable()
@@ -12,7 +10,7 @@ export class OwnerFieldsService {
   constructor(
     @InjectModel(OwnerField)
     private readonly ownerField: typeof OwnerField
-  ) {}
+  ) { }
   async getUserIdByEmail(email: string): Promise<number | null> {
     try {
       const user = await User.findOne({
@@ -70,11 +68,11 @@ export class OwnerFieldsService {
             model: Field,
             attributes: [],
             include: [
-            {
-              model: MeasurementUnit,
-              attributes: [],
-            },
-        ]
+              {
+                model: MeasurementUnit,
+                attributes: [],
+              },
+            ]
           },
         ],
         order: sort,
@@ -96,11 +94,11 @@ export class OwnerFieldsService {
     fieldDescription?: any,
     fieldLocation?: any,
     created_at?: any,
-    page?:number,
-    perPage?:number,
-    field?:any,
-    order?:any,
-  ): Promise<{ data: any[], total: number }>{
+    page?: number,
+    perPage?: number,
+    field?: any,
+    order?: any,
+  ): Promise<{ data: any[], total: number }> {
     console.log(created_at);
     try {
       const userId = await this.getUserIdByEmail(email);
@@ -129,7 +127,7 @@ export class OwnerFieldsService {
       } else if (query !== '' && query !== undefined) {
         whereClause[Op.or] = [
           Sequelize.literal(`"fields"."name" ILIKE :textQuery`),
-          Sequelize.literal(`"fields->measurement_units"."value" ILIKE :textQuery`), 
+          Sequelize.literal(`"fields->measurement_units"."value" ILIKE :textQuery`),
           Sequelize.literal(`"fields"."description" ILIKE :textQuery`),
           Sequelize.literal(`"fields"."location" ILIKE :textQuery`),
         ];
@@ -186,7 +184,7 @@ export class OwnerFieldsService {
           [Sequelize.col('fields.description'), 'field_description'],
           [Sequelize.col('fields.location'), 'field_location'],
           'created_at',
-      
+
         ],
         include: [
           {
@@ -204,25 +202,25 @@ export class OwnerFieldsService {
         replacements: {
           textQuery: `%${query}%`,
           textFieldName: `%${fieldName}%`,
-          textSizeMeasurement:`%${fieldSizeMeasurement}%`,
+          textSizeMeasurement: `%${fieldSizeMeasurement}%`,
           textDescription: `%${fieldDescription}%`,
-          textLocation:`%${fieldLocation}%`,
+          textLocation: `%${fieldLocation}%`,
           numQuery: query,
           numSize: fieldSize,
-         
+
         },
-        order:sort,
-        offset:((page-1)*perPage),
-        limit : perPage,
-        subQuery:false,
+        order: sort,
+        offset: ((page - 1) * perPage),
+        limit: perPage,
+        subQuery: false,
       });
-      return  {data, total};
+      return { data, total };
     } catch (error) {
       throw error;
     }
   }
 
-  async createField(email:string,fieldData:any) : Promise<OwnerField> {
+  async createField(email: string, fieldData: any): Promise<OwnerField> {
     try {
       console.log(fieldData)
       const userId = await this.getUserIdByEmail(email);
@@ -249,22 +247,22 @@ export class OwnerFieldsService {
         description: fieldData.description,
         location: fieldData.location,
       });
-  
-      const ownerCreatedField =   await OwnerField.create({
+
+      const ownerCreatedField = await OwnerField.create({
         user_id: userId,
-        field_id: createdField.id, 
+        field_id: createdField.id,
         created_at: fieldData.created_at
       });
-  
-      return ownerCreatedField; 
+
+      return ownerCreatedField;
     } catch (error) {
       throw error;
     }
   }
-  async getFieldById(id:string): Promise<any | null> {
+  async getFieldById(id: string): Promise<any | null> {
     try {
       const ParsedId = parseInt(id, 10);
-      
+
       const field = await this.ownerField.findOne({
         where: {
           id: ParsedId,
@@ -283,29 +281,29 @@ export class OwnerFieldsService {
             model: Field,
             attributes: [],
             include: [
-            {
-              model: MeasurementUnit,
-              attributes: [],
-            },
-        ]
+              {
+                model: MeasurementUnit,
+                attributes: [],
+              },
+            ]
           },
         ],
-        
+
       });
-      return  field || null; 
+      return field || null;
     } catch (error) {
       throw error;
     }
   }
 
-  async updateFieldById(id: string, fieldData: any,email:string): Promise<any> {
+  async updateFieldById(id: string, fieldData: any, email: string): Promise<any> {
     try {
       const ParsedId = parseInt(id, 10);
       const userId = await this.getUserIdByEmail(email);
       const repeatingField =
         await this.ownerField.findOne({
           where: {
-            user_id : userId,
+            user_id: userId,
             id: {
               [Op.not]: ParsedId, // Используйте Op.not для исключения записи с определенным id
             },
@@ -323,7 +321,7 @@ export class OwnerFieldsService {
         throw new Error('You already have a field with the same name.');
       }
 
-      
+
       // First, check if the portable device with the given ID exists
       const existingField =
         await this.ownerField.findOne({
@@ -333,22 +331,17 @@ export class OwnerFieldsService {
         });
 
       if (!existingField) {
-        return null; // Portable device not found
+        return null;
       }
-
-
-      // Update the portable device record with the specified data
       await existingField.update({
-        updated_at: new Date(), // Update the updated_at timestamp
+        updated_at: new Date(),
       });
 
-      // Find the associated Field record
       const associatedField = await Field.findByPk(
         existingField.field_id,
       );
 
       if (associatedField) {
-        // Update the Field record
         await associatedField.update({
           name: fieldData.name,
           size: fieldData.size,
@@ -357,7 +350,7 @@ export class OwnerFieldsService {
           description: fieldData.description,
         });
       }
-    
+
       return existingField;
     } catch (error) {
       throw error;
@@ -375,7 +368,7 @@ export class OwnerFieldsService {
         });
 
       if (!existingField) {
-        return false; 
+        return false;
       }
 
       const associatedField = await Field.findByPk(
@@ -386,87 +379,10 @@ export class OwnerFieldsService {
         await associatedField.destroy();
       }
       await existingField.destroy();
-      return true; // Deletion successful
+      return true;
     } catch (error) {
       throw error;
     }
   }
 
-
-
-
-
 }
-
-//   async updateFieldsById(id: string, fieldData: any): Promise<any> {
-//     try {
-//       const ParsedId = parseInt(id, 10);
-
-//       const existingField =
-//         await this.ownerField.findOne({
-//           where: {
-//             id: ParsedId,
-//           },
-//         });
-
-//       if (!existingField) {
-//         return null;
-//       }
-
-
-//       const associatedField = await Field.findByPk(
-//         existingField.field_id
-//       );
-
-//         await associatedField.update({
-//           name: fieldData.name,
-//           size: fieldData.size,
-//           measurement_id: fieldData.measurement,
-//           location: fieldData.location,
-//           description: fieldData.description,
-//         });
-//       }
-
-//       // Return the updated OwnerPortableDevice
-//       return existingPortableDevice;
-//     } catch (error) {
-//       throw error;
-//     }
-//   }
-// }
-//   async deletePortableDeviceById(id: string): Promise<boolean> {
-//     try {
-//       const ParsedId = parseInt(id, 10);
-
-//       // Find the OwnerPortableDevice record with the given ID
-//       const existingPortableDevice =
-//         await this.OwnerPortableDeviceModel.findOne({
-//           where: {
-//             id: ParsedId,
-//           },
-//         });
-
-//       if (!existingPortableDevice) {
-//         return false; // Portable device not found
-//       }
-
-//       // Find the associated PortableDevice record
-//       const associatedPortableDevice = await PortableDevice.findByPk(
-//         existingPortableDevice.portable_device_id
-//       );
-
-//       if (associatedPortableDevice) {
-//         // Delete the associated PortableDevice record
-//         await associatedPortableDevice.destroy();
-//       }
-
-//       // Delete the OwnerPortableDevice record
-//       await existingPortableDevice.destroy();
-
-//       return true; // Deletion successful
-//     } catch (error) {
-//       throw error;
-//     }
-//   }
-// }
-// 

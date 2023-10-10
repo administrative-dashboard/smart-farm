@@ -3,7 +3,7 @@ import React from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { Box, Button, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { TextInput,useListContext } from "react-admin";
+import { TextInput, useListContext } from "react-admin";
 
 export const PostFilterForm = ({ additionalFilters }) => {
   const { displayedFilters, filterValues, setFilters, hideFilter } =

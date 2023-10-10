@@ -1,6 +1,5 @@
 
 import { Column, Model, Table, DataType, ForeignKey, HasOne } from 'sequelize-typescript';
-// import { FieldSensor } from './'
 
 
 @Table({ tableName: 'sensor_usage_statistics_fields', timestamps: false  })
@@ -13,9 +12,5 @@ export class SensorUsageStatisticsFields extends Model<SensorUsageStatisticsFiel
 
   @Column({})
   end_date: Date;
-
-//   @ForeignKey(() => FieldSensor)
-//   @Column
-//   field_sensor_id: number;
 
 }
