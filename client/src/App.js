@@ -10,7 +10,7 @@ import ArticleIcon from "@mui/icons-material/Article";
 import polyglotI18nProvider from "ra-i18n-polyglot";
 import englishMessages from "ra-language-english";
 import armenianMessages from "ra-language-armenian";
-import { BrowserRouter, Route } from "react-router-dom";
+import { Route } from 'react-router-dom'; // Remove the nested BrowserRouter import
 import { MainDashboard } from "./pages/MainDashboard";
 import { ImageField } from 'react-admin';
 import { Signin } from "./pages/auth/Signin";
@@ -121,7 +121,6 @@ const App = () => {
   }, []);
 
   const role = roles;
-
 
   const commonResources = [
     <Resource
@@ -377,7 +376,7 @@ const App = () => {
     };
   }
     return (
-      <>
+      <div>
         {isLoading ? (
           <div className="loading-indicator" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <img src={loadGif} alt="Loading" />
@@ -392,9 +391,9 @@ const App = () => {
             {getprm()}
           </Admin>
         )}
-      </>
+      </div>
     );
-  };
-
+  
+};
 
 export default App;
