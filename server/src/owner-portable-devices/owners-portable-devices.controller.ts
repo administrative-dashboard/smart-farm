@@ -13,22 +13,20 @@ import {
   Query,
   UseGuards,
   NotFoundException,
-} from '@nestjs/common'; // Import Logger
-import { Response, query, response } from 'express';
+} from '@nestjs/common';
 import { OwnersPortableDevicesService } from './owners-portable-devices.service';
-import { HttpCode } from '@nestjs/common';
-import { Headers } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
-import { NotFoundError } from 'rxjs';
 import { GoogleService } from 'src/auth/google.service';
+import { RolesPermsGuard } from 'src/auth/guards/roles_perms.guard';
+import { RolesPerms } from 'src/auth/guards/roles_perms.decorator';
 @Controller('portable_devices')
-@UseGuards(JwtAuthGuard)
-
+@UseGuards(JwtAuthGuard, RolesPermsGuard)
+@RolesPerms('OWNER', 'EDIT_PORTABLE_DEVICE')
 export class PortableDevicesController {
   constructor(
     private readonly ownersPortableDevicesService: OwnersPortableDevicesService,
     private readonly googleService: GoogleService,
-  ) {}
+  ) { }
 
   @Get()
   async getPortableDevices(
@@ -38,9 +36,18 @@ export class PortableDevicesController {
     @Query('quantity') quantity: any,
     @Query('shared_quantity') sharedQuantity: any,
     @Query('created_at') date: any,
+    @Query('page') page: any,
+    @Query('perPage') perPage: any,
+    @Query('field') field: any,
+    @Query('order') order: any,
     @Request() req
   ) {
     try {
+      console.log(typeof (page));
+      page = parseInt(page);
+      perPage = parseInt(perPage);
+      console.log('page::::===', page);
+      console.log('perPage::::===', perPage);
       console.log('ЗАПРОС ПОЛУЧЕН!!!!!!!!!');
       console.log('searchTerm==', searchTerm);
       console.log('device_name==', deviceName);
@@ -51,7 +58,7 @@ export class PortableDevicesController {
       const accessToken = req.user.accessToken;
       const email = await this.googleService.getUserInfo(accessToken);
       console.log(email);
-       if (searchTerm || deviceName || deviceType || quantity || sharedQuantity || date) {
+      if (searchTerm || deviceName || deviceType || quantity || sharedQuantity || date) {
         const filteredDevices =
           await this.ownersPortableDevicesService.searchDevices(
             email,
@@ -60,18 +67,19 @@ export class PortableDevicesController {
             deviceType,
             quantity,
             sharedQuantity,
-            date
+            date,
+            page,
+            perPage,
+            field,
+            order,
           );
+        console.log(filteredDevices);
         return filteredDevices;
-      } else {
-        let portableDevices =
-        await this.ownersPortableDevicesService.getDevicesByEmail(email);
-        const totalItems = portableDevices.length;
-        return portableDevices;
-      } 
-
-      // console.log('Filtered Devices:', portableDevices);
-      // return portableDevices;
+      } else if (page && perPage) {
+        const { data, total } =
+          await this.ownersPortableDevicesService.getDevicesByEmail(email, page, perPage, field, order,);
+        return { data, total };
+      }
     } catch (error) {
       throw new NotFoundException(
         'Portable devices not found',
@@ -79,7 +87,6 @@ export class PortableDevicesController {
       );
     }
   }
-  
 
 
   @Get(':id')
@@ -101,54 +108,70 @@ export class PortableDevicesController {
 
   @Put(':id')
   async updatePortableDeviceById(
+    @Request() req,
     @Param('id') id: string,
-    @Body() deviceData: any
+    @Body() deviceData: any,
+    @Res() res,
   ) {
     try {
+      console.log('Device Data: ', deviceData)
+      const accessToken = req.user.accessToken;
+      const email = await this.googleService.getUserInfo(accessToken);
       const updatedPortableDevice =
         await this.ownersPortableDevicesService.updatePortableDeviceById(
           id,
-          deviceData
+          deviceData,
+          email
         );
 
       if (!updatedPortableDevice) {
         return { message: 'Portable device not found' };
       }
 
-      return updatedPortableDevice;
+      res.status(200).json(updatedPortableDevice);
     } catch (error) {
-      console.log(error);
-      return { error: 'An error occurred' };
+      if (error.message === 'You already have a portable device with the same name and type.') {
+        res.status(400).json({
+          message: 'You already have a portable device with the same name and type.',
+          status: 'error',
+        });
+      } else {
+        res.status(500).json({
+          message: 'An error occurred.',
+          status: 'error',
+        });
+      }
     }
   }
 
   @Post('create')
-async createPortableDevice(@Body() deviceData: any, @Request() req) {
-  try {
-    console.log(deviceData);
-    const accessToken = req.user.accessToken;
-    const email = await this.googleService.getUserInfo(accessToken);
-    
-    const result = await this.ownersPortableDevicesService.createDevice(
-      email,
-      deviceData
-    );
+  async createPortableDevice(@Body() deviceData: any, @Request() req, @Res() res) {
+    try {
+      console.log(deviceData);
+      const accessToken = req.user.accessToken;
+      const email = await this.googleService.getUserInfo(accessToken);
 
-    return result; // If successful, return the created device
-  } catch (error) {
-    if (error.message === 'User has already associated with this device.') {
-      // Return a specific response when the error message matches
-      return {
-        message: 'User has already associated with this device.',
-        status: 'error',
-      };
-    } else {
-      console.log(error);
-      // Handle other errors or rethrow if needed
-      throw error;
+      const result = await this.ownersPortableDevicesService.createDevice(
+        email,
+        deviceData
+      );
+
+      res.status(200).json(result);
+    } catch (error) {
+      if (error.message === 'USER IS ASSOCIATED WITH THE DEVICE') {
+        res.status(400).json({
+          message: 'You already have a device with the same name and type.',
+          status: 'error',
+        });
+      } else {
+        res.status(500).json({
+          message: 'An error occurred.',
+          status: 'error',
+        });
+        console.log(error);
+      }
     }
   }
-}
 
 
   @Delete(':id')

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   Create,
   SimpleForm,
@@ -8,16 +8,16 @@ import {
   useNotify,
   useRedirect,
   required,
+  Toolbar,
+  SaveButton,
+  Button,
 } from "react-admin";
 import customDataProvider from "../../providers/dataProvider";
 
-import { HomeRedirectButton } from "../../components/HomeRedirectButton";
 export const PortableDeviceCreate = (props) => {
-  
   const currentDate = new Date();
   const notify = useNotify();
   const redirect = useRedirect();
-  const [quantity, setQuantity] = useState("");
   const validatePositiveNumber = (value) => {
     if (isNaN(value) || value <= 0) {
       return "Value must be a positive number";
@@ -46,45 +46,58 @@ export const PortableDeviceCreate = (props) => {
         shared_quantity: values.shared_quantity,
         created_at: values.created_at.toISOString(),
       };
-      
-      // Make a POST request to create the device
-      const response = await customDataProvider.create("portable_devices/create", {
-        data: deviceData,
-      });
-      
-      if (response.data) {
+
+      const response = await customDataProvider.create(
+        "portable_devices/create",
+        {
+          data: deviceData,
+        }
+      );
+
+      if (response.status === 200) {
         notify("Device created successfully", "info");
         redirect("/portable_devices");
+      } else if (response.status === 400) {
+        const Error = await response.json();
+        const message = Error.message;
+        if (message) {
+          notify(message, { type: "error" });
+        } else {
+          notify("An error occurred", { type: "error" });
+        }
       } else {
-        // Handle the case where the creation was not successful
-        console.error("Device creation failed:", response.error);
+        notify("An error occurred", { type: "error" });
       }
     } catch (error) {
       console.error("Error creating device:", error);
-      notify('Device already is existing', { type: 'error' });
     }
   };
-  
+  const handleCancel = () => {
+    redirect("/portable_devices");
+  };
+
   return (
     <>
-      <Create
-        title="Create a portable device"
-        {...props}
-        save={handleSave}
-      >
-        <SimpleForm onSubmit={handleSave}>
+      <Create title="Create a portable device" {...props}>
+        <SimpleForm
+          onSubmit={handleSave}
+          toolbar={
+            <Toolbar>
+              <SaveButton label="Save" submitOnEnter={true} sx={{ mr: '90%' }} />
+              <Button label="Cancel" onClick={handleCancel} />
+            </Toolbar>
+          }
+        >
           <TextInput source="name" validate={validateDeviceName} />
           <TextInput source="type" validate={validateDeviceType} />
           <NumberInput source="quantity" validate={validateQuantity} />
           <NumberInput
             source="shared_quantity"
             validate={validateSharedQuantity}
-            minValue={quantity}
           />
           <DateInput source="created_at" defaultValue={currentDate} disabled />
         </SimpleForm>
       </Create>
-      
     </>
   );
 };

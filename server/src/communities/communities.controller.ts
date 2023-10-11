@@ -3,11 +3,14 @@ import {
   Body,
   Controller,
   Get,
+  HttpException,
+  HttpStatus,
   NotFoundException,
   Param,
   Put,
   Query,
   Request,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { CommunitiesService } from './communities.service';
@@ -16,6 +19,8 @@ import { UserCommunityService } from 'src/user/user-community.service';
 import { GoogleService } from 'src/auth/google.service';
 import { UserService } from 'src/user/user.service';
 import { UserRolesService } from 'src/user/user-roles.service';
+import { RolesPermsGuard } from 'src/auth/guards/roles_perms.guard';
+import { RolesPerms } from 'src/auth/guards/roles_perms.decorator';
 
 @Controller('community')
 export class CommunitiesController {
@@ -34,17 +39,19 @@ export class CommunitiesController {
   }
 
   @Get('users')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesPermsGuard)
+  @RolesPerms('ADMIN', 'COMMUNITY_MANAGER', 'EDIT_ROLE')
   async getUsersFromCommunity(
-    @Query('q') searchTerm: string,
-    @Query('name') name: string,
-    @Query('email') email: string,
-    @Query('phone_number') phone_number: string,
-    @Query('roles') roles: string,
-    @Query('permissions') permissions: string,
+    @Query('q') searchTerm: any,
+    @Query('page') page: any,
+    @Query('perPage') perPage: any,
+    @Query('field') field: any,
+    @Query('order') order: any,
     @Request() req
   ) {
     try {
+      page = parseInt(page);
+      perPage = parseInt(perPage);
       const accessToken = req.user.accessToken;
       const email = await this.googleService.getUserInfo(accessToken);
       const user = await this.userService.getUserInfoByEmail(email);
@@ -54,29 +61,31 @@ export class CommunitiesController {
 
       const userId = user.id;
       const communityName = await this.userCommunityService.getCommunityNameByUserId(userId);
-      const { data, total } = await this.userCommunityService.getUsersInSameCommunity(communityName);
+      if (searchTerm) {
+        const users =
+          await this.userCommunityService.searchUsersInSameCommunity(
+            communityName,
+            searchTerm,
+            page,
+            perPage,
+            field,
+            order,
+          );
+        return users;
+      } else {
+        const { data, total } = await this.userCommunityService.getUsersInSameCommunity(communityName);
 
-      // const filteredUsers = data.filter((user) => {
-      //   if (
-      //     (searchTerm && user.user.name.includes(searchTerm)) || // Filter based on user name
-      //     (name && user.user.name === name) ||
-      //     (email && user.user.email === email) ||
-      //     (phone_number && user.user.phone_number === phone_number) ||
-      //     (role && user.roles.includes(role))
-      //   ) {
-      //     return true;
-      //   }
-      //   return false;
-      // });
-      return { data, total };
-      // return { communityName, data };
+        return { data, total };
+      }
     } catch (error) {
       console.error('Error fetching community and users:', error);
       return null;
     }
   }
+
   @Get('users/:id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesPermsGuard)
+  @RolesPerms('ADMIN', 'COMMUNITY_MANAGER', 'EDIT_ROLE')
   async getUserById(@Param('id') id: string) {
     try {
       const data = await this.userService.getUserById(id);
@@ -92,27 +101,28 @@ export class CommunitiesController {
   }
 
   @Put('users/:id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesPermsGuard)
+  @RolesPerms('ADMIN', 'COMMUNITY_MANAGER', 'EDIT_ROLE')
   async updateUserById(
     @Param('id') id: string,
-    @Body() data: any
+    @Body() data: any,
+    @Request() req,
+    @Res() res
   ) {
     try {
-      const updateUserById =
-        await this.userService.updateUserById(
-          id,
-          data
-        );
+      const updatedUser = await this.userService.updateUserById(id, data);
 
-      if (!updateUserById) {
-        return { message: 'user not found' };
+      if (!updatedUser) {
+        return res.status(404).json({
+          message: 'User not found',
+          status: 'error',
+        });
       }
 
-      return updateUserById;
+      return res.status(200).json(updatedUser);
     } catch (error) {
-      console.log(error);
-      return { error: 'An error occurred' };
+      console.error(error);
+      throw new HttpException('An error occurred', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
-
 }

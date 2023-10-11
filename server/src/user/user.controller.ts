@@ -1,13 +1,21 @@
 //User.controller.ts
-import { Controller, Get, Request, UseGuards, NotFoundException, Param, Post, Body, Put, UseInterceptors, UnauthorizedException } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import {
+  Controller,
+  Get,
+  Request,
+  UseGuards,
+  NotFoundException,
+  Body,
+  Put,
+  UnauthorizedException
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserCommunityService } from './user-community.service';
-import { UserCommunity } from 'src/database/models/users_communities.model';
 import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
 import { GoogleService } from 'src/auth/google.service';
 import { UserRolesService } from './user-roles.service';
 import { UserPermissionsService } from './user-permissions.service';
+
 @Controller('user')
 export class UserController {
   constructor(
@@ -28,10 +36,8 @@ export class UserController {
       return userInfo;
     } catch (error) {
       if (error instanceof UnauthorizedException) {
-        // Handle unauthorized (401) error here
         return { message: 'Unauthorized access' };
       } else {
-        // Handle other errors as needed
         throw error;
       }
     }
@@ -41,7 +47,6 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   async updateUserInfo(@Request() req, @Body() userData: any) {
     try {
-      // const userId = req.user.user_id;
       const accessToken = req.user.accessToken;
       const email = await this.googleService.getUserInfo(accessToken);
       const existingUser = await this.userService.getUserInfoByEmail(email);
@@ -71,7 +76,6 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   async updateUserPhoneNumber(@Request() req, @Body() userData: any) {
     try {
-      // const userId = req.user.user_id;
       const accessToken = req.user.accessToken;
       const email = await this.googleService.getUserInfo(accessToken);
       const existingUser = await this.userService.getUserInfoByEmail(email);
@@ -89,7 +93,7 @@ export class UserController {
     }
   }
 
-  @Post('community')
+  @Put('community')
   @UseGuards(JwtAuthGuard)
   async addCommunity(@Request() req, @Body() userData: any) {
     try {
@@ -148,6 +152,7 @@ export class UserController {
       const userId = user.id;
       const rolesName = this.userRolesService.getRolesByUserId(userId);
       return rolesName;
+      console.log("email", email, "role", rolesName)
     } catch (error) {
       console.error('Error fetching roles name:', error);
       throw new NotFoundException('Error fetching roles name');
@@ -171,7 +176,6 @@ export class UserController {
       const permsName = this.userPermsService.getPermsByUserId(userId);
       return permsName;
     } catch (error) {
-      // console.error('Error fetching permissons:', error);
       throw new NotFoundException('Error fetching perms name');
     }
   }

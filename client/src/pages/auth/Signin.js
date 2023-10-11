@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
 import {
   ThemeProvider,
   useMediaQuery,
@@ -8,7 +7,6 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-
 import { GoogleButton } from "../../components/GoogleButton";
 import { theme } from "../../themes/theme";
 import signBack from "../../assets/static/signBack.png";

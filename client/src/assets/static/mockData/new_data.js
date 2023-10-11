@@ -1,4 +1,5 @@
-import { CLIENT_URL } from "../../../consts";
+// import { CLIENT_URL } from "../../../consts";
+const CLIENT_URL=process.env.REACT_APP_CLIENT_URL;
 export const drawer_new_data = [
     {
         name: "Home",

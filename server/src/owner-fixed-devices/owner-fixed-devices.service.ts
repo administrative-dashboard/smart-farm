@@ -1,11 +1,9 @@
 //owners-fixed-devices.service.ts
-import { Injectable, Query } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { OwnerFixedDevice } from 'src/database/models/owners_fixed_devices.model';
-import { Model } from 'sequelize-typescript';
 import { FixedDevice } from 'src/database/models/fixed_devices.model';
 import { Sequelize, Op } from 'sequelize';
-import { now } from 'sequelize/types/utils';
 import { User } from 'src/database/models/users.model';
 @Injectable()
 export class OwnersFixedDevicesService {
@@ -34,11 +32,24 @@ export class OwnersFixedDevicesService {
     }
   }
 
-  async getDevicesByEmail(email: string): Promise<any[]> {
+  async getDevicesByEmail(email: string,page?:number,
+    perPage?:number,field?: string,
+    order?: string): Promise<{ data: any[], total: number }> {
     try {
       const userId = await this.getUserIdByEmail(email);
+      const sort = [];
+      if (field && order) {
+        sort.push([field, order]); 
+      } else {
+        sort.push(['id', 'ASC']);
+      } 
+      const total = await this.OwnerFixedDeviceModel.count({
+        where: {
+          user_id: userId,
+        },
+      });
       console.log(userId);
-      const devices = await this.OwnerFixedDeviceModel.findAll({
+      const data = await this.OwnerFixedDeviceModel.findAll({
         where: {
           user_id: userId,
         },
@@ -55,8 +66,12 @@ export class OwnersFixedDevicesService {
             attributes: [],
           },
         ],
+        order: sort,
+        offset:((page-1)*perPage),
+        limit : perPage,
+        subQuery:false,
       });
-      return devices;
+      return {data, total};
     } catch (error) {
       throw error;
     }
@@ -68,12 +83,27 @@ export class OwnersFixedDevicesService {
     deviceName?: any,
     deviceType?: any,
     quantity?: any,
-    created_at?: any
-  ): Promise<any[]> {
+    created_at?: any,
+    page?:number,
+    perPage?:number,
+    field?:any,
+    order?:any,
+  ): Promise<{ data: any[], total: number }> {
     console.log(created_at);
     try {
       //console.log("searchdevice");
       const userId = await this.getUserIdByEmail(email);
+      const sort = [];
+      if (field && order) {
+        sort.push([field, order]); 
+      } else {
+        sort.push(['id', 'ASC']);
+      } 
+      const total = await this.OwnerFixedDeviceModel.count({
+        where: {
+          user_id: userId,
+        },
+      });
       const whereClause: any = {
         [Op.and]: [
           {
@@ -123,7 +153,7 @@ export class OwnersFixedDevicesService {
         });
       }
 
-      const devices = await this.OwnerFixedDeviceModel.findAll({
+      const data = await this.OwnerFixedDeviceModel.findAll({
         where: whereClause,
         attributes: [
           'id',
@@ -147,8 +177,12 @@ export class OwnersFixedDevicesService {
           numQuantity: quantity,
           numQuery: query,
         },
+        order: sort,
+        offset:((page-1)*perPage), 
+        limit : perPage,
+        subQuery:false, 
       });
-      return devices;
+      return {data, total};
     } catch (error) {
       throw error;
     }
@@ -191,6 +225,9 @@ export class OwnersFixedDevicesService {
       }
       
     } catch (error) {
+      if(error.message="USER IS ASSOCIATED WITH THE DEVICE"){
+        throw(error);
+      }
       console.error(error);
 
     }
@@ -226,11 +263,33 @@ export class OwnersFixedDevicesService {
     }
   }
 
-  async updateFixedDeviceById(id: string, deviceData: any): Promise<any> {
+  async updateFixedDeviceById(id: string, deviceData: any,email:string): Promise<any> {
     try {
       const ParsedId = parseInt(id, 10);
+      const userId = await this.getUserIdByEmail(email);
+      const repeatingDevice =
+      await this.OwnerFixedDeviceModel.findOne({
+        where: {
+          user_id : userId,
+          id: {
+            [Op.not]: ParsedId,
+          },
 
-      // First, check if the fixed device with the given ID exists
+        },
+        include: [
+          {
+            model: FixedDevice,
+            where: {
+              name: deviceData.device_name,
+              type: deviceData.device_type,
+            },
+          },
+        ],
+      });
+      if (repeatingDevice) {
+        throw new Error('You already have a fixed device with the same name and type.');
+      }
+
       const existingFixedDevice = await this.OwnerFixedDeviceModel.findOne({
         where: {
           id: ParsedId,
@@ -238,7 +297,7 @@ export class OwnersFixedDevicesService {
       });
 
       if (!existingFixedDevice) {
-        return null; // Fixed device not found
+        return null;
       }
 
       await existingFixedDevice.update({
@@ -246,20 +305,17 @@ export class OwnersFixedDevicesService {
         updated_at: new Date(),
       });
 
-      // Find the associated FixedDevice record
       const associatedFixedDevice = await FixedDevice.findByPk(
         existingFixedDevice.fixed_device_id
       );
 
       if (associatedFixedDevice) {
-        // Update the FixedDevice record
         await associatedFixedDevice.update({
           type: deviceData.device_type,
           name: deviceData.device_name,
         });
       }
 
-      // Return the updated OwnerFixedDevice
       return existingFixedDevice;
     } catch (error) {
       throw error;
@@ -269,7 +325,6 @@ export class OwnersFixedDevicesService {
     try {
       const ParsedId = parseInt(id, 10);
 
-      // Find the OwnerFixedDevice record with the given ID
       const existingFixedDevice = await this.OwnerFixedDeviceModel.findOne({
         where: {
           id: ParsedId,
@@ -277,23 +332,20 @@ export class OwnersFixedDevicesService {
       });
 
       if (!existingFixedDevice) {
-        return false; // Fixed device not found
+        return false;
       }
 
-      // Find the associated FixedDevice record
       const associatedFixedDevice = await FixedDevice.findByPk(
         existingFixedDevice.fixed_device_id
       );
 
       if (associatedFixedDevice) {
-        // Delete the associated FixedDevice record
         await associatedFixedDevice.destroy();
       }
 
-      // Delete the OwnerFixedDevice record
       await existingFixedDevice.destroy();
 
-      return true; // Deletion successful
+      return true;
     } catch (error) {
       throw error;
     }

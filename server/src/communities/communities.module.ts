@@ -13,12 +13,13 @@ import { UserRole } from 'src/database/models/users_roles';
 import { Role } from 'src/database/models/roles.model';
 import { Permission } from 'src/database/models/permissions.model';
 import { UserPermission } from 'src/database/models/users_permissions.model';
+import { UserPermissionsService } from 'src/user/user-permissions.service';
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([Community, User, UserCommunity, UserRole, Role]),
+    SequelizeModule.forFeature([Community, User, UserCommunity, UserRole, Role, Permission, UserPermission]),
   ],
   controllers: [CommunitiesController],
-  providers: [CommunitiesService, UserCommunityService, GoogleService, UserService, UserRolesService]
+  providers: [CommunitiesService, UserCommunityService, GoogleService, UserService, UserRolesService, UserPermissionsService]
 })
 export class CommunitiesModule { }

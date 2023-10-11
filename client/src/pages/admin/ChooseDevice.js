@@ -1,22 +1,17 @@
 // DeviceInfo.js
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import React from "react";
 import {
   Container,
-  useMediaQuery,
   Box,
   Typography,
   Button,
 } from "@mui/material";
-
-// import { MyBar } from "../../components/Drawer";
 import MultiCardList from "../../components/MultiCardList";
 import { deviceItemData } from "../../assets/static/mockData/device.mockData";
-// import { drawer_new_data } from "../../assets/static/mockData/new_data";
+
 export const ChooseDevice = () => {
-  const isLgScreen = useMediaQuery((theme) => theme.breakpoints.down("lg"));
 
   const [selectedCard, setSelectedCard] = useState(null);
 
@@ -32,7 +27,6 @@ export const ChooseDevice = () => {
   // ստուգում ենք card-ը selected է թե ոչ
   const nextButtonEnabled = selectedCard !== null;
 
-  // Access selectedCard properties using optional chaining
   const selectedDeviceType = selectedCard ? selectedCard.link : "";
   console.log(selectedCard);
   console.log(selectedDeviceType);
@@ -47,7 +41,6 @@ export const ChooseDevice = () => {
         height: "90vh",
       }}
     >
-      {/* {!isLgScreen && <MyBar drawerData={drawer_new_data} />} */}
       <Container
         sx={{
           m: "auto",

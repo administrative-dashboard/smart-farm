@@ -1,11 +1,6 @@
 //AppBar.js
 import * as React from "react";
-import {
-  AppBar,
-  TitlePortal,
-  UserMenu,
-  LocalesMenuButton,
-} from "react-admin";
+import { AppBar, TitlePortal, UserMenu, LocalesMenuButton } from "react-admin";
 import { MenuItem, ListItemIcon, Typography, Avatar } from "@mui/material";
 import ContactPageIcon from "@mui/icons-material/ContactPage";
 import Face6Icon from "@mui/icons-material/Face6";
@@ -14,13 +9,12 @@ import { SigninButton } from "./SigninButton";
 import { LogoutButton } from "./LogoutButton";
 import { ProfileButton } from "./ProfileButton";
 import axios from "axios";
-import { API_URL } from "../consts";
-import { 
-  getJwtTokenFromCookies, 
-  getUserInfoFromCookies 
+import {
+  getJwtTokenFromCookies,
 } from "../providers/authUtils";
 import { authProvider } from "../providers/authPovider";
 
+const API_URL = process.env.REACT_APP_API_URL;
 const MyCustomIcon = ({ profileImage }) => (
   <Avatar
     sx={{
@@ -36,28 +30,29 @@ export const MyAppBar = () => {
   const [profileImage, setProfileImage] = React.useState(null);
   const [email, setEmail] = React.useState(null);
   const isAuthenticated = getJwtTokenFromCookies() ? true : false;
-React.useEffect(() => {
-  const fetchUserInfo = () => {
-    axios.get(`${API_URL}/user/info`, {
-      headers: {
-        Authorization: `Bearer ${getJwtTokenFromCookies()}`
-      }
-    })
-    .then(response => {
-      setUser(response.data);
-      setProfileImage(response.data.profile_image);
-      setEmail(response.data.email);
-    })
-    .catch(error => {
-      console.error("Error fetching user info:", error);
-      authProvider.logout();
-    });
-  };
+  React.useEffect(() => {
+    const fetchUserInfo = () => {
+      axios
+        .get(`${API_URL}/user/info`, {
+          headers: {
+            Authorization: `Bearer ${getJwtTokenFromCookies()}`,
+          },
+        })
+        .then((response) => {
+          setUser(response.data);
+          setProfileImage(response.data.profile_image);
+          setEmail(response.data.email);
+        })
+        .catch((error) => {
+          console.error("Error fetching user info:", error);
+          authProvider.logout();
+        });
+    };
 
-  if (isAuthenticated) {
-    fetchUserInfo();
-  }
-}, []);
+    if (isAuthenticated) {
+      fetchUserInfo();
+    }
+  }, []);
 
   return (
     <AppBar
@@ -65,14 +60,12 @@ React.useEffect(() => {
       sx={{ p: 0 }}
       userMenu={
         isAuthenticated ? (
-          <UserMenu
-          icon={<MyCustomIcon profileImage={profileImage} />}
-        >
-            <MenuItem   >
+          <UserMenu icon={<MyCustomIcon profileImage={profileImage} />}>
+            <MenuItem>
               <ListItemIcon>
                 <ContactPageIcon fontSize="small" />
               </ListItemIcon>
-              <ProfileButton/> 
+              <ProfileButton />
             </MenuItem>
             <MenuItem>
               <ListItemIcon>
@@ -101,4 +94,3 @@ React.useEffect(() => {
     </AppBar>
   );
 };
-

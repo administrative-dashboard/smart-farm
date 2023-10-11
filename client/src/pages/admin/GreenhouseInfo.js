@@ -1,26 +1,8 @@
 import React from "react";
 import Table from "../../components/Table";
-import {
-  NumberInput,
-  List,
-  Datagrid,
-  TextField,
-  NumberField,
-  EditButton,
-  DeleteButton,
-  TextInput,
-} from "react-admin";
-import { HomeRedirectButton } from "../../components/HomeRedirectButton";
 import ExportButton from "../../components/ExportButton";
 import { ResetFilters } from "../../components/ResetFilters";
 import SearchButton from "../../components/SearchButton";
-const Filter = [
-  <TextInput label="Search" source="q" alwaysOn />,
-  <TextInput label="name" source="name" />,
-  <NumberInput label="size" source="type" />,
-  <TextInput label="description" source="description" />,
-  <TextInput label="Location" source="Location" />,
-];
 
 const columns = [
   { field: "id", headerName: "ID", width: 90, justifyContent: "center" },

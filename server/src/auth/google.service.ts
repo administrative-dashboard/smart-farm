@@ -14,8 +14,7 @@ export class GoogleService {
       return response.data.email;
     } catch (error) {
       console.error('Error fetching user info:', error);
-      throw new UnauthorizedException(); 
-      // throw error;
+      throw new UnauthorizedException();
     }
   }
 }

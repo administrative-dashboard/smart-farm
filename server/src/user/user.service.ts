@@ -1,7 +1,6 @@
 // user.service.ts
 
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { Injectable } from '@nestjs/common';
 import { User } from 'src/database/models/users.model';
 import { InjectModel } from '@nestjs/sequelize';
 import { UserRole } from 'src/database/models/users_roles';
@@ -12,9 +11,9 @@ import { Permission } from 'src/database/models/permissions.model';
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel(User) 
-    private readonly userModel: typeof User,
-  ) {}
+    @InjectModel(User)
+    private readonly userModel: typeof User
+  ) { }
 
   async getUserInfoByEmail(email: string) {
     try {
@@ -64,9 +63,9 @@ export class UserService {
         ],
       });
       if (!user) {
-        return null; 
+        return null;
       }
-  
+
       const data = {
         id: user.id,
         name: user.name,
@@ -80,117 +79,109 @@ export class UserService {
       throw error;
     }
   }
-  
 
+  async updateUserById(id: string, data: any): Promise<any> {
+    try {
+      const ParsedId = parseInt(id, 10);
 
-  async updateUserById(id: string, data: any): Promise < any > {
-  try {
-    const ParsedId = parseInt(id, 10);
-
-    const user = await User.findOne({
-      where: {
-        id: ParsedId,
-      },
-      include: [
-        {
-          model: UserRole,
-          include: [Role],
+      const user = await User.findOne({
+        where: {
+          id: ParsedId,
         },
-        {
-          model: UserPermission,
-          include: [Permission],
-        },
-        
-      ],
-      
-    });
+        include: [
+          {
+            model: UserRole,
+            include: [Role],
+          },
+          {
+            model: UserPermission,
+            include: [Permission],
+          },
+        ],
+      });
 
-    if(!user) {
-      return null;
-    }
-  
+      if (!user) {
+        return null;
+      }
+
       await user.update({
-      name: data.name,
-      phone_number: data.phone_number,
-    });
+        name: data.name,
+        phone_number: data.phone_number,
+      });
 
-    const updatedRoles = data.roles || [];
-    const currentRoles = user.users_roles.map((userRole) => userRole.roles.value);
+      const updatedRoles = data.roles || [];
+      const currentRoles = user.users_roles.map(
+        (userRole) => userRole.roles.value
+      );
 
-    const updatedPerms = data.permissions || [];
-    const currentPerms = user.users_permissions.map((userPerm) => userPerm.permissions.value);
+      const updatedPerms = data.permissions || [];
+      const currentPerms = user.users_permissions.map(
+        (userPerm) => userPerm.permissions.value
+      );
 
-    const rolesToAdd = updatedRoles.filter((role) => !currentRoles.includes(role));
-    const rolesToRemove = currentRoles.filter((role) => !updatedRoles.includes(role));
+      const rolesToAdd = updatedRoles.filter(
+        (role) => !currentRoles.includes(role)
+      );
+      const rolesToRemove = currentRoles.filter(
+        (role) => !updatedRoles.includes(role)
+      );
 
-    const permsToAdd = updatedPerms.filter((perm) => !currentPerms.includes(perm));
-    const permsToRemove = currentPerms.filter((perm) => !updatedPerms.includes(perm));
+      const permsToAdd = updatedPerms.filter(
+        (perm) => !currentPerms.includes(perm)
+      );
+      const permsToRemove = currentPerms.filter(
+        (perm) => !updatedPerms.includes(perm)
+      );
 
-    for(const roleToRemove of rolesToRemove) {
-      const userRoleToRemove = user.users_roles.find((userRole) => userRole.roles.value === roleToRemove);
-      if (userRoleToRemove) {
-        await userRoleToRemove.destroy();
+      for (const roleToRemove of rolesToRemove) {
+        const userRoleToRemove = user.users_roles.find(
+          (userRole) => userRole.roles.value === roleToRemove
+        );
+        if (userRoleToRemove) {
+          await userRoleToRemove.destroy();
+        }
       }
-    }
 
-    for(const permToRemove of permsToRemove) {
-      const userPermToRemove = user.users_permissions.find((userPerm) => userPerm.permissions.value === permToRemove);
-      if (userPermToRemove) {
-        await userPermToRemove.destroy();
+      for (const permToRemove of permsToRemove) {
+        const userPermToRemove = user.users_permissions.find(
+          (userPerm) => userPerm.permissions.value === permToRemove
+        );
+        if (userPermToRemove) {
+          await userPermToRemove.destroy();
+        }
       }
-    }
 
       const rolesToAddPromises = rolesToAdd.map(async (roleToAdd) => {
-      const roleModel = await Role.findOne({ where: { value: roleToAdd } });
+        const roleModel = await Role.findOne({ where: { value: roleToAdd } });
 
-      if (roleModel) {
-        await UserRole.create({
-          user_id: user.id,
-          role_id: roleModel.id,
+        if (roleModel) {
+          await UserRole.create({
+            user_id: user.id,
+            role_id: roleModel.id,
+          });
+        }
+      });
+
+      const permsToAddPromises = permsToAdd.map(async (permToAdd) => {
+        const permModel = await Permission.findOne({
+          where: { value: permToAdd },
         });
-      }
-    });
 
-    const permsToAddPromises = permsToAdd.map(async (permToAdd) => {
-      const permModel = await Permission.findOne({ where: { value: permToAdd } });
+        if (permModel) {
+          await UserPermission.create({
+            user_id: user.id,
+            permission_id: permModel.id,
+          });
+        }
+      });
 
-      if (permModel) {
-        await UserPermission.create({
-          user_id: user.id,
-          permission_id: permModel.id,
-        });
-      }
-    });
+      const allPromises = [...rolesToAddPromises, ...permsToAddPromises];
 
-    
-    const allPromises = [...rolesToAddPromises, ...permsToAddPromises];
+      await Promise.all(allPromises);
 
-    await Promise.all(allPromises);
-
-    return user;
-  } catch(error) {
-    throw error;
+      return user;
+    } catch (error) {
+      throw error;
+    }
   }
 }
-  
-}
-
-
-
-// @Injectable()
-// export class UserService {
-//   constructor(private readonly jwtService: JwtService) {}
-
-  // async getUserInfo(jwtToken: string) {
-  //   try {
-  //     const payload = this.jwtService.verify(jwtToken);
-  //     const user = await User.findOne({ where: { id: payload.user_id } });
-  //     if (!user) {
-  //       throw new NotFoundException('User not found');
-  //     }
-  //     return user;
-  //   } catch (error) {
-  //     throw new NotFoundException('Invalid token');
-  //   }
-  // }
-// }

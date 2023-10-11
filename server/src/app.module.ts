@@ -1,5 +1,5 @@
 //app.module.ts
-import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
@@ -26,18 +26,24 @@ import { AuthModule } from './auth/auth.module';
 import { DeviceUsageStatisticsCommunities } from './database/models/device_usage_statistics_communities.model';
 import { DeviceUsageStatisticsFields } from './database/models/device_usage_statistics_fields.model';
 import { DeviceUsageStatisticsGreenhouses } from './database/models/device_usage_statistics_greenhouses.model';
-import { PortableDevicesController } from './owner-portable-devices/owners-portable-devices.controller';
-import { OwnersPortableDevicesService } from './owner-portable-devices/owners-portable-devices.service';
 import { OwnerPortableDeviceModule } from './owner-portable-devices/owner-portable-devices.module';
 import { UserModule } from './user/user.module';
 import { CommunitiesModule } from './communities/communities.module';
-import { AuthMiddleware } from './middlewares/auth/auth.middleware';
-import { UserController } from './user/user.controller';
 import { OwnerFixedDeviceModule } from './owner-fixed-devices/owner-fixed-devices.module';
 import { UserPermission } from './database/models/users_permissions.model';
+import { OwnerFieldsModule } from './owner-fields/owner-fields.module';
+import { MeasurementUnitsModule } from './measurement-units/measurement-units.module';
+import { OwnerGreenhousesModule } from './owner-greenhouses/owner-greenhouses.module';
+import { OwnerProductModule } from './owner-products/products.module';
+import { OwnerProduct } from './database/models/owners_products.model'
+import { Product } from './database/models/product.model';
+import { ProductType } from './database/models/product_types.model';
+
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      envFilePath: `.${process.env.NODE_ENV}.env`
+    }),
     SequelizeModule.forRoot({
       dialect: 'postgres',
       host: process.env.PG_HOST,
@@ -61,14 +67,16 @@ import { UserPermission } from './database/models/users_permissions.model';
         OwnerField,
         OwnerGreenhouse,
         PortableDevice,
-        DeviceRequestHistory,
         ScheduleDevice,
         DeviceUsageStatisticsCommunities,
         DeviceUsageStatisticsFields,
         DeviceUsageStatisticsGreenhouses,
         OwnerFixedDevice,
         OwnerPortableDevice,
-        UserPermission
+        UserPermission,
+        Product,
+        ProductType,
+        OwnerProduct
       ],
     }),
     AuthModule,
@@ -76,19 +84,12 @@ import { UserPermission } from './database/models/users_permissions.model';
     UserModule,
     CommunitiesModule,
     OwnerFixedDeviceModule,
+    OwnerFieldsModule,
+    MeasurementUnitsModule,
+    OwnerGreenhousesModule,
+    OwnerProductModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-// export class AppModule implements NestModule {
-//   configure(consumer: MiddlewareConsumer) {
-//     consumer.apply(AuthMiddleware).forRoutes('*'); 
-//   }
-// }
-/* @Module({
-  imports: [],
-  controllers: [FixedDevicesController], // Include the controller here
-  providers: [],
-}) */
-
-export class AppModule {}
+export class AppModule { }

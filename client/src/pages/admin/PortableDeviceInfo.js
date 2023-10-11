@@ -1,17 +1,6 @@
 import React from "react";
 import Table from "../../components/Table";
-import {
-  NumberInput,
-  List,
-  Datagrid,
-  TextField,
-  NumberField,
-  EditButton,
-  DeleteButton,
-  TextInput,
-} from "react-admin";
-// Update the following imports based on your actual directory structure
-import { HomeRedirectButton } from "../../components/HomeRedirectButton";
+import { NumberInput, TextInput } from "react-admin";
 import { ResetFilters } from "../../components/ResetFilters";
 import ExportButton from "../../components/ExportButton";
 import SearchButton from "../../components/SearchButton";

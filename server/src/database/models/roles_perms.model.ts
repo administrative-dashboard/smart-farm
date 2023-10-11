@@ -1,5 +1,5 @@
 // users_roles.model.ts
-import { Column, Model, Table, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import { Column, Model, Table, ForeignKey } from 'sequelize-typescript';
 import { Permission } from './permissions.model';
 import { Role } from './roles.model';
 
@@ -15,10 +15,4 @@ export class RolePermission extends Model<RolePermission> {
   @ForeignKey(() => Permission)
   @Column
   permission_id: number;
-
-  // @BelongsTo(() => Role)
-  // declare roles: Role;
-
-  // @BelongsTo(() => Permission)
-  // declare permissions: Permission;
 }
