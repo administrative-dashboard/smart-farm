@@ -160,7 +160,7 @@ export const UserList = (props) => {
           <List
             {...props}
             data={data}
-            title={communityName}
+            title=" "
             filters={<UserFilter />}
           >
             <Datagrid>
