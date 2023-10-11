@@ -253,7 +253,60 @@ cd server_example/
 npm install
 npm run server
 ```
+### Grafana installation
+ ```bash
+ sudo apt-get install -y apt-transport-https software-properties-common wget
+ sudo mkdir -p /etc/apt/keyrings/
+ wget -q -O - https://apt.grafana.com/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/grafana.gpg > /dev/null
+ echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
+ sudo apt-get update
+ # Installs the latest OSS release:
+ sudo apt-get install grafana
+ ```
+Modify Grafana Configuration:
+Open the /etc/grafana/grafana.ini configuration file.
+Find the http_port setting (default is 3000) and change it to run on port 7000.
+Locate the allow_embedding setting and change it from false to true.
+Ensure that you uncomment these lines if they are originally commented out.
+Ensure to do 
+```bash
+sudo systemctl restart grafana-server
+```
+These changes will enable Grafana to run on port 7000 and allow for embedding of Grafana dashboards.
 
+```bash
+#to run the grafana server automatically when system boots
+sudo systemctl enable grafana-server
+sudo systemctl start grafana-server
+
+ ```
+![Alt Text](./client/src/assets/static/1)
+
+ Default password for grafana is "admin" for admin user. It will ask you to change the password for security purposes. The default password for the Grafana admin user is "admin." You will be prompted to change this password for security reasons.
+ Before creating a datasource, set up a dedicated user with select privileges in Postgresql:
+ ```bash
+CREATE USER grafana WITH PASSWORD 'grafana';
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO grafana;
+ ```
+
+When configuring your datasource, use the following details:
+
+Host: localhost:5432
+Database: smart_farm
+User: grafana
+Password: grafana
+
+![Alt Text](./client/src/assets/static/2.png)
+Copying Datasource UID:
+After configuring your datasource, copy the datasource UID from the window.
+Update Configuration Files:
+Open the ./grafana/devices.json and ./grafana/fields-greenhouses.json files.
+Replace the existing datasource UID in both files with the UID you copied earlier.
+Import Dashboards:
+In Grafana, navigate to the "Import Dashboard" section.
+Upload the devices.json and fields-greenhouses.json files.
+Visualize Your Data:
+Once imported, you will now have access to the visualizations and dashboards in Grafana, allowing you to explore and analyze your data.
 
 ## Usage
 

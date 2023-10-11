@@ -26,7 +26,7 @@
       {
         "datasource": {
           "type": "postgres",
-          "uid": "fa44b830-b606-4be7-8cce-bfef3c6280a4"
+          "uid": "fa32342b-7faf-4167-bd4e-40e3a6c44299"
         },
         "fieldConfig": {
           "defaults": {
@@ -104,7 +104,7 @@
           {
             "datasource": {
               "type": "postgres",
-              "uid": "fa44b830-b606-4be7-8cce-bfef3c6280a4"
+              "uid": "fa32342b-7faf-4167-bd4e-40e3a6c44299"
             },
             "editorMode": "code",
             "format": "table",
@@ -136,7 +136,7 @@
       {
         "datasource": {
           "type": "postgres",
-          "uid": "fa44b830-b606-4be7-8cce-bfef3c6280a4"
+          "uid": "fa32342b-7faf-4167-bd4e-40e3a6c44299"
         },
         "fieldConfig": {
           "defaults": {
@@ -188,7 +188,7 @@
           {
             "datasource": {
               "type": "postgres",
-              "uid": "fa44b830-b606-4be7-8cce-bfef3c6280a4"
+              "uid": "fa32342b-7faf-4167-bd4e-40e3a6c44299"
             },
             "editorMode": "code",
             "format": "table",
@@ -220,7 +220,7 @@
       {
         "datasource": {
           "type": "postgres",
-          "uid": "fa44b830-b606-4be7-8cce-bfef3c6280a4"
+          "uid": "fa32342b-7faf-4167-bd4e-40e3a6c44299"
         },
         "fieldConfig": {
           "defaults": {
@@ -296,7 +296,7 @@
           {
             "datasource": {
               "type": "postgres",
-              "uid": "fa44b830-b606-4be7-8cce-bfef3c6280a4"
+              "uid": "fa32342b-7faf-4167-bd4e-40e3a6c44299"
             },
             "editorMode": "code",
             "format": "table",
@@ -328,7 +328,7 @@
       {
         "datasource": {
           "type": "postgres",
-          "uid": "fa44b830-b606-4be7-8cce-bfef3c6280a4"
+          "uid": "fa32342b-7faf-4167-bd4e-40e3a6c44299"
         },
         "fieldConfig": {
           "defaults": {
@@ -382,7 +382,7 @@
           {
             "datasource": {
               "type": "postgres",
-              "uid": "fa44b830-b606-4be7-8cce-bfef3c6280a4"
+              "uid": "fa32342b-7faf-4167-bd4e-40e3a6c44299"
             },
             "editorMode": "code",
             "format": "table",
@@ -426,7 +426,7 @@
           },
           "datasource": {
             "type": "postgres",
-            "uid": "fa44b830-b606-4be7-8cce-bfef3c6280a4"
+            "uid": "fa32342b-7faf-4167-bd4e-40e3a6c44299"
           },
           "definition": "select name from communities",
           "hide": 0,
@@ -449,7 +449,7 @@
           },
           "datasource": {
             "type": "postgres",
-            "uid": "fa44b830-b606-4be7-8cce-bfef3c6280a4"
+            "uid": "fa32342b-7faf-4167-bd4e-40e3a6c44299"
           },
           "definition": "select created_at from owners_portable_devices",
           "hide": 0,
@@ -473,7 +473,7 @@
           },
           "datasource": {
             "type": "postgres",
-            "uid": "fa44b830-b606-4be7-8cce-bfef3c6280a4"
+            "uid": "fa32342b-7faf-4167-bd4e-40e3a6c44299"
           },
           "definition": "select created_at from owners_portable_devices",
           "hide": 0,
