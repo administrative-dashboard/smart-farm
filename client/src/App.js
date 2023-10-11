@@ -375,6 +375,7 @@ const App = () => {
 
       return answer.length > 0 ? answer : <div>...loading</div>;
     };
+  }
     return (
       <>
         {isLoading ? (
@@ -394,6 +395,6 @@ const App = () => {
       </>
     );
   };
-}
+
 
 export default App;
