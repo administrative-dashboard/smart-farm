@@ -1,0 +1,48 @@
+#docker-compose.yaml
+version: '3.0'
+services:
+  client:
+    container_name: client
+    build:
+      context: ./client
+      dockerfile: Dockerfile.local
+    env_file:
+      - .development.env
+    volumes:
+      - ./client:/usr/app
+    restart: always
+    ports:
+      - 3000:3000
+    depends_on:
+      - server
+    command: "npm start"
+  server:
+    container_name: server
+    build:
+      context: ./server
+      dockerfile: Dockerfile.local
+    volumes:
+      - ./server:/srv/app
+      # - /app/node_modules
+    restart: always
+    env_file:
+      - .development.env
+    ports:
+      - 5000:5000
+    command: npm run start:dev
+    depends_on:
+      - postgres
+  postgres:
+    container_name: postgres
+    image: postgres:12
+    restart: always
+    env_file:
+      - .development.env
+    environment:
+      PG_DATA: /var/lib/postgresql/data
+    ports:
+      - 3030:5432  # Port mapping to resolve conflicts
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:
