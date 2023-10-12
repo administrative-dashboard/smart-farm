@@ -27,6 +27,8 @@ It's important to keep track of the dependencies used in your project. Here's a 
 | PostgreSQL         | 14.9        | Relational database system    |
 | @nestjs/core       | 12.7        | Node.js framework             |
 
+## Installation
+
 ## PostgreSQL Database Setup
 
 Follow these steps to set up your PostgreSQL database for the Smart Farm project:
@@ -64,10 +66,6 @@ Follow these steps to set up your PostgreSQL database for the Smart Farm project
     ```
 
 You have now created a PostgreSQL user named `farm` with the password '123' and granted them the ability to create databases. Additionally, you've created a database named `smart_farm` and granted all privileges on it to the `farm` user.
-
-
-
-## Installation
 
 ### Client installation
 
