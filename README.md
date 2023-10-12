@@ -100,6 +100,14 @@ To install and run the server in development mode:
 cd server/
 npm install
 ```
+
+To run the server in production mode:
+
+```bash
+cd server/
+npm install
+npm start
+```
 Execute the following command to run the migrations
 ```bash
 npx sequelize db:migrate
@@ -107,59 +115,6 @@ npx sequelize db:migrate
 Use the following command to execute all the available seeders:
 ```bash
 npx sequelize db:seed:all
-```
-
-To run the server in production mode:
-
-```bash
-cd server/
-npm install
-npm start
-```
-
-
-You have now created a PostgreSQL user named `farm` with the password '123' and granted them the ability to create databases. Additionally, you've created a database named `smart_farm` and granted all privileges on it to the `farm` user.
-
-
-
-## Installation
-
-### Client installation
-
-To install and run the client in development mode:
-
-```bash
-cd client/
-npm install
-npm run start
-```
-
-To install and run the client in production mode:
-```bash
-cd client/
-npm install
-client-production build
-npm run build
-serve -s build
-server -production
-npm start
-```
-### Server installation
-
-To install and run the server in development mode:
-
-```bash
-cd server/
-npm install
-npm run start:dev
-```
-
-To run the server in production mode:
-
-```bash
-cd server/
-npm install
-npm start
 ```
 
 ### Grafana installation
