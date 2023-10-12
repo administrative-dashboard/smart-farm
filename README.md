@@ -5,6 +5,7 @@
 Smart Farm is an agricultural monitoring system consisting of a web-based dashboard, user authentication, attribute-based access control (ABAC), real-time data visualization, and technical documentation.
 
 ## Table of Contents
+- [Dependencies and Versions](#dependencies-and-versions)
 - [Installation](#installation)
   - [PostgreSQL Database Setup](#postgresql-database-setup)
   - [Client Installation](#client-installation)
