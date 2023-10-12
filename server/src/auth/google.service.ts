@@ -6,7 +6,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 export class GoogleService {
   async getUserInfo(accessToken: string): Promise<any> {
     try {
-      const response = await axios.get('https://www.googleapis.com/oauth2/v2/userinfo', {
+      const response = await axios.get(
+        'https://www.googleapis.com/oauth2/v2/userinfo', {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
