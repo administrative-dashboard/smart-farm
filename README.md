@@ -11,10 +11,6 @@ Smart Farm is an agricultural monitoring system consisting of a web-based dashbo
   - [Server Installation](#server-installation)
   - [Grafana Installation](#grafana-installation)
 - [Folder Structure](#folder-structure)
-- [Usage](#usage)
-- [Troubleshooting](#troubleshooting)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Dependencies and Versions
 
