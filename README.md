@@ -317,4 +317,4 @@ You can find the project presentation [here](https://www.canva.com/design/DAFwrZ
 
 ## Database Diagram
 
-We've created a database diagram using dbdiagram.io. You can view it [here](https://dbdiagram.io/d/your-diagram-id).
+We've created a database diagram using dbdiagram.io. You can view it [here](https://dbdiagram.io/d/64ee441a02bd1c4a5ea1cdc6).
