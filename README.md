@@ -12,6 +12,8 @@ Smart Farm is an agricultural monitoring system consisting of a web-based dashbo
   - [Server Installation](#server-installation)
   - [Grafana Installation](#grafana-installation)
 - [Folder Structure](#folder-structure)
+- [Presentation](#presentation)
+- [Database Diagram](#database-diagram)
 
 ## Dependencies and Versions
 
@@ -308,3 +310,11 @@ The server folder contains the backend code for the application.
 └── tsconfig.json
 
 ```
+
+## Presentation
+
+You can find the project presentation [here](https://www.canva.com/design/DAFwrZMEAIE/rAef5RKp_UMyXDJfxhJxyg/view?utm_content=DAFwrZMEAIE&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink)
+
+## Database Diagram
+
+We've created a database diagram using dbdiagram.io. You can view it [here](https://dbdiagram.io/d/your-diagram-id).
