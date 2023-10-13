@@ -313,7 +313,7 @@ The server folder contains the backend code for the application.
 
 ## Presentation
 
-You can find the project presentation [here](https://www.canva.com/design/DAFwrZMEAIE/rAef5RKp_UMyXDJfxhJxyg/view?utm_content=DAFwrZMEAIE&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink)
+You can find the project presentation [here](https://www.canva.com/design/DAFwrZMEAIE/rAef5RKp_UMyXDJfxhJxyg/view?utm_content=DAFwrZMEAIE&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink).
 
 ## Database Diagram
 
