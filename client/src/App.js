@@ -10,18 +10,13 @@ import ArticleIcon from "@mui/icons-material/Article";
 import polyglotI18nProvider from "ra-i18n-polyglot";
 import englishMessages from "ra-language-english";
 import armenianMessages from "ra-language-armenian";
-import { BrowserRouter, Route } from "react-router-dom";
+import { Route } from 'react-router-dom';
 import { MainDashboard } from "./pages/MainDashboard";
-import { ImageField } from 'react-admin';
 import { Signin } from "./pages/auth/Signin";
 import { Signup } from "./pages/auth/Signup";
 import { Profile } from "./pages/auth/Profile";
-import { AdminDesktop } from "./pages/admin/Desktop";
 import { ChooseDevice } from "./pages/admin/ChooseDevice";
-import { ChooseCommunity } from "./pages/admin/ChooseCommunity";
 import { FixedDeviceShow } from "./pages/admin/FixedDeviceShow";
-import { UserShowAdm } from "./pages/admin/UserShow";
-import { UserListAdm } from "./pages/admin/UserList";
 import { FixedDeviceListAdm } from "./pages/admin/FixedDeviceListAdm";
 import { PortableDeviceListAdm } from "./pages/admin/PortableDeviceListAdm";
 import { PortableDeviceShow } from "./pages/admin/PortableDeviceShow";
@@ -42,8 +37,6 @@ import loadGif from "./assets/static/load.gif";
 import { FieldEdit } from "./pages/owner/FieldEdit";
 import { GreenhouseShow } from "./pages/admin/GreenhouseShow";
 import { GreenhouseListAdm } from "./pages/admin/GreenhouseList";
-import { ProductListAdm } from "./pages/admin/ProductList";
-import { ProductShow } from "./pages/admin/ProductListAdm";
 import { Contact } from "./pages/auth/Contact";
 import { UserList } from "./pages/CommunityManager/UserList";
 import { DesktopInfo } from "./pages/CommunityManager/DesktopInfo";
@@ -58,6 +51,9 @@ import { PortableDeviceStatisticsPage } from "./pages/CommunityManager/PortableD
 import { FixedDeviceStatisticsPage } from "./pages/CommunityManager/FixedDeviceStatistics"
 import { GreenhouseStatisticsPage } from "./pages/CommunityManager/GreenhouseStatistics"
 import { FieldStatisticsPage } from "./pages/CommunityManager/FieldStatistics"
+import { ProductCreate } from "./pages/owner/ProductCreate";
+import { ProductList } from "./pages/owner/ProductList";
+import { ProductEdit } from "./pages/owner/ProductEdit";
 
 const i18nProvider = polyglotI18nProvider(
   (locale) => (locale === "am" ? armenianMessages : englishMessages),
@@ -121,7 +117,6 @@ const App = () => {
   }, []);
 
   const role = roles;
-
 
   const commonResources = [
     <Resource
@@ -215,6 +210,12 @@ const App = () => {
       edit={FixedDeviceEdit}
       options={{ label: "Fixed device" }}
     />,
+    <Resource 
+      name="products"
+      list={ProductList}
+      edit={ProductEdit}
+      create={ProductCreate}
+    />,
   ];
   const CMResources = [
     <Resource
@@ -265,7 +266,8 @@ const App = () => {
       name="greenhouse_statistics"
       list={GreenhouseStatisticsPage}
       options={{ label: "Greenhouse Statistics" }}
-    />
+    />,
+    
   ];
   const AdminResources = [
     ...CMResources,
@@ -293,7 +295,6 @@ const App = () => {
       show={GreenhouseShow}
     />,
 
-    <Resource name="Product" list={ProductListAdm} show={ProductShow} />,
   ];
 
   const getdrw = () => {
@@ -352,7 +353,12 @@ const App = () => {
         icon={ArticleIcon}
         options={{ label: "Users" }}
       />,
-      <Resource name="Product" list={ProductListAdm} show={ProductShow} />,
+      <Resource 
+      name="products"
+      list={ProductList}
+      edit={ProductEdit}
+      create={ProductCreate}
+    />,
     ];
 
     const answer = [];
@@ -377,7 +383,7 @@ const App = () => {
     };
   }
     return (
-      <>
+      <div>
         {isLoading ? (
           <div className="loading-indicator" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <img src={loadGif} alt="Loading" />
@@ -392,7 +398,7 @@ const App = () => {
             {getprm()}
           </Admin>
         )}
-      </>
+      </div>
     );
   
 };
