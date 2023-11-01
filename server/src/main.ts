@@ -23,6 +23,7 @@ async function start() {
     .setDescription('Smart Farm API description')
     .setVersion('1.0')
     .addTag('smart_farm')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document);

@@ -21,7 +21,10 @@ import { UserService } from 'src/user/user.service';
 import { UserRolesService } from 'src/user/user-roles.service';
 import { RolesPermsGuard } from 'src/auth/guards/roles_perms.guard';
 import { RolesPerms } from 'src/auth/guards/roles_perms.decorator';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('communities')
+@ApiBearerAuth()
 @Controller('community')
 export class CommunitiesController {
   constructor(
@@ -32,6 +35,7 @@ export class CommunitiesController {
     private readonly userRoleService: UserRolesService
   ) { }
 
+  @ApiOperation({ summary: 'get info by communites'})
   @Get('info')
   @UseGuards(JwtAuthGuard)
   async getCommunityInfo() {
@@ -40,6 +44,7 @@ export class CommunitiesController {
 
   @Get('users')
   @UseGuards(JwtAuthGuard, RolesPermsGuard)
+  @ApiOperation({ summary: 'Find users from community. ADMIN, COMMUNITY_MANAGER, EDIT_ROLE only'})
   @RolesPerms('ADMIN', 'COMMUNITY_MANAGER', 'EDIT_ROLE')
   async getUsersFromCommunity(
     @Query('q') searchTerm: any,
@@ -85,6 +90,7 @@ export class CommunitiesController {
 
   @Get('users/:id')
   @UseGuards(JwtAuthGuard, RolesPermsGuard)
+  @ApiOperation({ summary: 'Find community by user_id. ADMIN, COMMUNITY_MANAGER, EDIT_ROLE only'})
   @RolesPerms('ADMIN', 'COMMUNITY_MANAGER', 'EDIT_ROLE')
   async getUserById(@Param('id') id: string) {
     try {
@@ -100,6 +106,7 @@ export class CommunitiesController {
     }
   }
 
+  @ApiOperation({ summary: 'Put community by user_id. ADMIN, COMMUNITY_MANAGER, EDIT_ROLE only'})
   @Put('users/:id')
   @UseGuards(JwtAuthGuard, RolesPermsGuard)
   @RolesPerms('ADMIN', 'COMMUNITY_MANAGER', 'EDIT_ROLE')

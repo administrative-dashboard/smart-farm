@@ -15,7 +15,13 @@ import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
 import { GoogleService } from 'src/auth/google.service';
 import { UserRolesService } from './user-roles.service';
 import { UserPermissionsService } from './user-permissions.service';
-
+import { ApiBearerAuth, ApiHeader, ApiOperation, ApiTags } from '@nestjs/swagger';
+@ApiBearerAuth()
+@ApiTags('users')
+@ApiHeader({
+  name: 'My Header',
+  description: 'A Custom Header'
+})
 @Controller('user')
 export class UserController {
   constructor(
@@ -26,6 +32,7 @@ export class UserController {
     private readonly userPermsService: UserPermissionsService
   ) { }
 
+  @ApiOperation({ summary: 'get info by user'})
   @Get('info')
   @UseGuards(JwtAuthGuard)
   async getUserInfo(@Request() req) {
@@ -43,6 +50,7 @@ export class UserController {
     }
   }
 
+  @ApiOperation({ summary: 'put user\'s info'})
   @Put('info')
   @UseGuards(JwtAuthGuard)
   async updateUserInfo(@Request() req, @Body() userData: any) {
@@ -72,6 +80,7 @@ export class UserController {
     }
   }
 
+  @ApiOperation({ summary: 'update user\'s phone_number'})
   @Put('updatephone')
   @UseGuards(JwtAuthGuard)
   async updateUserPhoneNumber(@Request() req, @Body() userData: any) {
@@ -93,6 +102,7 @@ export class UserController {
     }
   }
 
+  @ApiOperation({ summary: 'put user\'s community'})
   @Put('community')
   @UseGuards(JwtAuthGuard)
   async addCommunity(@Request() req, @Body() userData: any) {
