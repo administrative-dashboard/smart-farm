@@ -18,7 +18,10 @@ import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
 import { GoogleService } from 'src/auth/google.service';
 import { RolesPermsGuard } from 'src/auth/guards/roles_perms.guard';
 import { RolesPerms } from 'src/auth/guards/roles_perms.decorator';
+import { ApiBearerAuth,ApiTags} from '@nestjs/swagger'
 @Controller('fixed_devices')
+@ApiTags('fixed-devices')
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RolesPermsGuard)
 @RolesPerms('OWNER', 'EDIT_FIXED_DEVICE')
 export class FixedDevicesController {

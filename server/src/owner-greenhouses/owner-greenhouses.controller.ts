@@ -16,7 +16,9 @@ import { GoogleService } from 'src/auth/google.service';
 import { OwnerGreenhousesService } from './owner-greenhouses.service';
 import { RolesPermsGuard } from 'src/auth/guards/roles_perms.guard';
 import { RolesPerms } from 'src/auth/guards/roles_perms.decorator';
+import { ApiBearerAuth,ApiTags} from '@nestjs/swagger'
 @Controller('greenhouses')
+@ApiTags('greenhouses')
 @UseGuards(JwtAuthGuard, RolesPermsGuard)
 @RolesPerms('OWNER', 'EDIT_GREENHOUSE')
 export class OwnerGreenhousesController {

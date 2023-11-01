@@ -15,8 +15,9 @@ import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
 import { GoogleService } from 'src/auth/google.service';
 import { UserRolesService } from './user-roles.service';
 import { UserPermissionsService } from './user-permissions.service';
-
+import { ApiBearerAuth,ApiTags} from '@nestjs/swagger'
 @Controller('user')
+@ApiTags('users')
 export class UserController {
   constructor(
     private readonly userService: UserService,

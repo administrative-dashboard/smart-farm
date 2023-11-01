@@ -19,7 +19,10 @@ import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
 import { GoogleService } from 'src/auth/google.service';
 import { RolesPermsGuard } from 'src/auth/guards/roles_perms.guard';
 import { RolesPerms } from 'src/auth/guards/roles_perms.decorator';
+import { ApiBearerAuth,ApiTags,ApiOperation} from '@nestjs/swagger'
 @Controller('portable_devices')
+@ApiBearerAuth()
+@ApiTags('portable-devices')
 @UseGuards(JwtAuthGuard, RolesPermsGuard)
 @RolesPerms('OWNER', 'EDIT_PORTABLE_DEVICE')
 export class PortableDevicesController {
@@ -29,6 +32,7 @@ export class PortableDevicesController {
   ) { }
 
   @Get()
+  @ApiOperation({ summary: 'Get users all portable devices ' })
   async getPortableDevices(
     @Query('q') searchTerm: any,
     @Query('device_name') deviceName: any,
@@ -90,6 +94,7 @@ export class PortableDevicesController {
 
 
   @Get(':id')
+  @ApiOperation({ summary: 'Get users portable device  by id' })
   async getPortableDeviceById(@Param('id') id: string) {
     try {
       const portableDevice =
@@ -107,6 +112,7 @@ export class PortableDevicesController {
   }
 
   @Put(':id')
+  @ApiOperation({ summary: 'Update users portable device  by id' })
   async updatePortableDeviceById(
     @Request() req,
     @Param('id') id: string,
@@ -145,6 +151,7 @@ export class PortableDevicesController {
   }
 
   @Post('create')
+  @ApiOperation({ summary: 'Create portable device' })
   async createPortableDevice(@Body() deviceData: any, @Request() req, @Res() res) {
     try {
       console.log(deviceData);
@@ -175,6 +182,7 @@ export class PortableDevicesController {
 
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Delete users specified portable device  by id' })
   async deletePortableDeviceById(@Param('id') id: string) {
     try {
       const deleted =

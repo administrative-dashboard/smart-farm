@@ -17,8 +17,9 @@ import { ProductsService } from './products.service';
 import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
 import { GoogleService } from 'src/auth/google.service';
 
-
+import { ApiBearerAuth,ApiTags} from '@nestjs/swagger'
 @Controller('products')
+@ApiTags('products')
 @UseGuards(JwtAuthGuard)
 export class ProductsController {
   constructor(

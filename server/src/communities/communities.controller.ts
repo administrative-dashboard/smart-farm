@@ -21,8 +21,10 @@ import { UserService } from 'src/user/user.service';
 import { UserRolesService } from 'src/user/user-roles.service';
 import { RolesPermsGuard } from 'src/auth/guards/roles_perms.guard';
 import { RolesPerms } from 'src/auth/guards/roles_perms.decorator';
+import { ApiBearerAuth,ApiTags,ApiOperation} from '@nestjs/swagger'
 
 @Controller('community')
+@ApiTags('communities')
 export class CommunitiesController {
   constructor(
     private readonly communitiesService: CommunitiesService,
@@ -41,6 +43,7 @@ export class CommunitiesController {
   @Get('users')
   @UseGuards(JwtAuthGuard, RolesPermsGuard)
   @RolesPerms('ADMIN', 'COMMUNITY_MANAGER', 'EDIT_ROLE')
+  @ApiOperation({ summary: 'Get all users from community' })
   async getUsersFromCommunity(
     @Query('q') searchTerm: any,
     @Query('page') page: any,
