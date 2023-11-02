@@ -11,7 +11,9 @@ import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
 import { AccountMiddleware } from 'src/middlewares/auth/account.middleware';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('auth')
 @Controller('google')
 export class AuthController {
   constructor(

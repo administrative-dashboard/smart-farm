@@ -8,7 +8,6 @@ import {
   Res,
   Post,
   Body,
-  Logger,
   Param,
   Query,
   UseGuards,
@@ -19,6 +18,9 @@ import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
 import { GoogleService } from 'src/auth/google.service';
 import { RolesPermsGuard } from 'src/auth/guards/roles_perms.guard';
 import { RolesPerms } from 'src/auth/guards/roles_perms.decorator';
+import { ApiBearerAuth } from '@nestjs/swagger';
+
+@ApiBearerAuth()
 @Controller('portable_devices')
 @UseGuards(JwtAuthGuard, RolesPermsGuard)
 @RolesPerms('OWNER', 'EDIT_PORTABLE_DEVICE')
