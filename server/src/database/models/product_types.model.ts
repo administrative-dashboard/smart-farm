@@ -1,10 +1,5 @@
 // product_types.model.ts
-import {
-  Column,
-  Model,
-  Table,
-  HasMany,
-} from 'sequelize-typescript';
+import { Column, Model, Table, HasMany } from 'sequelize-typescript';
 import { Product } from './product.model';
 
 @Table({ tableName: 'product_types', timestamps: false })

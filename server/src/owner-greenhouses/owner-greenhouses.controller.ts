@@ -23,7 +23,7 @@ export class OwnerGreenhousesController {
   constructor(
     private readonly ownerGreenhousesService: OwnerGreenhousesService,
     private readonly googleService: GoogleService
-  ) { }
+  ) {}
   @Get()
   async getGreenhouses(
     @Query('q') searchTerm: any,
@@ -65,20 +65,21 @@ export class OwnerGreenhousesController {
         greenhouseLocation ||
         date
       ) {
-        const filteredGreenhouses = await this.ownerGreenhousesService.searchGreenhouses(
-          email,
-          searchTerm,
-          greenhouseName,
-          greenhouseSize,
-          greenhouseSizeMeasurement,
-          greenhouseDescription,
-          greenhouseLocation,
-          date,
-          page,
-          perPage,
-          field,
-          order
-        );
+        const filteredGreenhouses =
+          await this.ownerGreenhousesService.searchGreenhouses(
+            email,
+            searchTerm,
+            greenhouseName,
+            greenhouseSize,
+            greenhouseSizeMeasurement,
+            greenhouseDescription,
+            greenhouseLocation,
+            date,
+            page,
+            perPage,
+            field,
+            order
+          );
         console.log(filteredGreenhouses);
         return filteredGreenhouses;
       } else if (page && perPage) {
@@ -92,7 +93,7 @@ export class OwnerGreenhousesController {
             order
           );
         console.log('hello');
-        console.log("data", data);
+        console.log('data', data);
         return { data, total };
       }
     } catch (error) {
@@ -102,7 +103,8 @@ export class OwnerGreenhousesController {
   @Get(':id')
   async getFieldById(@Param('id') id: string) {
     try {
-      const greenhouse = await this.ownerGreenhousesService.getGreenhouseById(id);
+      const greenhouse =
+        await this.ownerGreenhousesService.getGreenhouseById(id);
       console.log(greenhouse);
       if (!greenhouse) {
         return { message: 'Field not found' };
@@ -115,24 +117,32 @@ export class OwnerGreenhousesController {
   }
 
   @Put(':id')
-  async updateGreenhouseById(@Request() req, @Param('id') id: string, @Body() greenhouseData: any, @Res() res) {
+  async updateGreenhouseById(
+    @Request() req,
+    @Param('id') id: string,
+    @Body() greenhouseData: any,
+    @Res() res
+  ) {
     try {
       console.log('Greenhouse data: ', greenhouseData);
       const accessToken = req.user.accessToken;
       const email = await this.googleService.getUserInfo(accessToken);
       console.log(greenhouseData);
-      const updatedGreenhouse = await this.ownerGreenhousesService.updateGreenhouseById(
-        id,
-        greenhouseData,
-        email,
-      );
+      const updatedGreenhouse =
+        await this.ownerGreenhousesService.updateGreenhouseById(
+          id,
+          greenhouseData,
+          email
+        );
 
       if (!updatedGreenhouse) {
         return { message: 'Field not found' };
       }
       res.status(200).json(updatedGreenhouse);
     } catch (error) {
-      if (error.message === 'You already have a greenhouse with the same name.') {
+      if (
+        error.message === 'You already have a greenhouse with the same name.'
+      ) {
         res.status(400).json({
           message: 'You already have a greenhouse with the same name.',
           status: 'error',
@@ -143,15 +153,17 @@ export class OwnerGreenhousesController {
           status: 'error',
         });
       }
-
     }
   }
 
-
   @Post('create')
-  async createGreenhouse(@Body() greenhouseData: any, @Request() req, @Res() res) {
+  async createGreenhouse(
+    @Body() greenhouseData: any,
+    @Request() req,
+    @Res() res
+  ) {
     try {
-      console.log("Greenhouse data: ", greenhouseData);
+      console.log('Greenhouse data: ', greenhouseData);
       const accessToken = req.user.accessToken;
       const email = await this.googleService.getUserInfo(accessToken);
       const result = await this.ownerGreenhousesService.createGreenhouse(
@@ -160,7 +172,9 @@ export class OwnerGreenhousesController {
       );
       res.status(200).json(result);
     } catch (error) {
-      if (error.message === 'You already have a greenhouse with the same name.') {
+      if (
+        error.message === 'You already have a greenhouse with the same name.'
+      ) {
         res.status(400).json({
           message: 'You already have a greenhouse with the same name.',
           status: 'error',

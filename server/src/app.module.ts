@@ -35,14 +35,14 @@ import { OwnerFieldsModule } from './owner-fields/owner-fields.module';
 import { MeasurementUnitsModule } from './measurement-units/measurement-units.module';
 import { OwnerGreenhousesModule } from './owner-greenhouses/owner-greenhouses.module';
 import { OwnerProductModule } from './owner-products/products.module';
-import { OwnerProduct } from './database/models/owners_products.model'
+import { OwnerProduct } from './database/models/owners_products.model';
 import { Product } from './database/models/product.model';
 import { ProductType } from './database/models/product_types.model';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: `.${process.env.NODE_ENV}.env`
+      envFilePath: `.${process.env.NODE_ENV}.env`,
     }),
     SequelizeModule.forRoot({
       dialect: 'postgres',
@@ -76,7 +76,7 @@ import { ProductType } from './database/models/product_types.model';
         UserPermission,
         Product,
         ProductType,
-        OwnerProduct
+        OwnerProduct,
       ],
     }),
     AuthModule,
@@ -92,4 +92,4 @@ import { ProductType } from './database/models/product_types.model';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

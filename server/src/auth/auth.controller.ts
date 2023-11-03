@@ -14,8 +14,7 @@ import { AccountMiddleware } from 'src/middlewares/auth/account.middleware';
 
 @Controller('google')
 export class AuthController {
-  constructor(
-    private readonly jwtService: JwtService) { }
+  constructor(private readonly jwtService: JwtService) {}
 
   @Get('redirect')
   @UseGuards(AuthGuard('google'))

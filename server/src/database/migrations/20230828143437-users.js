@@ -28,12 +28,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-
     };
 
     await queryInterface.createTable(tableName, columns);
   },
   down: async (queryInterface) => {
     await queryInterface.dropTable('users');
-  }
+  },
 };

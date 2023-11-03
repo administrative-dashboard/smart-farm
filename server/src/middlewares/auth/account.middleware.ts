@@ -11,7 +11,8 @@ export class AccountMiddleware implements NestMiddleware {
     const accessToken = req.headers.authorization;
 
     try {
-      const isValidToken = await this.googleAuthService.verifyAccessToken(accessToken);
+      const isValidToken =
+        await this.googleAuthService.verifyAccessToken(accessToken);
 
       if (!isValidToken) {
         return res.status(401).json({ message: 'Token is not valide' });

@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true,
       },
-       greenhouse_id: {
+      greenhouse_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
@@ -38,5 +38,5 @@ module.exports = {
   },
   down: async (queryInterface) => {
     await queryInterface.dropTable('device_usage_statistics_greenhouses');
-  }
+  },
 };

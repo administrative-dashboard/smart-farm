@@ -1,16 +1,16 @@
 'use strict';
 
-
 const { faker } = require('@faker-js/faker');
 module.exports = {
-
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     const ownersPortableDevicesData = [];
     const existingDevices = new Set();
 
     for (let i = 1; i <= 20; i++) {
       const isShared = faker.datatype.boolean();
-      const sharedQuantity = isShared ? faker.number.int({ min: 1, max: 5 }) : 0;
+      const sharedQuantity = isShared
+        ? faker.number.int({ min: 1, max: 5 })
+        : 0;
 
       let user_id, portable_device_id;
       do {
@@ -30,10 +30,14 @@ module.exports = {
         shared_quantity: sharedQuantity,
       });
     }
-    await queryInterface.bulkInsert('owners_portable_devices', ownersPortableDevicesData, {});
+    await queryInterface.bulkInsert(
+      'owners_portable_devices',
+      ownersPortableDevicesData,
+      {}
+    );
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete('owners_portable_devices', null, {});
   },
 };

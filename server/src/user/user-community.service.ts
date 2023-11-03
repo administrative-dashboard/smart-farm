@@ -18,10 +18,13 @@ export class UserCommunityService {
     @InjectModel(Community)
     private readonly communityModel: typeof Community,
     @InjectModel(User)
-    private readonly userModel: typeof User,
-  ) { }
+    private readonly userModel: typeof User
+  ) {}
 
-  async addUserToCommunity(userId: number, communityId: number): Promise<UserCommunity> {
+  async addUserToCommunity(
+    userId: number,
+    communityId: number
+  ): Promise<UserCommunity> {
     if (Number.isInteger(communityId) && communityId > 0) {
       const existingUserCommunity = await UserCommunity.findOne({
         where: {
@@ -77,16 +80,25 @@ export class UserCommunityService {
           },
         ],
       });
-      console.log("community", community.id)
+      console.log('community', community.id);
       if (!community || !community.user_communities) {
         console.log('Community or user_communities is undefined:', community);
         return { data: [], total: 0 };
       }
 
-      const userIDsInCommunity = community.user_communities.map((uc) => uc.user_id);
+      const userIDsInCommunity = community.user_communities.map(
+        (uc) => uc.user_id
+      );
 
-      if (!community || !community.user_communities || community.user_communities.length === 0) {
-        console.log('Community or user_communities is undefined or empty:', community);
+      if (
+        !community ||
+        !community.user_communities ||
+        community.user_communities.length === 0
+      ) {
+        console.log(
+          'Community or user_communities is undefined or empty:',
+          community
+        );
         return { data: [], total: 0 };
       }
       const users = await User.findAll({
@@ -121,13 +133,14 @@ export class UserCommunityService {
         email: user.email,
         phone_number: user.phone_number,
         roles: user.users_roles.map((userRole) => userRole.roles.value),
-        permissions: user.users_permissions.map((UserPerm) => UserPerm.permissions.value)
+        permissions: user.users_permissions.map(
+          (UserPerm) => UserPerm.permissions.value
+        ),
       }));
 
       const total = data.length;
       return { data, total };
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   async searchUsersInSameCommunity(
@@ -159,10 +172,19 @@ export class UserCommunityService {
         return { data: [], total: 0 };
       }
 
-      const userIDsInCommunity = community.user_communities.map((uc) => uc.user_id);
+      const userIDsInCommunity = community.user_communities.map(
+        (uc) => uc.user_id
+      );
 
-      if (!community || !community.user_communities || community.user_communities.length === 0) {
-        console.log('Community or user_communities is undefined or empty:', community);
+      if (
+        !community ||
+        !community.user_communities ||
+        community.user_communities.length === 0
+      ) {
+        console.log(
+          'Community or user_communities is undefined or empty:',
+          community
+        );
         return { data: [], total: 0 };
       }
 
@@ -210,7 +232,9 @@ export class UserCommunityService {
         email: user.email,
         phone_number: user.phone_number,
         roles: user.users_roles.map((userRole) => userRole.roles.value),
-        permissions: user.users_permissions.map((UserPerm) => UserPerm.permissions.value),
+        permissions: user.users_permissions.map(
+          (UserPerm) => UserPerm.permissions.value
+        ),
       }));
 
       const total = data.length;
@@ -221,4 +245,3 @@ export class UserCommunityService {
     }
   }
 }
-

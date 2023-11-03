@@ -1,9 +1,7 @@
 'use strict';
 
-
 const { faker } = require('@faker-js/faker');
 module.exports = {
-
   up: async (queryInterface, Sequelize) => {
     const ownersFixedDevicesData = [];
     const existingDevices = new Set();
@@ -25,7 +23,11 @@ module.exports = {
         updated_at: faker.date.recent(),
       });
     }
-    await queryInterface.bulkInsert('owners_fixed_devices', ownersFixedDevicesData, {});
+    await queryInterface.bulkInsert(
+      'owners_fixed_devices',
+      ownersFixedDevicesData,
+      {}
+    );
   },
 
   down: async (queryInterface, Sequelize) => {

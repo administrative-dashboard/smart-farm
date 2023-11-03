@@ -14,7 +14,7 @@ export class UserRolesService {
     private readonly rolesModel: typeof Role,
     @InjectModel(User)
     private readonly userModel: typeof User
-  ) { }
+  ) {}
 
   async getRolesByUserId(userId: number): Promise<string[] | null> {
     const userRoles = await this.userrolesModel.findAll({
@@ -35,9 +35,7 @@ export class UserRolesService {
     return null;
   }
 
-
   async getAllRoles() {
     return await this.rolesModel.findAll();
   }
 }
-

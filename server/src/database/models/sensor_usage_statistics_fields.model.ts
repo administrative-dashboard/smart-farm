@@ -1,8 +1,13 @@
+import {
+  Column,
+  Model,
+  Table,
+  DataType,
+  ForeignKey,
+  HasOne,
+} from 'sequelize-typescript';
 
-import { Column, Model, Table, DataType, ForeignKey, HasOne } from 'sequelize-typescript';
-
-
-@Table({ tableName: 'sensor_usage_statistics_fields', timestamps: false  })
+@Table({ tableName: 'sensor_usage_statistics_fields', timestamps: false })
 export class SensorUsageStatisticsFields extends Model<SensorUsageStatisticsFields> {
   @Column({ primaryKey: true, autoIncrement: true, allowNull: false })
   id: number;
@@ -12,5 +17,4 @@ export class SensorUsageStatisticsFields extends Model<SensorUsageStatisticsFiel
 
   @Column({})
   end_date: Date;
-
 }

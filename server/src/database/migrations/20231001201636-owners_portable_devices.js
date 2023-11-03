@@ -38,5 +38,5 @@ module.exports = {
   },
   down: async (queryInterface) => {
     await queryInterface.dropTable('owners_portable_devices');
-  }
+  },
 };

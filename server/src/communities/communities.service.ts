@@ -7,7 +7,7 @@ import { Community } from 'src/database/models/communities.model';
 export class CommunitiesService {
   constructor(
     @InjectModel(Community)
-    private readonly communityModel: typeof Community,
+    private readonly communityModel: typeof Community
   ) {}
 
   async getAllCommunities() {

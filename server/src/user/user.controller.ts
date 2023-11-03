@@ -7,7 +7,7 @@ import {
   NotFoundException,
   Body,
   Put,
-  UnauthorizedException
+  UnauthorizedException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserCommunityService } from './user-community.service';
@@ -24,7 +24,7 @@ export class UserController {
     private readonly googleService: GoogleService,
     private readonly userRolesService: UserRolesService,
     private readonly userPermsService: UserPermissionsService
-  ) { }
+  ) {}
 
   @Get('info')
   @UseGuards(JwtAuthGuard)
@@ -107,7 +107,8 @@ export class UserController {
 
       const userId = user.id;
       const communityId = userData.community_id;
-      const newUserCommunity = await this.userCommunityService.addUserToCommunity(userId, communityId);
+      const newUserCommunity =
+        await this.userCommunityService.addUserToCommunity(userId, communityId);
       return newUserCommunity;
     } catch (error) {
       console.error('Error adding community for user:', error);
@@ -128,7 +129,8 @@ export class UserController {
       }
 
       const userId = user.id;
-      const communityName = await this.userCommunityService.getCommunityNameByUserId(userId);
+      const communityName =
+        await this.userCommunityService.getCommunityNameByUserId(userId);
       return communityName;
     } catch (error) {
       console.error('Error fetching community name:', error);
@@ -146,13 +148,12 @@ export class UserController {
 
       if (!user) {
         throw new NotFoundException('User not found');
-
       }
 
       const userId = user.id;
       const rolesName = this.userRolesService.getRolesByUserId(userId);
       return rolesName;
-      console.log("email", email, "role", rolesName)
+      console.log('email', email, 'role', rolesName);
     } catch (error) {
       console.error('Error fetching roles name:', error);
       throw new NotFoundException('Error fetching roles name');
@@ -169,7 +170,6 @@ export class UserController {
 
       if (!user) {
         throw new NotFoundException('User not found');
-
       }
 
       const userId = user.id;
@@ -190,5 +190,4 @@ export class UserController {
   async getPermsInfo() {
     return await this.userPermsService.getAllPerms();
   }
-
 }

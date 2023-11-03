@@ -6,11 +6,11 @@ module.exports = {
       { value: 'EDIT_FIXED_DEVICE' },
       { value: 'EDIT_PORTABLE_DEVICE' },
       { value: 'EDIT_ROLE' },
-      { value: 'EDIT_PRODUCT' }
+      { value: 'EDIT_PRODUCT' },
     ]);
   },
 
   async down(queryInterface) {
     await queryInterface.bulkDelete('permissions', null, {});
-  }
+  },
 };

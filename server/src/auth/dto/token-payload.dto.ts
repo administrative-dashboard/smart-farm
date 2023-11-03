@@ -5,10 +5,9 @@ export class TokenPayloadDto {
   @IsString()
   readonly email: string;
 
-  @IsInt() 
-  readonly id: number; 
+  @IsInt()
+  readonly id: number;
 
   @IsString()
   readonly role: string;
-
 }

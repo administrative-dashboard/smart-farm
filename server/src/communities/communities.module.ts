@@ -17,9 +17,24 @@ import { UserPermissionsService } from 'src/user/user-permissions.service';
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([Community, User, UserCommunity, UserRole, Role, Permission, UserPermission]),
+    SequelizeModule.forFeature([
+      Community,
+      User,
+      UserCommunity,
+      UserRole,
+      Role,
+      Permission,
+      UserPermission,
+    ]),
   ],
   controllers: [CommunitiesController],
-  providers: [CommunitiesService, UserCommunityService, GoogleService, UserService, UserRolesService, UserPermissionsService]
+  providers: [
+    CommunitiesService,
+    UserCommunityService,
+    GoogleService,
+    UserService,
+    UserRolesService,
+    UserPermissionsService,
+  ],
 })
-export class CommunitiesModule { }
+export class CommunitiesModule {}

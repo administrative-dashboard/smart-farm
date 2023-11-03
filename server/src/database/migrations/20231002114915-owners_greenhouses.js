@@ -21,9 +21,10 @@ module.exports = {
       updated_at: {
         type: Sequelize.DATE,
       },
-    };    await queryInterface.createTable(tableName, columns);
+    };
+    await queryInterface.createTable(tableName, columns);
   },
   down: async (queryInterface) => {
     await queryInterface.dropTable('owners_greenhouses');
-  }
-}; 
+  },
+};

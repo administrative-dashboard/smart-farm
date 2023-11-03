@@ -24,7 +24,7 @@ export class OwnerFieldsController {
   constructor(
     private readonly ownerFieldsService: OwnerFieldsService,
     private readonly googleService: GoogleService
-  ) { }
+  ) {}
   @Get()
   async getFields(
     @Query('q') searchTerm: any,
@@ -113,7 +113,12 @@ export class OwnerFieldsController {
   }
 
   @Put(':id')
-  async updateFieldById(@Request() req, @Param('id') id: string, @Body() fieldData: any, @Res() res) {
+  async updateFieldById(
+    @Request() req,
+    @Param('id') id: string,
+    @Body() fieldData: any,
+    @Res() res
+  ) {
     try {
       console.log('Field data: ', fieldData);
       const accessToken = req.user.accessToken;
@@ -122,7 +127,7 @@ export class OwnerFieldsController {
       const updatedField = await this.ownerFieldsService.updateFieldById(
         id,
         fieldData,
-        email,
+        email
       );
 
       if (!updatedField) {
@@ -141,7 +146,6 @@ export class OwnerFieldsController {
           status: 'error',
         });
       }
-
     }
   }
 

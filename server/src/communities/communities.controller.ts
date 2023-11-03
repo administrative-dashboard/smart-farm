@@ -30,7 +30,7 @@ export class CommunitiesController {
     private readonly googleService: GoogleService,
     private readonly userService: UserService,
     private readonly userRoleService: UserRolesService
-  ) { }
+  ) {}
 
   @Get('info')
   @UseGuards(JwtAuthGuard)
@@ -60,7 +60,8 @@ export class CommunitiesController {
       }
 
       const userId = user.id;
-      const communityName = await this.userCommunityService.getCommunityNameByUserId(userId);
+      const communityName =
+        await this.userCommunityService.getCommunityNameByUserId(userId);
       if (searchTerm) {
         const users =
           await this.userCommunityService.searchUsersInSameCommunity(
@@ -69,11 +70,14 @@ export class CommunitiesController {
             page,
             perPage,
             field,
-            order,
+            order
           );
         return users;
       } else {
-        const { data, total } = await this.userCommunityService.getUsersInSameCommunity(communityName);
+        const { data, total } =
+          await this.userCommunityService.getUsersInSameCommunity(
+            communityName
+          );
 
         return { data, total };
       }
@@ -122,7 +126,10 @@ export class CommunitiesController {
       return res.status(200).json(updatedUser);
     } catch (error) {
       console.error(error);
-      throw new HttpException('An error occurred', HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(
+        'An error occurred',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
     }
   }
 }

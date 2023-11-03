@@ -14,8 +14,24 @@ import { UserService } from 'src/user/user.service';
 import { UserRolesService } from 'src/user/user-roles.service';
 import { UserPermissionsService } from 'src/user/user-permissions.service';
 @Module({
-  imports: [SequelizeModule.forFeature([OwnerGreenhouse, Greenhouse, User, UserPermission, UserRole, Role, Permission])],
+  imports: [
+    SequelizeModule.forFeature([
+      OwnerGreenhouse,
+      Greenhouse,
+      User,
+      UserPermission,
+      UserRole,
+      Role,
+      Permission,
+    ]),
+  ],
   controllers: [OwnerGreenhousesController],
-  providers: [OwnerGreenhousesService, GoogleService, UserService, UserRolesService, UserPermissionsService]
+  providers: [
+    OwnerGreenhousesService,
+    GoogleService,
+    UserService,
+    UserRolesService,
+    UserPermissionsService,
+  ],
 })
 export class OwnerGreenhousesModule {}

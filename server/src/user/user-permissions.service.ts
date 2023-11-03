@@ -13,8 +13,8 @@ export class UserPermissionsService {
     @InjectModel(Permission)
     private readonly permsModel: typeof Permission,
     @InjectModel(User)
-    private readonly userModel: typeof User,
-  ) { }
+    private readonly userModel: typeof User
+  ) {}
 
   async getPermsByUserId(userId: number): Promise<string[] | null> {
     const userPerms = await this.userpermsModel.findAll({
@@ -39,4 +39,3 @@ export class UserPermissionsService {
     return await this.permsModel.findAll();
   }
 }
-

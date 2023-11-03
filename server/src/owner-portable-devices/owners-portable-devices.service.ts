@@ -10,7 +10,7 @@ export class OwnersPortableDevicesService {
   constructor(
     @InjectModel(OwnerPortableDevice)
     private readonly OwnerPortableDeviceModel: typeof OwnerPortableDevice
-  ) { }
+  ) {}
 
   async getUserIdByEmail(email: string): Promise<number | null> {
     try {
@@ -38,7 +38,7 @@ export class OwnersPortableDevicesService {
     perPage?: number,
     field?: string,
     order?: string
-  ): Promise<{ data: any[], total: number }> {
+  ): Promise<{ data: any[]; total: number }> {
     try {
       const userId = await this.getUserIdByEmail(email);
       const sort = [];
@@ -72,7 +72,7 @@ export class OwnersPortableDevicesService {
           },
         ],
         order: sort,
-        offset: ((page - 1) * perPage),
+        offset: (page - 1) * perPage,
         limit: perPage,
         subQuery: false,
       });
@@ -82,7 +82,6 @@ export class OwnersPortableDevicesService {
       throw error;
     }
   }
-
 
   async searchDevices(
     email: string,
@@ -95,12 +94,10 @@ export class OwnersPortableDevicesService {
     page?: number,
     perPage?: number,
     field?: any,
-    order?: any,
-  ): Promise<{ data: any[], total: number }> {
-
+    order?: any
+  ): Promise<{ data: any[]; total: number }> {
     console.log(created_at);
     try {
-
       const userId = await this.getUserIdByEmail(email);
       const sort = [];
       if (field && order) {
@@ -198,7 +195,7 @@ export class OwnersPortableDevicesService {
           numQuery: query,
         },
         order: sort,
-        offset: ((page - 1) * perPage),
+        offset: (page - 1) * perPage,
         limit: perPage,
         subQuery: false,
       });
@@ -233,7 +230,7 @@ export class OwnersPortableDevicesService {
         },
       });
       if (existingRecord) {
-        throw new Error("USER IS ASSOCIATED WITH THE DEVICE");
+        throw new Error('USER IS ASSOCIATED WITH THE DEVICE');
       } else {
         const ownerPortableDevice = await this.OwnerPortableDeviceModel.create({
           user_id: userId,
@@ -246,7 +243,7 @@ export class OwnersPortableDevicesService {
         return ownerPortableDevice;
       }
     } catch (error) {
-      if (error.message = 'USER IS ASSOCIATED WITH THE DEVICE') {
+      if ((error.message = 'USER IS ASSOCIATED WITH THE DEVICE')) {
         throw error;
       }
       console.error(error);
@@ -283,32 +280,36 @@ export class OwnersPortableDevicesService {
     }
   }
 
-  async updatePortableDeviceById(id: string, deviceData: any, email: string): Promise<any> {
+  async updatePortableDeviceById(
+    id: string,
+    deviceData: any,
+    email: string
+  ): Promise<any> {
     try {
       const ParsedId = parseInt(id, 10);
       const userId = await this.getUserIdByEmail(email);
 
-      const repeatingDevice =
-        await this.OwnerPortableDeviceModel.findOne({
-          where: {
-            user_id: userId,
-            id: {
-              [Op.not]: ParsedId,
-            },
-
+      const repeatingDevice = await this.OwnerPortableDeviceModel.findOne({
+        where: {
+          user_id: userId,
+          id: {
+            [Op.not]: ParsedId,
           },
-          include: [
-            {
-              model: PortableDevice,
-              where: {
-                name: deviceData.device_name,
-                type: deviceData.device_type,
-              },
+        },
+        include: [
+          {
+            model: PortableDevice,
+            where: {
+              name: deviceData.device_name,
+              type: deviceData.device_type,
             },
-          ],
-        });
+          },
+        ],
+      });
       if (repeatingDevice) {
-        throw new Error('You already have a portable device with the same name and type.');
+        throw new Error(
+          'You already have a portable device with the same name and type.'
+        );
       }
       const existingPortableDevice =
         await this.OwnerPortableDeviceModel.findOne({

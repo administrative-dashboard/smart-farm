@@ -26,5 +26,5 @@ module.exports = {
   },
   down: async (queryInterface) => {
     await queryInterface.dropTable('sensor_usage_statistics_fields');
-  }
+  },
 };

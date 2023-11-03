@@ -14,14 +14,24 @@ import { UserPermission } from 'src/database/models/users_permissions.model';
 import { Permission } from 'src/database/models/permissions.model';
 import { UserService } from 'src/user/user.service';
 @Module({
-  imports: [SequelizeModule.forFeature([OwnerPortableDevice, PortableDevice, UserRole, Role, User, UserPermission, Permission]),
+  imports: [
+    SequelizeModule.forFeature([
+      OwnerPortableDevice,
+      PortableDevice,
+      UserRole,
+      Role,
+      User,
+      UserPermission,
+      Permission,
+    ]),
   ],
   providers: [
     OwnersPortableDevicesService,
     GoogleService,
     UserRolesService,
     UserPermissionsService,
-    UserService],
+    UserService,
+  ],
   controllers: [PortableDevicesController],
 })
-export class OwnerPortableDeviceModule { }
+export class OwnerPortableDeviceModule {}

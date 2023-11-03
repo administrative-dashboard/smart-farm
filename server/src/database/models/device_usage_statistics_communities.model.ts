@@ -1,9 +1,9 @@
 //roles.model.ts
 import { Column, Model, Table, ForeignKey } from 'sequelize-typescript';
-import { Community } from './communities.model'
+import { Community } from './communities.model';
 import { PortableDevice } from './portable_devices.model ';
 
-@Table({ tableName: 'device_usage_statistics_communities', timestamps: false  })
+@Table({ tableName: 'device_usage_statistics_communities', timestamps: false })
 export class DeviceUsageStatisticsCommunities extends Model<DeviceUsageStatisticsCommunities> {
   @Column({ primaryKey: true, autoIncrement: true, allowNull: false })
   id: number;
@@ -24,5 +24,4 @@ export class DeviceUsageStatisticsCommunities extends Model<DeviceUsageStatistic
   @ForeignKey(() => PortableDevice)
   @Column
   device_id: number;
-
 }
