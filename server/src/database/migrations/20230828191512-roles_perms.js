@@ -23,5 +23,5 @@ module.exports = {
   },
   down: async (queryInterface) => {
     await queryInterface.dropTable('roles_perms');
-  }
+  },
 };

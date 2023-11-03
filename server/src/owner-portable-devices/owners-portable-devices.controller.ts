@@ -19,15 +19,18 @@ import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
 import { GoogleService } from 'src/auth/google.service';
 import { RolesPermsGuard } from 'src/auth/guards/roles_perms.guard';
 import { RolesPerms } from 'src/auth/guards/roles_perms.decorator';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 @Controller('portable_devices')
+@ApiTags('portable_devices')
 @UseGuards(JwtAuthGuard, RolesPermsGuard)
 @RolesPerms('OWNER', 'EDIT_PORTABLE_DEVICE')
 export class PortableDevicesController {
   constructor(
     private readonly ownersPortableDevicesService: OwnersPortableDevicesService,
-    private readonly googleService: GoogleService,
-  ) { }
+    private readonly googleService: GoogleService
+  ) {}
 
+  @ApiBearerAuth()
   @Get()
   async getPortableDevices(
     @Query('q') searchTerm: any,
@@ -43,7 +46,7 @@ export class PortableDevicesController {
     @Request() req
   ) {
     try {
-      console.log(typeof (page));
+      console.log(typeof page);
       page = parseInt(page);
       perPage = parseInt(perPage);
       console.log('page::::===', page);
@@ -58,7 +61,14 @@ export class PortableDevicesController {
       const accessToken = req.user.accessToken;
       const email = await this.googleService.getUserInfo(accessToken);
       console.log(email);
-      if (searchTerm || deviceName || deviceType || quantity || sharedQuantity || date) {
+      if (
+        searchTerm ||
+        deviceName ||
+        deviceType ||
+        quantity ||
+        sharedQuantity ||
+        date
+      ) {
         const filteredDevices =
           await this.ownersPortableDevicesService.searchDevices(
             email,
@@ -71,13 +81,19 @@ export class PortableDevicesController {
             page,
             perPage,
             field,
-            order,
+            order
           );
         console.log(filteredDevices);
         return filteredDevices;
       } else if (page && perPage) {
         const { data, total } =
-          await this.ownersPortableDevicesService.getDevicesByEmail(email, page, perPage, field, order,);
+          await this.ownersPortableDevicesService.getDevicesByEmail(
+            email,
+            page,
+            perPage,
+            field,
+            order
+          );
         return { data, total };
       }
     } catch (error) {
@@ -88,7 +104,7 @@ export class PortableDevicesController {
     }
   }
 
-
+  @ApiBearerAuth()
   @Get(':id')
   async getPortableDeviceById(@Param('id') id: string) {
     try {
@@ -106,15 +122,16 @@ export class PortableDevicesController {
     }
   }
 
+  @ApiBearerAuth()
   @Put(':id')
   async updatePortableDeviceById(
     @Request() req,
     @Param('id') id: string,
     @Body() deviceData: any,
-    @Res() res,
+    @Res() res
   ) {
     try {
-      console.log('Device Data: ', deviceData)
+      console.log('Device Data: ', deviceData);
       const accessToken = req.user.accessToken;
       const email = await this.googleService.getUserInfo(accessToken);
       const updatedPortableDevice =
@@ -130,9 +147,13 @@ export class PortableDevicesController {
 
       res.status(200).json(updatedPortableDevice);
     } catch (error) {
-      if (error.message === 'You already have a portable device with the same name and type.') {
+      if (
+        error.message ===
+        'You already have a portable device with the same name and type.'
+      ) {
         res.status(400).json({
-          message: 'You already have a portable device with the same name and type.',
+          message:
+            'You already have a portable device with the same name and type.',
           status: 'error',
         });
       } else {
@@ -144,8 +165,13 @@ export class PortableDevicesController {
     }
   }
 
+  @ApiBearerAuth()
   @Post('create')
-  async createPortableDevice(@Body() deviceData: any, @Request() req, @Res() res) {
+  async createPortableDevice(
+    @Body() deviceData: any,
+    @Request() req,
+    @Res() res
+  ) {
     try {
       console.log(deviceData);
       const accessToken = req.user.accessToken;
@@ -173,7 +199,7 @@ export class PortableDevicesController {
     }
   }
 
-
+  @ApiBearerAuth()
   @Delete(':id')
   async deletePortableDeviceById(@Param('id') id: string) {
     try {

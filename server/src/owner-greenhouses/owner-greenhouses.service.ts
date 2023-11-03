@@ -10,7 +10,7 @@ export class OwnerGreenhousesService {
   constructor(
     @InjectModel(OwnerGreenhouse)
     private readonly ownerGreenhouse: typeof OwnerGreenhouse
-  ) { }
+  ) {}
   async getUserIdByEmail(email: string): Promise<number | null> {
     try {
       const user = await User.findOne({
@@ -35,7 +35,7 @@ export class OwnerGreenhousesService {
     perPage?: number,
     field?: string,
     order?: string
-  ): Promise<{ data: any[], total: number }> {
+  ): Promise<{ data: any[]; total: number }> {
     try {
       const userId = await this.getUserIdByEmail(email);
       const sort = [];
@@ -72,11 +72,11 @@ export class OwnerGreenhousesService {
                 model: MeasurementUnit,
                 attributes: [],
               },
-            ]
+            ],
           },
         ],
         order: sort,
-        offset: ((page - 1) * perPage),
+        offset: (page - 1) * perPage,
         limit: perPage,
         subQuery: false,
       });
@@ -97,8 +97,8 @@ export class OwnerGreenhousesService {
     page?: number,
     perPage?: number,
     field?: any,
-    order?: any,
-  ): Promise<{ data: any[], total: number }> {
+    order?: any
+  ): Promise<{ data: any[]; total: number }> {
     console.log(created_at);
     try {
       const userId = await this.getUserIdByEmail(email);
@@ -127,7 +127,9 @@ export class OwnerGreenhousesService {
       } else if (query !== '' && query !== undefined) {
         whereClause[Op.or] = [
           Sequelize.literal(`"greenhouses"."name" ILIKE :textQuery`),
-          Sequelize.literal(`"greenhouses->measurement_units"."value" ILIKE :textQuery`),
+          Sequelize.literal(
+            `"greenhouses->measurement_units"."value" ILIKE :textQuery`
+          ),
           Sequelize.literal(`"greenhouses"."description" ILIKE :textQuery`),
           Sequelize.literal(`"greenhouses"."location" ILIKE :textQuery`),
         ];
@@ -144,16 +146,23 @@ export class OwnerGreenhousesService {
           Sequelize.literal(`"greenhouses"."size" = :numSize`)
         );
       }
-      if (greenhouseSizeMeasurement !== '' && greenhouseSizeMeasurement !== undefined) {
+      if (
+        greenhouseSizeMeasurement !== '' &&
+        greenhouseSizeMeasurement !== undefined
+      ) {
         console.log('greenhouseSizeMeasurement is pushed');
         whereClause[Op.and].push(
-          Sequelize.literal(`"greenhouses->measurement_units"."value" ILIKE :textSizeMeasurement`),
+          Sequelize.literal(
+            `"greenhouses->measurement_units"."value" ILIKE :textSizeMeasurement`
+          )
         );
       }
       if (greenhouseDescription !== '' && greenhouseDescription !== undefined) {
         console.log('greenhouseDescription is pushed');
         whereClause[Op.and].push(
-          Sequelize.literal(`"greenhouses"."description" ILIKE :textDescription`)
+          Sequelize.literal(
+            `"greenhouses"."description" ILIKE :textDescription`
+          )
         );
       }
       if (greenhouseLocation !== '' && greenhouseLocation !== undefined) {
@@ -184,7 +193,6 @@ export class OwnerGreenhousesService {
           [Sequelize.col('greenhouses.description'), 'greenhouse_description'],
           [Sequelize.col('greenhouses.location'), 'greenhouse_location'],
           'created_at',
-
         ],
         include: [
           {
@@ -196,7 +204,7 @@ export class OwnerGreenhousesService {
                 model: MeasurementUnit,
                 attributes: ['value'],
               },
-            ]
+            ],
           },
         ],
         replacements: {
@@ -207,10 +215,9 @@ export class OwnerGreenhousesService {
           textLocation: `%${greenhouseLocation}%`,
           numQuery: query,
           numSize: greenhouseSize,
-
         },
         order: sort,
-        offset: ((page - 1) * perPage),
+        offset: (page - 1) * perPage,
         limit: perPage,
         subQuery: false,
       });
@@ -220,7 +227,10 @@ export class OwnerGreenhousesService {
     }
   }
 
-  async createGreenhouse(email: string, greenhouseData: any): Promise<OwnerGreenhouse> {
+  async createGreenhouse(
+    email: string,
+    greenhouseData: any
+  ): Promise<OwnerGreenhouse> {
     try {
       const userId = await this.getUserIdByEmail(email);
       const existingOwnerGreenhouse = await OwnerGreenhouse.findOne({
@@ -286,10 +296,9 @@ export class OwnerGreenhousesService {
                 model: MeasurementUnit,
                 attributes: [],
               },
-            ]
+            ],
           },
         ],
-
       });
       return greenhouse || null;
     } catch (error) {
@@ -297,37 +306,39 @@ export class OwnerGreenhousesService {
     }
   }
 
-  async updateGreenhouseById(id: string, greenhouseData: any, email: string): Promise<any> {
+  async updateGreenhouseById(
+    id: string,
+    greenhouseData: any,
+    email: string
+  ): Promise<any> {
     try {
       const ParsedId = parseInt(id, 10);
       const userId = await this.getUserIdByEmail(email);
-      const repeatingGreenhouse =
-        await this.ownerGreenhouse.findOne({
-          where: {
-            user_id: userId,
-            id: {
-              [Op.not]: ParsedId,
+      const repeatingGreenhouse = await this.ownerGreenhouse.findOne({
+        where: {
+          user_id: userId,
+          id: {
+            [Op.not]: ParsedId,
+          },
+        },
+        include: [
+          {
+            model: Greenhouse,
+            where: {
+              name: greenhouseData.name,
             },
           },
-          include: [
-            {
-              model: Greenhouse,
-              where: {
-                name: greenhouseData.name,
-              },
-            },
-          ],
-        });
+        ],
+      });
       if (repeatingGreenhouse) {
         throw new Error('You already have a greenhouse with the same name.');
       }
 
-      const existingGreenhouse =
-        await this.ownerGreenhouse.findOne({
-          where: {
-            id: ParsedId,
-          },
-        });
+      const existingGreenhouse = await this.ownerGreenhouse.findOne({
+        where: {
+          id: ParsedId,
+        },
+      });
 
       if (!existingGreenhouse) {
         return null;
@@ -338,7 +349,7 @@ export class OwnerGreenhousesService {
       });
 
       const associatedGreenhouse = await Greenhouse.findByPk(
-        existingGreenhouse.greenhouse_id,
+        existingGreenhouse.greenhouse_id
       );
 
       if (associatedGreenhouse) {
@@ -360,12 +371,11 @@ export class OwnerGreenhousesService {
   async deleteGreenhouseById(id: string): Promise<boolean> {
     try {
       const ParsedId = parseInt(id, 10);
-      const existingGreenhouse =
-        await this.ownerGreenhouse.findOne({
-          where: {
-            id: ParsedId,
-          },
-        });
+      const existingGreenhouse = await this.ownerGreenhouse.findOne({
+        where: {
+          id: ParsedId,
+        },
+      });
 
       if (!existingGreenhouse) {
         return false;

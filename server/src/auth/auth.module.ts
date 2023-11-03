@@ -17,7 +17,13 @@ import { GoogleService } from './google.service';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, GoogleStrategy, JwtStrategy, GoogleAuthService, GoogleService],
+  providers: [
+    AuthService,
+    GoogleStrategy,
+    JwtStrategy,
+    GoogleAuthService,
+    GoogleService,
+  ],
   exports: [AuthService],
 })
 export class AuthModule {}

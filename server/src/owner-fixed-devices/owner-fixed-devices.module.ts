@@ -15,15 +15,24 @@ import { UserService } from 'src/user/user.service';
 import { UserRolesService } from 'src/user/user-roles.service';
 import { UserPermissionsService } from 'src/user/user-permissions.service';
 @Module({
-  imports: [SequelizeModule.forFeature([OwnerFixedDevice, FixedDevice, User, Role, Permission, UserRole, UserPermission]),
+  imports: [
+    SequelizeModule.forFeature([
+      OwnerFixedDevice,
+      FixedDevice,
+      User,
+      Role,
+      Permission,
+      UserRole,
+      UserPermission,
+    ]),
   ],
   providers: [
     OwnersFixedDevicesService,
     GoogleService,
     UserService,
     UserRolesService,
-    UserPermissionsService
+    UserPermissionsService,
   ],
   controllers: [FixedDevicesController],
 })
-export class OwnerFixedDeviceModule { }
+export class OwnerFixedDeviceModule {}

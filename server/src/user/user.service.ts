@@ -13,7 +13,7 @@ export class UserService {
   constructor(
     @InjectModel(User)
     private readonly userModel: typeof User
-  ) { }
+  ) {}
 
   async getUserInfoByEmail(email: string) {
     try {
@@ -72,7 +72,9 @@ export class UserService {
         email: user.email,
         phone_number: user.phone_number,
         roles: user.users_roles.map((userRole) => userRole.roles.value),
-        permissions: user.users_permissions.map((userPerm) => userPerm.permissions.value),
+        permissions: user.users_permissions.map(
+          (userPerm) => userPerm.permissions.value
+        ),
       };
       return data;
     } catch (error) {

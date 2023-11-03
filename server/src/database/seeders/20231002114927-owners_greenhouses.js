@@ -19,7 +19,11 @@ module.exports = {
         updated_at: faker.date.recent(),
       });
     }
-    await queryInterface.bulkInsert('owners_greenhouses', ownersGreenhousesData, {});
+    await queryInterface.bulkInsert(
+      'owners_greenhouses',
+      ownersGreenhousesData,
+      {}
+    );
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete('owners_greenhouses', null, {});

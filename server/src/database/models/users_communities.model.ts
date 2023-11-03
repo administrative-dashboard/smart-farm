@@ -1,5 +1,11 @@
 //user_communities.ts
-import { Column, Model, Table, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import {
+  Column,
+  Model,
+  Table,
+  ForeignKey,
+  BelongsTo,
+} from 'sequelize-typescript';
 import { User } from './users.model';
 import { Community } from './communities.model';
 

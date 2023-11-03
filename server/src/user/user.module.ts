@@ -24,7 +24,7 @@ import { UserPermissionsService } from './user-permissions.service';
       UserRole,
       Role,
       Permission,
-      UserPermission
+      UserPermission,
     ]),
   ],
   providers: [
@@ -32,7 +32,7 @@ import { UserPermissionsService } from './user-permissions.service';
     UserCommunityService,
     GoogleService,
     UserRolesService,
-    UserPermissionsService
+    UserPermissionsService,
   ],
   controllers: [UserController],
   exports: [UserCommunityService],

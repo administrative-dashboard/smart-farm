@@ -13,7 +13,7 @@ export class RolesPermsGuard implements CanActivate {
     private readonly userPermissionsService: UserPermissionsService,
     private readonly googleService: GoogleService,
     private readonly userService: UserService
-  ) { }
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const requiredRolesPerms = this.reflector.get<string[]>(
@@ -35,16 +35,20 @@ export class RolesPermsGuard implements CanActivate {
       return false;
     }
 
-    const userPermissions = await this.userPermissionsService.getPermsByUserId(userId);
+    const userPermissions =
+      await this.userPermissionsService.getPermsByUserId(userId);
     if (!userPermissions) {
       return false;
     }
 
-    const hasRequiredRole = requiredRolesPerms.some(role => userRoles.includes(role));
+    const hasRequiredRole = requiredRolesPerms.some((role) =>
+      userRoles.includes(role)
+    );
 
-    const hasRequiredPermission = requiredRolesPerms.some(perm => userPermissions.includes(perm));
+    const hasRequiredPermission = requiredRolesPerms.some((perm) =>
+      userPermissions.includes(perm)
+    );
 
     return hasRequiredRole || hasRequiredPermission;
   }
-
 }

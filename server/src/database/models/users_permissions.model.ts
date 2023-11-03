@@ -1,5 +1,11 @@
 // users_perms.model.ts
-import { Column, Model, Table, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import {
+  Column,
+  Model,
+  Table,
+  ForeignKey,
+  BelongsTo,
+} from 'sequelize-typescript';
 import { User } from './users.model';
 import { Permission } from './permissions.model';
 
@@ -22,4 +28,3 @@ export class UserPermission extends Model<UserPermission> {
   @BelongsTo(() => User)
   declare users: User;
 }
-

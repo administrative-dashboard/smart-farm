@@ -18,15 +18,18 @@ import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
 import { GoogleService } from 'src/auth/google.service';
 import { RolesPermsGuard } from 'src/auth/guards/roles_perms.guard';
 import { RolesPerms } from 'src/auth/guards/roles_perms.decorator';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 @Controller('fixed_devices')
+@ApiTags('portable_devices')
 @UseGuards(JwtAuthGuard, RolesPermsGuard)
 @RolesPerms('OWNER', 'EDIT_FIXED_DEVICE')
 export class FixedDevicesController {
   constructor(
     private readonly ownersFixedDevicesService: OwnersFixedDevicesService,
     private readonly googleService: GoogleService
-  ) { }
+  ) {}
 
+  @ApiBearerAuth()
   @Get()
   async getFixedDevices(
     @Query('q') searchTerm: any,
@@ -65,12 +68,19 @@ export class FixedDevicesController {
             page,
             perPage,
             field,
-            order,
+            order
           );
         return filteredDevices;
       } else {
         console.log('else');
-        const { data, total } = await this.ownersFixedDevicesService.getDevicesByEmail(email, page, perPage, field, order,);
+        const { data, total } =
+          await this.ownersFixedDevicesService.getDevicesByEmail(
+            email,
+            page,
+            perPage,
+            field,
+            order
+          );
         return { data, total };
       }
 
@@ -84,6 +94,7 @@ export class FixedDevicesController {
     }
   }
 
+  @ApiBearerAuth()
   @Get(':id')
   async getFixedDeviceById(@Param('id') id: string) {
     try {
@@ -101,15 +112,16 @@ export class FixedDevicesController {
     }
   }
 
+  @ApiBearerAuth()
   @Put(':id')
   async updateFixedDeviceById(
     @Request() req,
     @Param('id') id: string,
     @Body() deviceData: any,
-    @Res() res,
+    @Res() res
   ) {
     try {
-      console.log('Device Data: ', deviceData)
+      console.log('Device Data: ', deviceData);
       const accessToken = req.user.accessToken;
       const email = await this.googleService.getUserInfo(accessToken);
       const updatedFixedDevice =
@@ -125,9 +137,13 @@ export class FixedDevicesController {
 
       res.status(200).json(updatedFixedDevice);
     } catch (error) {
-      if (error.message === 'You already have a fixed device with the same name and type.') {
+      if (
+        error.message ===
+        'You already have a fixed device with the same name and type.'
+      ) {
         res.status(400).json({
-          message: 'You already have a fixed device with the same name and type.',
+          message:
+            'You already have a fixed device with the same name and type.',
           status: 'error',
         });
       } else {
@@ -139,6 +155,7 @@ export class FixedDevicesController {
     }
   }
 
+  @ApiBearerAuth()
   @Post('create')
   async createFixedDevice(@Body() deviceData: any, @Request() req, @Res() res) {
     try {
@@ -168,6 +185,7 @@ export class FixedDevicesController {
     }
   }
 
+  @ApiBearerAuth()
   @Delete(':id')
   async deleteFixedDeviceById(@Param('id') id: string) {
     try {

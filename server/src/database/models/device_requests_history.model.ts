@@ -1,5 +1,12 @@
 //roles.model.ts
-import { Column, Model, Table, DataType, ForeignKey, HasOne } from 'sequelize-typescript';
+import {
+  Column,
+  Model,
+  Table,
+  DataType,
+  ForeignKey,
+  HasOne,
+} from 'sequelize-typescript';
 import { User } from './users.model';
 
 enum RequestStatus {
@@ -8,7 +15,7 @@ enum RequestStatus {
   Rejected = 'rejected',
 }
 
-@Table({ tableName: 'device_requests_history', timestamps: false  })
+@Table({ tableName: 'device_requests_history', timestamps: false })
 export class DeviceRequestHistory extends Model<DeviceRequestHistory> {
   @Column({ primaryKey: true, autoIncrement: true, allowNull: false })
   id: number;
@@ -25,7 +32,11 @@ export class DeviceRequestHistory extends Model<DeviceRequestHistory> {
   @Column({})
   used_to: Date;
 
-  @Column({ type: DataType.ENUM, values: ['new', 'accepted', 'rejected'], defaultValue: 'new' })
+  @Column({
+    type: DataType.ENUM,
+    values: ['new', 'accepted', 'rejected'],
+    defaultValue: 'new',
+  })
   status: RequestStatus;
 
   @ForeignKey(() => User)
@@ -34,5 +45,4 @@ export class DeviceRequestHistory extends Model<DeviceRequestHistory> {
 
   @Column
   device_id: number;
-
 }

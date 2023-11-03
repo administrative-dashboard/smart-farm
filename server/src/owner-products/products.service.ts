@@ -383,7 +383,7 @@ export class ProductsService {
       });
 
       if (!existingOwnerProduct) {
-        return false; 
+        return false;
       }
 
       const associatedProduct = await Product.findByPk(

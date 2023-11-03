@@ -1,19 +1,25 @@
 // auth.guard.ts
-import { Injectable, UnauthorizedException, ExecutionContext } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  ExecutionContext,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Observable } from 'rxjs';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
-	canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
-		return super.canActivate(context);
-	}
+  canActivate(
+    context: ExecutionContext
+  ): boolean | Promise<boolean> | Observable<boolean> {
+    return super.canActivate(context);
+  }
 
-	handleRequest(err, user) {
-		if (err || !user) {
-			throw new UnauthorizedException();
-			return false;
-		}
-		return user;
-	}
+  handleRequest(err, user) {
+    if (err || !user) {
+      throw new UnauthorizedException();
+      return false;
+    }
+    return user;
+  }
 }

@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true,
       },
-       field_id: {
+      field_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
@@ -38,5 +38,5 @@ module.exports = {
   },
   down: async (queryInterface) => {
     await queryInterface.dropTable('device_usage_statistics_fields');
-  }
+  },
 };

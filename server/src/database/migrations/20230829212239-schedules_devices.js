@@ -27,5 +27,5 @@ module.exports = {
   },
   down: async (queryInterface) => {
     await queryInterface.dropTable('schedules_devices');
-  }
+  },
 };

@@ -5,9 +5,8 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { MeasurementUnit } from 'src/database/models/measurement_units';
 
 @Module({
-  imports: [SequelizeModule.forFeature([MeasurementUnit]),
-],
+  imports: [SequelizeModule.forFeature([MeasurementUnit])],
   controllers: [MeasurementUnitsController],
-  providers: [MeasurementUnitsService]
+  providers: [MeasurementUnitsService],
 })
 export class MeasurementUnitsModule {}

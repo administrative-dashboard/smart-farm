@@ -12,11 +12,10 @@ import {
   Query,
   UseGuards,
   NotFoundException,
-} from '@nestjs/common'; 
+} from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
 import { GoogleService } from 'src/auth/google.service';
-
 
 @Controller('products')
 @UseGuards(JwtAuthGuard)

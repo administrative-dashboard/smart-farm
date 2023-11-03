@@ -7,7 +7,7 @@ export class MeasurementUnitsService {
   constructor(
     @InjectModel(MeasurementUnit)
     private readonly measurementUnit: typeof MeasurementUnit
-  ) { }
+  ) {}
   async getTypesArea(): Promise<{ data: any[] }> {
     try {
       const types = await this.measurementUnit.findAll({
@@ -21,6 +21,4 @@ export class MeasurementUnitsService {
       throw error;
     }
   }
-
-
 }

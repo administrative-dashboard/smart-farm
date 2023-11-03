@@ -12,7 +12,7 @@ module.exports = {
         autoIncrement: true,
       },
       type_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       name: {
         type: Sequelize.STRING,
@@ -27,5 +27,5 @@ module.exports = {
   },
   down: async (queryInterface) => {
     await queryInterface.dropTable('products');
-  }
+  },
 };

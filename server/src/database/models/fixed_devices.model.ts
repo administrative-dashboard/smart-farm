@@ -5,7 +5,7 @@ import { OwnerFixedDevice } from './owners_fixed_devices.model';
 
 @Table({ tableName: 'fixed_devices', timestamps: false })
 export class FixedDevice extends Model<FixedDevice> {
-  @Column({ primaryKey: true, autoIncrement: true, allowNull: false  })
+  @Column({ primaryKey: true, autoIncrement: true, allowNull: false })
   id: number;
 
   @Column({ allowNull: false })
@@ -14,8 +14,6 @@ export class FixedDevice extends Model<FixedDevice> {
   @Column({ allowNull: false })
   type: string;
 
- @BelongsToMany(() => User, () => OwnerFixedDevice)
+  @BelongsToMany(() => User, () => OwnerFixedDevice)
   users: User[];
-
-  
 }

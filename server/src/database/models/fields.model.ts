@@ -1,5 +1,12 @@
 // users.model.ts
-import { Column, Model, Table, HasOne, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import {
+  Column,
+  Model,
+  Table,
+  HasOne,
+  ForeignKey,
+  BelongsTo,
+} from 'sequelize-typescript';
 import { OwnerField } from './owners_fields.model';
 import { MeasurementUnit } from './measurement_units';
 
@@ -21,13 +28,12 @@ export class Field extends Model<Field> {
   location: string;
 
   @HasOne(() => OwnerField)
-  owners_fields: OwnerField;  
-  
+  owners_fields: OwnerField;
+
   @ForeignKey(() => MeasurementUnit)
-  @Column({allowNull: false})
+  @Column({ allowNull: false })
   measurement_id: number;
 
   @BelongsTo(() => MeasurementUnit)
   declare measurement_units: MeasurementUnit;
-
 }

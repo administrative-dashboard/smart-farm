@@ -1,4 +1,10 @@
-import { Column, Model, Table, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import {
+  Column,
+  Model,
+  Table,
+  ForeignKey,
+  BelongsTo,
+} from 'sequelize-typescript';
 import { User } from './users.model';
 import { Field } from './fields.model';
 import { MeasurementUnit } from './measurement_units';
@@ -16,7 +22,6 @@ export class OwnerField extends Model<OwnerField> {
   @Column
   field_id: number;
 
-
   @Column
   created_at: Date;
 
@@ -25,7 +30,4 @@ export class OwnerField extends Model<OwnerField> {
 
   @BelongsTo(() => Field)
   declare fields: Field;
-
-
-
 }
