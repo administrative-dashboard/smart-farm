@@ -78,6 +78,7 @@ import { ProductType } from './database/models/product_types.model';
         ProductType,
         OwnerProduct
       ],
+      autoLoadModels: true
     }),
     AuthModule,
     OwnerPortableDeviceModule,
