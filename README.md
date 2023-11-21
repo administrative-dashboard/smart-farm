@@ -321,4 +321,4 @@ We've created a database diagram using dbdiagram.io. You can view it [here](http
 
 
 
-psql -h localhost -p 5434 -U farm -d smart_farm
+psql -h localhost -p 5433 -U farm -d smart_farm

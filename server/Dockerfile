@@ -10,9 +10,9 @@ RUN npm install
 COPY . .
 
 
-RUN chmod +x startup.sh
-RUN npm i -g sequelize-cli
-# copy /app/ ./app
+
+CMD sh -c "npx sequelize db:migrate && npx sequelize db:seed:all && npm run start:dev"
+
 EXPOSE 5000
 
-CMD ["npm", "run", "start:dev"]
+# CMD ["npm", "run", "start:dev"]
