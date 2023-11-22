@@ -1,18 +1,38 @@
+FROM node:16 AS development
 
-# Use an official Node.js runtime as the base image
-FROM node:16
-# Set the working directory in the container
-RUN mkdir -p /usr/app
 WORKDIR /usr/app
-# Copy package.json and package-lock.json to the container
-COPY package*.json ./
-# # Install application dependencies
 
-# Copy the rest of your application code to the container
+COPY package*.json ./
+RUN npm install
+
 COPY . .
-RUN npm install 
-# 
-# Build the production-ready frontend code
-# RUN npm run build# # Expose the port your React application is running on (usually 3000)
-# EXPOSE 3000# # Define the command to start your React application
+
 CMD ["npm", "start"]
+
+# ////////////////////////////////
+
+FROM node:16-alpine AS production
+
+WORKDIR /usr/app
+
+COPY --from=development /usr/app/package*.json ./
+RUN npm install --production
+
+COPY --from=development /usr/app/build ./build
+
+CMD ["npm", "start"]
+
+
+#  /////////////////////
+
+# FROM node:16
+
+# RUN mkdir -p /usr/app
+# WORKDIR /usr/app
+
+# COPY package*.json ./
+
+# COPY . .
+# RUN npm install 
+
+# CMD ["npm", "start"]
