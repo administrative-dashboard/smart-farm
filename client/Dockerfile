@@ -1,5 +1,5 @@
 
-FROM node:16
+FROM node:20.9.0
 
 # A directory within the virtualized Docker environment
 WORKDIR /usr/src/app
