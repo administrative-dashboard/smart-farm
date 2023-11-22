@@ -5,7 +5,7 @@ module.exports = {
     tsconfigRootDir: __dirname,
     sourceType: 'module',
   },
-  plugins: ['@typescript-eslint/eslint-plugin'],
+  plugins: ['@typescript-eslint'],
   extends: [
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
@@ -21,9 +21,26 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
-      "prettier/prettier": [
-        "error",
-        { endOfLine: "auto" }
-      ],
-    },
-  };
+    '@typescript-eslint/naming-convention': [
+      'error',
+      {
+        selector: 'variable',
+        format: ['camelCase', 'UPPER_CASE'],
+        leadingUnderscore: 'allow',
+      },
+      {
+        selector: 'function',
+        format: ['camelCase'],
+      },
+    ],
+    'prettier/prettier': [
+      'error',
+      { endOfLine: 'auto' }
+    ],
+    'max-len': ['error', { code: 120, tabWidth: 2 }],
+    'no-unused-vars': 'error',
+    'consistent-return': 'error',
+    'no-console': 'error',
+    'no-magic-numbers': 'error',
+  },
+};
